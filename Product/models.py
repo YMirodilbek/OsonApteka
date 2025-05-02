@@ -22,8 +22,7 @@ class Product(models.Model):
     # rate = models.FloatField(null=True, blank=True)
     # text = models.TextField()
     image1 = models.ImageField(upload_to="images/", null=True, blank=True)
-    image2 = models.ImageField(upload_to="images/", null=True, blank=True)
-    image3 = models.ImageField(upload_to="images/", null=True, blank=True)
+   
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
