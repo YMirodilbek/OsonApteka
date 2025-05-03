@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 
@@ -5,78 +6,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akmal Farm Medical</title>
-    <link rel="shortcut icon" href="assets/img2/AFM MEDICAL — копия.png">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/bundle.css">
-    <link rel="stylesheet" href="assets/css/plugins.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="shortcut icon" href="{% static 'assets/img2/AFM MEDICAL — копия.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bundle.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+    <script src="{% static 'assets/js/vendor/modernizr-2.8.3.min.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         .container_2 {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
-            padding: 30px;
-        }
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 1-qatorda 6ta kartani joylashtiradi */
+    gap: 20px;
+    padding: 30px;
+}
 
-        .cardp {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 30px;
-            width: 240px;
-            box-shadow: 0 10px 10px rgb(201, 200, 200);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
+.cardp {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 240px;
+    box-shadow: 0 10px 10px rgb(201, 200, 200);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
 
-        .cardp:hover {
-            transform: translateY(-5px);
-        }
+.cardp:hover {
+    transform: translateY(-5px);
+}
 
-        .cardp h1 {
-            font-size: 18px;
-            color: #155de4;
-            margin-bottom: 10px;
-        }
+.cardp h1 {
+    font-size: 18px;
+    color: #155de4;
+    margin-bottom: 10px;
+}
 
-        .cardp p {
-            margin: 5px 0;
-            color: #444;
-            font-size: 11px;
-        }
+.cardp p {
+    margin: 5px 0;
+    color: #444;
+    font-size: 11px;
+}
 
-        /* ✅ Responsivlik - Ekran kichrayganda ustunlar kamayadi */
-        @media (max-width: 1400px) {
-            .container_2 {
-                grid-template-columns: repeat(5, 1fr);
-            }
-        }
+/* ✅ Responsivlik - Ekran kichrayganda ustunlar kamayadi */
 
-        @media (max-width: 1100px) {
-            .container_2 {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
+/* 1400px dan kichik ekranlar uchun */
+@media (max-width: 1400px) {
+    .container_2 {
+        grid-template-columns: repeat(5, 1fr); /* 5 ta kartani joylashtiradi */
+    }
+}
 
-        @media (max-width: 900px) {
-            .container_2 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+/* 1100px dan kichik ekranlar uchun */
+@media (max-width: 1100px) {
+    .container_2 {
+        grid-template-columns: repeat(4, 1fr); /* 4 ta kartani joylashtiradi */
+    }
+}
 
-        @media (max-width: 600px) {
-            .container_2 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+/* 900px dan kichik ekranlar uchun */
+@media (max-width: 900px) {
+    .container_2 {
+        grid-template-columns: repeat(3, 1fr); /* 3 ta kartani joylashtiradi */
+    }
+}
 
-        @media (max-width: 400px) {
-            .container_2 {
-                grid-template-columns: 1fr;
-            }
-        }
+/* 600px dan kichik ekranlar uchun */
+@media (max-width: 600px) {
+    .container_2 {
+        grid-template-columns: repeat(2, 1fr); /* 2 ta kartani joylashtiradi */
+    }
+}
+
+/* 400px dan kichik ekranlar uchun */
+@media (max-width: 400px) {
+    .container_2 {
+        grid-template-columns: 1fr; /* 1 ta kartani joylashtiradi */
+    }
+}
+
     </style>
 </head>
 
@@ -112,7 +120,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4">
                         <div class="logo">
-                            <a href="index.html"><img src="assets/img2/AFM MEDICAL.png" alt="" width="220px"></a>
+                            <a href="index.html"><img src="{% static 'assets/img2/AFM MEDICAL.png' %}" alt="" width="220px"></a>
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-5">
@@ -399,7 +407,7 @@
                                     </div>
                                     <div class="cart_item">
                                         <div class="cart_img">
-                                            <a href="#"><img src="assets/img/cart/cart1.jpg" alt=""></a>
+                                            <a href="#"><img src="{% static 'assets/img/cart/cart1.jpg" alt=""></a>
                                         </div>
                                         <div class="cart_info">
                                             <a href="#">Mr.Coffee 12-Cup</a>
@@ -411,7 +419,7 @@
                                     </div>
                                     <div class="cart_item">
                                         <div class="cart_img">
-                                            <a href="#"><img src="assets/img/cart/cart2.jpg" alt=""></a>
+                                            <a href="#"><img src="{% static 'assets/img/cart/cart2.jpg" alt=""></a>
                                         </div>
                                         <div class="cart_info">
                                             <a href="#">Lid Cover Cookware</a>
@@ -505,12 +513,7 @@
             <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
             <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
         </div>
-        <div class="cardp">
-            <h1>Toshkent shahar</h1>
-            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> +998 99 909 1282</p>
-            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
-            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
-        </div>
+        
     </div>
 
     <!-- footer start berdik -->
@@ -525,7 +528,7 @@
                                     <div class="col-lg-4 col-md-8">
                                         <div class="single_footer">
                                             <div class="footer_logo">
-                                                <img src="assets/img2/AFM MEDICAL oq.png" alt="" width="220">
+                                                <img src="{% static 'assets/img2/AFM MEDICAL oq.png' %}" alt="" width="220">
                                             </div>
                                             <div class="footer_contact">
                                                 <ul>
@@ -692,11 +695,11 @@
         </div>
     </div>
     <!-- footer qismini tugatdik -->
-    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="assets/js/popper.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="{% static 'assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
 </body>
 
 </html>

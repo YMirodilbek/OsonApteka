@@ -7,11 +7,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akmal Farm Medical</title>
 </head>
+<style>
+    .tugma22 {
+  text-decoration: none;
+}
 
+.button22 {
+  background-color: red; /* Qizil rang */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.button22:hover {
+  background-color: #c0392b; /* Qizilni qoraroq qilish */
+}
+
+/* Kichik ekranlar (masalan, mobil qurilmalar) uchun */
+@media (max-width: 600px) {
+  .button22 {
+    padding: 8px 15px;
+    font-size: 14px;
+    margin-bottom: 20px !important;
+  }
+}
+
+/* O'rtacha ekranlar (masalan, planshetlar) uchun */
+@media (max-width: 768px) {
+  .button22 {
+    padding: 10px 18px;
+    font-size: 15px;
+  }
+}
+
+</style>
 <body>
+    <a href="/" class="tugma22"><button class="button22">Back</button></a>
 
     <div class="alls">
-        <img src="../static/assets/img2/00002.jpg" alt="kutib turing" class="allimg">
+        <img src="{% static 'assets/img2/00002.jpg' %}" alt="kutib turing" class="allimg">
         <h3 class="alh3">
             О компании
 

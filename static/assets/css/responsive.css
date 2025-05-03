@@ -751,7 +751,7 @@
         font-size: 13px;
     }
     .header_top {
-        padding: 16px 0 19px;
+        padding: 7px 0 14px;
     }
     .top_right > ul > li::before {
         top: 4px;
@@ -773,7 +773,7 @@
         display: none;
     }
     .header_middel {
-        padding: 29px 0 25px;
+        padding: 1px 0 5px;
     }
     .search_bar input {
         height: 45px;
@@ -1706,6 +1706,5 @@
      
     
 }
-
 
 

@@ -177,3 +177,5 @@ def Logout(request):
     logout(request)
     return redirect('/auth/send-otp/')
 
+def Blog(request):
+    return render(request,'blog.html')
