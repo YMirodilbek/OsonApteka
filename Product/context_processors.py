@@ -18,6 +18,6 @@ def cart_context(request):
 
 def category_contex(request):
      category = Category.objects.annotate(
-                sorted_name=Collate('name', 'uz_UZ.UTF-8')
+                sorted_name=Collate('name', 'ru_RU.utf8')
                 ).order_by('sorted_name')
      return{ "category":category}
