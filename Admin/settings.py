@@ -136,7 +136,7 @@ LOGGING = {
         'celery_task_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'celery_tasks.log'),  # Shu faylga yozadi
+            'filename': os.path.join(BASE_DIR, 'celery_tasks.log'),
         },
     },
     'loggers': {

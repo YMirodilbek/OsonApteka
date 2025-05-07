@@ -39,7 +39,6 @@ def add_to_cart(request, product_id):
 
 def search_products(request):
     query = latin_to_cyrillic(request.GET.get('q', '')).strip().lower()
-
     r = redis.Redis(host='localhost', port=6379, db=0)
     result = r.get('final_result')
     matched_items = []
@@ -47,14 +46,19 @@ def search_products(request):
     if result and query:
         result = json.loads(result.decode('utf-8'))
     for item in result:
-        name = item.get('name_lover')
-        if query in name:
-            matched_items.append(item)
-        else:
-            score = fuzz.ratio(query, name)
-            if score >= 20:
+        name = item.get('name_lower')
+
+        if name: 
+            if query == name or name.startswith(query):
                 matched_items.append(item)
+            else:
+                score = fuzz.ratio(query, name)
+                if score >= 35:
+                    matched_items.append(item)
+
     return JsonResponse(matched_items, safe=False)
+
+
 
 # from .tasks import *
 # url = "http://93.170.11.10:8088/RM_OPT/hs/online/stock"

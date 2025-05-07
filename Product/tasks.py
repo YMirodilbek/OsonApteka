@@ -65,8 +65,8 @@ def refresh_products_cache():
             "ExpDate": item.get("ExpDate", ""),
             "info": product.info,
             "image1": product.image1.url if product.image1 else "",
-            "image2": product.image2.url if product.image2 else "",
-            "image3": product.image3.url if product.image3 else "",
+            # "image2": product.image2.url if product.image2 else "",
+            # "image3": product.image3.url if product.image3 else "",
         }
 
         final_result.append(product_data)
