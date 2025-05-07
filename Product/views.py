@@ -19,75 +19,56 @@ def cart_view(request):
     
 def Index(request):
 
+    def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
     per_page_classes = 77
     per_class_limit = 100
 
-    # Redisdan olib kelish
     grouped_data_json = r.get('products_by_class')
+    if not grouped_data_json:
+        return render(request, 'index.html', {"data": []})
 
     grouped_by_class = json.loads(grouped_data_json)
 
-    # 🔴 Faqat bo'sh bo'lmagan classlarni olamiz
-    filtered_classes = [
-        # class_name for class_name, items in grouped_by_class.items() if items
-        class_name for class_name, items in grouped_by_class.items()
-       if len(items) >= 2
-    ]
-    paginator = Paginator(filtered_classes, per_page_classes)
-
-
-
-    selected_classes = paginator.page(page).object_list
-
     result = []
-    
-    for class_name in selected_classes:
-        items = grouped_by_class[class_name][:per_class_limit]
-        result.append({
-        "class_name": class_name,
-        "products": items
-        })
-    
+
+    # Agar category tanlangan bo‘lsa, faqat o‘sha category qaytariladi
     if category:
-        result = r.get('products_by_class') 
-        if result:
-            result = json.loads(result.decode('utf-8'))
-            result = [{category:result.get(category, [])}]
-    
+        category = category.strip()
+        products = (
+            grouped_by_class.get(category)
+            or grouped_by_class.get(category.title())
+            or grouped_by_class.get(category.upper())
+        )
 
-    # if category:
-    #     result = r.get('products_by_class')
-    #     if result:
-    #         result = json.loads(result.decode('utf-8'))
-    #         result = result.get(category, [])
-    #         # if len(result) >= 10:
-    #         result = [{category: result}]
-        
-    context = {
-        "data":result,
-        "current_page": page,
-        "total_pages": paginator.num_pages,
-    }
-    return render(request,'index.html', context)
+        if products and len(products) >= 10:
+            result = [{"class_name": category, "products": products[:per_class_limit]}]
+        else:
+            result = []  # bo‘sh list qaytadi
+    else:
+        # Aks holda barcha classlarni paginate qilib olish
+        filtered_classes = [
+            class_name for class_name, items in grouped_by_class.items()
+            if len(items) >= 1
+        ]
+        paginator = Paginator(filtered_classes, per_page_classes)
+        selected_classes = paginator.page(page).object_list
 
+        for class_name in selected_classes:
+            items = grouped_by_class[class_name][:per_class_limit]
+            result.append({"class_name": class_name, "products": items})
 
-        
-        
-        
-        
-    
-        
+        context = {
+            "data": result,
+            "current_page": page,
+            "total_pages": paginator.num_pages,
+        }
+        return render(request, 'index.html', context)
 
-
-    context = {
-        "data":result
-    }
-    return render(request,'index.html', context)
-
-
+    # Category bo‘lsa, pagination kerak emas
+    return render(request, 'index.html', {"data": result})
 
 @login_required(login_url='/auth/send-otp/')
 def increase_quantity(request, item_id):
