@@ -9,6 +9,9 @@ from .models import *
 from .forms import  *
 import redis
 import json
+from click_up.views import ClickWebhook
+from click_up import ClickUp
+from django.conf import settings
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -143,23 +146,110 @@ def add_to_cart_detail(request,pk):
     return redirect(f'/product/detail/{pk}')
 
 
+class ClickWebhookAPIView(ClickWebhook):
+    def successfully_payment(self, params):
+        """
+        Handle successful payments from Click
+        """
+        merchant_trans_id = params.get('merchant_trans_id')
+        try:
+            order = Order.objects.get(id=merchant_trans_id)
+            order.is_paid = True
+            order.save()
+            # Here you can handle additional order processing
+            # For example, send email notification, create shipping order, etc.
+        except Order.DoesNotExist:
+            pass
+        
+    def cancelled_payment(self, params):
+        """
+        Handle cancelled payments from Click
+        """
+        merchant_trans_id = params.get('merchant_trans_id')
+        try:
+            order = Order.objects.get(id=merchant_trans_id)
+            # Handle cancelled payment 
+            # For example, mark the order as cancelled or notify admin
+        except Order.DoesNotExist:
+            pass
+
+
+def payment_success(request, order_id):
+    """
+    Display payment success page after successful Click payment
+    """
+    try:
+        order = Order.objects.get(id=order_id, user=request.user)
+        return render(request, 'payment_success.html', {'order': order})
+    except Order.DoesNotExist:
+        messages.error(request, "Buyurtma topilmadi!")
+        return redirect('order_history')
+
+
 def checkout_view(request):
-    if request.method == "POST":
-        form = CheckoutForm(request.POST)
+    order = Order.objects.filter(user=request.user, is_completed=False).first()
+    if not order or not order.items.exists():
+        messages.error(request, "Sizning savatingiz bo'sh!")
+        return redirect("cart")
+    
+    cart_items = order.items.all()
+    
+    filials = Filial.objects.all()
+    if not filials.exists():
+        default_filial = Filial.objects.create(
+            name="Markaziy Filial",
+            address="Toshkent sh., Yunusobod tumani"
+        )
+        filials = Filial.objects.all()  
+
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST, instance=order)
         if form.is_valid():
-           
-            full_name = form.cleaned_data['full_name']
-            phone_number = form.cleaned_data['phone_number']
-            payment_method = form.cleaned_data['payment_method']
-            address = form.cleaned_data['address']
-
+            order = form.save(commit=False)
             
+            address_type = request.POST.get('address_type')
+            if address_type == 'maps':
+                lat = request.POST.get('address_lat')
+                lng = request.POST.get('address_lng')
+                if lat and lng:
+                    order.address_text = f"Latitude: {lat}, Longitude: {lng}"
+            
+            order.is_completed = True
+            order.save()
+            
+            if order.payment_method == 'click':
+                click_up = ClickUp(
+                    service_id=settings.CLICK_SERVICE_ID,
+                    merchant_id=settings.CLICK_MERCHANT_ID
+                )
+                
+                return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
+                payment_link = click_up.initializer.generate_pay_link(
+                    id=order.id,
+                    amount=order.total_price + 15000,  
+                    return_url=return_url
+                )
+                
+                return redirect(payment_link)
+            
+            messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
+            return redirect("order_history")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
 
-            return redirect('order_success')  
     else:
-        form = CheckoutForm()
-
-    return render(request, 'checkout.html', {'form': form})
+        form = CheckoutForm(instance=order)
+    
+    context = {
+        'form': form, 
+        'cart_items': cart_items, 
+        'order': order,
+        'filials': filials  
+    }
+    
+    return render(request, 'checkout.html', context)
 
 
 def Myaccount(request):
@@ -206,36 +296,6 @@ def Contact(request):
     }
 
     return render(request,'contact.html',context)
-
-
-def checkout_view(request):
-    cart_items = request.user.cart.items.all()  
-
-    if not cart_items:
-        messages.error(request, "Sizning savatingiz bo‘sh!")
-        return redirect("cart")
-
-    if request.method == 'POST':
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
-            order.is_completed = False
-            order.save()
-
-           
-            # for item in cart_items:
-            #     OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
-
-            request.user.cart.items.all().delete()
-            
-            messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
-            return redirect("order_history")
-
-    else:
-        form = CheckoutForm()
-    
-    return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items})
 
 
 def product_create(request):

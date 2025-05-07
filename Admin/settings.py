@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'main',
     'Product',
-    
+    'click_up'
 ]
 
 MIDDLEWARE = [
@@ -188,3 +188,12 @@ MEDIA_URL = '/media/'  # Media fayllar uchun URL
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "main.CustomUser"
 LOGIN_REDIRECT_URL = '/auth/send-otp/'
+
+
+CLICK_SERVICE_ID = "your-service-id"  
+CLICK_MERCHANT_ID = "your-merchant-id" 
+CLICK_SECRET_KEY = "your-secret-key" 
+CLICK_ACCOUNT_MODEL = "Product.models.Order"
+CLICK_AMOUNT_FIELD = "amount"
+
+CLICK_COMMISSION_PERCENT = 0 
