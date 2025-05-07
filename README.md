@@ -11,4 +11,6 @@ data.py fileda   objectlar bor  shundan korib admin paneldan  product create qil
 
 pip install rapidfuzz
 
+windowsda
+2 terminal  celery -A Admin worker --pool=solo --loglevel=info
 

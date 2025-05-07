@@ -20,7 +20,7 @@
 
 .messages {
         position: fixed;
-        top: 20px;
+        top: 20px;  
         right: 20px;
         background: #4CAF50;
         color: white;
@@ -194,16 +194,34 @@ position: relative;
 }
 
 .mini_cart3 {
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    background: white;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    width: 300px;
-    z-index: 9999;
-    /* Boshqa elementlardan yuqorida bo‘lishi uchun */
+position: fixed;
+right: 20px;
+top: 100px;
+background: white;
+padding: 15px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+width: 300px;
+z-index: 9999;
+display: none;
+max-height: 400px;
+overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color: #2971f5 #f1f1f1;
+}
+
+.mini_cart3::-webkit-scrollbar {
+width: 6px;
+}
+
+.mini_cart3::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 4px;
+}
+
+.mini_cart3::-webkit-scrollbar-thumb {
+background: #2971f5;
+border-radius: 4px;
 }
 
 .mini_cart3 .items_nunber {
@@ -1608,6 +1626,24 @@ border: 1px solid #ccc;
 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 width: 220px;
 z-index: 1000;
+max-height: 400px;
+overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color: #2971f5 #f1f1f1;
+}
+
+.menu789-katalog-inner::-webkit-scrollbar {
+width: 6px;
+}
+
+.menu789-katalog-inner::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 4px;
+}
+
+.menu789-katalog-inner::-webkit-scrollbar-thumb {
+background: #2971f5;
+border-radius: 4px;
 }
 
 .wrap789-katalog:hover .menu789-katalog-inner {
@@ -2176,6 +2212,29 @@ border: none !important;
 .k21 {
 border: none !important;
 }
+
+.menu789-katalog-inner::-webkit-scrollbar-thumb {
+background: #2971f5;
+border-radius: 4px;
+}
+
+.catalog-search {
+position: sticky;
+top: 0;
+width: 100%;
+padding: 10px;
+background: white;
+border-bottom: 1px solid #f0f0f0;
+z-index: 1001;
+}
+
+.catalog-search input {
+width: 100%;
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 13px;
+}
 }
 </style>
 </head>
@@ -2201,7 +2260,7 @@ border: none !important;
                                     <div class="selected-language">Рус</div>
                                     <ul class="language-options">
                                         <li onclick="selectLanguage('Рус')">Рус</li>
-                                        <li onclick="selectLanguage('O‘zb')">O‘zb</li>
+                                        <li onclick="selectLanguage('Uzb')">O'zb</li>
                                         <li onclick="selectLanguage('Eng')">Eng</li>
                                     </ul>
                                 </div>
@@ -2234,112 +2293,13 @@ border: none !important;
                                 КАТАЛОГ
                             </h2>
                             <div class="menu789-katalog-inner1">
+                                <div class="catalog-search">
+                                    <input type="text" id="catalogSearch" placeholder="Поиск товаров...">
+                                </div>
                                 <ul>
                                     {% for i in category %}
-                                    <li><a href="?category={{i.name}}">{{i.name}}</a></li>
+                                        <li><a href="?category={{i.name}}">{{i.name}}</a></li>
                                     {% endfor %}
-                                    {% comment %} <li>
-                                        <a href="#" class="menuo1">Лекарственные препараты</a>
-                                        <ul class="submenu7891">
-                                            <li><a href="#">Антибиотики</a></li>
-                                            <li><a href="#">Антигистаминные препараты</a></li>
-                                            <li><a href="#">Антикоагулянты</a></li>
-                                            <li><a href="#">Антисептики и дезинфицирующие средства</a></li>
-                                            <li><a href="#">Геморроидальные и венотонические препараты</a></li>
-                                            <li><a href="#">Гепатопротекторы и желчегонные препараты</a></li>
-                                            <li><a href="#">Гинекологические препараты</a></li>
-                                            <li><a href="#">Гипотензивные препараты</a></li>
-                                            <li><a href="#">Гормональные препараты</a></li>
-                                            <li><a href="#">Дерматовенерологические препараты</a></li>
-                                            <li><a href="#">Диабетические препараты</a></li>
-                                            <li><a href="#">Желудочно-кишечные препараты</a></li>
-                                            <li><a href="#">Иммуностимулирующие препараты</a></li>
-                                            <li><a href="#">Кровоостанавливающие препараты</a></li>
-                                            <li><a href="#">Лечение болезни Паркинсона</a></li>
-                                            <li><a href="#">Местноанестезирующее средство</a></li>
-                                            <li><a href="#">Метаболическое средство</a></li>
-                                            <li><a href="#">Мочегонные препараты</a></li>
-                                            <li><a href="#">Неврологические препараты</a></li>
-                                            <li><a href="#">Ноотропные препараты</a></li>
-                                            <li><a href="#">Обезболивающие и противовоспалительные препараты</a>
-                                            </li>
-                                            <li><a href="#">Онкологические препараты</a></li>
-                                            <li><a href="#">Плазмозамещающий</a></li>
-                                            <li><a href="#">Препараты для лечения горла</a></li>
-                                            <li><a href="#">Препараты калия</a></li>
-                                            <li><a href="#">Препараты кальция</a></li>
-                                            <li><a href="#">Препараты от ожогов и регенерации кожи</a></li>
-                                            <li><a href="#">Препараты стимулятор-железа</a></li>
-                                            <li><a href="#">При лечении ринита</a></li>
-                                            <li><a href="#">Противовирусные препараты</a></li>
-                                            <li><a href="#">Противогельминтные препараты</a></li>
-                                            <li><a href="#">Седативные препараты</a></li>
-                                            <li><a href="#">Урологические препараты</a></li>
-                                        </ul>
-                                    </li>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo1">Витамины и БАДы</a>
-                                        <ul class="submenu7891">
-                                            <li><a href="#">БАДы</a></li>
-                                            <li><a href="#">Витамины и минералы</a></li>
-                                            <li><a href="#">Для беременных и кормящих</a></li>
-                                            <li><a href="#">Для детей и подростков</a></li>
-                                            <li><a href="#">Для женщин</a></li>
-                                            <li><a href="#">Для зрения</a></li>
-                                            <li><a href="#">Для красоты и молодости</a></li>
-                                            <li><a href="#">Для мужчин</a></li>
-                                            <li><a href="#">Для мужчин</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo1">Фитопрепараты</a>
-                                        <ul class="submenu7891">
-                                            <li><a href="#">Бальзамы, настойки</a></li>
-                                            <li><a href="#">Травы, плоды, сборы</a></li>
-                                            <li><a href="#">Фиточаи</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo1">Мама и малыш</a>
-                                        <ul class="submenu7891">
-                                            <li><a href="#">Детское питание</a></li>
-                                            <li><a href="#">Подгузники</a></li>
-                                            <li><a href="#">Товары для кормления</a></li>
-                                            <li><a href="#">Товары для мам</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo1">Медицинские изделия</a>
-                                        <ul class="submenu7891">
-                                            <li><a href="#">Товары для мам</a></li>
-                                            <li><a href="#">Лечебный трикотаж</a></li>
-                                            <li><a href="">Медицинские перчатки</a></li>
-                                            <li><a href="">Медицинские приборы</a></li>
-                                            <li><a href="">Перевязочные материалы</a></li>
-                                            <li><a href="">Шприцы, катетеры, системы для инфузий</a></li>
-                                            <li><a href="">Прочие товары</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo1">Гигиена, красота и уход</a>
-                                        <ul class="submenu7891">
-                                            <li><a href="#">Дезодоранты</a></li>
-                                            <li><a href="#">Красота</a></li>
-                                            <li><a href="#">Расходные материалы</a></li>
-                                            <li><a href="#">Средства для ванны и душа</a></li>
-                                            <li><a href="#">Средства женской гигиены</a></li>
-                                            <li><a href="#">Средства по уходу за зубами и полостью рта</a></li>
-                                            <li><a href="#">Средства по уходу по уходу за волосами</a></li>
-                                            <li><a href="#">Средства по уходу по уходу за лицом</a></li>
-                                            <li><a href="#">Средства по уходу по уходу за телом</a></li>
-                                            <li><a href="#">Уход за руками, ногами, ногтями</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo1">Акции и скидки</a>
-
-                                    </li> {% endcomment %}
                                 </ul>
                             </div>
                         </div>
@@ -2441,111 +2401,13 @@ border: none !important;
                                 КАТАЛОГ
                             </h2>
                             <div class="menu789-katalog-inner">
+                                <div class="catalog-search">
+                                    <input type="text" id="catalogSearch" placeholder="Поиск товаров...">
+                                </div>
                                 <ul>
                                     {% for i in category %}
                                         <li><a href="?category={{i.name}}">{{i.name}}</a></li>
                                     {% endfor %}
-                                    {% comment %} <li>
-                                        <a href="#" class="menuo2">Лекарственные препараты</a>
-                                        <ul class="submenu789">
-                                            <li><a href="#">Антибиотики</a></li>
-                                            <li><a href="#">Антигистаминные препараты</a></li>
-                                            <li><a href="#">Антикоагулянты</a></li>
-                                            <li><a href="#">Антисептики и дезинфицирующие средства</a></li>
-                                            <li><a href="#">Геморроидальные и венотонические препараты</a></li>
-                                            <li><a href="#">Гепатопротекторы и желчегонные препараты</a></li>
-                                            <li><a href="#">Гинекологические препараты</a></li>
-                                            <li><a href="#">Гипотензивные препараты</a></li>
-                                            <li><a href="#">Гормональные препараты</a></li>
-                                            <li><a href="#">Дерматовенерологические препараты</a></li>
-                                            <li><a href="#">Диабетические препараты</a></li>
-                                            <li><a href="#">Желудочно-кишечные препараты</a></li>
-                                            <li><a href="#">Иммуностимулирующие препараты</a></li>
-                                            <li><a href="#">Кровоостанавливающие препараты</a></li>
-                                            <li><a href="#">Лечение болезни Паркинсона</a></li>
-                                            <li><a href="#">Местноанестезирующее средство</a></li>
-                                            <li><a href="#">Метаболическое средство</a></li>
-                                            <li><a href="#">Мочегонные препараты</a></li>
-                                            <li><a href="#">Неврологические препараты</a></li>
-                                            <li><a href="#">Ноотропные препараты</a></li>
-                                            <li><a href="#">Обезболивающие и противовоспалительные препараты</a></li>
-                                            <li><a href="#">Онкологические препараты</a></li>
-                                            <li><a href="#">Плазмозамещающий</a></li>
-                                            <li><a href="#">Препараты для лечения горла</a></li>
-                                            <li><a href="#">Препараты калия</a></li>
-                                            <li><a href="#">Препараты кальция</a></li>
-                                            <li><a href="#">Препараты от ожогов и регенерации кожи</a></li>
-                                            <li><a href="#">Препараты стимулятор-железа</a></li>
-                                            <li><a href="#">При лечении ринита</a></li>
-                                            <li><a href="#">Противовирусные препараты</a></li>
-                                            <li><a href="#">Противогельминтные препараты</a></li>
-                                            <li><a href="#">Седативные препараты</a></li>
-                                            <li><a href="#">Урологические препараты</a></li>
-                                        </ul>
-                                    </li>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo2">Витамины и БАДы</a>
-                                        <ul class="submenu789">
-                                            <li><a href="#">БАДы</a></li>
-                                            <li><a href="#">Витамины и минералы</a></li>
-                                            <li><a href="#">Для беременных и кормящих</a></li>
-                                            <li><a href="#">Для детей и подростков</a></li>
-                                            <li><a href="#">Для женщин</a></li>
-                                            <li><a href="#">Для зрения</a></li>
-                                            <li><a href="#">Для красоты и молодости</a></li>
-                                            <li><a href="#">Для мужчин</a></li>
-                                            <li><a href="#">Для мужчин</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo2">Фитопрепараты</a>
-                                        <ul class="submenu789">
-                                            <li><a href="#">Бальзамы, настойки</a></li>
-                                            <li><a href="#">Травы, плоды, сборы</a></li>
-                                            <li><a href="#">Фиточаи</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo2">Мама и малыш</a>
-                                        <ul class="submenu789">
-                                            <li><a href="#">Детское питание</a></li>
-                                            <li><a href="#">Подгузники</a></li>
-                                            <li><a href="#">Товары для кормления</a></li>
-                                            <li><a href="#">Товары для мам</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo2">Медицинские изделия</a>
-                                        <ul class="submenu789">
-                                            <li><a href="#">Товары для мам</a></li>
-                                            <li><a href="#">Лечебный трикотаж</a></li>
-                                            <li><a href="">Медицинские перчатки</a></li>
-                                            <li><a href="">Медицинские приборы</a></li>
-                                            <li><a href="">Перевязочные материалы</a></li>
-                                            <li><a href="">Шприцы, катетеры, системы для инфузий</a></li>
-                                            <li><a href="">Прочие товары</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo2">Гигиена, красота и уход</a>
-                                        <ul class="submenu789">
-                                            <li><a href="#">Дезодоранты</a></li>
-                                            <li><a href="#">Красота</a></li>
-                                            <li><a href="#">Расходные материалы</a></li>
-                                            <li><a href="#">Средства для ванны и душа</a></li>
-                                            <li><a href="#">Средства женской гигиены</a></li>
-                                            <li><a href="#">Средства по уходу за зубами и полостью рта</a></li>
-                                            <li><a href="#">Средства по уходу по уходу за волосами</a></li>
-                                            <li><a href="#">Средства по уходу по уходу за лицом</a></li>
-                                            <li><a href="#">Средства по уходу по уходу за телом</a></li>
-                                            <li><a href="#">Уход за руками, ногами, ногтями</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="menuo2">Акции и скидки</a>
-
-                                    </li> {% endcomment %}
                                 </ul>
                             </div>
                         </div>
@@ -2742,7 +2604,7 @@ border: none !important;
                     // let slider = $('.slider');
                     // slides.target('destroy.owl.carousel');
                     // slider.html("");
-                // 1. Karuselni to‘xtatamiz
+                // 1. Karuselni to'xtatamiz
                 container.trigger('destroy.owl.carousel');
                 container.html(""); // 2. Eski kontentni tozalaymiz
 
@@ -2791,7 +2653,7 @@ border: none !important;
                        
                         
                     `;
-                    container.append(item); // 4. Yangisini qo‘shamiz
+                    container.append(item); // 4. Yangisini qo'shamiz
                 });
 
                 // 5. Karuselni qayta ishga tushiramiz
@@ -2951,33 +2813,40 @@ link.classList.toggle('active');
 });
 // mini cartni ko'rsatish/yashirish uchun event listener
 document.addEventListener('DOMContentLoaded', function () {
-            // Cart link va mini cartni olish
-            const cartLink = document.querySelector('.cart_link a');
-            const miniCart = document.querySelector('.mini_cart3');
+    // Cart link va mini cartni olish
+    const cartLink = document.querySelector('.cart_link a');
+    const miniCart = document.querySelector('.mini_cart3');
+    
+    // Cart link ustiga bosilganda mini cartni ko'rsatish yoki yashirish
+    cartLink.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        // Agar mini cart yashirin bo'lsa, uni ko'rsatamiz
+        if (miniCart.style.display === 'block') {
+            miniCart.style.display = 'none';
+        } else {
+            // Agar mini cart ko'rinayotgan bo'lsa, uni yashiramiz
+            miniCart.style.display = 'block';
+        }
+    });
 
-            // Cart link ustiga bosilganda mini cartni ko'rsatish yoki yashirish
-            cartLink.addEventListener('click', function () {
-                // Agar mini cart yashirin bo'lsa, uni ko'rsatamiz
-                if (miniCart.style.display === 'block') {
-                    miniCart.style.display = 'none';
-                } else {
-                    // Agar mini cart ko'rinayotgan bo'lsa, uni yashiramiz
-                    miniCart.style.display = 'block';
-                }
-            });
+    // Hamma boshqa joyga bosganda mini cartni yashirish
+    document.addEventListener('click', function (event) {
+        if (!cartLink.contains(event.target) && !miniCart.contains(event.target)) {
+            miniCart.style.display = 'none';
+        }
+    });
 
-            // Hamma boshqa joyga bosganda mini cartni yashirish
-            document.addEventListener('click', function (event) {
-                if (!cartLink.contains(event.target) && !miniCart.contains(event.target)) {
-                    miniCart.style.display = 'none';
-                }
-            });
-        });
+    // Cart ichida bo'lsa ham yopmaslik
+    miniCart.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+});
         document.addEventListener("click", function (event) {
         let dropdown = document.querySelector(".language-dropdown");
         let options = document.querySelector(".language-options");
 
-        // Agar bosilgan joy dropdown emas bo‘lsa, menyuni yopamiz
+        // Agar bosilgan joy dropdown emas bo'lsa, menyuni yopamiz
         if (!dropdown.contains(event.target)) {
             options.style.display = "none";
         }
@@ -3055,6 +2924,42 @@ document.addEventListener('DOMContentLoaded', function () {
     function selectLanguage(lang) {
         document.querySelector(".selected-language").innerText = lang;
     }
+
+    // Catalog search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the search inputs and category lists
+        const catalogSearchDesktop = document.querySelector('.menu789-katalog-inner #catalogSearch');
+        const catalogSearchMobile = document.querySelector('.menu789-katalog-inner1 #catalogSearch');
+        
+        // Apply search filter when typing in desktop catalog
+        if (catalogSearchDesktop) {
+            catalogSearchDesktop.addEventListener('input', function() {
+                filterCatalogItems(this, '.menu789-katalog-inner ul li');
+            });
+        }
+        
+        // Apply search filter when typing in mobile catalog
+        if (catalogSearchMobile) {
+            catalogSearchMobile.addEventListener('input', function() {
+                filterCatalogItems(this, '.menu789-katalog-inner1 ul li');
+            });
+        }
+        
+        // Function to filter catalog items
+        function filterCatalogItems(searchInput, itemSelector) {
+            const filter = searchInput.value.toLowerCase();
+            const items = document.querySelectorAll(itemSelector);
+            
+            items.forEach(function(item) {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    });
 
 </script>
 </html>
