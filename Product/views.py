@@ -49,7 +49,7 @@ def Index(request):
         # Aks holda barcha classlarni paginate qilib olish
         filtered_classes = [
             class_name for class_name, items in grouped_by_class.items()
-            if len(items) >= 1
+            # if len(items) >= 1
         ]
         paginator = Paginator(filtered_classes, per_page_classes)
         selected_classes = paginator.page(page).object_list
