@@ -922,7 +922,7 @@ transition: color 0.3s;
 }
 
 .social-icons a:hover {
-color: red;
+color: #c51f30;
 }
 
 /* Havolalar qismi */
@@ -1515,8 +1515,14 @@ font-size: 20px;
 }
 }
 .matin {
-margin-left: 190px;
+margin-left: 240px;
 margin-bottom: 20px;
+}
+
+@media (max-width: 1024px) {
+    .matin{
+        margin-left: 300px !important;
+    }
 }
 
 .a2 {
@@ -2242,7 +2248,7 @@ font-size: 13px;
 <body>
     <!-- header boshlandi -->
     <header class="header_area">
-        <div class="header_top" style="background-color: rgb(190, 0, 0);">
+        <div class="header_top" style="background-color: #c51f30;">
             <div class="container">
                 <div class="row align-items-center">
                  
@@ -2544,10 +2550,10 @@ font-size: 13px;
             <div class="footer-links">
                 <h3>Информация</h3>
                 <ul class="footer-list">
-                    <li><a href="#">О нас</a></li>
-                    <li><a href="#">Новости и статьи</a></li>
-                    <li><a href="#">Карьера</a></li>
-                    <li><a href="#">Карта аптек</a></li>
+                    <li><a href="/front/about/">О нас</a></li>
+                    <li><a href="#Blog">Новости и статьи</a></li>
+                    <li><a href="/front/vacancies/">Карьера</a></li>
+                    <li><a href="/front/vacancies/">Карта аптек</a></li>
                 </ul>
             </div>
             <div class="footer-links">

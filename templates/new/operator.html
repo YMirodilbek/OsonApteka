@@ -8,130 +8,221 @@
     <title>Akmal Farm Medical</title>
 </head>
 <style>
+  @font-face {
+  font-family: 'Campton Bold';
+  src: url('fonts/Campton-Bold.woff2') format('woff2'),
+       url('fonts/Campton-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Intro Light';
+  src: url('fonts/Intro-Light.woff2') format('woff2'),
+       url('fonts/Intro-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+body {
+  font-family: 'Intro Light', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Campton Bold', sans-serif;
+}
+
+    .alh3 {
+        color: white;
+        background-color: #002d5c;
+        width: 100%;
+        text-align: center;
+        align-items: center;
+        height: 40px;
+    }
+
     .tugma22 {
-  text-decoration: none;
-}
+        text-decoration: none;
+    }
 
-.button22 {
-  background-color: red; /* Qizil rang */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
+    .button22 {
+        background-color: #c51f30;
+        /* Qizil rang */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
 
-.button22:hover {
-  background-color: #c0392b; /* Qizilni qoraroq qilish */
-}
+    .button22:hover {
+        background-color: #c0392b;
+        /* Qizilni qoraroq qilish */
+    }
 
-/* Kichik ekranlar (masalan, mobil qurilmalar) uchun */
-@media (max-width: 600px) {
-  .button22 {
-    padding: 8px 15px;
-    font-size: 14px;
-    margin-bottom: 20px !important;
-  }
-}
+    /* Kichik ekranlar (masalan, mobil qurilmalar) uchun */
+    @media (max-width: 600px) {
+        .button22 {
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-bottom: 20px !important;
+        }
+    }
 
-/* O'rtacha ekranlar (masalan, planshetlar) uchun */
-@media (max-width: 768px) {
-  .button22 {
-    padding: 10px 18px;
-    font-size: 15px;
-  }
-}
-
+    /* O'rtacha ekranlar (masalan, planshetlar) uchun */
+    @media (max-width: 768px) {
+        .button22 {
+            padding: 10px 18px;
+            font-size: 15px;
+        }
+    }
 </style>
+
 <body>
-    <a href="/" class="tugma22"><button class="button22">Back</button></a>
-
-    
-    <div class="alls">
-        <img src="{% static 'assets/img2/003.jpg'%}" alt="kutib turing" class="allimg">
-        <h3 class="alh3">
-            Оператор call-центра
-        </h3>
-        <p class="cltxt">Зарплата: по результатам собеседования
-
-            Мы рады предложить работу в нашем call-центре!
-            
-            Каждому сотруднику мы гарантируем:
-            - полное отсутствие холодных звонков
-            - официальное трудоустройство и соблюдение ТКРУз
-            - стабильная "белая" заработная плата с первого дня
-            
-            Обязанности:
-            - принимать обращения клиентов (входящие телефонные звонки, а также в месенджере телеграм)
-            - консультировать клиентов по обращениям
-            - принимать в обработку жалобы и предложения
-            
-            Требования:
-            - грамотный узбекский язык
-            - умение работать с большим количеством информации
-            - уверенная работа на компьютере
-            - знание ассортимента лекарственных препаратов будет преимуществом
-            
-            Если вас заинтересовала данная вакансия, пожалуйста, перезвоните нам по телефону: +998 (78) 298-00-88 или по короткому номеру 1080</p>
-    </div>
     <style>
-        .alls {
+        h2 {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+            margin-left: 200px;
+        }
+
+        .main-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 100%;
+            gap: 20px;
+            max-width: 1200px;
+            margin: auto;
         }
 
-        .allimg {
-            width: 70%;
-            height: auto;
-            display: block;
+        .left-panel {
+            width: 40%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            height: 600px;
+            overflow-y: auto;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .alh3 {
-            font-size: 24px;
-            margin-top: 20px;
+        .store {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
         }
 
-        .cltxt {
-            max-width: 1100px;
-            margin: 10px auto;
-            font-size: 16px;
-            line-height: 1.6;
-            text-align: justify;
+        .store h3 {
+            font-size: 18px;
+            color: #004fa3;
+            margin-bottom: 8px;
         }
 
-        @media (max-width: 1024px) {
+        .store p {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
 
-            /* Planshetlar uchun */
-            .alh3 {
-                font-size: 24px;
+        .store .button {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 8px 16px;
+            background-color: #004fa3;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .store .button:hover {
+            background-color: #003570;
+        }
+
+        .right-panel {
+            width: 60%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        /* Responsiv */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
             }
 
-            .cltxt {
-                font-size: 16px;
-                max-width: 90%;
-            }
-        }
-
-        @media (max-width: 768px) {
-
-            /* Mobil telefonlar uchun */
-            .alh3 {
-                font-size: 20px;
-            }
-
-            .cltxt {
-                font-size: 14px;
-                line-height: 1.5;
-                max-width: 95%;
+            .left-panel,
+            .right-panel {
+                width: 100%;
             }
         }
     </style>
+    <a href="/" class="tugma22"><button class="button22">Back</button></a>
+    <h2>Наши аптеки</h2>
 
+    <div class="main-container">
+
+        <div class="left-panel">
+            <div class="store">
+                <h3>Аптека №22 Текстиль г Ташкент</h3>
+                <p><strong>Адрес:</strong> г.Ташкент, ул. У.Носира, 84</p>
+                <p><strong>График работы:</strong> 8:00–22:00</p>
+                <p><strong>Телефон:</strong> 71 280-62-22</p>
+                <a href="#" class="button">Посмотреть на карте</a>
+            </div>
+
+            <div class="store">
+                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
+                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
+                <p><strong>График работы:</strong> 08:00–16:00</p>
+                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
+                <a href="#" class="button">Посмотреть на карте</a>
+            </div>
+            <div class="store">
+                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
+                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
+                <p><strong>График работы:</strong> 08:00–16:00</p>
+                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
+                <a href="#" class="button">Посмотреть на карте</a>
+            </div>
+            <div class="store">
+                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
+                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
+                <p><strong>График работы:</strong> 08:00–16:00</p>
+                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
+                <a href="#" class="button">Посмотреть на карте</a>
+            </div>
+            <div class="store">
+                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
+                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
+                <p><strong>График работы:</strong> 08:00–16:00</p>
+                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
+                <a href="#" class="button">Посмотреть на карте</a>
+            </div>
+
+            <!-- Yana filiallar qo‘shish mumkin shu formatda -->
+        </div>
+
+        <div class="right-panel">
+            <iframe 
+            src="https://www.google.com/maps?q=Akmal%20Farm%20Tashkent%20Oltintepa%20169&output=embed" 
+            width="100%" 
+            height="600" 
+            style="border:0;" 
+            allowfullscreen 
+            loading="lazy">
+          </iframe>
+          
+        </div>
+        <br><br>
 </body>
 
 </html>
