@@ -34,14 +34,12 @@ def Index(request):
 
     # Agar category tanlangan bo‘lsa, faqat o‘sha category qaytariladi
     if category:
-        category = category.strip()
+        category = category
         products = (
             grouped_by_class.get(category)
-            or grouped_by_class.get(category.title())
-            or grouped_by_class.get(category.upper())
         )
 
-        if products and len(products) >= 10:
+        if products and len(products) > 0:
             result = [{"class_name": category, "products": products[:per_class_limit]}]
         else:
             result = []  # bo‘sh list qaytadi
@@ -49,7 +47,7 @@ def Index(request):
         # Aks holda barcha classlarni paginate qilib olish
         filtered_classes = [
             class_name for class_name, items in grouped_by_class.items()
-            # if len(items) >= 1
+            if len(items) > 0
         ]
         paginator = Paginator(filtered_classes, per_page_classes)
         selected_classes = paginator.page(page).object_list
