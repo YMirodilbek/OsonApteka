@@ -17,7 +17,11 @@ def cart_context(request):
 
 
 def category_contex(request):
-     category = Category.objects.annotate(
-                sorted_name=Collate('name', 'ru_RU.utf8')
-                ).order_by('sorted_name')
-     return{ "category":category}
+    import locale
+    from operator import attrgetter
+
+# Kirillcha alfavit uchun o'zbekcha yoki ruscha locale
+    locale.setlocale(locale.LC_COLLATE, 'ru_RU.UTF-8')  # yoki 'uz_UZ.UTF-8' agar qo‘llasa
+
+    category = sorted(Category.objects.all(), key=lambda x: locale.strxfrm(x.name))
+    return{ "category":category}
