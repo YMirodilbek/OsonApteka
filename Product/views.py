@@ -228,8 +228,8 @@ def product_create(request):
             uid = request.POST.get('uid')
             info = request.POST.get('info')
             img_1 = request.FILES.get('img_1')
-            img_2 = request.FILES.get('img_2')
-            img_3 = request.FILES.get('img_3')
+            # img_2 = request.FILES.get('img_2')
+            # img_3 = request.FILES.get('img_3')
             product =  Product.objects.create(
                 uid = int(uid),
                 info = info
@@ -238,13 +238,13 @@ def product_create(request):
                 img_1 = compress(img_1)
                 product.image1 = img_1
 
-            if img_2:
-                img_2 = compress(img_2)
-                product.image2 = img_2
+            # if img_2:
+            #     img_2 = compress(img_2)
+            #     product.image2 = img_2
 
-            if img_3:
-                img_3 = compress(img_3)
-                product.image3 = img_3
+            # if img_3:
+            #     img_3 = compress(img_3)
+            #     product.image3 = img_3
             product.save()
             if product:
                 messages.success(request, "Product q'shildi")
