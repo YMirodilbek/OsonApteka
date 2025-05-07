@@ -18,8 +18,6 @@ def cart_view(request):
     return render(request, "cart.html", {"order": order})
     
 def Index(request):
-
-    def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
