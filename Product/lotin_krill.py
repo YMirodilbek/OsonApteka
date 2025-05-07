@@ -1,5 +1,8 @@
+from django.core.files import File
+from io import BytesIO
+from PIL import Image
 import re
-import re
+
 
 def latin_to_cyrillic(text):
     if re.search('[\u0400-\u04FF]', text):
@@ -20,3 +23,21 @@ def latin_to_cyrillic(text):
         text = text.replace(l, letters[l])
 
     return text
+
+
+def compress(image):
+    img = Image.open(image)
+    img_io = BytesIO()
+    
+    if img.mode == "RGBA":
+        img.load()
+        background = Image.new(mode="RGB", size=img.size, color=(255, 255, 255))
+        background.paste(img, mask=img.split()[3])
+        background.save(img_io, format='JPEG', quality=60)
+    else:
+        img.save(img_io, format='JPEG', quality=60)
+    
+    img_io.seek(0)
+    new_img = File(img_io, name=image.name)
+    
+    return new_img
