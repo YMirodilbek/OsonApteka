@@ -55,7 +55,17 @@ def Index(request):
         result = r.get('products_by_class') 
         if result:
             result = json.loads(result.decode('utf-8'))
-            result = result.get(category, [])
+            result = [{category:result.get(category, [])}]
+    
+
+    # if category:
+    #     result = r.get('products_by_class')
+    #     if result:
+    #         result = json.loads(result.decode('utf-8'))
+    #         result = result.get(category, [])
+    #         # if len(result) >= 10:
+    #         result = [{category: result}]
+        
     context = {
         "data":result,
         "current_page": page,
@@ -63,16 +73,7 @@ def Index(request):
     }
     return render(request,'index.html', context)
 
-    # result = r.get('final_result') 
-    # if result:
-    #     result = json.loads(result.decode('utf-8'))
-    #     page = int(request.GET.get('page', 1))
-    #     page_size = 100
 
-    #     start = (page - 1) * page_size
-    #     end = start + page_size
-    #     result = result[start:end] 
-        
         
         
         
