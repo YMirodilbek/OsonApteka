@@ -184,75 +184,61 @@
         </style>
         <div class="tab-content">
             <div class="tab-pane fade show active" id="Products" role="tabpanel">
-                <div class="row">
-                    <div id="product_active_id" class="product_active owl-carousel">
-                        {% for product in  data %}
-                        <div class="col-lg-3" style="height: auto;">
-                            <div class="single_product">
-                                <div class="product_thumb">
-                                    <a href="/product/detail/{{product.id}}" style="margin: 0px !important;"><img
-                                            src="{{product.image1}}"   alt=""  style="margin: 0px !important;"></a>
-                                    <div class="btn_quickview">
-                                        <!-- <a href="product-details.html" data-bs-toggle="modal" data-bs-target="#modal_box" -->
-                                        <!-- title="Quick View"><i class="ion-ios-eye"></i></a> -->
+                {% for group in data %}
+                    <h4 style="margin-top: 30px;">{{ group.class_name }}</h4>
+                    <div class="row">
+                        <div class="product_active owl-carousel">
+                            {% for product in group.products %}
+                            <div class="col-lg-3" style="height: auto;">
+                                <div class="single_product">
+                                    <div class="product_thumb">
+                                        <a href="/product/detail/{{ product.id }}" style="margin: 0px !important;">
+                                            <img src="{{ product.image1 }}" alt="" style="margin: 0px !important;">
+                                        </a>
                                     </div>
-                                </div>
-                                <div class="product_content">
-                                    <h3><a href="product-details.html">{{ product.name }} </a></h3>
-                                    {% comment %} {% if product.price > 0 %} {% endcomment %}
-                                    {% comment %} <div class="product_price">
-                                        <span class="current_price"
-                                            style="color: grey;font-size: 15px;"><s>{{product.price}}
-                                                so'm</s></span><br>
-                                        <span class="current_price">{{ product.price}} so'm</span>
-                                    </div> {% endcomment %}
-                                    {% comment %} {% else %} {% endcomment %}
-                                    
-                                    <div class="">
-                                        <br>
-                                        <span class="">{{ product.producer}}</span>
-                                        <br>
-                                    </div>
-                                    <div class="product_price">
-                                        <br>
-                                        <span class="current_price">{{ product.price}} so'm</span>
-                                        <br>
-                                    </div>
-                                    {% comment %} {% endif %} {% endcomment %}
-
-                                    <div class="product_action">
-                                        <ul style="display: flex; justify-content: center; align-items: center;">
-                                            {% if user.is_authenticated %}
+                                    <div class="product_content">
+                                        <h3><a href="product-details.html">{{ product.name }}</a></h3>
+                                        <div>
+                                            <br>
+                                            <span>{{ product.producer }}</span><br>
+                                        </div>
+                                        <div class="product_price">
+                                            <br>
+                                            <span class="current_price">{{ product.price }} so'm</span><br>
+                                        </div>
+                                        <div class="product_action">
+                                            <ul style="display: flex; justify-content: center; align-items: center;">
+                                                {% if user.is_authenticated %}
                                                 <li class="product_cart" style="margin-right: 10px;">
                                                     <a onclick="addToCart({{ product.id }})">корзина</a>
                                                 </li>
-                                            {% else %}
+                                                {% else %}
                                                 <li class="product_cart" style="margin-right: 10px;">
                                                     <a href="/auth/send-otp/">корзина</a>
                                                 </li>
-                                            {% endif %}
-                                            <li class="add_links">
-                                                <a href="/toggle/{{ product.id }}/" title="Add to Wishlist">
-                                                    <i class="ion-ios-heart-outline"></i>
-                                                </a>
-                                            </li>
-                                            <li class="add_links">
-                                                <a href="/product/detail/{{ product.id }}/" title="Add to Wishlist">
-                                                    <i class="ion-ios-eye"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                                {% endif %}
+                                                <li class="add_links">
+                                                    <a href="/toggle/{{ product.id }}/" title="Add to Wishlist">
+                                                        <i class="ion-ios-heart-outline"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="add_links">
+                                                    <a href="/product/detail/{{ product.id }}/" title="Add to Wishlist">
+                                                        <i class="ion-ios-eye"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-
                     </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
+        
     </div>
 </div>
 <!-- 1-tugadi -->

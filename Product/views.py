@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.contrib import messages
 from django.shortcuts import render
@@ -11,7 +12,6 @@ import redis
 import json
 
 
-
 @login_required(login_url='/auth/send-otp/')
 def cart_view(request):
     order = Order.objects.filter(user=request.user, is_completed=False).first()  
@@ -20,18 +20,58 @@ def cart_view(request):
 def Index(request):
 
     r = redis.Redis(host='localhost', port=6379, db=0)
-    result = r.get('final_result') 
-    if result:
-        result = json.loads(result.decode('utf-8'))
-        page = int(request.GET.get('page', 1))
-        page_size = 100
+    
+    page = int(request.GET.get("page", 1))
+    per_page_classes = 5
+    per_class_limit = 100
 
-        start = (page - 1) * page_size
-        end = start + page_size
-        result = result[start:end] 
+    # Redisdan olib kelish
+    grouped_data_json = r.get('products_by_class')
+
+    grouped_by_class = json.loads(grouped_data_json)
+
+    # 🔴 Faqat bo'sh bo'lmagan classlarni olamiz
+    filtered_classes = [
+        # class_name for class_name, items in grouped_by_class.items() if items
+        class_name for class_name, items in grouped_by_class.items()
+       if len(items) >= 2
+    ]
+    paginator = Paginator(filtered_classes, per_page_classes)
+
+
+
+    selected_classes = paginator.page(page).object_list
+
+    result = []
+    
+    for class_name in selected_classes:
+        items = grouped_by_class[class_name][:per_class_limit]
+        result.append({
+        "class_name": class_name,
+        "products": items
+        })
+    context = {
+        "data":result,
+        "current_page": page,
+        "total_pages": paginator.num_pages,
+    }
+    return render(request,'index.html', context)
+
+    # result = r.get('final_result') 
+    # if result:
+    #     result = json.loads(result.decode('utf-8'))
+    #     page = int(request.GET.get('page', 1))
+    #     page_size = 100
+
+    #     start = (page - 1) * page_size
+    #     end = start + page_size
+    #     result = result[start:end] 
+        
+        
+        
+        
         
     category = request.GET.get('category')
-    print(category)
     if category:
         result = r.get('products_by_class') 
         if result:
@@ -40,7 +80,7 @@ def Index(request):
         else:
             result = []  
 
-    print (result)
+
     context = {
         "data":result
     }
