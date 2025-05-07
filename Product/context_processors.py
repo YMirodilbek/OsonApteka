@@ -1,5 +1,5 @@
+from django.db.models.functions import Collate
 from .models import OrderItem , Category
-
 
 def cart_context(request):
     cart_items = []
@@ -17,5 +17,7 @@ def cart_context(request):
 
 
 def category_contex(request):
-     category = Category.objects.all()
+     category = Category.objects.annotate(
+                sorted_name=Collate('name', 'uz_UZ.UTF-8')
+                ).order_by('sorted_name')
      return{ "category":category}
