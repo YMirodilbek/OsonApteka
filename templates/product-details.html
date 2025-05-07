@@ -708,11 +708,9 @@
             <p class="">{{ product.ExpDate }} </p>
             <p class="">{{ product.producer }} </p>
             <p class="">Class {{ product.class }} </p>
-            {% if product.price > 0 %}
-            <p class="price">{{ product.price }} So'm</p>
+            {% if product.prices.0 > 0 %}
+            <p class="price">{{ product.prices }} So'm</p>
             
-            {% else%}
-            <p class="price">{{ product.price }} So'm</p>
             {% endif %}
             <p class="description">{{ product.text |truncatechars:120 }}</p>
             <form method="GET" action="/product/add/{{ product.id }}/">

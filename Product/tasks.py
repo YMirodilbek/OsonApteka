@@ -51,12 +51,23 @@ def refresh_products_cache():
         if not product:
             continue
 
-        product_data = {
+        name = item.get("Name", "")
+        category = item.get("Class", "") or "None-Class"
+        price = item.get("Price", 0)
+
+
+        existing_product = next((p for p in final_result if p["uid"] == uid), None)
+
+        if existing_product:
+            existing_product["prices"].append(price)
+        else:
+            product_data = {
+            "uid": uid,
             "id": product.id,
-            "name": item.get("Name", ""),
-            "name_lower": item.get("Name", "").lower(),
-            "price": item.get("Price", 0),
-            "class": item.get("Class", ""),
+            "name": name,
+            "name_lower": name.lower(),
+            "prices": [price],
+            "class": category,
             "producer": item.get("Producer", ""),
             "country": item.get("Country", ""),
             "MNN": item.get("MNN", ""),
@@ -65,17 +76,17 @@ def refresh_products_cache():
             "ExpDate": item.get("ExpDate", ""),
             "info": product.info,
             "image1": product.image1.url if product.image1 else "",
-            # "image2": product.image2.url if product.image2 else "",
-            # "image3": product.image3.url if product.image3 else "",
-        }
+            }
+            final_result.append(product_data)
 
-        final_result.append(product_data)
 
-        category = product_data["class"] or "None-Class"
-        grouped_by_class.setdefault(category, []).append(product_data)
+    for item in final_result:
+        category = item["class"]
+        grouped_by_class.setdefault(category, []).append(item)
 
-    # Redisga yozish
+
     r.setex('final_result', 86400, json.dumps(final_result))
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
+
 
     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")
