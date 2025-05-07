@@ -20,7 +20,7 @@ def cart_view(request):
 def Index(request):
 
     r = redis.Redis(host='localhost', port=6379, db=0)
-    
+    category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
     per_page_classes = 77
     per_class_limit = 100
@@ -50,6 +50,12 @@ def Index(request):
         "class_name": class_name,
         "products": items
         })
+    
+    if category:
+        result = r.get('products_by_class') 
+        if result:
+            result = json.loads(result.decode('utf-8'))
+            result = result.get(category, [])
     context = {
         "data":result,
         "current_page": page,
@@ -71,14 +77,8 @@ def Index(request):
         
         
         
-    category = request.GET.get('category')
-    if category:
-        result = r.get('products_by_class') 
-        if result:
-            result = json.loads(result.decode('utf-8'))
-            result = result.get(category, [])
-        else:
-            result = []  
+    
+        
 
 
     context = {
