@@ -22,7 +22,7 @@ def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     
     page = int(request.GET.get("page", 1))
-    per_page_classes = 5
+    per_page_classes = 77
     per_class_limit = 100
 
     # Redisdan olib kelish
