@@ -16,12 +16,13 @@ import json
 def cart_view(request):
     order = Order.objects.filter(user=request.user, is_completed=False).first()  
     return render(request, "cart.html", {"order": order})
+ 
     
 def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
-    per_page_classes = 2
+    per_page_classes = 5
     per_class_limit = 30
 
     grouped_data_json = r.get('products_by_class')
@@ -65,6 +66,7 @@ def Index(request):
 
     return render(request, 'index.html', {"data": result})
 
+
 @login_required(login_url='/auth/send-otp/')
 def increase_quantity(request, item_id):
     """Mahsulot miqdorini oshirish"""
@@ -86,6 +88,7 @@ def decrease_quantity(request, item_id):
         order_item.delete()  
     return redirect("cart")
 
+
 @login_required(login_url='/auth/send-otp/')
 def DeleteProduct(request, item_id):
     """ Savatdan bitta mahsulot turini butunlay o‘chirish """
@@ -94,7 +97,6 @@ def DeleteProduct(request, item_id):
     if order_item:
         order_item.delete()
     return redirect("cart")  
-
 
 
 def product_detail(request,pk):
@@ -111,6 +113,7 @@ def product_detail(request,pk):
         "product":product
     }
     return render(request, 'product-details.html',  context )
+
 
 @login_required(login_url='/auth/send-otp/')
 def add_to_cart_detail(request,pk):
@@ -140,6 +143,7 @@ def add_to_cart_detail(request,pk):
         order_item.save()
     return redirect(f'/product/detail/{pk}')
 
+
 def checkout_view(request):
     if request.method == "POST":
         form = CheckoutForm(request.POST)
@@ -161,7 +165,6 @@ def checkout_view(request):
 
 def Myaccount(request):
     return render(request,'my-account.html')
-
 
 
 @login_required
@@ -234,6 +237,7 @@ def checkout_view(request):
         form = CheckoutForm()
     
     return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items})
+
 
 def product_create(request):
     if request.user.is_staff:
