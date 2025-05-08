@@ -21,8 +21,8 @@ def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
-    per_page_classes = 77
-    per_class_limit = 100
+    per_page_classes = 2
+    per_class_limit = 30
 
     grouped_data_json = r.get('products_by_class')
     if not grouped_data_json:
@@ -55,8 +55,7 @@ def Index(request):
         for class_name in selected_classes:
             items = grouped_by_class[class_name][:per_class_limit]
             result.append({"class_name": class_name, "products": items})
-        for i in result:
-            print(i)
+
         context = {
             "data": result,
             "current_page": page,
@@ -64,7 +63,6 @@ def Index(request):
         }
         return render(request, 'index.html', context)
 
-    # Category bo‘lsa, pagination kerak emas
     return render(request, 'index.html', {"data": result})
 
 @login_required(login_url='/auth/send-otp/')
@@ -117,6 +115,7 @@ def product_detail(request,pk):
 @login_required(login_url='/auth/send-otp/')
 def add_to_cart_detail(request,pk):
     quantity = int(request.GET.get('quantity',1))
+    price = int(request.GET.get('price',0))
     product = get_object_or_404(Product, id=pk)
     r = redis.Redis(host='localhost', port=6379, db=0)
     result = r.get('final_result') 
@@ -125,20 +124,15 @@ def add_to_cart_detail(request,pk):
     
     
     result_dict = {item['id']: item for item in result}
-    price = result_dict.get(pk, {}).get('price', 0)
     name = result_dict.get(pk, {}).get('name', '')
 
-    print(name)
-    print(name)
-    print(name)
-    print(name)
     order, created = Order.objects.get_or_create(user=request.user, is_completed=False)
     order_item, created = OrderItem.objects.get_or_create(
                                     order=order,      
                                     product=product,
                                     price =price,
                                     name = name,
-                                    defaults={quantity:quantity}
+                                    defaults={'quantity':quantity}
                                     )
 
     if not created:

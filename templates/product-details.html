@@ -686,17 +686,6 @@
     <div class="product-details">
         <div class="product-gallery">
             <img id="main-image" src="{{product.image1}}" alt="Product Image">
-            <div class="thumbnail-gallery">
-                {% if product.image2 %}
-                <img src="{{product.image2}}" alt="Product Thumbnail" class="thumbnail"
-                    onclick="changeImage('{{product.image2}}')">
-                {% endif %}
-                {% if product.image3 %}
-                <img src="{{product.image3.url}}" alt="Product Thumbnail" class="thumbnail"
-                    onclick="changeImage('{{ product.image3 }}')">
-
-                    {% endif %}
-            </div>
         </div>
         <div class="product-info">
             <h1>{{ product.name}}</h1>
@@ -708,12 +697,24 @@
             <p class="">{{ product.ExpDate }} </p>
             <p class="">{{ product.producer }} </p>
             <p class="">Class {{ product.class }} </p>
-            {% if product.prices.0 > 0 %}
-            <p class="price">{{ product.prices }} So'm</p>
-            
-            {% endif %}
-            <p class="description">{{ product.text |truncatechars:120 }}</p>
+
             <form method="GET" action="/product/add/{{ product.id }}/">
+            <select name="price" class="form-select form-select-lg mb-3" aria-label="Large select example">
+                <option selected value="{{product.prices.0}}">  {{product.prices.0}} sum</option>
+                {% for i in product.prices %}
+                    {% if orloop.counter != 1 %}
+                        <option value="{{i}}">{{i}}  sum {{f}} </option>
+                    {% else %}
+                    
+                    {% endif %}
+                 
+
+                {% endfor %}
+            </select>
+            <br>
+            <br>
+       
+            <p class="description">{{ product.text |truncatechars:120 }}</p>
                 <div class="quantity">
                     <label for="quantity">Quantity:</label>
                     <input type="number" name="quantity" value="1" min="1" required>

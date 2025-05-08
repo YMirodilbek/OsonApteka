@@ -14,7 +14,7 @@ def add_to_cart(request, product_id):
     
     
     result_dict = {item['id']: item for item in result}
-    price = result_dict.get(product_id, {}).get('price', 0)
+    price = result_dict.get( product_id, {}).get('prices', [0])
     name= result_dict.get(product_id, {}).get('name', '')
 
     
@@ -22,7 +22,7 @@ def add_to_cart(request, product_id):
     order_item, created = OrderItem.objects.get_or_create(
                                     order = order,      
                                     product = product,
-                                    price = price,
+                                    price = price[0],
                                     name = name,
                                     )
 
@@ -34,8 +34,6 @@ def add_to_cart(request, product_id):
     cart_total = cart['cart_total']
     messages.success(request, " mahsulot Savatchaga qo'shildi ")
     return JsonResponse({"status":200,'cart_count':cart_count, 'cart_total':cart_total})
-    # return redirect(request.META.get("HTTP_REFERER", "home"))
-    
 
 def search_products(request):
     query = latin_to_cyrillic(request.GET.get('q', '')).strip().lower()
