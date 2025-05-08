@@ -38,7 +38,7 @@ def refresh_products_cache():
     products = Product.objects.filter(uid__in=uid_list)
     products_dict = {p.uid: p for p in products}
 
-    final_result = []
+    final_result_dict = {}  # uid -> product_data
     grouped_by_class = {}
 
     for item in data:
@@ -55,20 +55,16 @@ def refresh_products_cache():
         category = item.get("Class", "") or "None-Class"
         price = item.get("Price", 0)
 
-        existing = next((p for p in final_result if p[0] == uid), None)
-
-        if existing:
-            final_result.remove(existing)
-            updated_prices = existing[1]["prices"] + (price,)  # tuple ga qo‘shamiz
-            existing[1]["prices"] = updated_prices
-            final_result.append((uid, existing[1]))
+        if uid in final_result_dict:
+            if price not in final_result_dict[uid]["prices"]:
+                final_result_dict[uid]["prices"].append(price)
         else:
-            product_data = {
+            final_result_dict[uid] = {
                 "uid": uid,
                 "id": product.id,
                 "name": name,
                 "name_lower": name.lower(),
-                "prices": (price,),  # tuple shaklida boshlaymiz
+                "prices": [price],
                 "class": category,
                 "producer": item.get("Producer", ""),
                 "country": item.get("Country", ""),
@@ -79,14 +75,15 @@ def refresh_products_cache():
                 "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
             }
-            final_result.append((uid, product_data))
 
+    final_result = list(final_result_dict.values())
 
-    for _, item in final_result:
+    for item in final_result:
         category = item["class"]
         grouped_by_class.setdefault(category, []).append(item)
+        logger.info(f"{item}")
 
-    r.setex('final_result', 86400, json.dumps([item[1] for item in final_result]))
+    r.setex('final_result', 86400, json.dumps(final_result))
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
 
     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")
