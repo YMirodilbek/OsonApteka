@@ -6,7 +6,7 @@ from django.contrib.auth import login, logout
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 
-from .models import CustomUser, PDFDocument
+from .models import CustomUser, PDFDocument, Blog
 from .forms import PhoneNumberForm, OTPForm, UserDetailsForm
 
 
@@ -177,5 +177,16 @@ def Logout(request):
     logout(request)
     return redirect('/auth/send-otp/')
 
-def Blog(request):
-    return render(request,'blog.html')
+def blog_view(request):
+    blogs = Blog.objects.all()
+    context = {
+        'blogs': blogs
+    }
+    return render(request,'blog/blog.html', context)
+
+def BlogDetail(request, pk):
+    blog = Blog.objects.get(pk=pk)
+    context = {
+        'blog': blog
+    }
+    return render(request, 'blog/blog-details.html', context)

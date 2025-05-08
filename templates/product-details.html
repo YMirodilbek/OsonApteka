@@ -1,1171 +1,543 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="{% static 'assets/img2/AFM MEDICAL — копия.png'%}">
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
-    <link rel="stylesheet" href="{% static 'assets/css/bundle.css'%}">
-    <link rel="stylesheet" href="{% static 'assets/css/plugins.css'%}">
-    <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
-    <link rel="stylesheet" href="{% static 'assets/css/responsive.css'%}">
-</head>
+{% block content %}
 <style>
-    /* Default Styles for Desktop and Larger Screens */
+    /* Product Details Styling */
     .product-details {
         display: flex;
-        justify-content: space-between;
-        margin: 2rem auto;
-        max-width: 1200px;
         flex-wrap: wrap;
+        padding: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 30px;
     }
 
+    /* Product Gallery */
     .product-gallery {
-        width: 50%;
+        flex: 1;
+        min-width: 300px;
+        max-width: 500px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .product-gallery img {
         width: 100%;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: auto;
+        display: block;
+        object-fit: contain;
     }
 
-    .thumbnail-gallery {
-        display: flex;
-        margin-top: 1rem;
-        width: 200px;
-        gap: 20px;
-    }
-
-    .thumbnail {
-        width: 80px;
-        height: 80px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-
-    .thumbnail:hover {
-        transform: scale(1.1);
-    }
-
+    /* Product Information */
     .product-info {
-        width: 45%;
-        margin-top: 70px;
+        flex: 1;
+        min-width: 300px;
     }
 
     .product-info h1 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #333;
+        font-weight: 600;
     }
 
-    .product-info .price {
-        font-size: 1.5rem;
-        color: #e63946;
-        margin-bottom: 1rem;
+    .product-info p {
+        margin: 8px 0;
+        color: #666;
+        font-size: 16px;
     }
 
-    .product-info .description {
-        font-size: 1rem;
+    .product-info .category {
+        color: #666;
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    .product-info .country {
+        color: #666;
+        margin-bottom: 15px;
+        font-size: 15px;
+    }
+
+    .product-info .composition {
+        margin: 10px 0;
+        color: #666;
+        font-size: 15px;
+    }
+
+    .product-info .expiry {
+        color: #666;
+        font-size: 15px;
+    }
+
+    .product-info .manufacturer {
+        margin: 10px 0;
+        color: #666;
+        font-size: 15px;
+    }
+
+    .product-info .class {
+        margin-bottom: 20px;
+        color: #666;
+        font-size: 15px;
+    }
+
+    /* Form Elements */
+    .price-select {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        background-color: #fff;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        cursor: pointer;
+    }
+
+    .form-select:focus {
+        outline: none;
+        border-color: #aaa;
+    }
+
+    .custom-select-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .custom-select-wrapper:after {
+        content: '▼';
+        font-size: 12px;
+        color: #999;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .description {
+        margin: 15px 0;
+        padding: 15px;
+        color: #333;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .description:before {
+        content: none;
+    }
+
+    .quantity-wrapper {
+        margin: 20px 0;
+    }
+
+    .quantity-label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
         color: #555;
-        margin-bottom: 1.5rem;
     }
 
     .quantity {
-        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .quantity-controls {
+        display: flex;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .quantity-btn {
+        width: 40px;
+        height: 40px;
+        background: #f5f5f5;
+        border: none;
+        color: #333;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .quantity-btn:hover {
+        background: #e5e5e5;
     }
 
     .quantity input {
         width: 50px;
-        padding: 5px;
+        height: 40px;
+        border: none;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
         text-align: center;
+        font-size: 16px;
     }
 
+    /* Add to Cart Button */
     .add-to-cart {
-        background-color: #e63946;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 20px;
+        background-color: #e74c3c;
         color: white;
-        padding: 15px 25px;
         border: none;
-        border-radius: 5px;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 500;
         cursor: pointer;
-        font-size: 1rem;
         width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: background-color 0.2s;
     }
 
     .add-to-cart:hover {
-        background-color: #d42e35;
+        background-color: #c0392b;
     }
 
-    footer {
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 1rem;
-        position: fixed;
+    /* Product Details */
+    .product-details h3 {
         width: 100%;
-        bottom: 0;
+        margin-top: 50px;
+        font-size: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        color: #333;
     }
 
-    /* Responsive Styles */
-    @media (max-width: 1024px) {
-        .product-details {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .product-gallery,
-        .product-info {
-            width: 90%;
-            margin-top: 20px;
-        }
-
-        .thumbnail-gallery {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .thumbnail {
-            width: 60px;
-            height: 60px;
-        }
-
-        .product-info h1 {
-            font-size: 1.8rem;
-        }
-
-        .product-info .price {
-            font-size: 1.3rem;
-        }
-
-        .product-info .description {
-            font-size: 0.95rem;
-        }
-
-        .quantity input {
-            width: 40px;
-        }
-
-        .add-to-cart {
-            font-size: 1.1rem;
-            padding: 12px 20px;
-        }
+    .dosage-info {
+        width: 100%;
+        font-size: 14px;
+        color: #666;
+        margin-top: 10px;
+        line-height: 1.5;
     }
 
-    @media (max-width: 768px) {
-        .product-details {
-            margin: 1rem;
-        }
-
-        .product-gallery {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .product-info {
-            width: 100%;
-        }
-
-        .thumbnail-gallery {
-            gap: 5px;
-            margin-left: 100px;
-            width: 150px !important;
-            height: auto;
-        }
-
-        .thumbnail {
-            width: 70px;
-            height: 70px;
-        }
-
-        .product-info h1 {
-            font-size: 1.6rem;
-        }
-
-        .product-info .price {
-            font-size: 1.2rem;
-        }
-
-        .product-info .description {
-            font-size: 1rem;
-        }
-
-        .quantity input {
-            width: 40px;
-        }
-
-        .add-to-cart {
-            font-size: 1rem;
-            padding: 12px 18px;
-        }
+    p.a2 {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+        line-height: 1.5;
+        margin: 10px 0;
+        text-align: left;
+        width: 100%;
     }
 
-    @media (max-width: 480px) {
-        .product-details {
-            margin: 1rem;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .product-gallery {
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .product-info {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .thumbnail-gallery {
-            width: 150px !important;
-            margin-left: 120px !important;
-        }
-
-        .thumbnail {
-            width: 60px;
-            height: 60px;
-        }
-
-        .product-info h1 {
-            font-size: 1.4rem;
-        }
-
-        .product-info .price {
-            font-size: 1.1rem;
-        }
-
-        .product-info .description {
-            font-size: 0.95rem;
-        }
-
-        .quantity input {
-            width: 35px;
-        }
-
-        .add-to-cart {
-            font-size: 1rem;
-            padding: 12px 16px;
-        }
-
-        footer {
-            font-size: 0.9rem;
-            padding: 0.8rem;
-        }
+    p.a2:before {
+        content: none;
     }
-</style>
-<style>
-    .ui1 {
+
+    /* Reviews Section */
+    .m2 {
         display: flex;
-        justify-content: flex-end;
-        /* Items are aligned to the right */
+        justify-content: center;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 20px 30px;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .review1, .review2 {
+        border: 1px solid #ddd;
+        padding: 15px 20px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        flex: 1;
+        min-width: 250px;
+        max-width: 400px;
+    }
+
+    .review1 p, .review2 p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    /* Shop Card */
+    .shop-card {
+        background: #f5f5f5;
+        width: 300px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .shop-header {
+        display: flex;
         align-items: center;
-        /* Vertically center items */
-        gap: 5px;
-        /* Space between items */
-        padding: 10px;
-        /* Default padding */
+        gap: 15px;
+        margin-bottom: 15px;
     }
 
-    /* Responsive Styles - Keeping layout unchanged */
-    @media (max-width: 1024px) {
-        .ui1 {
-            justify-content: flex-end;
-            /* Keep right alignment on medium screens */
-            align-items: center;
-            /* Keep vertical centering */
-            gap: 5px;
-            /* Keep the gap the same */
-            padding: 8px;
-            /* Slightly reduce padding for smaller screens */
-        }
+    .shop-logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        object-fit: contain;
     }
 
+    .shop-name {
+        font-size: 18px;
+        margin: 0;
+        color: #e63946;
+    }
+
+    .rating {
+        color: #333;
+        font-size: 14px;
+        margin: 5px 0 0;
+    }
+
+    .reviews {
+        color: #2971f5;
+        font-size: 12px;
+    }
+
+    .shop-button {
+        background: white;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        color: #333;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .shop-button:hover {
+        background: #eee;
+        border-color: #ccc;
+    }
+
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-        .ui1 {
-            font-size: 7px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .ui1 {
-            font-size: 7px;
-        }
-    }
-</style>
-
-<body>
-
-
-
-
-    <!-- header boshlandi -->
-    <header class="header_area">
-        <div class="header_top">
-            <div class="container">
-                <div class="row align-items-center">
-
-                    <div class="col-lg-6 col-md-6">
-                        <div class="top_right text-end" style="justify-content: right !important;">
-                            <ul class="ui1">
-                                <a href="about.html" style="color: white;">О Нас |</a>
-                                <a href="#" style="color: white;">Арендодателям |</a>
-                                <a href="#" style="color: white;">Вакансии |</a>
-                                <a href="#" style="color: white;">Наши аптеки |</a>
-                                <a href="#" style="color: white;">Загрузки рецепт |</a>
-                                <a href="#" style="color: white;">Рус /</a>
-                                <a href="#" style="color: white;">Uzb</a>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--header top start-->
-
-        <!--header middel start-->
-        <div class="header_middel">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-4">
-                        <div class="logo">
-                            <a href="index.html"><img src="{% static 'assets/img2/AFM MEDICAL.png'%}" alt="" width="220px"></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-md-5">
-                        <div class="categories_menu">
-                            <div class="categories_title" style="width: 160px;">
-                                <h2 class="categori_toggle">Каталог</h2>
-                                <div class="categories_menu_inner">
-                                    <ul>
-                                        <li><a href="about.html">Batafsil</a></li>
-                                        <li><a href="cart.html">Savat</a></li>
-                                        <li><a href="checkout.html">To'lov</a></li>
-                                        <li><a href="login.html">Kirish</a></li>
-                                        <li><a href="contact.html">Aloqa</a></li>
-                                        <li><a href="shop.html">Katalog</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="search_bar">
-                            <form action="#">
-                                <input placeholder="Поиск: " type="text">
-                                <button class="btn" style=".btn {color: black;}"><i
-                                        class="ion-ios-search-strong"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3">
-                        <div class="cart_area">
-                            <div class="wishlist_link">
-                                <a href="#" id="login-link">
-                                    <p style="line-height: 15px !important;">
-                                        <i class="ion-person"
-                                            style="font-size: 2.3rem; display: flex; justify-content: center; align-items: center; margin-right: 10px;"></i>
-                                        <span>Личный кабинет</span>
-                                    </p>
-                                </a>
-
-                                <!-- Birinchi Modal (Telefon raqamini kiritish) -->
-                                <div id="login-modal" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close-btn" id="close-modal">&times;</span>
-                                        <h4 style="color: black;">Telefon raqamingizni kiriting</h4>
-                                        <p style="color: black;">SMS orqali tasdiqlash kodini yuboramiz</p>
-                                        <input type="text" id="phone" placeholder="+998 00 000-00-00" maxlength="17"
-                                            required>
-                                        <a href="Tasdiqlash.html"><button id="get-code-btn">Kodni olish</button></a>
-                                        <p class="terms" style="color: black;">
-                                            Ro'yxatdan o'tish orqali shaxsiy ma'lumotlarni qayta ishlash siyosati bilan
-                                            tanishasiz
-                                        </p>
-                                    </div>
-                                </div>
-
-
-                                <style>
-                                    /* Modal Styles */
-                                    .modal,
-                                    .modal2,
-                                    .modal3 {
-                                        display: none;
-                                        position: fixed;
-                                        z-index: 1;
-                                        left: 0;
-                                        top: 0;
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: rgba(0, 0, 0, 0.5);
-                                        justify-content: center;
-                                        align-items: center;
-                                    }
-
-                                    .modal-content,
-                                    .modal-content2,
-                                    .modal-content3 {
-                                        background-color: white;
-                                        padding: 25px;
-                                        border-radius: 10px;
-                                        width: 100%;
-                                        max-width: 400px;
-                                        /* Max width for large screens */
-                                        text-align: center;
-                                    }
-
-                                    .modal-content input,
-                                    .modal-content2 input,
-                                    .modal-content3 input {
-                                        width: 100%;
-                                        padding: 12px;
-                                        margin: 15px 0;
-                                        font-size: 1rem;
-                                        border: 1px solid #ccc;
-                                        border-radius: 5px;
-                                    }
-
-                                    .modal-content button,
-                                    .modal-content2 button,
-                                    .modal-content3 button {
-                                        width: 100%;
-                                        padding: 12px;
-                                        background-color: #2971f5;
-                                        color: white;
-                                        font-size: 1rem;
-                                        border: none;
-                                        border-radius: 5px;
-                                        cursor: pointer;
-                                    }
-
-                                    .modal-content button:hover,
-                                    .modal-content2 button:hover,
-                                    .modal-content3 button:hover {
-                                        background-color: #155de4;
-                                    }
-
-                                    .terms {
-                                        font-size: 0.9rem;
-                                        color: black !important;
-                                        margin-top: 10px;
-                                        line-height: 1.5;
-                                    }
-
-                                    .close-btn {
-                                        position: absolute;
-                                        top: 10px;
-                                        right: 10px;
-                                        font-size: 2.5rem;
-                                        font-weight: bold;
-                                        color: red;
-                                        cursor: pointer;
-                                    }
-
-                                    @media (max-width: 768px) {
-
-                                        .modal-content,
-                                        .modal-content2,
-                                        .modal-content3 {
-                                            width: 50%;
-                                            padding: 15px;
-                                        }
-
-                                        .modal-content input,
-                                        .modal-content2 input,
-                                        .modal-content3 input {
-                                            font-size: 1rem;
-                                            padding: 10px;
-                                        }
-
-                                        .modal-content button,
-                                        .modal-content2 button .modal-content3 button {
-                                            font-size: 0.8rem;
-                                            width: 150px;
-                                            margin-left: 40px;
-                                        }
-
-                                        .terms {
-                                            font-size: 0.8rem;
-                                        }
-
-                                        /* Close button adjustment */
-                                        .close-btn {
-                                            font-size: 28px;
-                                            top: 8px;
-                                            right: 15px;
-                                        }
-                                    }
-
-                                    @media (max-width: 480px) {
-
-                                        .modal-content,
-                                        .modal-content2,
-                                        .modal-content3 {
-                                            width: 65%;
-                                            /* Modal becomes almost full-width on very small screens */
-                                        }
-
-                                        .modal-content input,
-                                        .modal-content2 input,
-                                        .modal-content3 input {
-                                            font-size: 1.1rem;
-                                            padding: 8px;
-                                        }
-
-                                        .modal-content button,
-                                        .modal-content2 button,
-                                        .modal-content3 button {
-                                            font-size: 0.8rem;
-                                            width: 150px;
-                                            margin-left: 40px;
-                                        }
-
-                                        .terms {
-                                            font-size: 0.75rem;
-                                        }
-
-                                        /* Close button adjustment */
-                                        .close-btn {
-                                            font-size: 26px;
-                                            top: 5px;
-                                            right: 10px;
-                                        }
-                                    }
-                                </style>
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        const modal1 = document.getElementById('login-modal');
-                                        const closeModal1 = document.getElementById('close-modal');
-                                        const getCodeButton = document.getElementById('get-code-btn');
-                                        const phoneInput = document.getElementById('phone');
-                                        const smsCodeInput = document.getElementById('sms-code');
-                                        const submitCodeButton = document.getElementById('submit-code-btn2');
-
-                                        // Birinchi modalni ko'rsatish
-                                        document.getElementById('login-link').addEventListener('click', function (event) {
-                                            event.preventDefault();
-                                            modal1.style.display = 'flex'; // Birinchi modalni ko'rsatish
-                                        });
-
-                                        // Birinchi modalni yopish
-                                        closeModal1.addEventListener('click', function () {
-                                            modal1.style.display = 'none'; // Birinchi modalni yopish
-                                        });
-
-                                        // "Kodni olish" tugmasi bosilganda telefon raqamini tekshirish
-                                        getCodeButton.addEventListener('click', function () {
-                                            const phoneNumber = phoneInput.value;
-
-                                            // Telefon raqamini tekshirish
-                                            const phoneRegex = /^\+998\s\d{2}\s\d{3}-\d{2}-\d{2}$/;
-
-                                            if (phoneRegex.test(phoneNumber)) {
-                                                // Telefon raqami to'g'ri bo'lsa, modalni yopamiz
-                                                modal1.style.display = 'none';
-                                                // SMS kodi kiritish uchun yana bir nechta harakat qo'shish mumkin
-                                            } else {
-                                                // Telefon raqami noto'g'ri bo'lsa, xato ko'rsatish mumkin (alert o'rniga)
-                                                phoneInput.style.borderColor = "red"; // Inputni qizil qilib ko'rsatish
-                                            }
-                                        });
-
-                                        // SMS kodi tasdiqlash
-                                        submitCodeButton.addEventListener('click', function () {
-                                            const smsCode = smsCodeInput.value;
-
-                                            // SMS kodi tekshiruvi
-                                            const smsCodeRegex = /^\d{6}$/;
-                                            if (smsCodeRegex.test(smsCode)) {
-                                                // SMS kodi to'g'ri bo'lsa, bu yerda keyingi harakatlarni qo'shish mumkin
-                                                console.log("SMS kodi tasdiqlandi: ", smsCode);
-                                                // Masalan, keyingi sahifaga o'tish yoki boshqa amallarni bajarish
-                                            } else {
-                                                // SMS kodi noto'g'ri bo'lsa, inputni qizil qilish
-                                                smsCodeInput.style.borderColor = "red";
-                                            }
-                                        });
-                                    });
-                                </script>
-                            </div>
-                            <div class="wishlist_link" style="margin-left: 15px;">
-                                <a href="#">
-                                    <p style="line-height: 15px !important;"><i class="ion-headphone" style="font-size: 2.3rem; display: flex;
-                                justify-content: center;align-items: center; margin-right: 10px;"></i> <span> <span
-                                                style="font-size: 12px;
-                                line-height: 10px;">
-                                                Callcenter</span>
-                                            <span
-                                                style="display: flex; justify-content: center; align-items: center;">1080
-                                            </span></span></p>
-                                </a>
-                            </div>
-                            <div class="cart_link" style="margin-top: 10px;">
-                                <a href="javascript:void(0)" style="color: black !important; font-weight: 400; "><i
-                                        class="ion-ios-cart"></i>Корзина</a>
-                                <span class="cart_count">{{ cart_items|length }}</span>
-                                <!--mini cart-->
-                                <div class="mini_cart">
-                                    <div class="items_nunber">
-                                        <span>{{ cart_items|length }} Items in Cart</span>
-                                    </div>
-                                    {% for items in cart_items %}
-                                    <div class="cart_item">
-                                        <div class="cart_img">
-                                            <a href="#"><img src="{{items.product.image1}}" alt=""></a>
-                                        </div>
-                                        <div class="cart_info">
-                                            <a href="#">{{ items.product.name}}</a>
-                                            <form action="#">
-                                                <input min="0" max="100" type="number">
-                                                {% if items.product.price > 0 %}
-                                                <span>{{items.product.price}}</span>
-                                                {% else %}
-                                                <span>{{items.product.price}}</span>
-                                                {% endif %}
-                                            </form>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                    <div class="cart_button view_cart">
-                                        <a href="/cart/">View and Edit Cart</a>
-                                    </div>
-                                </div>
-                                <!--mini cart end-->
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--header middel end-->
-
-        <!--header bottom satrt-->
-        <div class="header_bottom sticky-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-5">
-                        <!-- <div class="categories_menu">
-                            <div class="categories_title" style="width: 170px;">
-                                <h2 class="categori_toggle">Каталог</h2>
-                            </div>
-                            <div class="categories_menu_inner">
-                                <ul>
-                                    <li><a href="about.html">Batafsil</a></li>
-                                    <li><a href="cart.html">Savat</a></li>
-                                    <li><a href="checkout.html">To'lov</a></li>
-                                    <li><a href="login.html">Kirish</a></li>
-                                    <li><a href="contact.html">Aloqa</a></li>
-                                    <li><a href="shop.html">Katalog</a></li>
-                                </ul>
-                            </div>
-                        </div> -->
-                    </div>
-
-                    <!-- <div class="col-lg-2">
-                        <div class="contact_phone">
-                            <div class="contact_icone">
-                                <span class="pe-7s-headphones"></span>
-                            </div>
-                            <div class="contact_number">
-                                <p  style="color: #c51f30;">Call center</p>
-                                <span>1080</span>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-        </div>
-        <!--header bottom end-->
-    </header>
-    <!-- header tugadi -->
-
-    <!-- Product Details Section -->
-    <div class="product-details">
-        <div class="product-gallery">
-            <img id="main-image" src="{{product.image1}}" alt="Product Image">
-        </div>
-        <div class="product-info">
-            <h1>{{ product.name}}</h1>
-            <p class=""> {{ product.class }} </p>
-            
-            <p class="">{{ product.country }} </p>
-            <p class="">{{ product.MNN }}</p>
-            <p class="">{{ product.ReleaseForm }} </p>
-            <p class="">{{ product.ExpDate }} </p>
-            <p class="">{{ product.producer }} </p>
-            <p class="">Class {{ product.class }} </p>
-
-            <form method="GET" action="/product/add/{{ product.id }}/">
-            <select name="price" class="form-select form-select-lg mb-3" aria-label="Large select example">
-                <option selected value="{{product.prices.0}}">  {{product.prices.0}} sum</option>
-                {% for i in product.prices %}
-                    {% if orloop.counter != 1 %}
-                        <option value="{{i}}">{{i}}  sum {{f}} </option>
-                    {% else %}
-                    
-                    {% endif %}
-                 
-
-                {% endfor %}
-            </select>
-            <br>
-            <br>
-       
-            <p class="description">{{ product.text |truncatechars:120 }}</p>
-                <div class="quantity">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" value="1" min="1" required>
-                </div>
-                <button  type="submit" class="add-to-cart">Add to Cart</button>
-            </form>
-        </div>
-        <h3>{{ product.name}}</h3>
-        <p class="a2">{{ product.info }}</p>
-
-
-
-        <style>
-            p.a2 {
-                font-family: Arial, sans-serif;
-                font-size: 16px;
-                color: #333;
-                line-height: 1.5;
-                margin: 10px 0;
-                text-align: left;
-            }
-
-            h3 {
-                margin-top: 50px;
-            }
-
-
-            @media (max-width: 768px) {
-                p.a2 {
-                    font-size: 14px;
-                    line-height: 1.4;
-                    margin: 8px 0;
-                }
-
-                h3 {
-                    font-size: 18px;
-                    margin-top: 30px;
-                }
-            }
-
-            @media (max-width: 480px) {
-                p.a2 {
-                    font-size: 12px;
-                    line-height: 1.3;
-                    margin: 6px 0;
-                }
-
-                h3 {
-                    font-size: 16px;
-                    margin-top: 20px;
-                }
-            }
-        </style>
-    </div>
-
-    <script>
-        // Function to change main image when thumbnail is clicked
-        function changeImage(imageSrc) {
-            document.getElementById("main-image").src = imageSrc;
+        .product-details {
+            padding: 15px;
+            flex-direction: column;
         }
 
-    </script>
-
-    <div class="m2">
-        <a href="cament.html">
-            <div class="review1">
-                <p><strong>10-fevral</strong></p>
-                <p><strong>Rangi:</strong> Qora</p>
-                <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
-                <p><strong>Kamchiliklari:</strong> Yo‘q</p>
-                <p><strong>Izoh:</strong> 4 xil rangidan oldim, juda yoqdi. Kiyish juda <br> qulay va yoqimli.</p>
-            </div>
-        </a>
-
-        <a href="cament.html">
-            <div class="review2">
-                <p><strong>11-fevral</strong></p>
-                <p><strong>Rangi:</strong> Qora</p>
-                <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
-                <p><strong>Kamchiliklari:</strong> Yo‘q</p>
-                <p><strong>Izoh:</strong> 2 xil rangidan oldim, juda yoqdi. Kiyish juda <br> qulay va yoqimli.</p>
-            </div>
-        </a>
-        <div class="shop-card">
-            <div class="shop-header">
-                <img src="{% static 'assets/img2/AFM MEDICAL — копия.png'%}" alt="Didov Triko Logo" class="shop-logo">
-                <div>
-                    <h2 class="shop-name">Akmal Farm Medical</h2>
-                    <p class="rating">
-                        ⭐️ <strong>4.8</strong> <span class="reviews">(14598 оценок)</span>
-                    </p>
-                </div>
-            </div>
-            <a href="/"><button class="shop-button">Перейти в магазин</button></a>
-        </div>
-    </div>
-    <style>
-        .review1 {
-            border: 1px solid gray;
-            padding: 10px 20px;
-            border-radius: 10px;
-            width: fit-content;
-            background-color: white;
+        .product-gallery, .product-info {
+            width: 100%;
+            max-width: 100%;
         }
 
-        .review2 {
-            border: 1px solid gray;
-            padding: 10px 20px;
-            border-radius: 10px;
-            width: fit-content;
-            background-color: white;
-            margin-right: 150px;
+        .product-info h1 {
+            font-size: 22px;
+        }
+
+        .add-to-cart {
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+
+        p.a2 {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 30px;
         }
 
         .m2 {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
             align-items: center;
+            padding: 15px;
+        }
+
+        .review1, .review2 {
+            width: 100%;
+            max-width: none;
+            padding: 10px 15px;
         }
 
         .shop-card {
-            background: rgb(218, 214, 214);
-            width: 300px;
-            padding: 15px 30px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .product-details {
+            padding: 10px;
         }
 
-        .shop-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .product-info h1 {
+            font-size: 20px;
+            margin-bottom: 15px;
         }
 
-        .shop-logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 5px;
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
         }
 
-        .shop-name {
-            font-size: 18px;
-            margin: 0;
-            color: #e63946;
+        .quantity input {
+            width: 40px;
+            height: 35px;
         }
 
-        .rating {
-            color: black;
+        .add-to-cart {
+            padding: 10px 12px;
             font-size: 14px;
-            margin: 5px 0 0;
         }
 
-        .reviews {
-            color: #155de4;
+        p.a2 {
+            font-size: 13px;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .review1 p, .review2 p {
             font-size: 12px;
         }
 
-        .shop-button {
-            background: white;
-            border: none;
-            padding: 10px;
-            color: black;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
+        .shop-name {
+            font-size: 16px;
         }
 
-        @media (max-width: 768px) {
-
-            .review1,
-            .review2 {
-                padding: 8px 16px;
-                width: 100%;
-                margin-right: 0;
-            }
-
-            .m2 {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .shop-card {
-                width: 90%;
-                padding: 10px 20px;
-            }
-
-            .shop-header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .shop-logo {
-                width: 40px;
-                height: 40px;
-            }
-
-            .shop-name {
-                font-size: 16px;
-            }
-
-            .rating {
-                font-size: 12px;
-            }
-
-            .reviews {
-                font-size: 11px;
-            }
-
-            .shop-button {
-                padding: 8px;
-                font-size: 12px;
-            }
+        .rating {
+            font-size: 12px;
         }
 
-        @media (max-width: 480px) {
-
-            .review1,
-            .review2 {
-                padding: 6px 12px;
-                width: 100%;
-                margin-right: 0;
-            }
-
-            .shop-card {
-                width: 95%;
-                padding: 8px 15px;
-            }
-
-            .shop-header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .shop-logo {
-                width: 35px;
-                height: 35px;
-            }
-
-            .shop-name {
-                font-size: 14px;
-            }
-
-            .rating {
-                font-size: 11px;
-            }
-
-            .reviews {
-                font-size: 10px;
-            }
-
-            .shop-button {
-                padding: 7px;
-                font-size: 11px;
-            }
+        .reviews {
+            font-size: 10px;
         }
-    </style>
+    }
+</style>
 
+<!-- Product Details Section -->
+<div class="product-details">
+    <div class="product-gallery">
+        <img id="main-image" src="{{product.image1}}" alt="{{ product.name }}">
+    </div>
+    <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="category">{{ product.class }} системного действия</p>
+        <p class="country">{{ product.country }}</p>
+        <p class="composition">ком.лек ({{ product.MNN }})</p>
+        <p class="expiry">{{ product.ExpDate }}</p>
+        <p class="manufacturer">{{ product.producer }}</p>
+        <p class="class">Class {{ product.class }} системного действия</p>
 
-
-
-    <!-- footer start berdik -->
-    <div class="shipping_area shipping_contact" style="background-color: #15315a;">
-        <div class="container">
-            <div class="shipping_contact">
-                <div class="row">
-                    <div class="footer_area">
-                        <div class="container">
-                            <div class="footer_top">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-8">
-                                        <div class="single_footer">
-                                            <div class="footer_logo">
-                                                <img src="{% static 'assets/img2/AFM MEDICAL oq.png'%}" alt="" width="220">
-                                            </div>
-                                            <div class="footer_contact">
-                                                <ul>
-                                                    <li style="color: white;"><i class="ion-location"
-                                                            style="color: white;"></i>
-                                                        Andijon shahar istiqlol ko'chasi 27 uy</li>
-                                                    <li style="color: white;"><i class="ion-ios-telephone"
-                                                            style="color: white;"></i> 33 991 99 91</li>
-                                                    <li style="color: white;"><i class="ion-ios-email"
-                                                            style="color: white;"></i> <a href="#"
-                                                            style="color: white;">Manzil@akmalfarm.com</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="single_footer">
-                                            <h3 style="color: white;">Покупателю</h3>
-                                            <ul>
-                                                <a href="#" style="color: white;font-size: 12px;">Как заказать
-                                                    лекарства?</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Доставка и оплата</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Популярные вопросы</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Справочники</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Пользовательское
-                                                    соглашение</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Условия возврата
-                                                    товара</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Новости и статьи</a>
-                                                <a href="#" style="color: white;font-size: 12px;">Программа
-                                                    лояльности</a>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
-                                        <div class="single_footer">
-                                            <h3 style="color: white;">Компания</h3>
-                                            <ul>
-                                                <a href="#" style="color: white; font-size: 0.8rem;">О компании</a>
-                                                <a href="#" style="color: white;font-size: 0.8rem;">Наши аптеки</a>
-                                                <a href="#" style="color: white;font-size: 0.8rem;">Сертификаты</a>
-                                                <a href="#" style="color: white;font-size: 0.8rem;">Контакты</a>
-                                            </ul> <br>
-                                            <h3 style="color: white;">Akmal Farm Medical</h3>
-                                            <ul>
-                                                <a href="#" style="color: white; font-size: 11px;">Следите за
-                                                    обновлениями</a>
-                                                <a href="#" style="color: white; font-size: 11px;">Akmal Farm Medical в
-                                                    социальных сетях</a>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-8">
-                                        <div class="single_footer">
-                                            <div class="location-container">
-                                                <div class="map-wrapper">
-                                                    <iframe
-                                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434508616!2d144.95373531531676!3d-37.81627917975151!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577a63485a1189d!2sFederation%20Square!5e0!3m2!1sen!2s!4v1619560513329!5m2!1sen!2s"
-                                                        width="1900" height="300" style="border:0;" allowfullscreen=""
-                                                        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                                                    </iframe>
-                                                </div>
-                                            </div>
-                                            <style>
-                                                .location-container {
-                                                    width: 500px;
-                                                    margin: 0px auto;
-                                                    padding: 20px;
-                                                    border-radius: 10px;
-                                                    text-align: center;
-                                                }
-
-                                                .location-container h1 {
-                                                    font-size: 2rem;
-                                                    margin-bottom: 10px;
-                                                    color: #333;
-                                                }
-
-                                                .location-container p {
-                                                    font-size: 1rem;
-                                                    margin-bottom: 20px;
-                                                    color: #555;
-                                                }
-
-                                                .map-wrapper {
-                                                    overflow: hidden;
-                                                    border-radius: 10px;
-                                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-                                                }
-
-                                                .map-wrapper iframe {
-                                                    width: 800px;
-                                                    height: 300px;
-                                                    border: none;
-                                                    border-radius: 10px;
-                                                }
-
-                                                /* Responsive Styles */
-
-                                                /* For tablets and smaller devices */
-                                                @media (max-width: 768px) {
-                                                    .location-container {
-                                                        width: 90%;
-                                                        /* Reduce the width to fit better on tablets */
-                                                        padding: 15px;
-                                                        /* Adjust padding for smaller screens */
-                                                    }
-
-                                                    .location-container h1 {
-                                                        font-size: 1.75rem;
-                                                        /* Slightly smaller heading */
-                                                    }
-
-                                                    .location-container p {
-                                                        font-size: 0.95rem;
-                                                        /* Smaller paragraph font */
-                                                    }
-
-                                                    .map-wrapper iframe {
-                                                        width: 100%;
-                                                        /* Make the iframe responsive */
-                                                        height: 250px;
-                                                        /* Adjust iframe height for tablets */
-                                                    }
-                                                }
-
-                                                /* For mobile devices */
-                                                @media (max-width: 480px) {
-                                                    .location-container {
-                                                        width: 100%;
-                                                        /* Full width on mobile devices */
-                                                        padding: 10px;
-                                                        /* Smaller padding on mobile */
-                                                    }
-
-                                                    .location-container h1 {
-                                                        font-size: 1.5rem;
-                                                        /* Even smaller heading for mobile */
-                                                    }
-
-                                                    .location-container p {
-                                                        font-size: 0.85rem;
-                                                        /* Smaller paragraph font */
-                                                    }
-
-                                                    .map-wrapper iframe {
-                                                        width: 100%;
-                                                        /* Full width iframe */
-                                                        height: 200px;
-                                                        /* Smaller iframe height for mobile */
-                                                    }
-                                                }
-                                            </style>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <form method="GET" action="/product/add/{{ product.id }}/">
+            <div class="price-select">
+                <div class="custom-select-wrapper">
+                    <select name="price" class="form-select">
+                        <option selected value="{{product.prices.0}}">{{product.prices.0}} sum</option>
+                        {% for i in product.prices %}
+                            {% if forloop.counter != 1 %}
+                                <option value="{{i}}">{{i}} sum</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+       
+            <div class="quantity-wrapper">
+                <label class="quantity-label">Quantity:</label>
+                <div class="quantity">
+                    <div class="quantity-controls">
+                        <button type="button" class="quantity-btn" onclick="decrementQuantity()">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" required>
+                        <button type="button" class="quantity-btn" onclick="incrementQuantity()">+</button>
                     </div>
                 </div>
             </div>
-        </div>
+            
+            <button type="submit" class="add-to-cart">Add to Cart</button>
+        </form>
     </div>
-    <!-- footer qismini tugatdik -->
+    
+    <div class="dosage-info">
+        {{ product.name }}, таб. {{ product.ReleaseForm }}. Показания, противопоказания, режим дозирования.
+    </div>
+    
+    <h3>{{ product.name }}</h3>
+    <p class="a2">{{ product.info }}</p>
+</div>
 
+<script>
+    // Function to change main image when thumbnail is clicked
+    function changeImage(imageSrc) {
+        document.getElementById("main-image").src = imageSrc;
+    }
+    
+    // Functions to handle quantity changes
+    function incrementQuantity() {
+        var input = document.getElementById('quantity');
+        input.value = parseInt(input.value) + 1;
+    }
+    
+    function decrementQuantity() {
+        var input = document.getElementById('quantity');
+        var value = parseInt(input.value);
+        if (value > 1) {
+            input.value = value - 1;
+        }
+    }
+</script>
 
-    <script src="{% static 'assets/js/vendor/jquery-1.12.4.min.js'%}"></script>
-    <script src="{% static 'assets/js/popper.js'%}"></script>
-    <script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
-    <script src="{% static 'assets/js/plugins.js'%}"></script>
-    <script src="{% static 'assets/js/main.js'%}"></script>
-</body>
+<div class="m2">
+    <a href="cament.html">
+        <div class="review1">
+            <p><strong>10-fevral</strong></p>
+            <p><strong>Rangi:</strong> Qora</p>
+            <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
+            <p><strong>Kamchiliklari:</strong> Yo'q</p>
+            <p><strong>Izoh:</strong> 4 xil rangidan oldim, juda yoqdi. Kiyish juda qulay va yoqimli.</p>
+        </div>
+    </a>
 
-</html>
+    <a href="cament.html">
+        <div class="review2">
+            <p><strong>11-fevral</strong></p>
+            <p><strong>Rangi:</strong> Qora</p>
+            <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
+            <p><strong>Kamchiliklari:</strong> Yo'q</p>
+            <p><strong>Izoh:</strong> 2 xil rangidan oldim, juda yoqdi. Kiyish juda qulay va yoqimli.</p>
+        </div>
+    </a>
+    <div class="shop-card">
+        <div class="shop-header">
+            <img src="{% static 'assets/img2/AFM MEDICAL — копия.png'%}" alt="Akmal Farm Medical Logo" class="shop-logo">
+            <div>
+                <h2 class="shop-name">Akmal Farm Medical</h2>
+                <p class="rating">
+                    ⭐️ <strong>4.8</strong> <span class="reviews">(14598 оценок)</span>
+                </p>
+            </div>
+        </div>
+        <a href="/"><button class="shop-button">Перейти в магазин</button></a>
+    </div>
+</div>
+{% endblock %}
+

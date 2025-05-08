@@ -301,36 +301,6 @@ def Contact(request):
     return render(request,'contact.html',context)
 
 
-def checkout_view(request):
-    cart_items = request.user.cart.items.all()  
-
-    if not cart_items:
-        messages.error(request, "Sizning savatingiz bo‘sh!")
-        return redirect("cart")
-
-    if request.method == 'POST':
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
-            order.is_completed = False
-            order.save()
-
-           
-            # for item in cart_items:
-            #     OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
-
-            request.user.cart.items.all().delete()
-            
-            messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
-            return redirect("order_history")
-
-    else:
-        form = CheckoutForm()
-    
-    return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items})
-
-
 @is_staff
 def product_create(request):
     if request.method == 'POST':
@@ -361,7 +331,6 @@ def filial_index(request):
 @is_staff
 def filial_order(request):
     orders =  Order.objects.all()
-    
     
     context = {
         'orders': orders

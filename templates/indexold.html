@@ -1,261 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
-
 {% block content %}
-<link rel="stylesheet" href="{% static 'assets/css/index.css' %}">
-
-<!-- Proper loading of jQuery and Owl Carousel libraries -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
-<style>
-/* Fix for sliders to ensure proper display even if JavaScript fails */
-.owl-carousel {
-    display: block;
-    width: 100%;
-}
-
-.owl-carousel .owl-stage-outer {
-    overflow: hidden;
-    position: relative;
-}
-
-.owl-carousel .owl-stage {
-    display: flex;
-    position: relative;
-}
-
-.owl-carousel .owl-item {
-    float: left;
-    min-height: 1px;
-    position: relative;
-}
-
-/* Container styling for product, gallery, and blog sliders */
-.product_active,
-.product_gallery_active,
-.blog_active {
-    width: 100%;
-    overflow: hidden;
-}
-
-/* Card styling */
-.single_product {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
-}
-
-/* Product action buttons container */
-.product_action ul {
-    display: flex;
-    justify-content: space-between;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-/* Card button styling */
-.product_action ul li.add_links {
-    margin: 0 3px;
-}
-
-.product_action ul li.add_links a {
-    background: #f8f8f8;
-    color: #555;
-    border: 1px solid #eee;
-    width: 35px;
-    height: 35px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.product_action ul li.add_links a i {
-    font-size: 16px !important;
-    color: #777 !important;
-    display: inline-block !important;
-    width: auto !important;
-    height: auto !important;
-}
-
-.product_action ul li.add_links a:hover i {
-    color: #2196F3 !important;
-}
-
-.product_action ul li.product_cart {
-    flex-grow: 1;
-    margin-right: 5px;
-}
-
-.product_action ul li.product_cart a {
-    text-transform: lowercase;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 8px 10px;
-    background: #2971f5;
-    color: white;
-    border-radius: 4px;
-    height: 35px;
-    width: 100%;
-}
-
-.product_action ul li.product_cart a:hover {
-    background: #1c60d9;
-}
-
-.single_product {
-    transition: transform 0.2s ease;
-}
-
-.single_product:hover {
-    transform: translateY(-5px);
-}
-
-.product_content a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.current_price {
-    display: block;
-}
-
-/* Updated Styles to Match Example Image */
-.product_thumb {
-    width: 100% !important;
-    padding: 5px !important;
-}
-
-.product_thumb img {
-    width: auto !important;
-    max-width: 100% !important;
-    max-height: 220px !important;
-    margin: 0 auto !important;
-    display: block !important;
-}
-
-.product_thumb a {
-    display: block;
-    width: 100%;
-    text-align: center;
-}
-
-/* Desktop screens (1080p and above) */
-@media (min-width: 1080px) {
-    .single_product {
-        max-width: 228px !important; /* Force exact width of 228px with !important */
-        width: 228px !important; /* Add fixed width as well */
-    }
-    
-    .product_thumb {
-        min-height: 180px;
-    }
-}
-
-/* Very large screens */
-@media (min-width: 1400px) {
-    .single_product {
-        max-width: 228px !important; /* Keep at 228px for larger screens with !important */
-        width: 228px !important; /* Add fixed width as well */
-    }
-}
-
-@media (max-width: 576px) {
-    .product_action ul {
-        flex-wrap: nowrap;
-        gap: 5px;
-    }
-    
-    .product_action ul li.product_cart {
-        width: 60%;
-        margin-right: 0;
-    }
-    
-    .product_action ul li.add_links {
-        width: 40px;
-        margin: 0;
-    }
-    
-    .product_action ul li.add_links a {
-        width: 100%;
-        min-width: 35px;
-    }
-    
-    /* Make icons always visible on mobile */
-    .product_action {
-        opacity: 1 !important;
-        visibility: visible !important;
-        position: static !important;
-        transform: none !important;
-    }
-}
-
-/* Fix for mobile right space issue */
-@media (max-width: 768px) {
-    html, body {
-        overflow-x: hidden;
-        width: 100%;
-        position: relative;
-    }
-    
-    .container {
-        width: 100%;
-        padding-left: 10px;
-        padding-right: 10px;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .row {
-        margin-left: 0;
-        margin-right: 0;
-    }
-    
-    .slider, .slides {
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-    
-    .slides img {
-        max-width: 100%;
-    }
-    
-    .single_product_wrapper {
-        width: 100%;
-        overflow: hidden;
-    }
-    
-    /* Fix all images from causing overflow */
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-    
-    /* Fix for modal text content */
-    .text-modal-content {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Blog area fixes */
-    .blog_area {
-        width: 100%;
-        max-width: 100%;
-        overflow: hidden;
-    }
-}
-</style>
-
 <!-- slide start -->
 <div class="slider">
     <div class="slides">
@@ -266,6 +11,10 @@
     </div>
     <button class="prev1" onclick="prevSlide1()">&#10094;</button>
     <button class="next1" onclick="nextSlide1()">&#10095;</button>
+    <script>
+
+
+    </script>
 </div><br>
 
 <!-- slid end -->
@@ -294,53 +43,60 @@
                 <div class="row">
                     <div class="product_active owl-carousel">
                         {% for product in group.products %}
-                        <div class="item">
+                        <div class="col-lg-3" style="height: auto;">
                             <div class="single_product">
                                 <div class="product_thumb">
-                                    <a href="/product/detail/{{ product.id }}">
-                                        <img src="{{ product.image1 }}" alt="{{ product.name }}">
+                                    <a href="/product/detail/{{ product.id }}" style="margin: 0px !important;">
+                                        <img src="{{ product.image1 }}" alt="" style="margin: 0px !important;">
                                     </a>
                                 </div>
                                 <div class="product_content">
                                     <a href="/product/detail/{{ product.id }}">
                                         <h3>{{ product.name }}</h3>
                                     </a>
-                                    <span>{{ product.producer }}</span>
-                                    <div class="product_price">
-                                        <span class="current_price">{{ product.prices.0 }} so'm</span>
+                                    <div>
+                                        <br>
+                                        <span>{{ product.producer }}</span><br>
                                     </div>
-                                </div>
-                                <div class="product_action">
-                                    <ul>
-                                        {% if user.is_authenticated %}
-                                        <li class="product_cart">
-                                            <a href="#" data-product-id="{{ product.id }}" class="add-to-cart-btn">корзина</a>
-                                        </li>
-                                        {% else %}
-                                        <li class="product_cart">
-                                            <a href="/auth/send-otp/" class="add-to-cart-btn">корзина</a>
-                                        </li>
-                                        {% endif %}
-                                        <li class="add_links">
-                                            <a href="/toggle/{{ product.id }}/" title="В избранное">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="add_links">
-                                            <a href="/product/detail/{{ product.id }}/" title="Подробнее">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <div class="product_price">
+                                        <br>
+                                        <span class="current_price">{{ product.prices.0 }} so'm</span><br>
+                                    </div>
+                                    <div class="product_action">
+                                        <ul style="display: flex; justify-content: center; align-items: center;">
+                                            {% if user.is_authenticated %}
+                                            <li class="product_cart" style="margin-right: 10px;">
+                                                <a onclick="addToCart({{ product.id }})">корзина</a>
+                                            </li>
+                                            {% else %}
+                                            <li class="product_cart" style="margin-right: 10px;">
+                                                <a href="/auth/send-otp/">корзина</a>
+                                            </li>
+                                            {% endif %}
+                                            <li class="add_links">
+                                                <a href="/toggle/{{ product.id }}/" title="Add to Wishlist">
+                                                    <i class="ion-ios-heart-outline"></i>
+                                                </a>
+                                            </li>
+                                            <li class="add_links">
+                                                <a href="/product/detail/{{ product.id }}/" title="Add to Wishlist">
+                                                    <i class="ion-ios-eye"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                         {% endfor %}
                     </div>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
+
     </div>
 </div>
 <!-- 1-tugadi -->
@@ -351,38 +107,39 @@
     <div class="container">
         <div class="row">
             <h4 style="color: black;">Популярные бренды</h4>
-            <div class="product_gallery_active owl-carousel">
-                <div class="item">
+            <div class="product_gallery_active owl-carousel"
+                style="margin: 0px !important; flex: 0 0 calc(50% - 12px); gap: 0px !important;">
+                <div class="col-lg-3">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Abbott.png" alt="">
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-3">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Bayer.png" alt="">
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-3">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Dr.reddys.png" alt="">
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-3">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Farmak.png" alt="">
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-3">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/KRKA.png" alt="">
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-3" style="width: 50px !important;">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Sandoz.png" alt="">
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-3">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/SANOFI.png" alt="">
                     </div>
@@ -407,13 +164,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="blog_active owl-carousel">
-                <div class="item">
+            <div class="blog_active owl-carousel" style=" flex: 0 0 calc(80% - 16px); padding: 0px !important;">
+
+                <div class="col-lg-4">
                     <div class="single_blog">
                         <div class="blog_thumb">
                             <a class="open-info-btn" onclick="showTextModal1()"><img src="../static/assets/img3/01.jpg"
                                     alt="Kutib turing"></a>
                         </div>
+
                         <div class="blog_content"><br>
                             <h5>Что делать при аллергии?</h5>
                             <a href="#">24.03.2025</a>
@@ -421,9 +180,11 @@
                             </p>
                         </div>
                         <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
+
+
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-4">
                     <div class="single_blog">
                         <div class="blog_thumb">
                             <a class="open-info-btn" onclick="showTextModal2()"><img
@@ -435,10 +196,11 @@
                             <p> Иммунная система – это главный защитник организма от вирусов и инфекций.
                             </p>
                             <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
+
                         </div>
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-4">
                     <div class="single_blog">
                         <div class="blog_thumb">
                             <a class="open-info-btn" onclick="showTextModal3()"><img src="../static/assets/img3/03.jpg"
@@ -450,10 +212,11 @@
                             <p>После болезни организм ослаблен и нуждается в правильном восстановлении.
                             </p>
                             <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
+
                         </div>
                     </div>
                 </div>
-                <div class="item">
+                <div class="col-lg-4">
                     <div class="single_blog">
                         <div class="blog_thumb">
                             <a class="open-info-btn" onclick="showTextModal4()"><img src="../static/assets/img3/04.jpg"
@@ -465,6 +228,7 @@
                             <p>Здоровая, сияющая кожа — мечта каждого. Но ежедневные стрессы.
                             </p>
                             <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
+
                         </div>
                     </div>
                 </div>
@@ -737,270 +501,21 @@
 </div>
 <br><br><br><br>
 <script>
-// Debugging flag to log carousel initialization steps
-const DEBUG = true;
-
-function log(message) {
-    if (DEBUG) {
-        console.log(`[Slider Debug] ${message}`);
+    function showTextModal5() {
+        document.getElementById("textModal5").style.display = "block";
     }
-}
 
-// Main slider functionality (top slider)
-log('Script initializing...');
-let slideIndex = 0;
-const slides = document.querySelectorAll('.slides img');
+    function hideTextModal5() {
+        document.getElementById("textModal5").style.display = "none";
+    }
+    function showTextModal6() {
+        document.getElementById("textModal6").style.display = "block";
+    }
 
-function showSlides() {
-    if (slides.length === 0) {
-        log('No slides found!');
-        return;
+    function hideTextModal6() {
+        document.getElementById("textModal6").style.display = "none";
     }
-    
-    // Hide all slides
-    for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-    }
-    
-    // Adjust index if out of bounds
-    if (slideIndex >= slides.length) {
-        slideIndex = 0;
-    }
-    if (slideIndex < 0) {
-        slideIndex = slides.length - 1;
-    }
-    
-    // Show current slide
-    slides[slideIndex].style.display = "block";
-    log(`Showing slide ${slideIndex + 1} of ${slides.length}`);
-}
-
-function nextSlide1() {
-    slideIndex++;
-    showSlides();
-}
-
-function prevSlide1() {
-    slideIndex--;
-    showSlides();
-}
-
-// Initialize all sliders when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    log('DOM Content Loaded');
-    
-    // Initialize main slider
-    showSlides();
-    
-    // Auto-advance main slider
-    setInterval(nextSlide1, 5000);
-    
-    // Check if jQuery is available
-    if (typeof jQuery === 'undefined') {
-        log('jQuery not loaded! Loading dynamically...');
-        
-        // Dynamically load jQuery
-        const script = document.createElement('script');
-        script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-        script.onload = function() {
-            log('jQuery loaded dynamically');
-            
-            // After jQuery loads, load Owl Carousel
-            const owlScript = document.createElement('script');
-            owlScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js';
-            owlScript.onload = function() {
-                log('Owl Carousel loaded dynamically');
-                
-                // Initialize carousels after a short delay
-                setTimeout(function() {
-                    initCarousels(jQuery);
-                }, 500);
-            };
-            document.head.appendChild(owlScript);
-        };
-        document.head.appendChild(script);
-    } else {
-        log('jQuery already loaded');
-        
-        // Initialize when jQuery is ready
-        jQuery(function($) {
-            if (typeof $.fn.owlCarousel === 'undefined') {
-                log('Owl Carousel not loaded! Loading dynamically...');
-                
-                // Dynamically load Owl Carousel if not present
-                $.getScript('https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', function() {
-                    log('Owl Carousel loaded via $.getScript');
-                    initCarousels($);
-                });
-            } else {
-                log('Owl Carousel already loaded');
-                initCarousels($);
-            }
-        });
-    }
-});
-
-// Function to initialize all Owl Carousel instances
-function initCarousels($) {
-    log('Initializing Owl Carousels');
-    
-    // First destroy any existing carousels
-    try {
-        $('.owl-carousel').each(function() {
-            const $this = $(this);
-            try {
-                if ($this.data('owl.carousel')) {
-                    log('Destroying existing carousel');
-                    $this.trigger('destroy.owl.carousel');
-                }
-            } catch (e) {
-                log(`Error destroying carousel: ${e.message}`);
-            }
-        });
-    } catch (e) {
-        log(`Error in carousel cleanup: ${e.message}`);
-    }
-    
-    // Initialize product carousels
-    try {
-        $('.product_active').each(function(index) {
-            log(`Initializing product carousel #${index}`);
-            $(this).owlCarousel({
-                items: 4,
-                loop: true,
-                nav: true,
-                dots: false,
-                margin: 20,
-                autoplay: false,
-                navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
-                responsive: {
-                    0: { items: 1 },
-                    576: { items: 2 },
-                    768: { items: 3 },
-                    992: { items: 4 }
-                }
-            });
-        });
-    } catch (e) {
-        log(`Error initializing product carousels: ${e.message}`);
-    }
-    
-    // Initialize brand carousel
-    try {
-        $('.product_gallery_active').owlCarousel({
-            items: 5,
-            loop: true,
-            nav: true,
-            dots: false,
-            margin: 20,
-            autoplay: true,
-            autoplayTimeout: 3000,
-            navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
-            responsive: {
-                0: { items: 2 },
-                576: { items: 3 },
-                768: { items: 4 },
-                992: { items: 5 }
-            }
-        });
-        log('Brand carousel initialized');
-    } catch (e) {
-        log(`Error initializing brand carousel: ${e.message}`);
-    }
-    
-    // Initialize blog carousel
-    try {
-        $('.blog_active').owlCarousel({
-            items: 3,
-            loop: true,
-            nav: true,
-            dots: false,
-            margin: 20,
-            autoplay: false,
-            navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
-            responsive: {
-                0: { items: 1 },
-                576: { items: 1 },
-                768: { items: 2 },
-                992: { items: 3 }
-            }
-        });
-        log('Blog carousel initialized');
-    } catch (e) {
-        log(`Error initializing blog carousel: ${e.message}`);
-    }
-    
-    // Attach manual event handlers for navigation buttons
-    $('.owl-prev, .owl-next').on('click', function(e) {
-        e.preventDefault();
-        log('Navigation button clicked');
-    });
-    
-    // Force refresh carousels after a short delay
-    setTimeout(function() {
-        try {
-            $('.owl-carousel').each(function() {
-                if ($(this).data('owl.carousel')) {
-                    $(this).trigger('refresh.owl.carousel');
-                }
-            });
-            log('Carousels refreshed');
-        } catch (e) {
-            log(`Error refreshing carousels: ${e.message}`);
-        }
-    }, 1000);
-}
-
-// Add to cart functionality
-function addToCart(productId) {
-    fetch(`/add_to_cart/${productId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (document.getElementById("cart_items_fetch")) {
-            document.getElementById("cart_items_fetch").innerText = data.cart_count;
-        }
-        if (document.getElementById("cart_total_id")) {
-            document.getElementById("cart_total_id").innerText = data.cart_total;
-        }
-    })
-    .catch(error => {
-        console.error("Error adding to cart:", error);
-    });
-}
-
-// Modal functions
-function showTextModal1() { document.getElementById("textModal1").style.display = "block"; }
-function hideTextModal1() { document.getElementById("textModal1").style.display = "none"; }
-function showTextModal2() { document.getElementById("textModal2").style.display = "block"; }
-function hideTextModal2() { document.getElementById("textModal2").style.display = "none"; }
-function showTextModal3() { document.getElementById("textModal3").style.display = "block"; }
-function hideTextModal3() { document.getElementById("textModal3").style.display = "none"; }
-function showTextModal4() { document.getElementById("textModal4").style.display = "block"; }
-function hideTextModal4() { document.getElementById("textModal4").style.display = "none"; }
-function showTextModal5() { document.getElementById("textModal5").style.display = "block"; }
-function hideTextModal5() { document.getElementById("textModal5").style.display = "none"; }
-function showTextModal6() { document.getElementById("textModal6").style.display = "block"; }
-function hideTextModal6() { document.getElementById("textModal6").style.display = "none"; }
-
-// Close modals when clicking outside
-window.onclick = function(event) {
-    const modals = ["textModal1", "textModal2", "textModal3", "textModal4", "textModal5", "textModal6"];
-    modals.forEach(function(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal && event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-};
 </script>
-
 <div id="textModal5" class="text-modal">
     <div class="text-modal-content">
         <span class="close-btn" onclick="hideTextModal5()">&times;</span>
@@ -1037,6 +552,32 @@ window.onclick = function(event) {
         </p>
     </div>
 </div>
+
+
+
+<script>
+
+
+    function addToCart(productId) {
+        fetch(`/add_to_cart/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("cart_items_fetch").innerText = data.cart_count;
+                document.getElementById("cart_total_id").innerText = data.cart_total;
+
+            })
+            .catch(error => {
+                // console.error("Xatolik yuz berdi:", error);
+            });
+    }
+</script>
 
 <!-- reklama tugatilid -->
 {% endblock content %}

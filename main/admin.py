@@ -33,6 +33,6 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(PDFDocument)
-
+admin.site.register(Blog)
 #Product
 
