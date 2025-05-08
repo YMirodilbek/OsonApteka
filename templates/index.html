@@ -188,8 +188,7 @@
     <h4 style="margin-top: 30px;">{{ group.class_name }}</h4>
     <div class="row">
         <div class="product_active owl-carousel">
-            {% for product_tuple in group.products %}
-                {% with product=product_tuple.1 %}
+            {% for product in group.products %}
                     <div class="col-lg-3" style="height: auto;">
                         <div class="single_product">
                             <div class="product_thumb">
@@ -233,7 +232,7 @@
                             </div>
                         </div>
                     </div>
-                {% endwith %}
+
             {% endfor %}
         </div>
     </div>
