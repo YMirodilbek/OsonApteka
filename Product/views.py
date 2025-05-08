@@ -66,6 +66,7 @@ def Index(request):
             "data": result,
             "current_page": page,
             "total_pages": paginator.num_pages,
+            "blogs": Blog.objects.all().order_by('-id')[:5]
         }
         return render(request, 'index.html', context)
 

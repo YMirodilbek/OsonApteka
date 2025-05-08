@@ -1151,7 +1151,7 @@ a:hover {
                         <input type="text" class="catalog-search-input" placeholder="Поиск товаров...">
                         <ul>
                             {% for i in category %}
-                            <li><a href="?category={{i.name}}">{{i.name}}</a></li>
+                            <li><a href="{% url 'index' %}?category={{i.name}}">{{i.name}}</a></li>
                             {% empty %}
                             <li><a href="#">Категории не найдены</a></li>
                             {% endfor %}

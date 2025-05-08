@@ -24,6 +24,7 @@
 
     .product-gallery img {
         width: 100%;
+        min-width: 100%;
         height: auto;
         display: block;
         object-fit: contain;
@@ -83,51 +84,40 @@
         font-size: 15px;
     }
 
-    /* Form Elements */
+    /* Price Select Styling */
     .price-select {
-        position: relative;
         margin-bottom: 25px;
     }
 
-    .form-select {
+    .price-select select {
         width: 100%;
-        padding: 12px;
+        padding: 12px 15px;
         border: 1px solid #ddd;
         border-radius: 4px;
-        margin-bottom: 15px;
         font-size: 16px;
+        color: #333;
         background-color: #fff;
+        appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        cursor: pointer;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
         background-repeat: no-repeat;
         background-position: right 10px center;
-        cursor: pointer;
+        background-size: 10px;
+        padding-right: 30px;
     }
 
-    .form-select:focus {
-        outline: none;
-        border-color: #aaa;
-    }
-
-    .custom-select-wrapper {
-        position: relative;
-        display: inline-block;
+    /* Remove the custom select wrapper and arrow */
+    .select-wrapper {
         width: 100%;
     }
 
-    .custom-select-wrapper:after {
-        content: '▼';
-        font-size: 12px;
-        color: #999;
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
+    .select-wrapper::after {
+        content: none;
     }
 
+    /* Description */
     .description {
         margin: 15px 0;
         padding: 15px;
@@ -140,6 +130,7 @@
         content: none;
     }
 
+    /* Quantity Controls */
     .quantity-wrapper {
         margin: 20px 0;
     }
@@ -436,8 +427,10 @@
 
 <!-- Product Details Section -->
 <div class="product-details">
-    <div class="product-gallery">
-        <img id="main-image" src="{{product.image1}}" alt="{{ product.name }}">
+    <div>
+        <div class="product-gallery">
+            <img id="main-image" src="{{product.image1}}" alt="{{ product.name }}">
+        </div>
     </div>
     <div class="product-info">
         <h1>{{ product.name }}</h1>
@@ -450,20 +443,19 @@
 
         <form method="GET" action="/product/add/{{ product.id }}/">
             <div class="price-select">
-                <div class="custom-select-wrapper">
-                    <select name="price" class="form-select">
-                        <option selected value="{{product.prices.0}}">{{product.prices.0}} sum</option>
-                        {% for i in product.prices %}
-                            {% if forloop.counter != 1 %}
-                                <option value="{{i}}">{{i}} sum</option>
-                            {% endif %}
+                <select name="price">
+                    {% if product.prices %}
+                        {% for price in product.prices %}
+                            <option value="{{price}}">{{price}} sum</option>
                         {% endfor %}
-                    </select>
-                </div>
+                    {% else %}
+                        <option value="0">Не доступно</option>
+                    {% endif %}
+                </select>
             </div>
        
             <div class="quantity-wrapper">
-                <label class="quantity-label">Quantity:</label>
+                <label class="quantity-label">Количество:</label>
                 <div class="quantity">
                     <div class="quantity-controls">
                         <button type="button" class="quantity-btn" onclick="decrementQuantity()">-</button>
@@ -473,7 +465,7 @@
                 </div>
             </div>
             
-            <button type="submit" class="add-to-cart">Add to Cart</button>
+            <button type="submit" class="add-to-cart">Добавить в корзину</button>
         </form>
     </div>
     

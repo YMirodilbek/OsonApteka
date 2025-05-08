@@ -10,6 +10,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
+<!-- Добавляем скрытый CSRF токен -->
+{% csrf_token %}
+
 <style>
 /* Fix for sliders to ensure proper display even if JavaScript fails */
 .owl-carousel {
@@ -46,12 +49,96 @@
     width: 100%;
     max-width: 320px;
     margin: 0 auto;
+    transition: transform 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    background: #fff;
 }
 
-/* Product action buttons container */
+.single_product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product_content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 5px;
+}
+
+.product_content h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 16px;
+    height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.product_content span {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.product_price {
+    margin-top: auto;
+    padding-top: 5px;
+}
+
+.current_price {
+    display: block;
+    color: #2971f5;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Updated Styles to Match Example Image */
+.product_thumb {
+    width: 100% !important;
+    padding: 5px !important;
+    height: 220px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.product_thumb img {
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 200px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    object-fit: contain !important;
+}
+
+.product_thumb a {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.item {
+    height: 100%;
+    padding-bottom: 10px;
+}
+
+.product_action {
+    margin-top: 10px;
+}
+
 .product_action ul {
     display: flex;
-    justify-content: space-between;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -112,60 +199,67 @@
     background: #1c60d9;
 }
 
-.single_product {
-    transition: transform 0.2s ease;
-}
-
-.single_product:hover {
-    transform: translateY(-5px);
-}
-
 .product_content a {
     text-decoration: none;
     color: inherit;
 }
 
-.current_price {
-    display: block;
-}
-
-/* Updated Styles to Match Example Image */
-.product_thumb {
-    width: 100% !important;
-    padding: 5px !important;
-}
-
-.product_thumb img {
-    width: auto !important;
-    max-width: 100% !important;
-    max-height: 220px !important;
-    margin: 0 auto !important;
-    display: block !important;
-}
-
-.product_thumb a {
-    display: block;
-    width: 100%;
-    text-align: center;
-}
-
 /* Desktop screens (1080p and above) */
 @media (min-width: 1080px) {
     .single_product {
-        max-width: 228px !important; /* Force exact width of 228px with !important */
-        width: 228px !important; /* Add fixed width as well */
+        max-width: 250px !important; /* Force exact width of 250px with !important */
+        width: 250px !important; /* Add fixed width as well */
     }
     
     .product_thumb {
         min-height: 180px;
+        height: 180px !important;
+    }
+    
+    .owl-item {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .item {
+        display: flex;
+        justify-content: center;
     }
 }
 
 /* Very large screens */
 @media (min-width: 1400px) {
     .single_product {
-        max-width: 228px !important; /* Keep at 228px for larger screens with !important */
-        width: 228px !important; /* Add fixed width as well */
+        max-width: 250px !important; /* Keep at 250px for larger screens with !important */
+        width: 250px !important; /* Add fixed width as well */
+    }
+}
+
+/* Medium screens */
+@media (min-width: 768px) and (max-width: 1079px) {
+    .single_product {
+        max-width: 220px !important;
+        width: 220px !important;
+    }
+    
+    .product_thumb {
+        height: 160px !important;
+    }
+    
+    .product_content h3 {
+        font-size: 14px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+    .single_product {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    
+    .product_thumb {
+        height: 180px !important;
     }
 }
 
@@ -254,6 +348,45 @@
         overflow: hidden;
     }
 }
+
+/* Modal window styles */
+.text-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.text-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 </style>
 
 <!-- slide start -->
@@ -314,7 +447,7 @@
                                     <ul>
                                         {% if user.is_authenticated %}
                                         <li class="product_cart">
-                                            <a href="#" data-product-id="{{ product.id }}" class="add-to-cart-btn">корзина</a>
+                                            <a href="#" data-product-id="{{ product.id }}" onclick="addToCartClick(event, '{{ product.id }}')" class="add-to-cart-btn">корзина</a>
                                         </li>
                                         {% else %}
                                         <li class="product_cart">
@@ -408,66 +541,23 @@
         </div>
         <div class="row">
             <div class="blog_active owl-carousel">
+                {% for blog in blogs %}
                 <div class="item">
                     <div class="single_blog">
                         <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal1()"><img src="../static/assets/img3/01.jpg"
+                            <a class="open-info-btn" onclick="showTextModal1()"><img src="{{ blog.image.url }}"
                                     alt="Kutib turing"></a>
                         </div>
                         <div class="blog_content"><br>
-                            <h5>Что делать при аллергии?</h5>
-                            <a href="#">24.03.2025</a>
-                            <p>Причины, симптомы и эффективные способы лечения.
+                            <h5>{{ blog.title }}</h5>
+                            <a href="#">{{ blog.created_at|date:"d.m.Y" }}</a>
+                            <p>{{ blog.text|truncatechars:60 }}
                             </p>
                         </div>
-                        <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
+                        <a href="{% url 'blog_details' blog.pk %}" class="tugma22"><button class="button22">Подробно</button></a>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal2()"><img
-                                    src="../static/assets/img3/02.jpg"></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h6>Как укрепить иммунитет: простые шаги к здоровью</h6>
-                            <a>25.022025</a>
-                            <p> Иммунная система – это главный защитник организма от вирусов и инфекций.
-                            </p>
-                            <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal3()"><img src="../static/assets/img3/03.jpg"
-                                    alt=""></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h5>Как быстро восстановить организм после болезни.</h5>
-                            <a href="#">23.02.2025</a>
-                            <p>После болезни организм ослаблен и нуждается в правильном восстановлении.
-                            </p>
-                            <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal4()"><img src="../static/assets/img3/04.jpg"
-                                    alt=""></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h5>Идеальная кожа: секреты ухода и выбор средств</h5>
-                            <a href="#">22.02.2025</a>
-                            <p>Здоровая, сияющая кожа — мечта каждого. Но ежедневные стрессы.
-                            </p>
-                            <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -476,205 +566,6 @@
 <!-- info start -->
 
 
-
-<div id="textModal1" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal1()">&times;</span>
-        <p>Аллергия – это реакция иммунной системы на определённые вещества, которые организм воспринимает как угрозу.
-            Она может проявляться в любое время года и доставлять немало дискомфорта. Разберёмся, как избежать
-            неприятных симптомов и защитить себя.
-
-            Основные причины аллергии
-
-            Аллергены могут быть разными:
-
-            ▫️Пыльца растений – вызывает сезонный аллергический ринит (сенную лихорадку).
-
-            ▫️Пыль и плесень – содержат микроскопические клещи и грибки, раздражающие дыхательные пути.
-
-            ▫️Шерсть животных – особые белки в коже и слюне питомцев могут провоцировать реакцию.
-
-            ▫️Продукты питания – орехи, молочные продукты, морепродукты часто вызывают аллергию.
-
-            ▫️Лекарства – некоторые препараты, особенно антибиотики, могут вызывать аллергическую реакцию.
-
-            Симптомы аллергии
-
-            Проявления аллергии могут быть разными:
-
-            ▫️Чихание, заложенность носа, насморк.
-
-            ▫️Слезотечение, покраснение глаз.
-
-            ▫️Зуд, высыпания на коже.
-
-            ▫️Одышка, кашель.
-
-            ▫️В редких случаях – анафилаксия (тяжелая реакция, требующая неотложной помощи).
-
-            Как защитить себя от аллергии?
-
-            ▫️Избегайте контакта с аллергенами: регулярно делайте влажную уборку, используйте очистители воздуха,
-            исключите опасные продукты.
-
-            ▫️Принимайте антигистаминные препараты: они помогают снизить симптомы и улучшить самочувствие.
-
-            ▫️Используйте гипоаллергенную косметику: она снижает риск раздражения кожи.
-
-            ▫️Обратитесь к врачу: специалист поможет выявить причины аллергии и назначит правильное лечение.
-
-            Будьте готовы к сезону аллергии!
-
-            В нашей интернет-аптеке вы найдете антигистаминные препараты, назальные спреи, глазные капли и другие
-            средства для борьбы с аллергией. Не ждите ухудшения самочувствия – позаботьтесь о своем здоровье заранее!
-
-            Закажите нужные лекарства прямо сейчас и забудьте о дискомфорте!</p>
-    </div>
-</div>
-<div id="textModal2" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal2()">&times;</span>
-        <p>Основные факторы, влияющие на иммунитет
-
-            Состояние иммунной системы зависит от множества факторов, среди которых:
-
-            ▫️Питание – нехватка витаминов и микроэлементов снижает защитные функции организма.
-
-            ▫️Физическая активность – регулярные упражнения помогают улучшить кровообращение и ускорить обмен веществ.
-
-            ▫️Сон и отдых – недостаток сна негативно влияет на выработку иммунных клеток.
-
-            ▫️Закаливание - контрастный душ или обливания холодной водой помогают адаптировать организм к перепадам
-            температуры
-
-            ▫️Стресс – повышенный уровень кортизола ослабляет защитные силы организма.
-
-            Как повысить иммунитет?
-
-            ▫️Чтобы укрепить иммунную систему, следуйте простым, но эффективным рекомендациям:
-
-            ▫️Употребляйте больше витаминов – особенно важны витамин C (цитрусовые, киви, болгарский перец), витамин D
-            (рыба, яйца) и цинк (орехи, бобовые).
-
-            ▫️Пейте больше воды – достаточное количество жидкости помогает организму выводить токсины.
-
-            ▫️Занимайтесь спортом – прогулки на свежем воздухе, йога или пробежки укрепляют организм.
-
-            ▫️Высыпайтесь – 7–8 часов полноценного сна поддерживают нормальное функционирование иммунной системы.
-
-            ▫️Избегайте стрессов – найдите время для отдыха, медитации или занятий любимыми хобби.
-
-            Где найти всё необходимое для поддержания иммунитета?
-
-            В нашей интернет-аптеке вы найдете широкий выбор витаминов, минералов и иммуномодуляторов. Закажите нужные
-            средства прямо сейчас и позаботьтесь о своем здоровье заранее!
-
-            Переходите в каталог и выберите лучшие продукты для поддержания иммунитета!</p>
-    </div>
-</div>
-<div id="textModal3" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal3()">&times;</span>
-        <p>Что происходит с организмом после болезни?
-
-            Ослабленный иммунитет
-            Потеря сил и быстрая утомляемость
-            Дисбаланс микрофлоры кишечника (особенно после приёма антибиотиков)
-            Дефицит витаминов и минералов
-            Возможные остаточные симптомы: слабость, головокружение, сухость кожи
-
-            Как восстановить организм?
-
-            ▫️Сбалансированное питание
-
-            Включите в рацион белки, полезные жиры и медленные углеводы.
-
-            Употребляйте больше овощей, зелени, орехов, кисломолочных продуктов.
-
-            Пейте больше жидкости: воду, травяные чаи, морсы для выведения токсинов.
-
-            ▫️Витамины и микроэлементы
-
-            Витамин C — ускоряет восстановление и поддерживает иммунитет.
-
-            Витамин D — помогает в борьбе с усталостью и укрепляет организм.
-
-            Цинк и магний — улучшают самочувствие и поддерживают работу нервной системы.
-
-            Пробиотики — восстанавливают микрофлору кишечника после приёма лекарств.
-
-            ▫️Физическая активность и свежий воздух
-
-            Лёгкие прогулки на свежем воздухе ускоряют обмен веществ и насыщают кровь кислородом.
-
-            Йога и растяжка помогают снять напряжение и восстановить тонус мышц.
-
-            ▫️Режим сна и отдыха
-
-            Высыпайтесь: 7–9 часов сна помогут организму быстрее восстановиться.
-
-            Избегайте перегрузок и стресса, восстанавливайтесь постепенно.
-
-            ▫️Дополнительная поддержка организма
-
-            Чаи с ромашкой, имбирём и мёдом помогают укрепить иммунитет.
-
-            Лёгкие дыхательные упражнения способствуют улучшению работы лёгких.
-
-            Где найти всё необходимое для восстановления?
-
-            В нашей интернет-аптеке вы найдёте витаминные комплексы, пробиотики и натуральные средства для поддержки
-            организма. Закажите необходимое и восстанавливайтесь быстрее!
-
-            Позаботьтесь о здоровье — оформите заказ прямо сейчас!</p>
-    </div>
-</div>
-<div id="textModal4" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal4()">&times;</span>
-        <p>Основные этапы ухода за кожей
-
-            Очищение — удаляет загрязнения и излишки себума, подготавливает кожу к последующему уходу. Выбирайте мягкие
-            гели или пенки, соответствующие вашему типу кожи.
-
-            Тонизирование — восстанавливает pH-баланс, сужает поры и подготавливает кожу к увлажнению.
-
-            Увлажнение — ключевой этап, который поддерживает защитный барьер кожи и предотвращает её пересушивание.
-
-            Дополнительный уход — маски, сыворотки и скрабы помогают решить специфические проблемы: пигментацию,
-            воспаления, сухость или первые морщины.
-
-            Защита — солнцезащитные кремы предотвращают фотостарение и защищают кожу от вредного воздействия УФ-лучей.
-
-            Как выбрать косметику для ухода?
-
-            Выбор средств зависит от типа кожи:
-
-            Сухая кожа — требует питательных кремов и мягких очищающих средств.
-
-            Жирная кожа — нуждается в лёгких текстурах и средствах с матирующим эффектом.
-
-            Чувствительная кожа — предпочитает гипоаллергенную косметику без агрессивных компонентов.
-
-            Комбинированная кожа — требует баланса увлажнения и контроля себума.
-
-            Полезные советы по уходу
-
-            ✔️ Используйте средства с натуральными экстрактами и витаминами.
-            ✔️ Не забывайте пить достаточно воды для увлажнения кожи изнутри.
-            ✔️ Регулярно меняйте наволочки и избегайте прикосновений к лицу грязными руками.
-            ✔️ Не злоупотребляйте жёсткими скрабами, чтобы не травмировать кожу.
-            ✔️ Подбирайте косметику с учётом сезона: зимой — питательные кремы, летом — лёгкие увлажняющие гели.
-
-            Найдите идеальные средства в нашей интернет-аптеке
-
-            В нашем каталоге вы найдёте всё для комплексного ухода за кожей: от деликатных очищающих пенок до мощных
-            антивозрастных сывороток. Выберите подходящие средства прямо сейчас и наслаждайтесь здоровой, ухоженной
-            кожей каждый день!
-
-            Закажите эффективный уход для кожи прямо сейчас!</p>
-    </div>
-</div>
 <!-- haqimizda tugatildi -->
 <!-- matinlar boshlandi -->
 
@@ -785,7 +676,7 @@ function prevSlide1() {
     showSlides();
 }
 
-// Initialize all sliders when DOM is loaded
+// Initialize all sliders and cart functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     log('DOM Content Loaded');
     
@@ -878,6 +769,18 @@ function initCarousels($) {
                     576: { items: 2 },
                     768: { items: 3 },
                     992: { items: 4 }
+                },
+                onInitialized: function() {
+                    // Find the tallest item and set all items to that height
+                    let maxHeight = 0;
+                    $(this.$element).find('.single_product').each(function() {
+                        let height = $(this).outerHeight();
+                        if (height > maxHeight) {
+                            maxHeight = height;
+                        }
+                    });
+                    $(this.$element).find('.single_product').css('min-height', maxHeight + 'px');
+                    log(`Set product card height to ${maxHeight}px`);
                 }
             });
         });
@@ -951,39 +854,114 @@ function initCarousels($) {
     }, 1000);
 }
 
-// Add to cart functionality
-function addToCart(productId) {
-    fetch(`/add_to_cart/${productId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (document.getElementById("cart_items_fetch")) {
-            document.getElementById("cart_items_fetch").innerText = data.cart_count;
-        }
-        if (document.getElementById("cart_total_id")) {
-            document.getElementById("cart_total_id").innerText = data.cart_total;
-        }
-    })
-    .catch(error => {
-        console.error("Error adding to cart:", error);
-    });
+// Direct cart button click function - will be called directly from onclick attribute
+function addToCartClick(event, productId) {
+    // Prevent default action (navigation)
+    event.preventDefault();
+    
+    if (!productId) {
+        console.error("No product ID provided to addToCartClick");
+        return;
+    }
+    
+    console.log("Adding product to cart with direct click function:", productId);
+    
+    try {
+        // Find the button that was clicked
+        const button = event.currentTarget;
+        
+        // Visual feedback
+        const originalText = button.textContent;
+        const originalBg = button.style.backgroundColor;
+        button.textContent = 'Добавлено';
+        button.style.backgroundColor = '#4CAF50';
+        
+        // Get CSRF token
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        // Create request
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/add_to_cart/' + productId + '/', true);
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                const response = JSON.parse(xhr.responseText);
+                console.log("Product added successfully (direct click):", response);
+                
+                // Update cart counters
+                const cartItemsCount = document.getElementById('cart_items_fetch');
+                if (cartItemsCount) {
+                    cartItemsCount.textContent = response.cart_count;
+                }
+                
+                const cartTotal = document.getElementById('cart_total_id');
+                if (cartTotal) {
+                    cartTotal.textContent = response.cart_total;
+                }
+                
+                // Show success message
+            } else {
+                console.error("Error adding to cart. Status:", xhr.status);
+            }
+            
+            // Restore button appearance after delay
+            setTimeout(function() {
+                button.textContent = originalText;
+                button.style.backgroundColor = originalBg;
+            }, 1000);
+        };
+        
+        xhr.onerror = function() {
+            console.error("Request failed in direct click");
+            alert("Ошибка при добавлении товара в корзину");
+            
+            // Restore button appearance
+            button.textContent = originalText;
+            button.style.backgroundColor = originalBg;
+        };
+        
+        // Send request
+        xhr.send(JSON.stringify({}));
+        
+    } catch (error) {
+        console.error("Error in direct cart click handler:", error);
+    }
+    
+    return false;
 }
 
+// Add event listeners for DOM elements once loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add window resize handler for consistent card heights
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.owlCarousel !== 'undefined') {
+                jQuery('.owl-carousel').trigger('refresh.owl.carousel');
+                
+                // Equalize heights for product cards
+                jQuery('.product_active').each(function() {
+                    let maxHeight = 0;
+                    jQuery(this).find('.single_product').css('min-height', '');
+                    
+                    jQuery(this).find('.single_product').each(function() {
+                        let height = jQuery(this).outerHeight();
+                        if (height > maxHeight) {
+                            maxHeight = height;
+                        }
+                    });
+                    
+                    jQuery(this).find('.single_product').css('min-height', maxHeight + 'px');
+                });
+            }
+        }, 250);
+    });
+});
+
 // Modal functions
-function showTextModal1() { document.getElementById("textModal1").style.display = "block"; }
-function hideTextModal1() { document.getElementById("textModal1").style.display = "none"; }
-function showTextModal2() { document.getElementById("textModal2").style.display = "block"; }
-function hideTextModal2() { document.getElementById("textModal2").style.display = "none"; }
-function showTextModal3() { document.getElementById("textModal3").style.display = "block"; }
-function hideTextModal3() { document.getElementById("textModal3").style.display = "none"; }
-function showTextModal4() { document.getElementById("textModal4").style.display = "block"; }
-function hideTextModal4() { document.getElementById("textModal4").style.display = "none"; }
 function showTextModal5() { document.getElementById("textModal5").style.display = "block"; }
 function hideTextModal5() { document.getElementById("textModal5").style.display = "none"; }
 function showTextModal6() { document.getElementById("textModal6").style.display = "block"; }
