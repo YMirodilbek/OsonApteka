@@ -35,6 +35,7 @@ def add_to_cart(request, product_id):
     messages.success(request, " mahsulot Savatchaga qo'shildi ")
     return JsonResponse({"status":200,'cart_count':cart_count, 'cart_total':cart_total})
 
+
 def search_products(request):
     query = latin_to_cyrillic(request.GET.get('q', '')).strip().lower()
     r = redis.Redis(host='localhost', port=6379, db=0)
@@ -43,7 +44,7 @@ def search_products(request):
 
     if result and query:
         result = json.loads(result.decode('utf-8'))
-    for item in result:
+    for uid, item in result:
         name = item.get('name_lower')
 
         if name: 

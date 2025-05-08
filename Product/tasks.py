@@ -55,38 +55,38 @@ def refresh_products_cache():
         category = item.get("Class", "") or "None-Class"
         price = item.get("Price", 0)
 
+        existing = next((p for p in final_result if p[0] == uid), None)
 
-        existing_product = next((p for p in final_result if p["uid"] == uid), None)
-
-        if existing_product:
-            existing_product["prices"].append(price)
+        if existing:
+            final_result.remove(existing)
+            updated_prices = existing[1]["prices"] + (price,)  # tuple ga qo‘shamiz
+            existing[1]["prices"] = updated_prices
+            final_result.append((uid, existing[1]))
         else:
             product_data = {
-            "uid": uid,
-            "id": product.id,
-            "name": name,
-            "name_lower": name.lower(),
-            "prices": [price],
-            "class": category,
-            "producer": item.get("Producer", ""),
-            "country": item.get("Country", ""),
-            "MNN": item.get("MNN", ""),
-            "ReleaseForm": item.get("ReleaseForm", ""),
-            "ProductType": item.get("ProductType", ""),
-            "ExpDate": item.get("ExpDate", ""),
-            "info": product.info,
-            "image1": product.image1.url if product.image1 else "",
+                "uid": uid,
+                "id": product.id,
+                "name": name,
+                "name_lower": name.lower(),
+                "prices": (price,),  # tuple shaklida boshlaymiz
+                "class": category,
+                "producer": item.get("Producer", ""),
+                "country": item.get("Country", ""),
+                "MNN": item.get("MNN", ""),
+                "ReleaseForm": item.get("ReleaseForm", ""),
+                "ProductType": item.get("ProductType", ""),
+                "ExpDate": item.get("ExpDate", ""),
+                "info": product.info,
+                "image1": product.image1.url if product.image1 else "",
             }
-            final_result.append(product_data)
+            final_result.append((uid, product_data))
 
 
-    for item in final_result:
+    for _, item in final_result:
         category = item["class"]
         grouped_by_class.setdefault(category, []).append(item)
 
-
-    r.setex('final_result', 86400, json.dumps(final_result))
+    r.setex('final_result', 86400, json.dumps([item[1] for item in final_result]))
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
-
 
     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")
