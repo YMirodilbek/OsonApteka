@@ -44,7 +44,7 @@ def search_products(request):
 
     if result and query:
         result = json.loads(result.decode('utf-8'))
-    for uid, item in result:
+    for  item in result:
         name = item.get('name_lower')
 
         if name: 
