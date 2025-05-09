@@ -1110,9 +1110,10 @@ a:hover {
                         <li><a href="/front/landlords/">Арендодателям</a></li>
                         <li><a href="/front/vacancies/">Вакансии</a></li>
                         <li><a href="/front/operator/">Наши аптеки</a></li>
-                        <li><a href="/front/resipe/">Загрузи рецепт</a></li>
+                        <li><a href="/front/resipe/">Загрузить рецепт</a></li>
                         {% if request.user.is_staff %}
                         <li><a href="/filial">Филял</a></li>
+                        <li><a href="{% url 'blog' %}">Блог</a></li>
                         {% endif %}
                         <li> <!-- Language dropdown -->
                             <div class="language-dropdown">

@@ -1,171 +1,145 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akmal Farm Medical</title>
-</head>
-<style>
-  @font-face {
-  font-family: 'Campton Bold';
-  src: url('fonts/Campton-Bold.woff2') format('woff2'),
-       url('fonts/Campton-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Intro Light';
-  src: url('fonts/Intro-Light.woff2') format('woff2'),
-       url('fonts/Intro-Light.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-}
-body {
-  font-family: 'Intro Light', sans-serif;
-}
-
-h1, h2, h3 {
-  font-family: 'Campton Bold', sans-serif;
-}
-
-    .alh3 {
-        color: white;
-        background-color: #002d5c;
-        width: 100%;
-        text-align: center;
-        align-items: center;
-        height: 40px;
-    }
-
-    .tugma22 {
-        text-decoration: none;
-    }
-
-    .button22 {
-        background-color: #c51f30;
-        /* Qizil rang */
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-    }
-
-    .button22:hover {
-        background-color: #c0392b;
-        /* Qizilni qoraroq qilish */
-    }
-
-    /* Kichik ekranlar (masalan, mobil qurilmalar) uchun */
-    @media (max-width: 600px) {
-        .button22 {
-            padding: 8px 15px;
-            font-size: 14px;
-            margin-bottom: 20px !important;
-        }
-    }
-
-    /* O'rtacha ekranlar (masalan, planshetlar) uchun */
-    @media (max-width: 768px) {
-        .button22 {
-            padding: 10px 18px;
-            font-size: 15px;
-        }
-    }
-</style>
-
-<body>
+{% block content %}
     <style>
         h2 {
-            text-align: left;
-            margin-bottom: 20px;
-            font-size: 28px;
-            color: #333;
-            margin-left: 200px;
+            text-align: center;
+            color: #1e3a8a;
+            font-size: 2.2rem;
+            margin: 30px 0;
+            position: relative;
         }
-
+        
+        h2:after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #1e3a8a;
+            margin: 15px auto 0;
+        }
+        
         .main-container {
-            display: flex;
-            gap: 20px;
             max-width: 1200px;
-            margin: auto;
+            margin: 0 auto 50px;
+            display: flex;
+            gap: 30px;
+            padding: 0 20px;
         }
-
+        
         .left-panel {
-            width: 40%;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            height: 600px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 650px;
             overflow-y: auto;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding-right: 15px;
         }
-
-        .store {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
+        
+        .left-panel::-webkit-scrollbar {
+            width: 6px;
         }
-
-        .store h3 {
-            font-size: 18px;
-            color: #004fa3;
-            margin-bottom: 8px;
-        }
-
-        .store p {
-            font-size: 14px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .store .button {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 8px 16px;
-            background-color: #004fa3;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .store .button:hover {
-            background-color: #003570;
-        }
-
-        .right-panel {
-            width: 60%;
+        
+        .left-panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
-
-        iframe {
-            width: 100%;
-            height: 600px;
+        
+        .left-panel::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 10px;
+        }
+        
+        .left-panel::-webkit-scrollbar-thumb:hover {
+            background: #a0a0a0;
+        }
+        
+        .right-panel {
+            flex: 1.2;
+        }
+        
+        .store {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .store:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .store h3 {
+            color: #1e3a8a;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        
+        .store p {
+            margin: 8px 0;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+        
+        .store strong {
+            color: #1e3a8a;
+            font-weight: 600;
+            display: inline-block;
+            width: 140px;
+        }
+        
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #1e3a8a;
+            color: white;
             border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
         }
-
-        /* Responsiv */
+        
+        .button:hover {
+            background-color: #1c3377;
+        }
+        
+        iframe {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            height: 650px;
+        }
+        
         @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
             }
-
-            .left-panel,
+            
+            .left-panel {
+                max-height: none;
+                overflow-y: visible;
+                padding-right: 0;
+            }
+            
             .right-panel {
-                width: 100%;
+                margin-top: 20px;
+            }
+            
+            iframe {
+                height: 450px;
             }
         }
     </style>
-    <a href="/" class="tugma22"><button class="button22">Back</button></a>
+
     <h2>Наши аптеки</h2>
 
     <div class="main-container">
@@ -223,6 +197,5 @@ h1, h2, h3 {
           
         </div>
         <br><br>
-</body>
-
-</html>
+    </div>
+{% endblock %}

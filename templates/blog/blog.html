@@ -3,6 +3,15 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'assets/css/blog.css' %}">
 
+    <div class="blog-header-container">
+        <h1>Блог</h1>
+        {% if user.is_authenticated %}
+        {% if user.is_staff %}
+        <a href="{% url 'blog_create' %}" class="create-blog-btn">Яратиш</a>
+        {% endif %}
+        {% endif %}
+    </div>
+
     <div class="blog-container">
         {% for blog in blogs %}
         <div class="blog-card">
@@ -13,4 +22,45 @@
         </div>
         {% endfor %}
     </div>
+
+    <style>
+        .blog-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1140px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+        }
+        
+        .blog-header-container h1 {
+            margin: 0;
+            color: #e5d4d4;
+            font-size: 28px;
+        }
+        
+        .create-blog-btn {
+            background-color: #c51f30;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .create-blog-btn:hover {
+            background-color: #a71a28;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .blog-header-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 {% endblock %}

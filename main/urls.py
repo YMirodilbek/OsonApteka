@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/',Logout),
     path('blog/',blog_view, name='blog'),
     path('blog/<int:pk>/', BlogDetail, name='blog_details'),
+    path('blog/create/', blog_create, name='blog_create'),
 ]
