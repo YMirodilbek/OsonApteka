@@ -65,3 +65,4 @@ for i in data:
 # Bu Redis’ga Linux o‘zgaruvchan xotiradan (swap) foydalanmaslikka yordam beradi.
 
 # Redis redis.conf faylida no-appendfsync-on-rewrite yes sozlamasini tekshirib chiqing — diskga yozishdan ogoh bo‘ladi.
+
