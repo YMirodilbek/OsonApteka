@@ -2770,9 +2770,9 @@ border: none !important;
                                 </div>
                                 <div class="product_action">
                                     <ul style="display: flex; justify-content: center; align-items: center;">
-                                        {% if user.is_authenticated %}
+                                       {% if user.is_authenticated %}
                                         <li class="product_cart" style="margin-right: 10px;">
-                                            <a onclick="addToCart({{ product.id }})">корзина</a>
+                                            <a onclick="addToCart(${product.id})">корзина</a>
                                         </li>
                                         {% else %}
                                         <li class="product_cart" style="margin-right: 10px;">
