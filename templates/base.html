@@ -13,13 +13,6 @@
     <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}"> <!-- Your responsive styles -->
     
     <script src="{% static 'assets/js/vendor/modernizr-2.8.3.min.js' %}"></script>
-    <link rel="shortcut icon" href="{% static 'assets/img2/AFM MEDICAL — копия.png' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/bundle.css' %}"> <!-- Assuming this combines plugins.css -->
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"> <!-- Your main custom styles will go here or be merged -->
-    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}"> <!-- Your responsive styles -->
-    
-    <script src="{% static 'assets/js/vendor/modernizr-2.8.3.min.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -30,13 +23,6 @@ body {
     font-family: sans-serif; /* Add a default font */
     line-height: 1.6;
     color: #333;
-/* ===============================================
-   BASE & UTILITIES
-   =============================================== */
-body {
-    font-family: sans-serif; /* Add a default font */
-    line-height: 1.6;
-    color: #333;
 }
 
 a {
@@ -45,34 +31,15 @@ a {
 }
 a:hover {
     color: #155de4;
-a {
-    text-decoration: none;
-    color: #2971f5;
-}
-a:hover {
-    color: #155de4;
 }
 
-.container { /* From Bootstrap, but good to keep in mind */
 .container { /* From Bootstrap, but good to keep in mind */
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
 }
-@media (min-width: 576px) { .container { max-width: 540px; } }
-@media (min-width: 768px) { .container { max-width: 720px; } }
-@media (min-width: 992px) { .container { max-width: 960px; } }
-@media (min-width: 1200px) { .container { max-width: 1140px; } }
-
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
 @media (min-width: 576px) { .container { max-width: 540px; } }
 @media (min-width: 768px) { .container { max-width: 720px; } }
 @media (min-width: 992px) { .container { max-width: 960px; } }
@@ -87,30 +54,16 @@ a:hover {
     font-weight: 500;
     border: none;
     transition: all 0.3s ease;
-    text-align: center;
-    font-weight: 500;
-    border: none;
-    transition: all 0.3s ease;
     text-decoration: none;
-    font-family: inherit;  /* Match the parent font */
     font-family: inherit;  /* Match the parent font */
     font-size: 14px;
     line-height: 1.5;
-    line-height: 1.5;
 }
-.btn-primary {
 .btn-primary {
     background-color: #2971f5;
     color: white;
     box-shadow: 0 2px 4px rgba(41, 113, 245, 0.3);
-    color: white;
-    box-shadow: 0 2px 4px rgba(41, 113, 245, 0.3);
 }
-.btn-primary:hover {
-    background-color: #1c60d9;
-    color: white;
-    box-shadow: 0 4px 8px rgba(41, 113, 245, 0.4);
-    transform: translateY(-1px);
 .btn-primary:hover {
     background-color: #1c60d9;
     color: white;
@@ -120,50 +73,15 @@ a:hover {
 .btn-primary:active {
     transform: translateY(1px);
     box-shadow: 0 1px 2px rgba(41, 113, 245, 0.2);
-.btn-primary:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 2px rgba(41, 113, 245, 0.2);
 }
-.btn-danger {
-    background-color: #f44336;
 .btn-danger {
     background-color: #f44336;
     color: white;
     box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
-    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
 }
 .btn-danger:hover {
     background-color: #d32f2f;
-.btn-danger:hover {
-    background-color: #d32f2f;
     color: white;
-    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
-    transform: translateY(-1px);
-}
-.btn-danger:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 2px rgba(244, 67, 54, 0.2);
-}
-
-
-/* ===============================================
-   MESSAGES (Flash/Alerts)
-   =============================================== */
-.messages-flash {
-    position: fixed;
-    top: 20px;  
-    right: 20px;
-    background: #4CAF50;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    z-index: 2000; /* Higher than modals */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-.messages-flash .message {
-    font-size: 16px;
-    font-weight: bold;
-}
     box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
     transform: translateY(-1px);
 }
@@ -211,62 +129,7 @@ a:hover {
 .modal-overlay.show {
     display: flex;
 }
-/* ===============================================
-   MODAL STYLES (Consolidated)
-   =============================================== */
-.modal-overlay {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1050; /* Bootstrap's modal z-index */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto; /* Allow scrolling if content is too tall */
-}
-.modal-overlay.show {
-    display: flex;
-}
 
-.modal-dialog {
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 450px; /* Max width for general modals */
-    text-align: center;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    margin: 20px auto; /* Centering for scrolling content */
-    animation: modalFadeIn 0.3s ease-out;
-}
-
-.modal-header {
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 20px;
-}
-.modal-header h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-size: 1.5rem;
-}
-
-.modal-body input[type="text"],
-.modal-body input[type="tel"],
-.modal-body input[type="password"],
-.modal-body input[type="email"] {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
 .modal-dialog {
     background-color: white;
     padding: 25px;
@@ -446,23 +309,6 @@ a:hover {
 }
 .language-dropdown-options li {
     padding: 0;
-.language-dropdown-options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: white;
-    list-style: none;
-    padding: 0;
-    margin: 5px 0 0 0;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    display: none;
-    width: 100%;
-    z-index: 1010;
-    min-width: 80px;
-}
-.language-dropdown-options li {
-    padding: 0;
 }
 .language-dropdown-options li a {
     display: block;
@@ -470,48 +316,7 @@ a:hover {
     color: #333;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
-.language-dropdown-options li a {
-    display: block;
-    padding: 8px 10px;
-    color: #333;
-    text-decoration: none;
-    transition: background-color 0.2s, color 0.2s;
 }
-.language-dropdown-options li a:hover {
-    background-color: #2971f5;
-    color: white;
-}
-
-/* Mobile Menu Toggle */
-.mobile-menu-toggle {
-    display: none; /* Hidden on desktop */
-    font-size: 1.8rem;
-    color: white;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-/* Header Main */
-.header-main {
-    background-color: #f2f7ffe1;
-    padding: 15px 0;
-    border-bottom: 1px solid #e0e0e0;
-}
-.header-main .container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens if needed */
-}
-.header-main .logo img {
-    max-width: 180px; /* Adjust as needed */
-    height: auto;
-}
-
-/* Catalog Dropdown */
-.catalog-dropdown {
-    position: relative;
 .language-dropdown-options li a:hover {
     background-color: #2971f5;
     color: white;
@@ -581,57 +386,7 @@ a:hover {
 }
 .catalog-dropdown.active .catalog-menu {
     display: block !important;
-.catalog-toggle-btn {
-    background-color: #2971f5;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    white-space: nowrap;
-    border: none;
 }
-.catalog-toggle-btn i {
-    margin-right: 5px;
-}
-.catalog-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    z-index: 1000;
-    margin-top: 5px;
-    border-radius: 5px;
-    max-height: 400px;
-    overflow-y: auto;
-}
-.catalog-dropdown.active .catalog-menu {
-    display: block !important;
-}
-.catalog-menu::-webkit-scrollbar { width: 6px; }
-.catalog-menu::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-.catalog-menu::-webkit-scrollbar-thumb { background: #2971f5; border-radius: 4px; }
-
-.catalog-search-input {
-    width: calc(100% - 20px);
-    padding: 8px 10px;
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 0.9rem;
-}
-.catalog-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
 .catalog-menu::-webkit-scrollbar { width: 6px; }
 .catalog-menu::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
 .catalog-menu::-webkit-scrollbar-thumb { background: #2971f5; border-radius: 4px; }
@@ -714,19 +469,7 @@ a:hover {
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
-.header-action-item {
-    text-align: center;
-    color: #333; /* Default text color */
 }
-.header-action-item a {
-    color: inherit;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-}
-.header-action-item a:hover {
-    color: #2971f5;
 .header-action-item a:hover {
     color: #2971f5;
 }
@@ -734,23 +477,7 @@ a:hover {
     font-size: 1.8rem; /* Icon size */
     display: block;
     margin-bottom: 2px;
-.header-action-item i {
-    font-size: 1.8rem; /* Icon size */
-    display: block;
-    margin-bottom: 2px;
 }
-.header-action-item span {
-    display: block;
-    line-height: 1.2;
-}
-.header-action-item .sub-text {
-    font-size: 0.8rem;
-    color: #555;
-}
-
-/* Cart Specifics */
-.cart-action {
-    position: relative;
 .header-action-item span {
     display: block;
     line-height: 1.2;
@@ -794,43 +521,7 @@ a:hover {
     border: 1px solid #e0e0e0;
     scrollbar-width: thin;
     scrollbar-color: #2971f5 #f1f1f1;
-.cart-count-badge {
-    background-color: #f44336;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 7px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    position: absolute;
-    top: -5px;
-    right: -8px;
-    line-height: 1;
 }
-
-/* Mini Cart */
-.mini-cart {
-    position: fixed;
-    right: 20px;
-    top: 80px; /* Adjust based on header height */
-    background: white;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    width: 320px;
-    z-index: 1010; /* Increased to be above other elements */
-    display: none;
-    max-height: 450px;
-    overflow-y: auto;
-    border: 1px solid #e0e0e0;
-    scrollbar-width: thin;
-    scrollbar-color: #2971f5 #f1f1f1;
-}
-.mini-cart.show {
-    display: block;
-}
-.mini-cart::-webkit-scrollbar { width: 6px; }
-.mini-cart::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-.mini-cart::-webkit-scrollbar-thumb { background: #2971f5; border-radius: 4px; }
 .mini-cart.show {
     display: block;
 }
@@ -852,31 +543,11 @@ a:hover {
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid #f0f0f0;
-.mini-cart-header {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
-    color: #333;
-}
-.mini-cart-item {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f0f0f0;
 }
 .mini-cart-item:last-child {
     margin-bottom: 0;
     border-bottom: none;
-.mini-cart-item:last-child {
-    margin-bottom: 0;
-    border-bottom: none;
 }
-.mini-cart-item-image {
-    min-width: 60px;
-    height: 60px;
 .mini-cart-item-image {
     min-width: 60px;
     height: 60px;
@@ -925,65 +596,10 @@ a:hover {
 .mini-cart-summary strong {
     float: right;
     color: #c51f30;
-.mini-cart-item-image img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-    border: 1px solid #eee;
-}
-.mini-cart-item-info {
-    flex-grow: 1;
-}
-.mini-cart-item-info a {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #333;
-    display: block;
-    margin-bottom: 5px;
-    text-decoration: none;
-}
-.mini-cart-item-info a:hover {
-    color: #2971f5;
-}
-.mini-cart-item-info p {
-    font-size: 0.85rem;
-    color: #666;
-    margin: 3px 0;
-}
-.mini-cart-item-info strong { /* For price, total */
-    color: #c51f30;
-}
-.mini-cart-summary {
-    background-color: #f9f9f9;
-    padding: 10px;
-    margin: 10px -15px -15px -15px;
-    border-top: 1px solid #eee;
-}
-.mini-cart-summary p {
-    font-size: 0.95rem;
-    margin: 5px 0;
-    font-weight: 500;
-    color: #333;
-}
-.mini-cart-summary strong {
-    float: right;
-    color: #c51f30;
 }
 .mini-cart-actions {
     padding: 15px 0 0;
-.mini-cart-actions {
-    padding: 15px 0 0;
 }
-.mini-cart-actions .btn {
-    width: 100%;
-    margin: 0;
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 14px;
-    padding: 12px;
-    letter-spacing: 0.5px;
-    border-radius: 4px;
 .mini-cart-actions .btn {
     width: 100%;
     margin: 0;
@@ -1040,58 +656,7 @@ a:hover {
 .mobile-aside-lang-switcher a.active,
 .mobile-aside-lang-switcher a:hover {
     background-color: rgba(255,255,255,0.2);
-
-/* ===============================================
-   MOBILE ASIDE MENU
-   =============================================== */
-.mobile-aside-menu {
-    display: none; /* Hidden by default, shown by JS */
-    position: fixed;
-    top: 0;
-    left: -300px; /* Start off-screen */
-    width: 300px;
-    height: 100%;
-    background-color: #fff; /* White background */
-    color: #333; /* Dark text */
-    padding: 0; /* Remove padding, handle with internal elements */
-    z-index: 1040; /* Below modal overlay */
-    flex-direction: column;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    transition: left 0.3s ease-in-out;
 }
-.mobile-aside-menu.show {
-    display: flex;
-    left: 0;
-}
-.mobile-aside-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1F4B9A; /* Theme color */
-    color: white;
-    padding: 10px 15px;
-    height: 50px; /* Consistent height */
-}
-.mobile-aside-lang-switcher {
-    display: flex;
-    gap: 5px;
-}
-.mobile-aside-lang-switcher a {
-    color: white;
-    padding: 5px 8px;
-    border-radius: 3px;
-    font-size: 0.9rem;
-}
-.mobile-aside-lang-switcher a.active,
-.mobile-aside-lang-switcher a:hover {
-    background-color: rgba(255,255,255,0.2);
-}
-.mobile-aside-close-btn {
-    font-size: 1.5rem;
-    color: #ff4d4d; /* Reddish close */
-    background: none;
-    border: none;
-    cursor: pointer;
 .mobile-aside-close-btn {
     font-size: 1.5rem;
     color: #ff4d4d; /* Reddish close */
@@ -1105,26 +670,7 @@ a:hover {
 .mobile-aside-menu .catalog-toggle-btn {
     width: 100%;
     justify-content: center;
-.mobile-aside-menu .catalog-dropdown { /* Catalog styling inside aside */
-    margin: 15px;
 }
-.mobile-aside-menu .catalog-toggle-btn {
-    width: 100%;
-    justify-content: center;
-}
-.mobile-aside-menu .catalog-menu { /* Adjust submenu position if it overflows */
-    position: static; /* Or relative to fit inside */
-    width: 100%;
-    box-shadow: none;
-    border-left: none;
-    border-right: none;
-    max-height: 250px; /* Or adjust as needed */
-}
-
-.mobile-aside-nav {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 0 15px;
 .mobile-aside-menu .catalog-menu { /* Adjust submenu position if it overflows */
     position: static; /* Or relative to fit inside */
     width: 100%;
@@ -1150,23 +696,7 @@ a:hover {
 }
 .mobile-aside-nav a:last-child {
     border-bottom: none;
-.mobile-aside-nav a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #333;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 1rem;
 }
-.mobile-aside-nav a:last-child {
-    border-bottom: none;
-}
-.mobile-aside-nav a i {
-    font-size: 1.2rem;
-    width: 20px; /* For alignment */
-    text-align: center;
-    color: #2971f5;
 .mobile-aside-nav a i {
     font-size: 1.2rem;
     width: 20px; /* For alignment */
@@ -1178,26 +708,10 @@ a:hover {
     border-bottom: 1px solid #eee;
     display: flex;
     gap: 15px;
-.mobile-aside-user-actions {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    gap: 15px;
 }
 .mobile-aside-user-actions .header-action-item { /* Re-use header action style */
     flex: 1;
-.mobile-aside-user-actions .header-action-item { /* Re-use header action style */
-    flex: 1;
 }
-.mobile-aside-user-actions .header-action-item i { font-size: 1.5rem; }
-.mobile-aside-user-actions .header-action-item span { font-size: 0.8rem; }
-
-
-.mobile-aside-footer {
-    padding: 15px;
-    border-top: 2px solid #155de4;
-    margin-top: auto; /* Pushes to bottom */
-    background-color: #f9f9f9;
 .mobile-aside-user-actions .header-action-item i { font-size: 1.5rem; }
 .mobile-aside-user-actions .header-action-item span { font-size: 0.8rem; }
 
@@ -1212,14 +726,7 @@ a:hover {
     color: #333;
     margin-bottom: 10px;
     font-size: 0.9rem;
-.mobile-aside-footer p {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
 }
-.mobile-aside-footer p span {
-    color: red;
-    font-weight: bold;
 .mobile-aside-footer p span {
     color: red;
     font-weight: bold;
@@ -1228,13 +735,7 @@ a:hover {
     color: #333;
     font-size: 1.3rem;
     margin-right: 10px;
-.mobile-aside-social-icons a {
-    color: #333;
-    font-size: 1.3rem;
-    margin-right: 10px;
 }
-.mobile-aside-social-icons a:hover {
-    color: #155de4;
 .mobile-aside-social-icons a:hover {
     color: #155de4;
 }
@@ -1248,19 +749,7 @@ a:hover {
     overflow: hidden;
     position: relative;
     /* height: 300px; /* Adjust or make it responsive based on image aspect ratio */
-
-/* ===============================================
-   SLIDER (assuming generic one for banners)
-   =============================================== */
-.content-slider { /* e.g., for main page banners */
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    /* height: 300px; /* Adjust or make it responsive based on image aspect ratio */
 }
-.content-slides {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
 .content-slides {
     display: flex;
     transition: transform 0.5s ease-in-out;
@@ -1289,33 +778,7 @@ a:hover {
     z-index: 10;
     border-radius: 3px;
     line-height: 1;
-.content-slides .slide {
-    min-width: 100%;
-    box-sizing: border-box;
 }
-.content-slides .slide img {
-    width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    /* max-height: 300px; /* Or whatever max you want */
-    object-fit: cover;
-    display: block;
-}
-.slider-nav-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    border: none;
-    padding: 10px 12px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 10;
-    border-radius: 3px;
-    line-height: 1;
-}
-.slider-nav-button:hover {
-    background: rgba(0, 0, 0, 0.6);
 .slider-nav-button:hover {
     background: rgba(0, 0, 0, 0.6);
 }
@@ -1328,31 +791,7 @@ a:hover {
     /* Style for individual product cards in a carousel */
     /* E.g. border, padding - if different from general product cards */
     margin: 0 5px; /* Example spacing */
-.slider-prev-btn { left: 15px; }
-.slider-next-btn { right: 15px; }
-
-
-/* Product sliders / carousels (using Owl or similar) */
-.product-carousel-container .single_product {
-    /* Style for individual product cards in a carousel */
-    /* E.g. border, padding - if different from general product cards */
-    margin: 0 5px; /* Example spacing */
 }
-/* You will likely have specific Owl Carousel styles from its CSS file */
-
-
-/* ===============================================
-   MAIN CONTENT ELEMENTS
-   =============================================== */
-
-/* For boxes like on homepage */
-.info-box-container { /* e.g. .container22 */
-    display: flex;
-    justify-content: center;
-    align-items: stretch; /* Stretch to same height if needed */
-    gap: 30px; /* Spacing between boxes */
-    margin: 30px auto;
-    flex-wrap: wrap; /* Allow wrapping */
 /* You will likely have specific Owl Carousel styles from its CSS file */
 
 
@@ -1394,58 +833,12 @@ a:hover {
     font-size: 1.8rem;
     margin-bottom: 10px;
     font-weight: bold;
-.info-box { /* e.g. .box1 */
-    position: relative; /* For absolute positioning of text/button */
-    border-radius: 10px;
-    overflow: hidden; /* To ensure rounded corners on image */
-    width: 100%; /* Full width on small screens */
-    max-width: 550px; /* Max width for larger screens */
-    flex-shrink: 0; /* Don't shrink if flex container is too small */
-}
-.info-box img {
-    width: 100%;
-    height: auto; /* Or a fixed height if designs require, then object-fit */
-    display: block;
-    object-fit: cover;
-}
-.info-box-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px;
-    color: white; /* Assuming text is on dark image */
-}
-.info-box-content .title {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    font-weight: bold;
 }
 .info-box-content .text {
     font-size: 1rem;
     margin-bottom: 20px;
     line-height: 1.4;
-.info-box-content .text {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    line-height: 1.4;
 }
-.info-box-content .btn { /* e.g. box1>button */
-    /* Styles inherited from .btn, specific adjustments here */
-    padding: 8px 25px;
-}
-
-
-/* Text link sections */
-.custom-text-links { /* e.g., .matin */
-    margin: 20px 0;
-    padding: 15px;
-    /* background-color: #e4e4e4; Remove if not needed globally */
-    border-radius: 10px;
-}
-.custom-text-links a { /* e.g. .a2 */
-    color: #333;
-    font-size: 1rem;
-    margin-right: 15px; /* If they are inline */
 .info-box-content .btn { /* e.g. box1>button */
     /* Styles inherited from .btn, specific adjustments here */
     padding: 8px 25px;
@@ -1503,24 +896,6 @@ a:hover {
     font-size: 0.9rem;
     margin: 8px 0;
     line-height: 1.5;
-.site-footer .container { /* If not using bootstrap grid */
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-.footer-section {
-    flex: 1; /* Allows them to grow */
-    min-width: 200px; /* Minimum width before wrapping */
-}
-.footer-logo-info img {
-    width: 150px;
-    margin-bottom: 15px;
-}
-.footer-logo-info p {
-    font-size: 0.9rem;
-    margin: 8px 0;
-    line-height: 1.5;
 }
 .footer-social-icons a {
     color: white;
@@ -1543,53 +918,7 @@ a:hover {
 }
 .footer-links ul li {
     margin: 8px 0;
-.footer-social-icons a {
-    color: white;
-    font-size: 1.5rem;
-    margin-right: 12px;
-    transition: color 0.2s;
 }
-.footer-social-icons a:hover {
-    color: #c51f30; /* Brand red */
-}
-.footer-links h3 {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-.footer-links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.footer-links ul li {
-    margin: 8px 0;
-}
-.footer-links ul li a {
-    color: white;
-    font-size: 0.95rem;
-    transition: color 0.2s;
-}
-.footer-links ul li a:hover {
-    color: #f35454; /* Lighter red for hover */
-}
-
-/* ===============================================
-   MOBILE BOTTOM NAVIGATION
-   =============================================== */
-.mobile-bottom-nav {
-    display: none; /* Hidden by default, shown on mobile */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px; /* Adjust height as needed */
-    background-color: #0d2a4d; /* Match footer */
-    align-items: center;
-    justify-content: space-between; /* Better spacing of items */
-    z-index: 999;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-    padding-bottom: env(safe-area-inset-bottom); /* For iPhone X notch */
 .footer-links ul li a {
     color: white;
     font-size: 0.95rem;
@@ -1642,34 +971,7 @@ a:hover {
     padding: 2px 5px;
     border-radius: 50%;
     line-height: 1;
-.mobile-bottom-nav a {
-    flex: 1; /* Distribute space equally */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-size: 0.75rem; /* Text size */
-    position: relative;
-    padding: 5px 0; /* Added padding for touch area */
 }
-.mobile-bottom-nav a i {
-    font-size: 1.5rem; /* Icon size */
-    margin-bottom: 3px;
-}
-.mobile-bottom-nav .badge { /* For cart/like count */
-    position: absolute;
-    top: 3px;
-    right: calc(50% - 20px); /* Adjust to position near icon */
-    background-color: red;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 5px;
-    border-radius: 50%;
-    line-height: 1;
-}
-
 
 
 /* ===============================================
@@ -1798,17 +1100,6 @@ a:hover {
 
     <header class="site-header">
         <div class="header-top">
-    <!-- Messages Flash (for Django messages or JS alerts) -->
-    {% if messages %}
-    <div class="messages-flash">
-        {% for message in messages %}
-        <div class="message {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <header class="site-header">
-        <div class="header-top">
             <div class="container">
                 <!-- Language Switcher can go here if desired for desktop -->
                 <!-- <div class="language-dropdown" id="desktopLangDropdown"> ... </div> -->
@@ -1822,7 +1113,6 @@ a:hover {
                         <li><a href="/front/resipe/">Загрузи рецепт</a></li>
                         {% if request.user.is_staff %}
                         <li><a href="/filial">Филял</a></li>
-                        <li><a href="{% url 'blog' %}">Блог</a></li>
                         {% endif %}
                         <li> <!-- Language dropdown -->
                             <div class="language-dropdown">
@@ -1845,12 +1135,6 @@ a:hover {
                 </button>
             </div>
         </div>
-                <!-- Mobile hamburger icon -->
-                <button class="mobile-menu-toggle" onclick="toggleMobileAsideMenu()" aria-label="Открыть меню">
-                    ☰ <!-- Hamburger Icon -->
-                </button>
-            </div>
-        </div>
 
         <div class="header-main">
             <div class="container">
@@ -1903,69 +1187,7 @@ a:hover {
                             <span>Callcenter <br><span class="sub-text">1080</span></span>
                         </a>
                     </div>
-        <div class="header-main">
-            <div class="container">
-                <div class="logo">
-                    <a href="/"><img src="{% static 'assets/img2/AFM MEDICAL.png' %}" alt="Akmal Farm Medical"></a>
-                </div>
 
-                <!-- Katalog Dropdown for Desktop -->
-                <div class="catalog-dropdown" id="desktopCatalogDropdown">
-                    <button type="button" class="catalog-toggle-btn" aria-label="Открыть каталог">
-                        <i class="fas fa-bars"></i> КАТАЛОГ
-                    </button>
-                    <div class="catalog-menu" style="display: none;">
-                        <input type="text" class="catalog-search-input" placeholder="Поиск товаров...">
-                        <ul>
-                            {% for i in category %}
-                            <li><a href="{% url 'index' %}?category={{i.name}}">{{i.name}}</a></li>
-                            {% empty %}
-                            <li><a href="#">Категории не найдены</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Search form -->
-                <form action="/search/" method="get" class="header-search-form">
-                    <input type="text" name="q" id="mainSearchQuery" placeholder="Поиск лекарств и товаров...">
-                    <button type="submit" aria-label="Искать"><i class="fas fa-search"></i></button>
-                </form>
-
-                <!-- Header Actions -->
-                <div class="header-actions">
-                    <div class="header-action-item">
-                        {% if user.is_authenticated %}
-                        <a href="/auth/logout/">
-                            <i class="fas fa-user-circle"></i> <!-- Or ion-person -->
-                            <span>{{ request.user.first_name|default:"Профиль" }} <br><span class="sub-text">(Выйти)</span></span>
-                        </a>
-                        {% else %}
-                        <a href="#" class="js-login-link"> <!-- Updated to JS hook -->
-                            <i class="fas fa-user-circle"></i>
-                            <span>Личный <br><span class="sub-text">кабинет</span></span>
-                        </a>
-                        {% endif %}
-                    </div>
-
-                    <div class="header-action-item">
-                        <a href="tel:1080"> <!-- Direct call link -->
-                            <i class="fas fa-headset"></i> <!-- Or ion-headphone -->
-                            <span>Callcenter <br><span class="sub-text">1080</span></span>
-                        </a>
-                    </div>
-
-                    <div class="header-action-item cart-action" id="cartAction">
-                        <a href="javascript:void(0)" onclick="toggleMiniCart()">
-                            <i class="fas fa-shopping-cart"></i> <!-- Or ion-ios-cart -->
-                            <span>Корзина</span>
-                        </a>
-                        <span class="cart-count-badge" id="cartItemsCount">{{ cart_items|length }}</span>
-                        
-                        <!-- Mini Cart -->
-                        <div class="mini-cart" id="miniCart">
-                            <div class="mini-cart-header">
-                                <span>{{ cart_items|length }} товар(ов) в корзине</span>
                     <div class="header-action-item cart-action" id="cartAction">
                         <a href="javascript:void(0)" onclick="toggleMiniCart()">
                             <i class="fas fa-shopping-cart"></i> <!-- Or ion-ios-cart -->
@@ -2039,110 +1261,7 @@ a:hover {
                 </ul>
             </div>
         </div>
-                            <div class="mini-cart-body">
-                                {% for item in cart_items %}
-                                <div class="mini-cart-item">
-                                    <div class="mini-cart-item-image">
-                                        <a href="/product/detail/{{ item.product.id }}/"><img src="{{ item.product.image1.url|default_if_none:'#' }}" alt="{{ item.name }}"></a>
-                                    </div>
-                                    <div class="mini-cart-item-info">
-                                        <a href="/product/detail/{{ item.product.id }}/">{{ item.name }}</a>
-                                        <p>Кол-во: {{ item.quantity }} шт.</p>
-                                        <p>Цена: <strong>{{ item.price }} So'm</strong></p>
-                                        <p>Итого: <strong>{{ item.total_price }} So'm</strong></p>
-                                    </div>
-                                </div>
-                                {% empty %}
-                                <p style="text-align: center; padding: 20px 0; color: #666;">Ваша корзина пуста.</p>
-                                {% endfor %}
-                            </div>
-                            {% if cart_items %}
-                            <div class="mini-cart-summary">
-                                 <p>Общая стоимость: <strong>{{ cart_total }} So'm</strong></p>
-                                 <p>Доставка: <strong>15000 So'm</strong></p>
-                                 <p>К оплате: <strong>{{ cart_total|add:15000 }} So'm</strong></p>
-                            </div>
-                            <div class="mini-cart-actions">
-                                <a href="/cart/" class="btn btn-primary">Перейти в корзину</a>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <!-- ========== ASIDE MENU (Mobile only) ========== -->
-    <aside class="mobile-aside-menu" id="mobileAsideMenu">
-        <div class="mobile-aside-header">
-            <div class="mobile-aside-lang-switcher">
-                <a href="#" class="active" onclick="selectMobileLanguage(this, 'Рус', event)">RU</a>
-                <span>|</span>
-                <a href="#" onclick="selectMobileLanguage(this, 'Uzb', event)">UZ</a>
-            </div>
-            <button class="mobile-aside-close-btn" onclick="toggleMobileAsideMenu()" aria-label="Закрыть меню">×</button>
-        </div>
-        
-        <!-- Katalog Dropdown for Mobile -->
-        <div class="catalog-dropdown" id="mobileCatalogDropdown">
-            <button type="button" class="catalog-toggle-btn" aria-label="Открыть каталог">
-                <i class="fas fa-bars"></i> КАТАЛОГ
-            </button>
-            <div class="catalog-menu" style="display: none;">
-                <input type="text" class="catalog-search-input" placeholder="Поиск в каталоге...">
-                <ul>
-                     {% for i in category %}
-                     <li><a href="?category={{i.name}}">{{i.name}}</a></li>
-                     {% empty %}
-                     <li><a href="#">Категории не найдены</a></li>
-                     {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <nav class="mobile-aside-nav">
-            <a href="/front/about/"><i class="fa fa-users"></i> О Нас</a>
-            <a href="/front/landlords/"><i class="fa fa-building"></i> Арендодателям</a>
-            <a href="/front/vacancies/"><i class="fa fa-briefcase"></i> Вакансии</a>
-            <a href="/front/operator/"><i class="fa fa-hospital"></i> Наши аптеки</a>
-            <a href="/front/resipe/"><i class="fa fa-cloud-upload-alt"></i> Загрузить рецепт</a>
-        </nav>
-
-        <div class="mobile-aside-user-actions">
-            <div class="header-action-item">
-                 {% if user.is_authenticated %}
-                 <a href="/auth/logout/">
-                     <i class="fas fa-user-circle"></i>
-                     <span>{{ request.user.first_name|default:"Профиль" }} <br><span class="sub-text">(Выйти)</span></span>
-                 </a>
-                 {% else %}
-                 <a href="#" class="js-login-link">
-                     <i class="fas fa-user-circle"></i>
-                     <span>Личный <br><span class="sub-text">кабинет</span></span>
-                 </a>
-                 {% endif %}
-            </div>
-            <div class="header-action-item">
-                <a href="tel:1080">
-                    <i class="fas fa-headset"></i>
-                    <span>Callcenter <br><span class="sub-text">1080</span></span>
-                </a>
-            </div>
-        </div>
-        
-        <footer class="mobile-aside-footer">
-            <p>Горячая линия: <span>1080</span></p>
-            <div class="mobile-aside-social-icons">
-                <a href="https://t.me/akmalfarmofficial" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-                <a href="https://www.instagram.com/akmalfarmofficial" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.youtube.com/@akmalfarmmedical8370" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-        </footer>
-    </aside>
-
-    <!-- This div is for Owl Carousel products populated by search -->
-    <!-- Make sure your JS populates this correctly if search is used -->
         <nav class="mobile-aside-nav">
             <a href="/front/about/"><i class="fa fa-users"></i> О Нас</a>
             <a href="/front/landlords/"><i class="fa fa-building"></i> Арендодателям</a>
@@ -2190,25 +1309,13 @@ a:hover {
             <div class="product_active_1 owl-carousel">
               <!-- Search results will be injected here by JS -->
             </div>
-        <div class="product-carousel-container"> <!-- Wrapper for styling if needed -->
-            <div class="product_active_1 owl-carousel">
-              <!-- Search results will be injected here by JS -->
-            </div>
         </div>
     </div>
     
     <main id="main-content">
-    <main id="main-content">
     {% block content %}
     <!-- Main page content goes here -->
-    <!-- Main page content goes here -->
     {% endblock content%}
-    </main>
-    
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-section footer-logo-info">
-                <img src="{% static 'assets/img2/AFM MEDICAL oq.png' %}" alt="Akmal Farm Medical">
     </main>
     
     <footer class="site-footer">
@@ -2221,13 +1328,8 @@ a:hover {
                     <a href="https://t.me/akmalfarmofficial" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
                     <a href="https://www.instagram.com/akmalfarmofficial" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.youtube.com/@akmalfarmmedical8370" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                <div class="footer-social-icons">
-                    <a href="https://t.me/akmalfarmofficial" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-                    <a href="https://www.instagram.com/akmalfarmofficial" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@akmalfarmmedical8370" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-            <div class="footer-section footer-links">
             <div class="footer-section footer-links">
                 <h3>Информация</h3>
                 <ul>
@@ -2235,17 +1337,10 @@ a:hover {
                     <li><a href="#Blog">Новости и статьи</a></li> <!-- Make sure #Blog ID exists if it's an on-page link -->
                     <li><a href="/front/vacancies/">Карьера</a></li>
                     <li><a href="/front/operator/">Карта аптек</a></li> <!-- Corrected from vacancies -->
-                <ul>
-                    <li><a href="/front/about/">О нас</a></li>
-                    <li><a href="#Blog">Новости и статьи</a></li> <!-- Make sure #Blog ID exists if it's an on-page link -->
-                    <li><a href="/front/vacancies/">Карьера</a></li>
-                    <li><a href="/front/operator/">Карта аптек</a></li> <!-- Corrected from vacancies -->
                 </ul>
             </div>
             <div class="footer-section footer-links">
-            <div class="footer-section footer-links">
                 <h3>Покупателю</h3>
-                <ul>
                 <ul>
                     <li><a href="#">Как сделать заказ</a></li>
                     <li><a href="#">Доставка и оплата</a></li>
@@ -2253,9 +1348,7 @@ a:hover {
                 </ul>
             </div>
             <div class="footer-section footer-links">
-            <div class="footer-section footer-links">
                 <h3>Документы</h3>
-                <ul>
                 <ul>
                     <li><a href="/front/policy/">Политика Конфиденциальности</a></li>
                     <li><a href="/front/public/">Договор публичной оферты</a></li>
@@ -2606,412 +1699,7 @@ function toggleMiniCart() {
     const miniCart = document.getElementById('miniCart');
     if (miniCart) {
         miniCart.classList.toggle('show');
-
-    <!-- Mobile Bottom Navigation Bar -->
-    <nav class="mobile-bottom-nav">
-        <a href="/"><i class="fas fa-home"></i><span>Главная</span></a>
-        <a href="javascript:void(0)" onclick="toggleCatalogMenu('mobileCatalogDropdown')"><i class="fas fa-search"></i><span>Каталог</span></a>
-        <a href="/cart/"><i class="fas fa-shopping-cart"></i>{% if cart_items %}<span class="badge" id="mobileCartCount">{{ cart_items|length }}</span>{% endif %}<span>Корзина</span></a>
-        {% if user.is_authenticated %}
-        <a href="/profile/"><i class="fas fa-user"></i><span>Профиль</span></a>
-        {% else %}
-        <a href="#" class="js-login-link"><i class="fas fa-user"></i><span>Войти</span></a>
-        {% endif %}
-    </nav>
-
-    <!-- LOGIN MODALS (Example structure) -->
-    <div class="modal-overlay" id="loginModal">
-        <div class="modal-dialog">
-            <button class="modal-close-btn" onclick="closeModal('loginModal')" aria-label="Закрыть">×</button>
-            <div class="modal-header">
-                <h3>Вход или регистрация</h3>
-            </div>
-            <div class="modal-body">
-                <input type="tel" id="phoneInput" placeholder="+998 XX XXX-XX-XX">
-                <button class="btn btn-primary" id="getSmsCodeBtn">Получить код</button>
-                <p class="modal-terms">Нажимая "Получить код", вы соглашаетесь с <a href="/front/public/">условиями оферты</a>.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="smsCodeModal">
-        <div class="modal-dialog">
-            <button class="modal-close-btn" onclick="closeModal('smsCodeModal')" aria-label="Закрыть">×</button>
-            <div class="modal-header">
-                <h3>Введите код из СМС</h3>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="smsCodeInput" placeholder="XXXXXX" maxlength="6">
-                <button class="btn btn-primary" id="submitSmsCodeBtn">Войти</button>
-                <p class="modal-terms"><a href="#" id="resendCodeLink">Отправить код повторно</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- GENERIC TEXT MODAL (Example - can be reused by JS) -->
-    <div class="modal-overlay" id="textModalGeneric">
-        <div class="modal-dialog text-modal-dialog"> <!-- Wider for text -->
-            <button class="modal-close-btn" onclick="closeModal('textModalGeneric')" aria-label="Закрыть">×</button>
-            <div class="modal-header">
-                <h3 id="textModalTitle">Информация</h3>
-            </div>
-            <div class="modal-body" id="textModalBody">
-                <p>Здесь будет отображаться текст...</p>
-            </div>
-        </div>
-    </div>
-
-
-    <script src="{% static 'assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
-    <script src="{% static 'assets/js/popper.js' %}"></script>
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'assets/js/plugins.js' %}"></script> <!-- Owl Carousel etc. -->
-    <script src="{% static 'assets/js/main.js' %}"></script> <!-- Your custom JS -->
-    <script src="{% static 'assets/js/mobile-nav-fix.js' %}"></script> <!-- Mobile navigation fixes -->
-
-<script>
-// Ensure this script block is after all HTML elements or inside DOMContentLoaded
-
-// =====================
-// General Modal Logic
-// =====================
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'flex';
-        // Optional: Add class to body to prevent scrolling
-        // document.body.classList.add('modal-open');
     }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-        // Optional: Remove class from body
-        // document.body.classList.remove('modal-open');
-    }
-}
-
-// Close modal if clicked outside of .modal-dialog
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(event) {
-        if (event.target === overlay) { // Check if click is on the overlay itself
-            closeModal(overlay.id);
-        }
-    });
-});
-
-// Login Modals specific logic (example)
-const loginLinks = document.querySelectorAll('.js-login-link');
-loginLinks.forEach(link => {
-    link.addEventListener('click', function(event) {
-        event.preventDefault();
-        openModal('loginModal');
-    });
-});
-
-if (document.getElementById('getSmsCodeBtn')) {
-    document.getElementById('getSmsCodeBtn').addEventListener('click', function() {
-        const phone = document.getElementById('phoneInput').value;
-        // TODO: Validate phone, send OTP request to backend
-        console.log("Requesting SMS for phone:", phone);
-        // If successful:
-        closeModal('loginModal');
-        openModal('smsCodeModal');
-    });
-}
-if (document.getElementById('submitSmsCodeBtn')) {
-    document.getElementById('submitSmsCodeBtn').addEventListener('click', function() {
-        const code = document.getElementById('smsCodeInput').value;
-        // TODO: Validate code, send verification to backend
-        console.log("Submitting SMS code:", code);
-        // If successful:
-        // closeModal('smsCodeModal');
-        // Potentially reload page or update UI
-        // window.location.reload(); 
-    });
-}
-
-
-// =====================
-// Header/Nav Logic
-// =====================
-function toggleCatalogMenu(catalogId) {
-    // Get the dropdown container element
-    const catalogContainer = document.getElementById(catalogId);
-    if (!catalogContainer) return;
-    
-    // Find the menu inside the container
-    const menu = catalogContainer.querySelector('.catalog-menu');
-    if (!menu) return;
-    
-    // Get current display state
-    const isVisible = menu.style.display === 'block';
-    
-    // Toggle the display
-    if (isVisible) {
-        menu.style.display = 'none';
-        catalogContainer.classList.remove('active');
-    } else {
-        menu.style.display = 'block';
-        catalogContainer.classList.add('active');
-        
-        // Focus on search input if it exists
-        const searchInput = menu.querySelector('.catalog-search-input');
-        if (searchInput) {
-            setTimeout(() => searchInput.focus(), 100);
-        }
-    }
-}
-
-// Function to select language
-function selectLanguage(lang) {
-    // Update all language dropdowns with selected language
-    document.querySelectorAll('.language-dropdown .selected-language').forEach(el => {
-        el.textContent = lang;
-    });
-    
-    // Hide all dropdown options
-    document.querySelectorAll('.language-dropdown-options').forEach(menu => {
-        menu.style.display = 'none';
-    });
-    
-    console.log("Language selected:", lang);
-    
-    // Prevent the default link behavior
-    return false;
-}
-
-// Toggle language dropdown
-document.addEventListener('DOMContentLoaded', function() {
-    // Add click events to language dropdowns
-    document.querySelectorAll('.language-dropdown > a').forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const dropdown = this.closest('.language-dropdown');
-            const options = dropdown.querySelector('.language-dropdown-options');
-            
-            // Hide all other dropdowns
-            document.querySelectorAll('.language-dropdown-options').forEach(menu => {
-                if (menu !== options) {
-                    menu.style.display = 'none';
-                }
-            });
-            
-            // Toggle this dropdown
-            options.style.display = options.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-    
-    // Close dropdowns when clicking elsewhere
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.language-dropdown')) {
-            document.querySelectorAll('.language-dropdown-options').forEach(menu => {
-                menu.style.display = 'none';
-            });
-        }
-    });
-    
-    // Setup catalog search input functionality
-    document.querySelectorAll('.catalog-search-input').forEach(input => {
-        input.addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const list = this.closest('.catalog-menu').querySelector('ul');
-            if(list) {
-                const items = list.querySelectorAll('li');
-                items.forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(filter) ? '' : 'none';
-                });
-            }
-        });
-    });
-});
-
-// For mobile language selector
-function selectMobileLanguage(element, lang, event) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    
-    document.querySelectorAll('.mobile-aside-lang-switcher a').forEach(a => a.classList.remove('active'));
-    element.classList.add('active');
-    
-    // Also update the main dropdown
-    document.querySelectorAll('.language-dropdown .selected-language').forEach(el => {
-        el.textContent = lang;
-    });
-    
-    console.log("Mobile language selected:", lang);
-}
-
-// Document ready function with simplified event handling
-document.addEventListener('DOMContentLoaded', function() {
-    // Desktop catalog button
-    const desktopCatalogBtn = document.querySelector('#desktopCatalogDropdown .catalog-toggle-btn');
-    if (desktopCatalogBtn) {
-        desktopCatalogBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleCatalogMenu('desktopCatalogDropdown');
-        });
-    }
-    
-    // Mobile catalog button
-    const mobileCatalogBtn = document.querySelector('#mobileCatalogDropdown .catalog-toggle-btn');
-    if (mobileCatalogBtn) {
-        mobileCatalogBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleCatalogMenu('mobileCatalogDropdown');
-        });
-    }
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-        // Close desktop catalog if clicked outside
-        const desktopCatalog = document.getElementById('desktopCatalogDropdown');
-        if (desktopCatalog && !desktopCatalog.contains(event.target)) {
-            const menu = desktopCatalog.querySelector('.catalog-menu');
-            if (menu) {
-                menu.style.display = 'none';
-                desktopCatalog.classList.remove('active');
-            }
-        }
-        
-        // Close mobile catalog if clicked outside 
-        const mobileCatalog = document.getElementById('mobileCatalogDropdown');
-        if (mobileCatalog && !mobileCatalog.contains(event.target)) {
-            const menu = mobileCatalog.querySelector('.catalog-menu');
-            if (menu) {
-                menu.style.display = 'none';
-                mobileCatalog.classList.remove('active');
-            }
-        }
-        
-        // Close mini cart when clicking outside
-        const miniCart = document.getElementById('miniCart');
-        const cartAction = document.getElementById('cartAction');
-        if (miniCart && miniCart.classList.contains('show') && 
-            !miniCart.contains(event.target) && 
-            cartAction && !cartAction.contains(event.target)) {
-            miniCart.classList.remove('show');
-        }
-    });
-    
-    // Setup search functionality
-    const searchInput = document.getElementById('mainSearchQuery');
-    if (searchInput) {
-        searchInput.addEventListener('keyup', handleSearchInput);
-    }
-    
-    // Initialize Bootstrap dropdowns
-    if (typeof $ !== 'undefined' && $.fn.dropdown) {
-        $('.dropdown-toggle').dropdown();
-    }
-});
-
-function toggleMobileAsideMenu() {
-    const asideMenu = document.getElementById('mobileAsideMenu');
-    asideMenu.classList.toggle('show');
-    
-    // Close catalog menu if open when toggling aside menu
-    const mobileMenu = document.querySelector('#mobileCatalogDropdown .catalog-menu');
-    if (mobileMenu && mobileMenu.style.display === 'block') {
-        mobileMenu.style.display = 'none';
-        document.getElementById('mobileCatalogDropdown').classList.remove('active');
-    }
-}
-
-// Show messages from Django (if any) then hide
-const messagesFlash = document.querySelector('.messages-flash');
-if (messagesFlash && messagesFlash.children.length > 0) {
-    messagesFlash.style.display = 'block';
-    setTimeout(() => {
-        messagesFlash.style.display = 'none';
-    }, 5000); // Hide after 5 seconds
-}
-
-// Initialize Owl Carousels (if they are static on the page)
-// $(document).ready(function(){
-//   $(".static-owl-carousel").owlCarousel({ /* options */ });
-// });
-
-// =====================
-// Mini Cart Logic
-// =====================
-function toggleMiniCart() {
-    const miniCart = document.getElementById('miniCart');
-    if (miniCart) {
-        miniCart.classList.toggle('show');
-    }
-}
-// Close mini cart if clicked outside
-document.addEventListener('click', function(event) {
-    const miniCart = document.getElementById('miniCart');
-    const cartAction = document.getElementById('cartAction'); // The cart icon/button
-    if (miniCart && miniCart.classList.contains('show')) {
-        if (!miniCart.contains(event.target) && cartAction && !cartAction.contains(event.target)) {
-            miniCart.classList.remove('show');
-        }
-    }
-});
-
-
-// =====================
-// Search & Product Display (Owl Carousel example)
-// =====================
-// Define the handleSearchInput function that was referenced but not defined
-function handleSearchInput() {
-    let query = this.value;
-    if (query.length >= 3) { // Adjusted to 3 chars
-        fetch(`/search/?q=${encodeURIComponent(query)}`) // Ensure this URL is correct
-            .then(response => response.json())
-            .then(data => {
-                console.log("Search results:", data);
-                let container = $(".product_active_1"); // jQuery selector for Owl Carousel
-                
-                if (container.length > 0 && data && data.length > 0){ // Check if container exists
-                    // 1. Destroy Owl Carousel if it's initialized
-                    if (container.hasClass('owl-loaded')) {
-                        container.trigger('destroy.owl.carousel');
-                    }
-                    container.html(""); // 2. Clear old content
-
-                    // 3. Create HTML for each product
-                    data.forEach(product => {
-                        // IMPORTANT: This product card HTML should match your standard product card styling
-                        // For now, using a simplified version of original
-                        let itemHtml = `
-                        <div class="single_product item" style="margin-bottom: 20px; margin: 20px 0;">
-                            <div class="product_thumb">
-                                <a href="/product/detail/${product.id}/" style="margin: 0px !important;">
-                                    <img src="${product.image1 || '/static/assets/img2/no-image.png'}" alt="${product.name}" style="margin: 0px !important; height: 150px; object-fit:contain;">
-                                </a>
-                            </div>
-                            <div class="product_content" style="padding:10px; text-align:center;">
-                                <h3><a href="/product/detail/${product.id}/" style="font-size:0.9em; color:#333;">${product.name.substring(0,30)}${product.name.length > 30 ? '...' : ''}</a></h3>
-                                <div class="product_price" style="margin: 5px 0;">
-                                    <span class="current_price" style="font-weight:bold; color:#c51f30;">${product.prices[0]} so'm</span>
-                                </div>
-                                <div class="product_action" style="margin-top:10px;">
-                                    <ul style="display: flex; justify-content: center; align-items: center; list-style:none; padding:0; gap:5px;">
-                                        <li class="product_cart">
-                                            <button onclick="addToCart(${product.id})" class="btn btn-primary btn-sm" style="font-size:0.8em; padding:5px 10px;">В корзину</button>
-                                        </li>
-                                        <li class="add_links">
-                                            <a href="/product/detail/${product.id}/" title="Посмотреть" class="btn btn-outline-secondary btn-sm" style="font-size:0.8em; padding:5px 8px;"><i class="fas fa-eye"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        `;
-                        container.append(itemHtml);
 }
 // Close mini cart if clicked outside
 document.addEventListener('click', function(event) {
@@ -3077,131 +1765,6 @@ function handleSearchInput() {
                         container.append(itemHtml);
                     });
 
-                    // 4. Re-initialize Owl Carousel
-                    container.owlCarousel({
-                        loop: data.length > 4, // Loop if enough items
-                        margin: 10,
-                        nav: true,
-                        dots: false, // Dots can be much, disable for now
-                        navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-                        responsive: {
-                            0: { items: 1 },
-                            480: { items: 2 },
-                            768: { items: 3 },
-                            992: { items: 4 }
-                        }
-                    });
-                } else if (container.length > 0) {
-                    // No results or error, clear and show message
-                    if (container.hasClass('owl-loaded')) {
-                        container.trigger('destroy.owl.carousel');
-                    }
-                    container.html("<p style='text-align:center; padding:20px;'>По вашему запросу ничего не найдено.</p>");
-                }
-            })
-            .catch(error => {
-                console.error("Search error:", error);
-                let container = $(".product_active_1");
-                if (container.length > 0) {
-                    if (container.hasClass('owl-loaded')) {
-                       container.trigger('destroy.owl.carousel');
-                    }
-                    container.html("<p style='text-align:center; padding:20px;'>Ошибка при поиске. Попробуйте позже.</p>");
-                }
-            });
-    } else {
-        // Optional: Clear results if query is too short
-        let container = $(".product_active_1");
-        if (container.length > 0 && container.html().length > 0 && query.length < 3) { // Only clear if it has content
-            if (container.hasClass('owl-loaded')) {
-               container.trigger('destroy.owl.carousel');
-            }
-            container.html(""); // Clear if query is too short
-        }
-    }
-}
-
-// Dummy addToCart function - replace with your actual logic
-function addToCart(productId) {
-    console.log("Add to cart:", productId);
-    // 1. Send AJAX request to backend to add product
-    // 2. On success:
-    //    - Update mini cart content (fetch new cart data or manually add)
-    //    - Update cart count badge(s) (e.g., #cartItemsCount, #mobileCartCount)
-    //    - Show a success message (e.g., in .messages-flash)
-    
-    // Example: update count
-    let currentCount = parseInt(document.getElementById('cartItemsCount').textContent);
-    document.getElementById('cartItemsCount').textContent = currentCount + 1;
-    if(document.getElementById('mobileCartCount')) {
-        document.getElementById('mobileCartCount').textContent = currentCount + 1;
-    }
-    alert('Товар добавлен в корзину (демо)');
-    // You would also need to update the mini cart content
-}
-
-// Generic text modal display (for footer links etc.)
-function showTextModal(title, contentHtml) {
-    document.getElementById('textModalTitle').textContent = title;
-    document.getElementById('textModalBody').innerHTML = contentHtml; // Use innerHTML if content has HTML tags
-    openModal('textModalGeneric');
-}
-
-// =====================
-// Mobile Navigation Logic
-// =====================
-function toggleMobileAsideMenu() {
-    const asideMenu = document.getElementById('mobileAsideMenu');
-    asideMenu.classList.toggle('show');
-    
-    // Close catalog menu if open when toggling aside menu
-    const mobileMenu = document.querySelector('#mobileCatalogDropdown .catalog-menu');
-    if (mobileMenu && mobileMenu.style.display === 'block') {
-        mobileMenu.style.display = 'none';
-        document.getElementById('mobileCatalogDropdown').classList.remove('active');
-    }
-}
-
-// Ensure mobile navigation is visible on small screens
-function checkMobileNav() {
-    const mobileNav = document.querySelector('.mobile-bottom-nav');
-    if (mobileNav) {
-        if (window.innerWidth <= 991) {
-            mobileNav.style.display = 'flex';
-            // Hide footer on mobile as we have bottom nav
-            const footer = document.querySelector('.site-footer');
-            if (footer) {
-                footer.style.display = 'none';
-            }
-        } else {
-            mobileNav.style.display = 'none';
-            // Show footer on desktop
-            const footer = document.querySelector('.site-footer');
-            if (footer) {
-                footer.style.display = 'block';
-            }
-        }
-    }
-}
-
-// Call on load and resize
-window.addEventListener('load', checkMobileNav);
-window.addEventListener('resize', checkMobileNav);
-
-// Ensure active state is set correctly on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPath = window.location.pathname;
-    const mobileNavLinks = document.querySelectorAll('.mobile-bottom-nav a');
-    
-    mobileNavLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href && href !== '#' && href !== 'javascript:void(0)') {
-            if (currentPath === href || currentPath.includes(href.split('/')[1])) {
-                link.classList.add('active');
-            }
-        }
-    });
-});
                     // 4. Re-initialize Owl Carousel
                     container.owlCarousel({
                         loop: data.length > 4, // Loop if enough items
@@ -3328,8 +1891,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-</body>
 
 </body>
 </html>
