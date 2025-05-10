@@ -81,7 +81,7 @@ def refresh_products_cache():
     for item in final_result:
         category = item["class"]
         grouped_by_class.setdefault(category, []).append(item)
-        logger.info(f"{item}")
+        # logger.info(f"{item}")
 
     r.setex('final_result', 86400, json.dumps(final_result))
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))

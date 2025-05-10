@@ -56,15 +56,7 @@ def Index(request):
         for class_name in selected_classes:
             items = grouped_by_class[class_name][:per_class_limit]
             result.append({"class_name": class_name, "products": items})
-        for i in result:
-            print()
-            print()
-            print()
-            print()
-            print()
-            print()
-            print()
-            print(i)
+
         context = {
             "data": result,
             "current_page": page,

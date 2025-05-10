@@ -1,18 +1,18 @@
-# from django.test import TestCase
-from requests.auth import HTTPBasicAuth
-import requests
-# Create your tests here.
-url = "http://93.170.11.10:8088/RM_OPT/hs/online/stock"
-username = "Online"
-password = "cJXGLytPHb3nDNZf5gRh7jzwa"
-response = requests.post(url, auth=HTTPBasicAuth(username, password), stream=True, json={})
-if response.status_code == 200:
-    data = response.json().get('array', [])
+# # from django.test import TestCase
+# from requests.auth import HTTPBasicAuth
+# import requests
+# # Create your tests here.
+# url = "http://93.170.11.10:8088/RM_OPT/hs/online/stock"
+# username = "Online"
+# password = "cJXGLytPHb3nDNZf5gRh7jzwa"
+# response = requests.post(url, auth=HTTPBasicAuth(username, password), stream=True, json={})
+# if response.status_code == 200:
+#     data = response.json().get('array', [])
 
-for i in data:
-    print(i)
-    print()
-    print()
+# for i in data:
+#     print(i)
+#     print()
+#     print()
 
 
 # cd /etc/supervisor/conf.d/
@@ -66,3 +66,42 @@ for i in data:
 
 # Redis redis.conf faylida no-appendfsync-on-rewrite yes sozlamasini tekshirib chiqing — diskga yozishdan ogoh bo‘ladi.
 
+
+# import requests
+
+# url = "http://notify.eskiz.uz/api/auth/login"
+
+# payload={'email': 'marziyahoni@gmail.com',
+# 'password': "Aa@9005233"}
+# files=[
+
+# ]
+# headers = {}
+
+# response = requests.request("POST", url, headers=headers, data=payload, files=files)
+
+# print(response.text)
+
+
+import requests
+
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDkwODkzODYsImlhdCI6MTc0NjQ5NzM4Niwicm9sZSI6InRlc3QiLCJzaWduIjoiZmI1NDQ3N2MwODYyZTM0YTc2Mjk2Yjc0NjcwNGNlNDFiMjJjYjg0ZDExNmIwNWY4ZjE5OTA2YmM4M2NjODc0YSIsInN1YiI6IjEwODE0In0.lDKkNZlcVCuMY9Yh7OmRyrC_bGHDlQJXCwFvRBJfh4w"
+
+url = "https://notify.eskiz.uz/api/message/sms/send"
+
+payload = {
+    "mobile_phone": "998951180970",  # raqamni to‘liq formatda yozing
+    "message": "Bu Eskiz dan test",
+    "from": "4546",  # Eskizda tasdiqlangan sender
+    "callback_url": ""  # istasangiz qoldiring
+}
+
+headers = {
+    'Authorization': f'Bearer {token}'
+}
+
+response = requests.post(url, headers=headers, data=payload)
+print(response.text)
+
+# access_token = data['data']['token']
+# print("TOKEN:", access_token)
