@@ -34,49 +34,45 @@ def Index(request):
     category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
     per_page_classes = 5
-    per_class_limit = 30
+    per_class_limit = 50
 
     grouped_data_json = r.get('products_by_class')
     if not grouped_data_json:
         return render(request, 'index.html', {"data": []})
 
     grouped_by_class = json.loads(grouped_data_json)
-
     result = []
 
-    # Agar category tanlangan bo‘lsa, faqat o‘sha category qaytariladi
     if category:
-        category = category
-        products = (
-            grouped_by_class.get(category)
-        )
-
-        if products and len(products) > 0:
+        products = grouped_by_class.get(category, [])
+        if products:
             result = [{"class_name": category, "products": products[:per_class_limit]}]
         else:
-            result = []  # bo‘sh list qaytadi
+            result = []
     else:
-        # Aks holda barcha classlarni paginate qilib olish
         filtered_classes = [
             class_name for class_name, items in grouped_by_class.items()
             if len(items) > 0
         ]
         paginator = Paginator(filtered_classes, per_page_classes)
-        selected_classes = paginator.page(page).object_list
-
-        for class_name in selected_classes:
+        
+        try:
+            current_page = paginator.page(page)
+        except :
+            current_page = paginator.page(1)
+        
+        for class_name in current_page.object_list:
             items = grouped_by_class[class_name][:per_class_limit]
             result.append({"class_name": class_name, "products": items})
 
-        context = {
-            "data": result,
-            "current_page": page,
-            "total_pages": paginator.num_pages,
-            "blogs": Blog.objects.all().order_by('-id')[:5]
-        }
-        return render(request, 'index.html', context)
-
-    return render(request, 'index.html', {"data": result})
+    context = {
+        "data": result,
+        "page": page,
+        "paginator": paginator,
+        "category": category,
+        "blogs": Blog.objects.all().order_by('-id')[:5]
+    }
+    return render(request, 'index.html', context)
 
 
 @login_required(login_url='/auth/send-otp/')
