@@ -10,6 +10,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
+<!-- CSRF Token for AJAX requests -->
+{% csrf_token %}
 
 <div class="slider">
     <div class="slides">
@@ -307,6 +309,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-advance main slider
     setInterval(nextSlide1, 5000);
     
+    // Auto-hide messages after 5 seconds
+    const messages = document.querySelector('.messages-flash');
+    if (messages) {
+        setTimeout(function() {
+            messages.style.opacity = '0';
+            setTimeout(function() {
+                messages.style.display = 'none';
+            }, 500);
+        }, 5000);
+    }
+    
     // Check if jQuery is available
     if (typeof jQuery === 'undefined') {
         log('jQuery not loaded! Loading dynamically...');
@@ -350,6 +363,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Add event listeners to all cart buttons
+    const cartButtons = document.querySelectorAll('.add-to-cart-btn');
+    cartButtons.forEach(button => {
+        const productId = button.getAttribute('data-product-id');
+        if (productId) {
+            log(`Setting up cart button for product ${productId}`);
+            button.addEventListener('click', function(e) {
+                addToCartClick(e, productId);
+            });
+        }
+    });
 });
 
 // Function to initialize all Owl Carousel instances
@@ -475,6 +500,38 @@ function initCarousels($) {
     }, 1000);
 }
 
+// Function to show a custom message
+function showMessage(text, type = 'success') {
+    // Create message container if it doesn't exist
+    let messagesContainer = document.querySelector('.messages-flash');
+    if (!messagesContainer) {
+        messagesContainer = document.createElement('div');
+        messagesContainer.className = 'messages-flash';
+        document.body.appendChild(messagesContainer);
+    }
+    
+    // Create message element
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message ' + type;
+    messageElement.textContent = text;
+    
+    // Add to container
+    messagesContainer.appendChild(messageElement);
+    
+    // Show the container
+    messagesContainer.style.display = 'block';
+    messagesContainer.style.opacity = '0.95';
+    
+    // Auto-hide after 5 seconds
+    setTimeout(function() {
+        messagesContainer.style.opacity = '0';
+        setTimeout(function() {
+            messagesContainer.style.display = 'none';
+            messagesContainer.innerHTML = '';
+        }, 500);
+    }, 5000);
+}
+
 // Direct cart button click function - will be called directly from onclick attribute
 function addToCartClick(event, productId) {
     // Prevent default action (navigation)
@@ -497,8 +554,21 @@ function addToCartClick(event, productId) {
         button.textContent = 'Добавлено';
         button.style.backgroundColor = '#4CAF50';
         
-        // Get CSRF token
-        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Get CSRF token - try different methods to ensure we get it
+        let csrftoken = null;
+        const tokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (tokenElement) {
+            csrftoken = tokenElement.value;
+        } else {
+            // Try to get from cookie if not in form
+            csrftoken = getCookie('csrftoken');
+        }
+        
+        if (!csrftoken) {
+            console.error("CSRF token not found");
+            showMessage("Ошибка безопасности. Пожалуйста, обновите страницу.", "error");
+            return;
+        }
         
         // Create request
         const xhr = new XMLHttpRequest();
@@ -508,23 +578,30 @@ function addToCartClick(event, productId) {
         
         xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 300) {
-                const response = JSON.parse(xhr.responseText);
-                console.log("Product added successfully (direct click):", response);
-                
-                // Update cart counters
-                const cartItemsCount = document.getElementById('cart_items_fetch');
-                if (cartItemsCount) {
-                    cartItemsCount.textContent = response.cart_count;
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    console.log("Product added successfully (direct click):", response);
+                    
+                    // Update cart counters
+                    const cartItemsCount = document.getElementById('cart_items_fetch');
+                    if (cartItemsCount) {
+                        cartItemsCount.textContent = response.cart_count;
+                    }
+                    
+                    const cartTotal = document.getElementById('cart_total_id');
+                    if (cartTotal) {
+                        cartTotal.textContent = response.cart_total;
+                    }
+                    
+                    // Show success message
+                    showMessage("Товар добавлен в корзину", "success");
+                } catch (e) {
+                    console.error("Error parsing response:", e);
+                    showMessage("Ошибка при добавлении товара", "error");
                 }
-                
-                const cartTotal = document.getElementById('cart_total_id');
-                if (cartTotal) {
-                    cartTotal.textContent = response.cart_total;
-                }
-                
-                // Show success message
             } else {
                 console.error("Error adding to cart. Status:", xhr.status);
+                showMessage("Ошибка при добавлении товара в корзину", "error");
             }
             
             // Restore button appearance after delay
@@ -536,7 +613,7 @@ function addToCartClick(event, productId) {
         
         xhr.onerror = function() {
             console.error("Request failed in direct click");
-            alert("Ошибка при добавлении товара в корзину");
+            showMessage("Ошибка соединения. Пожалуйста, попробуйте позже.", "error");
             
             // Restore button appearance
             button.textContent = originalText;
@@ -548,9 +625,26 @@ function addToCartClick(event, productId) {
         
     } catch (error) {
         console.error("Error in direct cart click handler:", error);
+        showMessage("Произошла ошибка", "error");
     }
     
     return false;
+}
+
+// Function to get cookie by name (for CSRF token)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 // Add event listeners for DOM elements once loaded
