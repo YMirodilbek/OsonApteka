@@ -1719,7 +1719,7 @@ document.addEventListener('click', function(event) {
 // Define the handleSearchInput function that was referenced but not defined
 function handleSearchInput() {
     let query = this.value;
-    if (query.length >= 3) { // Adjusted to 3 chars
+    if (query.length >= 4) { // Adjusted to 3 chars
         fetch(`/search/?q=${encodeURIComponent(query)}`) // Ensure this URL is correct
             .then(response => response.json())
             .then(data => {
