@@ -343,25 +343,25 @@ def filial_index(request):
     user_count_active = CustomUser.objects.filter(is_staff = False ,  last_login__gte=start_date).count()
 
     count = 0
-    if filial_id:
-        orders = Order.objects.filter(
-            is_active=True,
-            is_paid = True,
-            # created_at__gte = thirty_days_ago
-        )
-        count = orders.count()
-        count_now = orders.filter(created_at__date=end_date).count()
+    # if filial_id:
+    orders = Order.objects.filter(
+        is_active=True,
+        is_paid = True,
+        # created_at__gte = thirty_days_ago
+    )
+    count = orders.count()
+    count_now = orders.filter(created_at__date=end_date).count()
 
 
 
-        daily_summary = Order.objects.filter(
-            created_at__gte=start_date,
-            is_paid=True
-        ).annotate(
-            day=TruncDay('created_at')
-        ).values('day').annotate(
-            total_amount=Sum(F('items__price') * F('items__quantity'))
-        ).order_by('day')
+    daily_summary = Order.objects.filter(
+        created_at__gte=start_date,
+        is_paid=True
+    ).annotate(
+        day=TruncDay('created_at')
+    ).values('day').annotate(
+        total_amount=Sum(F('items__price') * F('items__quantity'))
+    ).order_by('day')
 
     # elif request.user.is_superuser:
     #     orders = Order.objects.filter(status = 4, is_active=True).order_by('-id').select_related(
