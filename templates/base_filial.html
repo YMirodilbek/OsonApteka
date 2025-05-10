@@ -9,8 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
       .dropdown-menu.bg-primary .dropdown-item:hover {
-        background-color:rgb(9, 12, 17);
+        background-color:rgb(106, 135, 183);
         color: #fff !important;}
+
+    
+      
     </style>
 </head>
 <body>
@@ -46,8 +49,9 @@
                   Ko'proq
                 </a>
                 <ul class="dropdown-menu bg-primary">
-                  <li><a class="dropdown-item  text-white" href="/filial/filial/">Filiallar </a></li>
                   {% if user.is_authenticated and user.is_superuser %}
+                  <li><a class="dropdown-item  text-white" href="/filial/filial/">Filiallar </a></li>
+                  
                   <li><a class="dropdown-item text-white" href="/filial/registar/"> Filial Qo'shish</a></li>
                   {% endif %}
                   <li><a class="dropdown-item text-white" href="#">Something else here</a></li>
@@ -57,10 +61,46 @@
           </div>
         </div>
       </nav>
+      <div class="container">
 
+        <div class="col-md-8 col-lg-6 mx-auto">
+          {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show custom-alert" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+  </div>
+    
         {% block content %}
         {% endblock %}
   
-
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              const alerts = document.querySelectorAll('.custom-alert');
+              alerts.forEach((alert, index) => {
+                  // Sekin paydo bo'lish
+                  alert.style.opacity = 0;
+                  alert.style.transition = "opacity 1s ease, transform 0.5s ease";
+      
+                  setTimeout(() => {
+                      alert.style.opacity = 1;
+                      alert.style.transform = "translateY(0)";
+                  }, 200 * index); // har bir alert navbat bilan chiqadi
+      
+                  // 5 soniyadan keyin sekin yo'qolish
+                  setTimeout(() => {
+                      alert.style.opacity = 0;
+                      alert.style.transform = "translateY(-10px)";
+                      // DOM dan olib tashlash (optional)
+                      setTimeout(() => alert.remove(), 500);
+                  }, 5000 + index * 300); // har bir alert navbat bilan ketadi
+              });
+          });
+      </script>
+      
 </body>
 </html>

@@ -1,11 +1,15 @@
+from django.db.models import Sum, F, ExpressionWrapper, IntegerField, Prefetch
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models.functions import TruncDate, TruncDay
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import  login ,logout
 from django.core.paginator import Paginator
 from click_up.views import ClickWebhook
-from django.contrib.auth import  login ,logout
-from django.contrib import messages
+from datetime import datetime, timedelta
+from django.utils.timezone import now
 from django.shortcuts import render
+from django.contrib import messages
 from .lotin_krill import compress
 from django.conf import settings
 from unidecode import unidecode
@@ -16,6 +20,8 @@ from .forms import  *
 import redis
 import json
 
+
+        
 
 @login_required(login_url='/auth/send-otp/')
 def cart_view(request):
@@ -326,7 +332,57 @@ def product_create(request):
 
 @is_staff
 def filial_index(request):
-    return render(request,'filial/index.html' )
+    filial_id = request.GET.get('filial-id')
+    filials = request.user.filials.all()
+    
+    
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=30)
+
+    user_count = CustomUser.objects.filter(is_staff = False).count()
+    user_count_active = CustomUser.objects.filter(is_staff = False ,  last_login__gte=start_date).count()
+
+    count = 0
+    if filial_id:
+        orders = Order.objects.filter(
+            is_active=True,
+            is_paid = True,
+            # created_at__gte = thirty_days_ago
+        )
+        count = orders.count()
+        count_now = orders.filter(created_at__date=end_date).count()
+
+
+
+        daily_summary = Order.objects.filter(
+            created_at__gte=start_date,
+            is_paid=True
+        ).annotate(
+            day=TruncDay('created_at')
+        ).values('day').annotate(
+            total_amount=Sum(F('items__price') * F('items__quantity'))
+        ).order_by('day')
+
+    # elif request.user.is_superuser:
+    #     orders = Order.objects.filter(status = 4, is_active=True).order_by('-id').select_related(
+    #             'filial').prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
+
+    # else:
+    #     for filial in filials:
+    #         orders = Order.objects.filter(filial = filial,  status = 4 , is_active=True).order_by('-id').select_related(
+    #             'filial').prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
+
+    # orders =  Order.objects.all()
+
+    context = {
+        'count':count,
+        'count_now':count_now,
+        'user_count':user_count,
+        'user_count_active':user_count_active
+    }
+    
+    
+    return render(request,'filial/index.html',context )
 
 
 @is_staff
@@ -339,7 +395,9 @@ def filial_order(request):
 
     if filial_id:
         selected_filial = get_object_or_404(Filial, id=filial_id)
-        orders = Order.objects.filter(filial=selected_filial, is_active=True).order_by('-id')
+        orders = Order.objects.filter(filial=selected_filial, is_active=True).order_by('-id').select_related(
+                'filial'
+            ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
         page_number = request.GET.get(f'page_{selected_filial.id}')
         paginator = Paginator(orders, 2)
         page_obj = paginator.get_page(page_number)
@@ -348,7 +406,9 @@ def filial_order(request):
     elif request.user.is_superuser:
         selected_filials = Filial.objects.all()
         for filial in selected_filials:
-            orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id')
+            orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id').select_related(
+                'filial'
+            ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
             page_number = request.GET.get(f'page_{filial.id}')
             paginator = Paginator(orders, 2)
             page_obj = paginator.get_page(page_number)
@@ -356,13 +416,15 @@ def filial_order(request):
 
     else:
         for filial in filials:
-            orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id')
+            orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id').select_related(
+                'filial'
+            ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
             page_number = request.GET.get(f'page_{filial.id}')
             paginator = Paginator(orders, 2)
             page_obj = paginator.get_page(page_number)
             orders_by_filial[filial] = page_obj
 
-    orders =  Order.objects.all()
+    # orders =  Order.objects.all()
 
     context = {
         'orders_by_filial': orders_by_filial,
@@ -385,7 +447,7 @@ def filial_regisret(request):
         password = request.POST.get('password')
         name = request.POST.get('name')
         address = request.POST.get('address')
-        user =  CustomUser.objects.create(
+        user =  CustomUser.objects.create_user(
             phone_number=username,
             password=password,
             is_staff = True
@@ -401,6 +463,7 @@ def filial_regisret(request):
 def filial_logout(request):
     logout(request)
     return redirect('/filial/login')
+
 
 
 def filial_login(request):

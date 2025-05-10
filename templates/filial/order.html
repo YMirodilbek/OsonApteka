@@ -22,6 +22,7 @@
                 <th>USER</th>
                 <th>TOTAL ORDER</th>
                 <th>STATUS</th>
+                <th>PRODUCT</th>
                 <th class="text-end">PAYMENT</th>
               </tr>
             </thead>
@@ -48,14 +49,12 @@
                           </div>
                           <div class="modal-body">
                             <select name="order_status" class="form-control">
-                             
                                 {% for value, label in type_choices %}
                                   <option value="{{ value }}" {% if i.status == value %}selected{% endif %}>
                                     {% if value == 1 %}🔴{% elif value == 2 %}🟡{% elif value == 3 %}🟢{% elif value == 4 %}🔵{% endif %} {{ label }}
                                   </option>
                                 {% endfor %}
                               </select>
-                           
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
@@ -65,6 +64,48 @@
                       </div>
                     </div>
                   </div>
+                </td>
+                <td >  
+                  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}item">Product</a>
+                  <div class="modal fade" id="exampleModal{{ i.id }}item" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">  <!-- bu yerga classlar qo‘shildi -->
+                      <div class="modal-content">
+                        <form class="update-status-form" data-order-id="{{ i.id }}item">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Mahsulot tafsilotlari</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body">
+                            <table class="table table-hover table-borderless mb-0">
+                              <thead>
+                                <tr>
+                                  <th>Uid</th>
+                                  <th>Name</th>
+                                  <th>Quantity</th>
+                                  <th>Price</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for i in i.items.all %}
+                                <tr>
+                                  <td>{{ i.product.uid }}</td>
+                                  <td>{{ i.name |slice:":30" }}</td>
+                                  <td>{{ i.quantity }}</td>
+                                  <td>{{ i.price }}</td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                            <button type="submit" class="btn btn-primary">Saqlash</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  
                 </td>
                 <td class="text-end">{{ i.get_payment_method_display }}</td>
               </tr>
