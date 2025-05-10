@@ -190,3 +190,15 @@ def BlogDetail(request, pk):
         'blog': blog
     }
     return render(request, 'blog/blog-details.html', context)
+
+def blog_create(request):
+    if not request.user.is_staff:
+        return redirect('blog')
+    
+    if request.method == "POST":
+        image = request.FILES.get('image')
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        blog = Blog.objects.create(image=image, title=title, text=text)
+        return redirect('blog_details', pk=blog.pk)    
+    return render(request, 'blog/blog-create.html')

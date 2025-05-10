@@ -8,6 +8,8 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
+    z-index: 1;
+    box-sizing: border-box;
 }
 
 .slides {
@@ -16,10 +18,11 @@
     width: 100%;
     height: 100%;
     position: relative;
+    justify-content: center;
+    align-items: center;
 }
 
 .slides img {
-    margin-left: 50px;
     width: 1200px;
     height: 300px;
     object-fit: cover;
@@ -51,17 +54,36 @@
 }
 
 .slider .prev1 {
-    left: 240px;
+    left: 20px;
 }
 
 .slider .next1 {
-    right: 240px;
+    right: 20px;
 }
 
 @media (max-width: 768px) {
+    .slider {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .slides {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
     .slides img {
-        width: 90%;
-        margin-left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 240px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
     }
 
     .slider .prev1 {
@@ -74,19 +96,28 @@
 }
 
 @media (max-width: 480px) {
+    .slider {
+        padding: 0;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
     .slides img {
         width: 100%;
         height: 200px;
-        margin-left: 0;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
     }
 
     .slider .prev1 {
-        left: 25px;
+        left: 10px;
         font-size: 0.8rem;
     }
 
     .slider .next1 {
-        right: 25px;
+        right: 10px;
         font-size: 0.8rem;
     }
 }
@@ -174,6 +205,8 @@
     width: 100% !important;
     overflow: hidden !important;
     padding: 0 10px !important;
+    position: relative;
+    z-index: 0;
 }
 
 /* Product Card Styles */
@@ -187,9 +220,9 @@
     display: flex;
     flex-direction: column;
     background: #fff;
-    width: 100% !important;
-    max-width: 320px;
+    width: 238px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 .single_product:hover {
@@ -459,7 +492,7 @@
     }
 
     .single_product {
-        max-width: 100%;
+        width: 320px !important;
     }
     
     .owl-carousel .item {
@@ -573,7 +606,7 @@
     }
 
     .single_product {
-        max-width: 320px;
+        width: 238px !important;
     }
     
     .product_thumb {
@@ -647,6 +680,83 @@
 
 @media (min-width: 1400px) {
     .single_product {
-        max-width: 340px;
+        width: 238px !important;
+    }
+}
+
+.produtc_area {
+    position: relative;
+    z-index: 0;
+    margin-top: 20px;
+}
+
+/* Messages Flash Styling */
+.messages-flash {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    z-index: 2000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 250px;
+    max-width: 80%;
+    animation: slideIn 0.5s ease-in-out;
+    opacity: 0.95;
+    transition: opacity 0.3s;
+}
+
+.messages-flash:hover {
+    opacity: 1;
+}
+
+.messages-flash .message {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.messages-flash .message:last-child {
+    margin-bottom: 0;
+}
+
+.messages-flash .message.success {
+    color: #fff;
+}
+
+.messages-flash .message.error {
+    color: #ffcccc;
+}
+
+.messages-flash .message.warning {
+    color: #fffacc;
+}
+
+.messages-flash .message.info {
+    color: #cce5ff;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 0.95;
+    }
+}
+
+@media (max-width: 768px) {
+    .messages-flash {
+        top: auto;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        max-width: calc(100% - 40px);
     }
 } 

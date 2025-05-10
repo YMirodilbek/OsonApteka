@@ -1,175 +1,195 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akmal Farm Medical</title>
-</head>
-<style>
-    .tugma22 {
-        text-decoration: none;
-    }
-
-    .button22 {
-        background-color: #c51f30;
-        /* Qizil rang */
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-    }
-
-    .button22:hover {
-        background-color: #c0392b;
-        /* Qizilni qoraroq qilish */
-    }
-
-    /* Kichik ekranlar (masalan, mobil qurilmalar) uchun */
-    @media (max-width: 600px) {
-        .button22 {
-            padding: 8px 15px;
-            font-size: 14px;
-            margin-bottom: 20px !important;
-        }
-    }
-
-    /* O'rtacha ekranlar (masalan, planshetlar) uchun */
-    @media (max-width: 768px) {
-        .button22 {
-            padding: 10px 18px;
-            font-size: 15px;
-        }
-    }
-</style>
-
-<body>
-    <a href="/" class="tugma22"><button class="button22">Back</button></a>
-
-    <div class="alls">
-        <!-- <img src="{% static 'assets/img2/003.jpg'%}" alt="kutib turing" class="allimg"> -->
-        <h3 class="alh3">
-            Фармацевт-провизор
-        </h3>
-        <p class="cltxt">Зарплата: по результатам собеседования
-            <br><br>
-            Мы рады предложить работу в нашей аптечной сети!
-            <br><br>
-            Каждому сотруднику мы гарантируем:
-            - официальное трудоустройство и соблюдение ТКРУз
-            - тренинги и курсы для повышения квалификации в собственном Учебном центре
-            <br><br>
-            Обязанности:
-            - консультации в рамках высоких стандартов сервиса для покупателей
-            - соблюдение фармацевтического порядка
-            <br><br>
-            Требования:
-            - образование «Фармацевт» или «Провизор»
-            - опыт работы с кассой и отличное знание ассортимента лекарственных препаратов
-            <br><br>
-            Мы также рассматриваем кандидатов без опыта работы, но с желанием расти и развиваться в фармацевтической
-            отрасли
-            <br><br>
-            Если вас заинтересовала данная вакансия, пожалуйста, перезвоните нам по телефону: +998 (78) 298-00-88 или по
-            короткому номеру 1080
-        </p>
-        <h3 class="alh3">
-            Оператор call-центра
-        </h3>
-        <p class="cltxt">
-            Зарплата: по результатам собеседования
-            <br><br>
-            Мы рады предложить работу в нашем call-центре!
-            <br><br>
-            Каждому сотруднику мы гарантируем:
-            - полное отсутствие холодных звонков
-            - официальное трудоустройство и соблюдение ТКРУз
-            - стабильная "белая" заработная плата с первого дня
-            <br><br>
-            Обязанности:
-            - принимать обращения клиентов (входящие телефонные звонки, а также в месенджере телеграм)
-            - консультировать клиентов по обращениям
-            - принимать в обработку жалобы и предложения
-            <br><br>
-            Требования:
-            - грамотный узбекский язык
-            - умение работать с большим количеством информации
-            - уверенная работа на компьютере
-            - знание ассортимента лекарственных препаратов будет преимуществом
-            <br><br>
-            Если вас заинтересовала данная вакансия, пожалуйста, перезвоните нам по телефону: +998 (78) 298-00-88 или по
-            короткому номеру 1080
-        </p>
-    </div>
+{% block content %}
     <style>
         .alls {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .vacancy-cards {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 100%;
+            gap: 30px;
         }
-
-        .alh3 {
-            color: white;
-            background-color: #002d5c;
-            width: 100%;
-            text-align: center;
-            align-items: center;
-            height: 40px;
+        
+        .vacancy-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
+        
+        .vacancy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
         .allimg {
-            width: 70%;
+            width: 100%;
             height: auto;
-            display: block;
+            border-radius: 8px;
+            margin-bottom: 25px;
         }
-
+        
         .alh3 {
-            font-size: 24px;
-            margin-top: 20px;
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            margin: 0 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            font-weight: 600;
         }
-
+        
+        .salary {
+            background-color: #f8fafc;
+            color: #475569;
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
         .cltxt {
-            max-width: 1100px;
-            margin: 10px auto;
-            font-size: 16px;
+            color: #4b5563;
+            font-size: 1.05rem;
             line-height: 1.6;
-            text-align: justify;
         }
-
-        @media (max-width: 1024px) {
-
-            /* Planshetlar uchun */
-            .alh3 {
-                font-size: 24px;
-            }
-
-            .cltxt {
-                font-size: 16px;
-                max-width: 90%;
-            }
+        
+        .cltxt br {
+            display: block;
+            content: "";
+            margin-top: 5px;
         }
-
+        
+        .section-title {
+            color: #1e3a8a;
+            font-weight: 600;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .list-item {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .list-item:before {
+            content: "•";
+            color: #1e3a8a;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .contact-info {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            font-style: italic;
+        }
+        
+        .phone-number {
+            color: #1e3a8a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
         @media (max-width: 768px) {
-
-            /* Mobil telefonlar uchun */
-            .alh3 {
-                font-size: 20px;
+            .alls {
+                padding: 20px 15px;
             }
-
+            
+            .vacancy-card {
+                padding: 20px;
+            }
+            
+            .alh3 {
+                font-size: 1.5rem;
+            }
+            
             .cltxt {
-                font-size: 14px;
-                line-height: 1.5;
-                max-width: 95%;
+                font-size: 0.95rem;
             }
         }
     </style>
 
-</body>
+    <div class="alls">
+        <!-- <img src="{% static 'assets/img2/003.jpg'%}" alt="kutib turing" class="allimg"> -->
+        <div class="vacancy-cards">
+            <div class="vacancy-card">
+                <h3 class="alh3">Фармацевт-провизор</h3>
+                <div class="salary">Зарплата: по результатам собеседования</div>
+                
+                <div class="cltxt">
+                    Мы рады предложить работу в нашей аптечной сети!
+                </div>
+                
+                <div class="cltxt">
+                    <span class="section-title">Каждому сотруднику мы гарантируем:</span>
+                    <div class="list-item">официальное трудоустройство и соблюдение ТКРУз</div>
+                    <div class="list-item">тренинги и курсы для повышения квалификации в собственном Учебном центре</div>
+                </div>
+                
+                <div class="cltxt">
+                    <span class="section-title">Обязанности:</span>
+                    <div class="list-item">консультации в рамках высоких стандартов сервиса для покупателей</div>
+                    <div class="list-item">соблюдение фармацевтического порядка</div>
+                </div>
+                
+                <div class="cltxt">
+                    <span class="section-title">Требования:</span>
+                    <div class="list-item">образование «Фармацевт» или «Провизор»</div>
+                    <div class="list-item">опыт работы с кассой и отличное знание ассортимента лекарственных препаратов</div>
+                </div>
+                
+                <div class="cltxt">
+                    Мы также рассматриваем кандидатов без опыта работы, но с желанием расти и развиваться в фармацевтической отрасли
+                </div>
+                
+                <div class="cltxt contact-info">
+                    Если вас заинтересовала данная вакансия, пожалуйста, перезвоните нам по телефону: <span class="phone-number">+998 (78) 298-00-88</span> или по короткому номеру <span class="phone-number">1080</span>
+                </div>
+            </div>
+            
+            <div class="vacancy-card">
+                <h3 class="alh3">Оператор call-центра</h3>
+                <div class="salary">Зарплата: по результатам собеседования</div>
+                
+                <div class="cltxt">
+                    Мы рады предложить работу в нашем call-центре!
+                </div>
+                
+                <div class="cltxt">
+                    <span class="section-title">Каждому сотруднику мы гарантируем:</span>
+                    <div class="list-item">полное отсутствие холодных звонков</div>
+                    <div class="list-item">официальное трудоустройство и соблюдение ТКРУз</div>
+                    <div class="list-item">стабильная "белая" заработная плата с первого дня</div>
+                </div>
+                
+                <div class="cltxt">
+                    <span class="section-title">Обязанности:</span>
+                    <div class="list-item">принимать обращения клиентов (входящие телефонные звонки, а также в месенджере телеграм)</div>
+                    <div class="list-item">консультировать клиентов по обращениям</div>
+                    <div class="list-item">принимать в обработку жалобы и предложения</div>
+                </div>
+                
+                <div class="cltxt">
+                    <span class="section-title">Требования:</span>
+                    <div class="list-item">грамотный узбекский язык</div>
+                    <div class="list-item">умение работать с большим количеством информации</div>
+                    <div class="list-item">уверенная работа на компьютере</div>
+                    <div class="list-item">знание ассортимента лекарственных препаратов будет преимуществом</div>
+                </div>
+                
+                <div class="cltxt contact-info">
+                    Если вас заинтересовала данная вакансия, пожалуйста, перезвоните нам по телефону: <span class="phone-number">+998 (78) 298-00-88</span> или по короткому номеру <span class="phone-number">1080</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}  
 
-</html>

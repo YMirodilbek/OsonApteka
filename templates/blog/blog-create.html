@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'assets/css/blog.css' %}">
+    
+    <div class="blog-create-container">
+        <div class="blog-header">
+            <h2>Яратиш</h2>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="blog-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="image">Расм</label>
+                <div class="custom-file-upload">
+                    <input type="file" name="image" id="image" required>
+                    <span class="file-info">Файл танланмаган</span>
+                </div>
+                <div class="form-hint">(тавсия: 1200x800 о'лчам)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Сарлавха</label>
+                <input type="text" name="title" id="title" placeholder="Блог сарлавхани киритинг" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="text">Матн</label>
+                <textarea name="text" id="text" rows="10" placeholder="Блог матнни киритинг" required></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="primary-btn">Сақлаш</button>
+                <a href="{% url 'blog' %}" class="secondary-btn">Бекор қилиш</a>
+            </div>
+        </form>
+    </div>
+    
+    <style>
+        .blog-create-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .blog-header {
+            margin-bottom: 25px;
+            border-bottom: 2px solid #c51f30;
+            padding-bottom: 15px;
+        }
+        
+        .blog-header h2 {
+            margin: 0;
+            color: #fffcfc;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .blog-form .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .blog-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .blog-form input[type="text"],
+        .blog-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .blog-form input[type="text"]:focus,
+        .blog-form textarea:focus {
+            border-color: #c51f30;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(197, 31, 48, 0.2);
+        }
+        
+        .blog-form .custom-file-upload {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 12px 15px;
+            cursor: pointer;
+            background: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .blog-form .custom-file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .blog-form .file-info {
+            color: #777;
+        }
+        
+        .blog-form .custom-file-upload::after {
+            content: "Faylni tanlash";
+            background: #c51f30;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .blog-form .form-hint {
+            font-size: 13px;
+            color: #666;
+            margin-top: 7px;
+        }
+        
+        .blog-form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .blog-form .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .primary-btn, .secondary-btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .primary-btn {
+            background-color: #c51f30;
+            color: white;
+        }
+        
+        .primary-btn:hover {
+            background-color: #a71a28;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(197, 31, 48, 0.3);
+        }
+        
+        .secondary-btn {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        
+        .secondary-btn:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .blog-create-container {
+                margin: 20px 15px;
+                padding: 20px;
+            }
+            
+            .blog-form .form-actions {
+                flex-direction: column;
+            }
+            
+            .primary-btn, .secondary-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+    
+    <script>
+        // Update file name display when file is selected
+        document.getElementById('image').addEventListener('change', function() {
+            var fileName = this.files[0] ? this.files[0].name : 'Fayl tanlanmagan';
+            document.querySelector('.file-info').textContent = fileName;
+        });
+    </script>
+{% endblock %}
+
+

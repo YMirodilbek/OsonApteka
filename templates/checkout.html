@@ -2,465 +2,580 @@
 {% load static %}
 {% block content %}
     <style>
-    .checkout-container {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-
-.order-details {
-    flex: 1;
-    min-width: 300px;
-}
-
-.order-summary {
-    flex: 1;
-    min-width: 300px;
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.checkout-container h2 {
-    margin-bottom: 20px;
-    color: #2971f5;
-    font-weight: 600;
-    font-size: 24px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 500;
-}
-
-.form-text {
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
-}
-
-.required {
-    color: #e74c3c;
-}
-
-.form-control {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    background-color: #f8f9fa;
-}
-
-.form-control:focus {
-    border-color: #2971f5;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(41, 113, 245, 0.2);
-}
-
-.form-control.is-invalid {
-    border-color: #e74c3c;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e74c3c' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e74c3c' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-}
-
-.error-message {
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 5px;
-    display: none;
-}
-
-.form-control.is-invalid + .error-message {
-    display: block;
-}
-
-select.form-control {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px;
-}
-
-.address-options {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.address-option {
-    display: flex;
-    align-items: center;
-}
-
-.address-option input[type="radio"] {
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 2px solid #2971f5;
-    border-radius: 50%;
-    outline: none;
-    position: relative;
-}
-
-.address-option input[type="radio"]:checked {
-    background-color: #2971f5;
-    border: 2px solid #2971f5;
-}
-
-.address-option input[type="radio"]:checked:after {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.location-heading {
-    font-size: 18px;
-    color: #555;
-    margin: 25px 0 15px;
-    font-weight: 500;
-}
-
-.btn-primary {
-    width: 100%;
-    padding: 14px;
-    background-color: #2971f5;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: 600;
-    margin-top: 15px;
-}
-
-.btn-primary:hover {
-    background-color: #1d5cc3;
-}
-
-.cart-item {
-    display: flex;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.cart-item img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    margin-right: 15px;
-    border-radius: 6px;
-}
-
-.cart-item-details {
-    flex: 1;
-}
-
-.cart-item-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.cart-item-quantity, .cart-item-price {
-    color: #666;
-    font-size: 13px;
-}
-
-.cart-item-total {
-    font-weight: 500;
-    margin-top: 4px;
-}
-
-.order-summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    color: #666;
-    font-size: 14px;
-}
-
-.order-summary-row.bold {
-    font-weight: 600;
-    color: #333;
-}
-
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-    color: #2971f5;
-    font-size: 18px;
-}
-
-/* Google Map uchun stil */
-#map {
-    width: 100%;
-    height: 250px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-}
-
-.payment-info {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 6px;
-    margin-top: 20px;
-    border-left: 4px solid #2971f5;
-}
-
-.payment-info p {
-    margin: 0;
-    font-size: 14px;
-    color: #555;
-}
-
-/* Responsiv dizayn */
-@media (max-width: 768px) {
-    .checkout-container {
-        width: 95%;
-        padding: 15px;
-        flex-direction: column;
-        gap: 20px;
+    /* Modern Checkout Styles */
+    :root {
+        --primary: #1e3a8a;
+        --primary-light: #3151b1;
+        --primary-dark: #152b63;
+        --accent: #ff6b6b;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --bg-light: #f7fafc;
+        --border-light: #edf2f7;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --radius-sm: 0.25rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --transition-normal: all 0.3s ease;
     }
-    
+
+    .checkout-container {
+        max-width: 1240px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .checkout-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    .order-details {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        padding: 30px;
+        transition: var(--transition-normal);
+    }
+
+    .order-details:hover {
+        box-shadow: var(--shadow-lg);
+    }
+
     .order-summary {
-        order: -1; /* Make order summary appear first on mobile */
+        flex: 0 0 400px;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        padding: 30px;
+        transition: var(--transition-normal);
     }
-}
 
-@media (max-width: 480px) {
+    .order-summary:hover {
+        box-shadow: var(--shadow-lg);
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .checkout-header h1 {
+        color: var(--primary);
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .checkout-header h1:after {
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 4px;
+        background: var(--primary);
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    .checkout-header p {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        margin-top: 25px;
+    }
+
+    h2 {
+        color: var(--primary);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-dark);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .form-text {
+        font-size: 0.8rem;
+        color: var(--text-light);
+        margin-top: 5px;
+    }
+
+    .required {
+        color: var(--accent);
+        margin-left: 2px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        font-size: 0.95rem;
+        background-color: var(--bg-light);
+        transition: var(--transition-normal);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .form-control.is-invalid {
+        border-color: var(--accent);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23ff6b6b' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ff6b6b' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+
+    .error-message {
+        color: var(--accent);
+        font-size: 0.8rem;
+        margin-top: 5px;
+        display: none;
+    }
+
+    .form-control.is-invalid + .error-message {
+        display: block;
+    }
+
+    select.form-control {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+
+    select.form-control.is-invalid {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23ff6b6b' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ff6b6b' stroke='none'/%3e%3c/svg%3e"), url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-position: right 30px center, right 12px center;
+    }
+
     .address-options {
-        flex-direction: column;
-        gap: 10px;
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
     }
-    
-    .checkout-container h2 {
-        font-size: 20px;
-    }
-    
-    .form-group input {
-        font-size: 16px; /* Better for mobile input */
-    }
-}
 
-select.form-control.is-invalid {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e74c3c' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e74c3c' stroke='none'/%3e%3c/svg%3e"), url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-position: right 30px center, right 12px center;
-}
+    .address-option {
+        display: flex;
+        align-items: center;
+    }
+
+    .address-option input[type="radio"] {
+        margin-right: 8px;
+        width: 18px;
+        height: 18px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: 2px solid var(--primary);
+        border-radius: 50%;
+        outline: none;
+        position: relative;
+        cursor: pointer;
+        transition: var(--transition-normal);
+    }
+
+    .address-option input[type="radio"]:checked {
+        background-color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .address-option input[type="radio"]:checked:after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .location-heading {
+        font-size: 1.1rem;
+        color: var(--text-dark);
+        margin: 25px 0 15px;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        display: block;
+        width: 100%;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 15px;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: var(--radius-md);
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        transition: var(--transition-normal);
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:active {
+        transform: translateY(-1px);
+    }
+
+    .cart-item {
+        display: flex;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .cart-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .cart-item img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s ease;
+    }
+
+    .cart-item img:hover {
+        transform: scale(1.05);
+    }
+
+    .cart-item-details {
+        flex: 1;
+    }
+
+    .cart-item-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-dark);
+        font-size: 1rem;
+    }
+
+    .cart-item-quantity, .cart-item-price {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+
+    .cart-item-total {
+        font-weight: 700;
+        margin-top: 4px;
+        color: var(--primary);
+    }
+
+    .order-summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .order-summary-row.bold {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-light);
+        color: var(--text-light);
+        font-size: 0.95rem;
+    }
+
+    .summary-row:last-of-type {
+        border-bottom: none;
+        padding-bottom: 0;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid var(--border-light);
+        color: var(--primary);
+        font-size: 1.2rem;
+    }
+
+    /* Google Map */
+    #map {
+        width: 100%;
+        height: 250px;
+        border-radius: var(--radius-md);
+        margin-bottom: 15px;
+        border: 1px solid var(--border-light);
+        overflow: hidden;
+    }
+
+    .payment-info {
+        background-color: var(--bg-light);
+        padding: 15px;
+        border-radius: var(--radius-md);
+        margin-top: 20px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .payment-info p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    .payment-info p:first-child {
+        margin-bottom: 8px;
+    }
+
+    .payment-info strong {
+        color: var(--text-dark);
+    }
+
+    /* Responsive design */
+    @media (max-width: 992px) {
+        .order-summary {
+            flex: 1 1 100%;
+            order: -1; /* Make order summary appear first on mobile */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            margin: 30px auto;
+        }
+        
+        .checkout-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .checkout-header p {
+            font-size: 1rem;
+        }
+        
+        .order-details, 
+        .order-summary {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .address-options {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+        }
+        
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            font-size: 16px; /* Better for mobile input */
+        }
+    }
     </style>
             
             <div class="checkout-container">
-                <div class="order-details">
-                    <h2>Buyurtma ma'lumotlari</h2>
-                    <form method="post" class="checkout-form" action="{% url 'checkout' %}">
-                        {% csrf_token %}
-                        
-                        <div class="form-group">
-                            <label for="id_phone_number1">Telefon raqam <span class="required">*</span>:</label>
-                            <input type="tel" id="id_phone_number1" name="phone_number1" class="form-control" placeholder="+998 XX XXX XX XX" required pattern="^\+?[0-9\s\-\(\)]+$">
-                            <small class="form-text text-muted">Misol: +998 XX XXX XX XX</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_phone_number2">Qo'shimcha telefon raqam (ixtiyoriy):</label>
-                            <input type="tel" id="id_phone_number2" name="phone_number2" class="form-control" placeholder="+998 XX XXX XX XX" pattern="^\+?[0-9\s\-\(\)]+$">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_filial">Filial <span class="required">*</span>:</label>
-                            <select id="id_filial" name="filial" class="form-control" required>
-                                <option value="">Filial tanlang</option>
-                                {% if filials %}
-                                    {% for filial in filials %}
-                                    <option value="{{ filial.id }}">{{ filial.name }}</option>
-                                    {% endfor %}
-                                {% else %}
-                                    {% for filial in form.filial.field.queryset %}
-                                    <option value="{{ filial.id }}">{{ filial.name }}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                            <div class="error-message">Iltimos, filial tanlang</div>
-                        </div>
-                        
-                        <h3 class="location-heading">Manzilni tanlang <span class="required">*</span>:</h3>
-                        <div class="address-options">
-                            <label class="address-option">
-                                <input type="radio" name="address_type" value="manual" checked> Qo'lda kiritish
-                            </label>
-                            <label class="address-option">
-                                <input type="radio" name="address_type" value="maps"> Google Maps orqali
-                            </label>
-                        </div>
-                        
-                        <!-- Qo'lda manzil kiritish -->
-                        <div id="manual-address" class="form-group">
-                            <label for="address_text">Manzil <span class="required">*</span>:</label>
-                            <input type="text" name="address_text" id="address_text" class="form-control" placeholder="Viloyat, tuman, ko'cha, uy raqami" required>
-                            <small class="form-text text-muted">Misol: Toshkent sh., Yunusobod tumani, Amir Temur ko'chasi, 4-uy</small>
-                        </div>
-                        
-                        <!-- Google Maps orqali tanlash -->
-                        <div id="maps-address" style="display: none;">
-                            <div class="form-group">
-                                <label for="address-input">Xaritadan manzilni tanlang <span class="required">*</span>:</label>
-                                <input type="text" id="address-input" class="form-control" placeholder="Xaritada joylashuvni belgilang" readonly>
-                                <small class="form-text text-muted">Xaritada belgi qo'yish uchun kerakli joyni bosing yoki belgi ustiga bosib, joylashuvni o'zgartiring</small>
-                            </div>
-                            <div id="map"></div>
-                            <input type="hidden" name="address_lat" id="address_lat">
-                            <input type="hidden" name="address_lng" id="address_lng">
-                        </div>
-                        
-                        <!-- Hidden input for payment method -->
-                        <input type="hidden" name="payment_method" value="click">
-                        
-                        <div class="payment-info">
-                            <p><strong>To'lov usuli:</strong> Click</p>
-                            <p>Buyurtmani rasmiylashtirgandan so'ng Click to'lov tizimiga yo'naltirilasiz. To'lov muvaffaqiyatli amalga oshirilgandan so'ng, buyurtmangiz ishlov beriladi.</p>
-                        </div>
-                        
-                        <button type="submit" class="btn-primary">Buyurtmani rasmiylashtirish</button>
-                    </form>
+                <div class="checkout-header">
+                    <h1>Buyurtmani rasmiylashtirish</h1>
+                    <p>Iltimos, buyurtma ma'lumotlarini to'ldiring</p>
                 </div>
                 
-                <div class="order-summary">
-                    <h2>Buyurtma tafsilotlari</h2>
-                    {% for item in cart_items %}
-                    <div class="cart-item">
-                        <img src="{{ item.product.image1.url }}" alt="{{ item.product.name }}">
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">{{ item.product.name }}</div>
-                            <div class="cart-item-quantity">{{ item.quantity }} dona</div>
-                            <div class="cart-item-price">{{ item.product.price }} so'm</div>
-                            <div class="cart-item-total">Jami: {{ item.total_price }} so'm</div>
+                <div class="checkout-content">
+                    <div class="order-details">
+                        <h2>Buyurtma ma'lumotlari</h2>
+                        <form method="post" class="checkout-form" action="{% url 'checkout' %}">
+                            {% csrf_token %}
+                            
+                            <div class="form-group">
+                                <label for="id_phone_number1">Telefon raqam <span class="required">*</span></label>
+                                <input type="tel" id="id_phone_number1" name="phone_number1" class="form-control" placeholder="+998 XX XXX XX XX" required pattern="^\+?[0-9\s\-\(\)]+$">
+                                <small class="form-text">Misol: +998 XX XXX XX XX</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="id_phone_number2">Qo'shimcha telefon raqam (ixtiyoriy)</label>
+                                <input type="tel" id="id_phone_number2" name="phone_number2" class="form-control" placeholder="+998 XX XXX XX XX" pattern="^\+?[0-9\s\-\(\)]+$">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="id_filial">Filial <span class="required">*</span></label>
+                                <select id="id_filial" name="filial" class="form-control" required>
+                                    <option value="">Filial tanlang</option>
+                                    {% if filials %}
+                                        {% for filial in filials %}
+                                            <option value="{{ filial.id }}">{{ filial.name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for filial in form.filial.field.queryset %}
+                                            <option value="{{ filial.id }}">{{ filial.name }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                                <div class="error-message">Iltimos, filial tanlang</div>
+                            </div>
+                            
+                            <h3 class="location-heading">Manzilni tanlang <span class="required">*</span></h3>
+                            <div class="address-options">
+                                <label class="address-option">
+                                    <input type="radio" name="address_type" value="manual" checked> Qo'lda kiritish
+                                </label>
+                                <label class="address-option">
+                                    <input type="radio" name="address_type" value="maps"> Google Maps orqali
+                                </label>
+                            </div>
+                            
+                            <!-- Qo'lda manzil kiritish -->
+                            <div id="manual-address" class="form-group">
+                                <label for="address_text">Manzil <span class="required">*</span></label>
+                                <input type="text" name="address_text" id="address_text" class="form-control" placeholder="Viloyat, tuman, ko'cha, uy raqami" required>
+                                <small class="form-text">Misol: Toshkent sh., Yunusobod tumani, Amir Temur ko'chasi, 4-uy</small>
+                            </div>
+                            
+                            <!-- Google Maps orqali tanlash -->
+                            <div id="maps-address" style="display: none;">
+                                <div class="form-group">
+                                    <label for="address-input">Xaritadan manzilni tanlang <span class="required">*</span></label>
+                                    <input type="text" id="address-input" class="form-control" placeholder="Xaritada joylashuvni belgilang" readonly>
+                                    <small class="form-text">Xaritada belgi qo'yish uchun kerakli joyni bosing yoki belgi ustiga bosib, joylashuvni o'zgartiring</small>
+                                </div>
+                                <div id="map"></div>
+                                <input type="hidden" name="address_lat" id="address_lat">
+                                <input type="hidden" name="address_lng" id="address_lng">
+                            </div>
+                            
+                            <!-- Hidden input for payment method -->
+                            <input type="hidden" name="payment_method" value="click">
+                            
+                            <div class="payment-info">
+                                <p><strong>To'lov usuli:</strong> Click</p>
+                                <p>Buyurtmani rasmiylashtirgandan so'ng Click to'lov tizimiga yo'naltirilasiz. To'lov muvaffaqiyatli amalga oshirilgandan so'ng, buyurtmangiz ishlov beriladi.</p>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary">Buyurtmani rasmiylashtirish</button>
+                        </form>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <h2>Buyurtma tafsilotlari</h2>
+                        {% for item in cart_items %}
+                        <div class="cart-item">
+                            <img src="{{ item.product.image1.url }}" alt="{{ item.product.name }}">
+                            <div class="cart-item-details">
+                                <div class="cart-item-title">{{ item.product.name }}</div>
+                                <div class="cart-item-quantity">{{ item.quantity }} dona</div>
+                                <div class="cart-item-price">{{ item.product.price }} so'm</div>
+                                <div class="cart-item-total">Jami: {{ item.total_price }} so'm</div>
+                            </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                    
-                    <div class="order-summary-row">
-                        <span>Mahsulotlar:</span>
-                        <span id="product-total">{{ order.total_price }} so'm</span>
-                    </div>
-                    
-                    <div class="order-summary-row">
-                        <span>Yetkazib berish:</span>
-                        <span>15,000 so'm</span>
-                    </div>
-                    
-                    <div class="total-row">
-                        <span>Umumiy summa:</span>
-                        <span id="order-total">{{ order.total_price|add:15000 }} so'm</span>
+                        {% endfor %}
+                        
+                        <div class="summary-row">
+                            <span>Mahsulotlar:</span>
+                            <span id="product-total">{{ order.total_price }} so'm</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Yetkazib berish:</span>
+                            <span>15,000 so'm</span>
+                        </div>
+                        
+                        <div class="total-row">
+                            <span>Umumiy summa:</span>
+                            <span id="order-total">{{ order.total_price|add:15000 }} so'm</span>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <script>
-            // Debug function to check if filials are loaded
-            function checkFilials() {
-                const filialSelect = document.getElementById('id_filial');
-                const options = filialSelect.querySelectorAll('option');
-                console.log('Total filial options:', options.length);
-                
-                if (options.length <= 1) {
-                    console.error('No filials loaded in the dropdown!');
-                    // Add at least one filial option for testing
-                    const testOption = document.createElement('option');
-                    testOption.value = '1';
-                    testOption.textContent = 'Test Filial';
-                    filialSelect.appendChild(testOption);
-                    console.log('Added test filial option');
-                }
-                
-                // Check form data on submit
-                document.querySelector('.checkout-form').addEventListener('submit', function() {
-                    const formData = new FormData(this);
-                    console.log('Form data being submitted:');
-                    for (let [key, value] of formData.entries()) {
-                        console.log(key, ':', value);
-                    }
-                });
-            }
-            
-            // Call the debug function when page loads
-            document.addEventListener('DOMContentLoaded', function() {
-                checkFilials();
-            });
-            
-            // Format currency function
-            function formatCurrency(amount) {
-                return new Intl.NumberFormat('uz-UZ').format(amount) + " so'm";
-            }
-            
-            // Make sure totals are displayed properly
-            document.addEventListener('DOMContentLoaded', function() {
-                // Calculate totals from the cart items if needed
-                const productTotalElement = document.getElementById('product-total');
-                const orderTotalElement = document.getElementById('order-total');
-                
-                // If totals are not displayed (missing or "so'm" only), calculate them
-                if (!productTotalElement.textContent.includes('0') || productTotalElement.textContent.trim() === "so'm") {
-                    let totalPrice = 0;
-                    
-                    // Get all cart items and sum up their totals
-                    document.querySelectorAll('.cart-item').forEach(function(item) {
-                        const priceText = item.querySelector('.cart-item-total').textContent;
-                        const price = parseInt(priceText.replace(/\D/g, ''));
-                        if (!isNaN(price)) {
-                            totalPrice += price;
-                        }
-                    });
-                    
-                    // Display the totals
-                    if (totalPrice > 0) {
-                        productTotalElement.textContent = formatCurrency(totalPrice);
-                        orderTotalElement.textContent = formatCurrency(totalPrice + 15000); // Add delivery cost
-                    }
-                }
-            });
-            
-            var map, marker;
-            
-            // Form validation
+            // Form validation and initialization
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.querySelector('.checkout-form');
                 const phoneInput = document.getElementById('id_phone_number1');
                 const addressTextInput = document.getElementById('address_text');
                 const filialSelect = document.getElementById('id_filial');
+                
+                // Check filial options
+                const filialOptions = filialSelect.querySelectorAll('option');
+                if (filialOptions.length <= 1) {
+                    // If no filials in dropdown, add a helpful error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.style.display = 'block';
+                    errorDiv.style.marginTop = '10px';
+                    errorDiv.style.padding = '10px';
+                    errorDiv.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
+                    errorDiv.style.borderRadius = 'var(--radius-md)';
+                    errorDiv.innerHTML = '<strong>Xatolik:</strong> Filiallar ro\'yxati yuklanmadi. Iltimos, sahifani qayta yuklang yoki administrator bilan bog\'laning.';
+                    filialSelect.parentNode.appendChild(errorDiv);
+                    
+                    // Disable the submit button
+                    document.querySelector('.btn-primary').disabled = true;
+                }
+                
+                // Remove duplicate filial options if any
+                const optionValues = {};
+                Array.from(filialOptions).forEach(option => {
+                    const value = option.value;
+                    if (value && optionValues[value]) {
+                        option.remove(); // Remove duplicate
+                    } else {
+                        optionValues[value] = true;
+                    }
+                });
                 
                 // Format phone number as user types
                 phoneInput.addEventListener('input', function(e) {
@@ -490,8 +605,10 @@ select.form-control.is-invalid {
                 filialSelect.addEventListener('change', function() {
                     if (this.value) {
                         filialSelect.classList.remove('is-invalid');
+                        filialSelect.nextElementSibling.style.display = 'none';
                     } else {
                         filialSelect.classList.add('is-invalid');
+                        filialSelect.nextElementSibling.style.display = 'block';
                     }
                 });
                 
@@ -502,9 +619,11 @@ select.form-control.is-invalid {
                     // Validate filial selection
                     if (!filialSelect.value) {
                         filialSelect.classList.add('is-invalid');
+                        filialSelect.nextElementSibling.style.display = 'block';
                         isValid = false;
                     } else {
                         filialSelect.classList.remove('is-invalid');
+                        filialSelect.nextElementSibling.style.display = 'none';
                     }
                     
                     // Validate phone number
@@ -547,7 +666,14 @@ select.form-control.is-invalid {
                     }
                 });
             });
-
+            
+            // Format currency function
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('uz-UZ').format(amount) + " so'm";
+            }
+            
+            var map, marker;
+            
             function initMap() {
                 // Default coordinates for Tashkent
                 var defaultLocation = { lat: 41.3111, lng: 69.2797 };
