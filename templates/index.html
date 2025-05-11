@@ -1,773 +1,339 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
-<link rel="stylesheet" href="{% static 'assets/css/index.css' %}">
 
-<!-- Proper loading of jQuery and Owl Carousel libraries -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
-<!-- CSRF Token for AJAX requests -->
-{% csrf_token %}
-
-<!-- Search Results Container -->
-<div class="container">
-    <div class="product_active_1 owl-carousel">
-        <!-- Search results will be injected here -->
-    </div>
-</div>
-
-<div class="slider">
-    <div class="slides">
-        <img src="../static/assets/img2/o'quv markaz.jpg" alt="Image 1">
-        <img src="../static/assets/img2/labaratoriya.jpg" alt="Image 2">
-        <img src="../static/assets/img2/ayollar markazi.jpg" alt="Image 3">
-        <img src="../static/assets/img2/Akmal farm.jpg" alt="Image 4">
-    </div>
-    <button class="prev1" onclick="prevSlide1()">&#10094;</button>
-    <button class="next1" onclick="nextSlide1()">&#10095;</button>
-</div><br>
-
-<!-- slid end -->
-<!-- 1-rinchi card -->
-<div class="produtc_area">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="product_tab_button">
-                    <ul class="nav" role="tablist">
-                        <li>
-                            <h4> <a class="active" data-bs-toggle="tab" href="#Products" role="tab"
-                                    aria-controls="Products" aria-selected="true"
-                                    style="color: black;">{{category.name}}</a></h4>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
+<div class="main-content__container">
+    <div class="main_picture_slider">
+        <!-- Slider Items -->
+        <div class="main_picture_slider__item active">
+            <img src="{% static 'media/myriam-zilles-KltoLK6Mk-g-unsplash.jpg' %}" alt="Medical supplies">
         </div>
-
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="Products" role="tabpanel">
-                {% for group in data %}
-                <h4 style="margin-top: 30px;">{{ group.class_name }}</h4>
-                <div class="row">
-                    <div class="product_active owl-carousel">
-                        {% for product in group.products %}
-                        <div class="item">
-                            <div class="single_product">
-                                <div class="product_thumb">
-                                    <a href="/product/detail/{{ product.id }}">
-                                        <img src="{{ product.image1 }}" alt="{{ product.name }}">
-                                    </a>
-                                </div>
-                                <div class="product_content">
-                                    <a href="/product/detail/{{ product.id }}">
-                                        <h3>{{ product.name }}</h3>
-                                    </a>
-                                    <span>{{ product.producer }}</span>
-                                    <div class="product_price">
-                                        <span class="current_price">{{ product.prices.0 }} so'm</span>
-                                    </div>
-                                </div>
-                                <div class="product_action">
-                                    <ul>
-                                        {% if user.is_authenticated %}
-                                        <li class="product_cart">
-                                            <a href="#" data-product-id="{{ product.id }}" onclick="addToCartClick(event, '{{ product.id }}')" class="add-to-cart-btn">корзина</a>
-                                        </li>
-                                        {% else %}
-                                        <li class="product_cart">
-                                            <a href="/auth/send-otp/" class="add-to-cart-btn">корзина</a>
-                                        </li>
-                                        {% endif %}
-                                        <li class="add_links">
-                                            <a href="/toggle/{{ product.id }}/" title="В избранное">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="add_links">
-                                            <a href="/product/detail/{{ product.id }}/" title="Подробнее">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endfor %}
-
-                {% if not category and data %}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        {% if page > 1 %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page|add:-1 }}" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        
-                        {% for p in paginator.page_range %}
-                            {% if p == page %}
-                                <li class="page-item active"><a class="page-link" href="#">{{ p }}</a></li>
-                            {% else %}
-                                <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        {% if page < paginator.num_pages %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page|add:1 }}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-                {% endif %}  
-
-            </div>
+        <div class="main_picture_slider__item">
+            <img src="{% static 'media/louis-reed-pwcKF7L4-no-unsplash.jpg' %}" alt="Medical equipment">
+        </div>
+        <div class="main_picture_slider__item">
+            <img src="{% static 'media/online-marketing-hIgeoQjS_iE-unsplash.jpg' %}" alt="Pharmacy items">
+        </div>
+        
+        <!-- Navigation Arrows -->
+        <div class="slider-nav prev">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="slider-nav next">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <!-- Dots Navigation -->
+        <div class="slider-dots">
+            <div class="slider-dot active" data-index="0"></div>
+            <div class="slider-dot" data-index="1"></div>
+            <div class="slider-dot" data-index="2"></div>
         </div>
     </div>
 </div>
-<!-- 1-tugadi -->
 
+<div class="main-content__container">
+    {% for group in data %}
+    <h3 class="product-list__title">
+        {{ group.class_name }}
+        <div class="product-list__controls">
+            <button class="product-list__control prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="product-list__control next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </h3>
+    <hr>
+    <div class="product-list">
 
-<!--bizning hamkorlar rasmi boshlandi -->
-<div class="single_product_wrapper product_slider">
-    <div class="container">
-        <div class="row">
-            <h4 style="color: black;">Популярные бренды</h4>
-            <div class="product_gallery_active owl-carousel">
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/Abbott.png" alt="">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/Bayer.png" alt="">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/Dr.reddys.png" alt="">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/Farmak.png" alt="">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/KRKA.png" alt="">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/Sandoz.png" alt="">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="single_product_gallery">
-                        <img src="../static/assets/rasm/SANOFI.png" alt="">
-                    </div>
+        {% for product in group.products %}
+        <div class="product-item-card" data-product-id="{{ product.id }}">
+            <div class="product-item-card__image">
+                <img src="{{ product.image1 }}" alt="Product 1">
+            </div>
+            <div class="product-item-card__content">
+                <h4>{{ product.name }}</h4>
+                <p>{{ product.producer }}</p>
+                <span class="price">{{ product.prices.0 }} сум</span>
+            </div>
+            <div class="product-item-card__actions">
+                <button class="add-to-cart">Добавить в корзину</button>
+                <div class="product-item-card__buttons">
+                    <a href="/product/detail/{{ product.id }}" class="product-item-card__button about"><i class="fas fa-eye"></i></a>
+                    <button class="product-item-card__button wishlist"><i class="fas fa-heart"></i></button>
                 </div>
             </div>
         </div>
+        {% endfor %}
+
     </div>
-</div>
-<!-- bizning hamkorlar rasmi tugadi -->
+    {% endfor %}
 
-
-<!-- haqimizda bohshlandi -->
-<div class="blog_area" id="Blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="blog_header_title">
-                    <a href="/auth/blog/">
-                        <h4 style="color: black;">Новости и статьи</h4>
+    {% if not category and data %}
+    <div class="product-pagination">
+        <div class="product-pagination__controls">
+            {% if page > 1 %}
+                <button class="product-pagination__control prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            {% endif %}
+            <div class="product-pagination__pages">
+                {% for p in paginator.page_range %}
+                    {% if p == page %}
+                    <a href="?page={{ p }}" class="product-pagination__page active">
+                        {{ p }}
                     </a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="blog_active owl-carousel">
-                {% for blog in blogs %}
-                <div class="item">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal1()"><img src="{{ blog.image.url }}"
-                                    alt="Kutib turing"></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h5>{{ blog.title }}</h5>
-                            <a href="#">{{ blog.created_at|date:"d.m.Y" }}</a>
-                            <p>{{ blog.text|truncatechars:60 }}
-                            </p>
-                        </div>
-                        <a href="{% url 'blog_details' blog.pk %}" class="tugma22"><button class="button22">Подробно</button></a>
-                    </div>
-                </div>
+                    {% else %}
+                    <a href="?page={{ p }}" class="product-pagination__page">
+                        {{ p }}
+                    </a>
+                    {% endif %}
                 {% endfor %}
             </div>
+            {% if page < paginator.num_pages %}
+            <button class="product-pagination__control next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            {% endif %}
         </div>
     </div>
-</div>
-<br>
-<!-- info start -->
+    {% endif %}
 
+    <hr>
+    <h3 class="product-list__title">
+        Наши партнеры
+    </h3>
+    <hr>
+    <div class="brand-list">
 
-<!-- haqimizda tugatildi -->
-<!-- matinlar boshlandi -->
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/Abbott.png' %}" alt="">
+            </div>
+        </div>
 
-<div class="matin">
-    <h4 class="a2">Интернет-аптека "Akmal Farm Medical"</h4><br>
-    <p clas>Добро пожаловать в интернет-аптеку "Akmal Farm Medical"! <br> Здесь и во всех наших филиалах вы найдёте всё
-        необходимое для заботы о своём здоровье. Мы используем современные технологии, <br> а также всегда рады
-        покупателям
-        Вас ждёт быстрое обслуживание, широкий ассортимент, комфорт и удобство. <br> И при этом главная
-        отличительная
-        черта
-        наших аптек в том, что сэкономить на лекарствах можно, нужно только прийти и убедиться!
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/Bayer.png' %}" alt="">
+            </div>
+        </div>
 
-        Наша цель – предоставить <br> каждому покупателю возможность приобрести необходимые медикаменты по самым
-        выгодным
-        ценам, даже по сравнению с другими аптеками.
-        <br>
-        ⚪️ Оптимизированная закупочная политика – мы сотрудничаем с крупнейшими поставщиками и закупаем продукцию в
-        больших объёмах.
-        <br>
-        ⚪️ Прямые поставки от производителей – сокращение цепочки посредников позволяет нам предлагать лучшие цены.
-        <br>
-        ⚪️ Гарантия качества – все лекарства сертифицированы и проходят строгую проверку.
-        <br>
-        ⚪️ Высокий товарооборот – благодаря активным продажам у нас нет препаратов с истёкшим сроком годности.
-        <br>
-        Как оформить заказ?<br>
-        1. Найдите нужный препарат на сайте. <br>
-        2. Добавьте его в корзину и перейдите к оформлению заказа <br>
-        3. Укажите контактные данные и адрес доставки. <br>
-        4. Произведите оплату <br>
-        5. Ожидайте доставку
-        <br>
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/Dr.reddys.png' %}" alt="">
+            </div>
+        </div>
 
-        Наши специалисты всегда готовы помочь! Для консультаций звоните по телефону: +998 (78) 298-00-88 или по
-        короткому номеру 1080.
-        <br>
-        Мы ценим доверие наших клиентов и стремимся сделать процесс покупки удобным и безопасным. Спасибо, что
-        выбираете
-        интернет-аптеку "Akmal Farm Medical"!
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/Farmak.png' %}" alt="">
+            </div>
+        </div>
 
-    </p>
-</div>
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/KRKA.png' %}" alt="">
+            </div>
+        </div>
 
-<!-- matinlar tugatildi -->
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/Sandoz.png' %}" alt="">
+            </div>
+        </div>
+        
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/SANOFI.png' %}" alt="">
+            </div>
+        </div>
+        
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/KRKA.png' %}" alt="">
+            </div>
+        </div>
+        
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/Sandoz.png' %}" alt="">
+            </div>
+        </div>
+        
+        <div class="brand-card">
+            <div class="brand-card__image">
+                <img src="{% static 'assets/rasm/SANOFI.png' %}" alt="">
+            </div>
+        </div>
 
-<!-- reklama- boshland -->
-<br><br>
-<div class="container22">
-    <div class="box1">
-        <span>ГАРАНТИЯ КАЧЕСТВА</span>
-        <button onclick="showTextModal5()">Подробно</button>
-        <img src="../static/assets/img/Гарантия качества.jpeg" alt="Image 1">
     </div>
-    <div class="box1">
-        <span>УСЛОВИЯ ДОСТАВКИ</span>
-        <button onclick="showTextModal6()">Подробно</button>
-        <img src="../static/assets/img/Условия доставки.jpeg" alt="Image 2">
+
+    <h3 class="product-list__title">
+        Последние новости
+    </h3>
+    <hr>
+    <div class="blog-list">
+        {% for blog in blogs %}
+        <div class="blog-card">
+            <div class="blog-card__image">
+                <img src="{{ blog.image.url }}" alt="Product 1">
+            </div>
+            <div class="blog-card__content">
+                <h4>{{ blog.title }}</h4>
+                <p>{{ blog.created_at }}</p>
+                <p>{{ blog.text|truncatechars:100 }}</p>
+            </div>
+            <div class="blog-card__actions">
+                <a href="{% url 'blog_details' blog.id %}" class="add-to-cart"> Подробнее <i class="fas fa-eye"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+
     </div>
-</div>
-<br><br><br><br>
-<script>
-// Debugging flag to log carousel initialization steps
-const DEBUG = true;
 
-function log(message) {
-    if (DEBUG) {
-        console.log(`[Slider Debug] ${message}`);
-    }
-}
 
-// Main slider functionality (top slider)
-log('Script initializing...');
-let slideIndex = 0;
-const slides = document.querySelectorAll('.slides img');
-
-function showSlides() {
-    if (slides.length === 0) {
-        log('No slides found!');
-        return;
-    }
+    <div class="help-text">
+        <h4>Интернет-аптека "Akmal Farm Medical"</h4><br>
+        <p>Добро пожаловать в интернет-аптеку "Akmal Farm Medical"! <br> Здесь и во всех наших филиалах вы найдёте всё
+            необходимое для заботы о своём здоровье. Мы используем современные технологии, <br> а также всегда рады
+            покупателям
+            Вас ждёт быстрое обслуживание, широкий ассортимент, комфорт и удобство. <br> И при этом главная
+            отличительная
+            черта
+            наших аптек в том, что сэкономить на лекарствах можно, нужно только прийти и убедиться!
     
-    // Hide all slides
-    for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-    }
-    
-    // Adjust index if out of bounds
-    if (slideIndex >= slides.length) {
-        slideIndex = 0;
-    }
-    if (slideIndex < 0) {
-        slideIndex = slides.length - 1;
-    }
-    
-    // Show current slide
-    slides[slideIndex].style.display = "block";
-    log(`Showing slide ${slideIndex + 1} of ${slides.length}`);
-}
-
-function nextSlide1() {
-    slideIndex++;
-    showSlides();
-}
-
-function prevSlide1() {
-    slideIndex--;
-    showSlides();
-}
-
-// Initialize all sliders and cart functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    log('DOM Content Loaded');
-    
-    // Initialize main slider
-    showSlides();
-    
-    // Auto-advance main slider
-    setInterval(nextSlide1, 5000);
-    
-    // Auto-hide messages after 5 seconds
-    const messages = document.querySelector('.messages-flash');
-    if (messages) {
-        setTimeout(function() {
-            messages.style.opacity = '0';
-            setTimeout(function() {
-                messages.style.display = 'none';
-            }, 500);
-        }, 5000);
-    }
-    
-    // Check if jQuery is available
-    if (typeof jQuery === 'undefined') {
-        log('jQuery not loaded! Loading dynamically...');
-        
-        // Dynamically load jQuery
-        const script = document.createElement('script');
-        script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-        script.onload = function() {
-            log('jQuery loaded dynamically');
-            
-            // After jQuery loads, load Owl Carousel
-            const owlScript = document.createElement('script');
-            owlScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js';
-            owlScript.onload = function() {
-                log('Owl Carousel loaded dynamically');
-                
-                // Initialize carousels after a short delay
-                setTimeout(function() {
-                    initCarousels(jQuery);
-                }, 500);
-            };
-            document.head.appendChild(owlScript);
-        };
-        document.head.appendChild(script);
-    } else {
-        log('jQuery already loaded');
-        
-        // Initialize when jQuery is ready
-        jQuery(function($) {
-            if (typeof $.fn.owlCarousel === 'undefined') {
-                log('Owl Carousel not loaded! Loading dynamically...');
-                
-                // Dynamically load Owl Carousel if not present
-                $.getScript('https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', function() {
-                    log('Owl Carousel loaded via $.getScript');
-                    initCarousels($);
-                });
-            } else {
-                log('Owl Carousel already loaded');
-                initCarousels($);
-            }
-        });
-    }
-    
-    // Add event listeners to all cart buttons
-    const cartButtons = document.querySelectorAll('.add-to-cart-btn');
-    cartButtons.forEach(button => {
-        const productId = button.getAttribute('data-product-id');
-        if (productId) {
-            log(`Setting up cart button for product ${productId}`);
-            button.addEventListener('click', function(e) {
-                addToCartClick(e, productId);
-            });
-        }
-    });
-});
-
-// Function to initialize all Owl Carousel instances
-function initCarousels($) {
-    log('Initializing Owl Carousels');
-    
-    // First destroy any existing carousels
-    try {
-        $('.owl-carousel').each(function() {
-            const $this = $(this);
-            try {
-                if ($this.data('owl.carousel')) {
-                    log('Destroying existing carousel');
-                    $this.trigger('destroy.owl.carousel');
-                }
-            } catch (e) {
-                log(`Error destroying carousel: ${e.message}`);
-            }
-        });
-    } catch (e) {
-        log(`Error in carousel cleanup: ${e.message}`);
-    }
-    
-    // Initialize product carousels
-    try {
-        $('.product_active').each(function(index) {
-            log(`Initializing product carousel #${index}`);
-            $(this).owlCarousel({
-                items: 4,
-                loop: true,
-                nav: true,
-                dots: false,
-                margin: 20,
-                autoplay: false,
-                navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
-                responsive: {
-                    0: { items: 1 },
-                    576: { items: 2 },
-                    768: { items: 3 },
-                    992: { items: 4 }
-                },
-                onInitialized: function() {
-                    // Find the tallest item and set all items to that height
-                    let maxHeight = 0;
-                    $(this.$element).find('.single_product').each(function() {
-                        let height = $(this).outerHeight();
-                        if (height > maxHeight) {
-                            maxHeight = height;
-                        }
-                    });
-                    $(this.$element).find('.single_product').css('min-height', maxHeight + 'px');
-                    log(`Set product card height to ${maxHeight}px`);
-                }
-            });
-        });
-    } catch (e) {
-        log(`Error initializing product carousels: ${e.message}`);
-    }
-    
-    // Initialize brand carousel
-    try {
-        $('.product_gallery_active').owlCarousel({
-            items: 5,
-            loop: true,
-            nav: true,
-            dots: false,
-            margin: 20,
-            autoplay: true,
-            autoplayTimeout: 3000,
-            navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
-            responsive: {
-                0: { items: 2 },
-                576: { items: 3 },
-                768: { items: 4 },
-                992: { items: 5 }
-            }
-        });
-        log('Brand carousel initialized');
-    } catch (e) {
-        log(`Error initializing brand carousel: ${e.message}`);
-    }
-    
-    // Initialize blog carousel
-    try {
-        $('.blog_active').owlCarousel({
-            items: 3,
-            loop: true,
-            nav: true,
-            dots: false,
-            margin: 20,
-            autoplay: false,
-            navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
-            responsive: {
-                0: { items: 1 },
-                576: { items: 1 },
-                768: { items: 2 },
-                992: { items: 3 }
-            }
-        });
-        log('Blog carousel initialized');
-    } catch (e) {
-        log(`Error initializing blog carousel: ${e.message}`);
-    }
-    
-    // Attach manual event handlers for navigation buttons
-    $('.owl-prev, .owl-next').on('click', function(e) {
-        e.preventDefault();
-        log('Navigation button clicked');
-    });
-    
-    // Force refresh carousels after a short delay
-    setTimeout(function() {
-        try {
-            $('.owl-carousel').each(function() {
-                if ($(this).data('owl.carousel')) {
-                    $(this).trigger('refresh.owl.carousel');
-                }
-            });
-            log('Carousels refreshed');
-        } catch (e) {
-            log(`Error refreshing carousels: ${e.message}`);
-        }
-    }, 1000);
-}
-
-// Function to show a custom message
-function showMessage(text, type = 'success') {
-    // Create message container if it doesn't exist
-    let messagesContainer = document.querySelector('.messages-flash');
-    if (!messagesContainer) {
-        messagesContainer = document.createElement('div');
-        messagesContainer.className = 'messages-flash';
-        document.body.appendChild(messagesContainer);
-    }
-    
-    // Create message element
-    const messageElement = document.createElement('div');
-    messageElement.className = 'message ' + type;
-    messageElement.textContent = text;
-    
-    // Add to container
-    messagesContainer.appendChild(messageElement);
-    
-    // Show the container
-    messagesContainer.style.display = 'block';
-    messagesContainer.style.opacity = '0.95';
-    
-    // Auto-hide after 5 seconds
-    setTimeout(function() {
-        messagesContainer.style.opacity = '0';
-        setTimeout(function() {
-            messagesContainer.style.display = 'none';
-            messagesContainer.innerHTML = '';
-        }, 500);
-    }, 5000);
-}
-
-// Direct cart button click function - will be called directly from onclick attribute
-function addToCartClick(event, productId) {
-    // Prevent default action (navigation)
-    event.preventDefault();
-    
-    if (!productId) {
-        console.error("No product ID provided to addToCartClick");
-        return;
-    }
-    
-    console.log("Adding product to cart with direct click function:", productId);
-    
-    try {
-        // Find the button that was clicked
-        const button = event.currentTarget;
-        
-        // Visual feedback
-        const originalText = button.textContent;
-        const originalBg = button.style.backgroundColor;
-        button.textContent = 'Добавлено';
-        button.style.backgroundColor = '#4CAF50';
-        
-        // Get CSRF token - try different methods to ensure we get it
-        let csrftoken = null;
-        const tokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
-        if (tokenElement) {
-            csrftoken = tokenElement.value;
-        } else {
-            // Try to get from cookie if not in form
-            csrftoken = getCookie('csrftoken');
-        }
-        
-        if (!csrftoken) {
-            console.error("CSRF token not found");
-            showMessage("Ошибка безопасности. Пожалуйста, обновите страницу.", "error");
-            return;
-        }
-        
-        // Create request
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/add_to_cart/' + productId + '/', true);
-        xhr.setRequestHeader('X-CSRFToken', csrftoken);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        
-        xhr.onload = function() {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    console.log("Product added successfully (direct click):", response);
-                    
-                    // Update cart counters
-                    const cartItemsCount = document.getElementById('cart_items_fetch');
-                    if (cartItemsCount) {
-                        cartItemsCount.textContent = response.cart_count;
-                    }
-                    
-                    const cartTotal = document.getElementById('cart_total_id');
-                    if (cartTotal) {
-                        cartTotal.textContent = response.cart_total;
-                    }
-                    
-                    // Show success message
-                    showMessage("Товар добавлен в корзину", "success");
-                } catch (e) {
-                    console.error("Error parsing response:", e);
-                    showMessage("Ошибка при добавлении товара", "error");
-                }
-            } else {
-                console.error("Error adding to cart. Status:", xhr.status);
-                showMessage("Ошибка при добавлении товара в корзину", "error");
-            }
-            
-            // Restore button appearance after delay
-            setTimeout(function() {
-                button.textContent = originalText;
-                button.style.backgroundColor = originalBg;
-            }, 1000);
-        };
-        
-        xhr.onerror = function() {
-            console.error("Request failed in direct click");
-            showMessage("Ошибка соединения. Пожалуйста, попробуйте позже.", "error");
-            
-            // Restore button appearance
-            button.textContent = originalText;
-            button.style.backgroundColor = originalBg;
-        };
-        
-        // Send request
-        xhr.send(JSON.stringify({}));
-        
-    } catch (error) {
-        console.error("Error in direct cart click handler:", error);
-        showMessage("Произошла ошибка", "error");
-    }
-    
-    return false;
-}
-
-// Function to get cookie by name (for CSRF token)
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-// Add event listeners for DOM elements once loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Add window resize handler for consistent card heights
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.owlCarousel !== 'undefined') {
-                jQuery('.owl-carousel').trigger('refresh.owl.carousel');
-                
-                // Equalize heights for product cards
-                jQuery('.product_active').each(function() {
-                    let maxHeight = 0;
-                    jQuery(this).find('.single_product').css('min-height', '');
-                    
-                    jQuery(this).find('.single_product').each(function() {
-                        let height = jQuery(this).outerHeight();
-                        if (height > maxHeight) {
-                            maxHeight = height;
-                        }
-                    });
-                    
-                    jQuery(this).find('.single_product').css('min-height', maxHeight + 'px');
-                });
-            }
-        }, 250);
-    });
-});
-
-// Modal functions
-function showTextModal5() { document.getElementById("textModal5").style.display = "block"; }
-function hideTextModal5() { document.getElementById("textModal5").style.display = "none"; }
-function showTextModal6() { document.getElementById("textModal6").style.display = "block"; }
-function hideTextModal6() { document.getElementById("textModal6").style.display = "none"; }
-
-// Close modals when clicking outside
-window.onclick = function(event) {
-    const modals = ["textModal1", "textModal2", "textModal3", "textModal4", "textModal5", "textModal6"];
-    modals.forEach(function(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal && event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-};
-</script>
-
-<div id="textModal5" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal5()">&times;</span>
-        <p>Аптечная сеть «Akmal Farm Medical» сотрудничает напрямую с ведущими производителями и дистрибьюторами товаров
-            для красоты и здоровья. Благодаря этому мы гарантируем 100% качество всех наименований в нашем ассортименте,
-            включая лекарственные препараты, косметику, биологически активные добавки (БАД) и медицинские товары.</p>
-    </div>
-</div>
-<div id="textModal6" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal6()">&times;</span>
-        <p><span style="color: red;">Внимание! Адресная доставка недоступна для рецептурных препаратов, наркотических
-                средств, психотропных,
-                сильнодействующих и ядовитых веществ, а также для препаратов, требующих особых условий хранения и
-                транспортировки. </span> <br>
-            <b>Доставка курьером</b>
+            Наша цель – предоставить <br> каждому покупателю возможность приобрести необходимые медикаменты по самым
+            выгодным
+            ценам, даже по сравнению с другими аптеками.
             <br>
-            Курьерская доставка осуществляется только для безрецептурных препаратов.
-            Стоимость доставки рассчитывается по тарифам Yandex Delivery.
-            Оплата возможна наличными курьеру при получении заказа. <br>
-            <b>Способы оплаты</b> <br>
-            Оплата наличными доступна только при покупке лекарств непосредственно в аптеке. <br>
-
-            При оформлении доставки оплата возможна только картой. Вы можете оплатить заказ через банковские приложения
-            как при оформлении доставки, так и непосредственно в аптеке при получении товара.
+            ⚪️ Оптимизированная закупочная политика – мы сотрудничаем с крупнейшими поставщиками и закупаем продукцию в
+            больших объёмах.
             <br>
-            <b>Самовывоз из аптеки</b>
+            ⚪️ Прямые поставки от производителей – сокращение цепочки посредников позволяет нам предлагать лучшие цены.
             <br>
-            Доставка рецептурных препаратов в Республике Узбекистан запрещена. Их можно получить только при
-            самостоятельном визите в аптеку.
+            ⚪️ Гарантия качества – все лекарства сертифицированы и проходят строгую проверку.
             <br>
-            Оформить самовывоз можно на сайте, оплата производится наличными при получении или картой.
-            Дополнительные комиссии за самовывоз не взимаются.
+            ⚪️ Высокий товарооборот – благодаря активным продажам у нас нет препаратов с истёкшим сроком годности.
+            <br>
+            Как оформить заказ?<br>
+            1. Найдите нужный препарат на сайте. <br>
+            2. Добавьте его в корзину и перейдите к оформлению заказа <br>
+            3. Укажите контактные данные и адрес доставки. <br>
+            4. Произведите оплату <br>
+            5. Ожидайте доставку
+            <br>
+    
+            Наши специалисты всегда готовы помочь! Для консультаций звоните по телефону: +998 (78) 298-00-88 или по
+            короткому номеру 1080.
+            <br>
+            Мы ценим доверие наших клиентов и стремимся сделать процесс покупки удобным и безопасным. Спасибо, что
+            выбираете
+            интернет-аптеку "Akmal Farm Medical"!
+    
         </p>
     </div>
+
+
+    <div class="features-index">
+        <div class="features-index__item">
+            <div class="features-index__item-image">
+                <img src="{% static 'assets/img/Гарантия качества.jpeg' %}" alt="">
+            </div>
+            <button class="features-index__item-button" onclick="showModal('featuresModal1')">
+                Подробнее
+            </button>
+        </div>
+        <div class="features-index__item">
+            <div class="features-index__item-image">
+                <img src="{% static 'assets/img/Условия доставки.jpeg' %}" alt="">
+            </div>
+            <button class="features-index__item-button" onclick="showModal('featuresModal2')">
+                Подробнее
+            </button>
+        </div>
+    </div>
+
+    <div id="featuresModal1" class="features-modal">
+        <div class="features-modal-content">
+            <span class="close-btn" onclick="hideModal('featuresModal1')">&times;</span>
+            <p>Аптечная сеть «Akmal Farm Medical» сотрудничает напрямую с ведущими производителями и дистрибьюторами товаров
+                для красоты и здоровья. Благодаря этому мы гарантируем 100% качество всех наименований в нашем ассортименте,
+                включая лекарственные препараты, косметику, биологически активные добавки (БАД) и медицинские товары.</p>
+        </div>
+    </div>
+    
+    <div id="featuresModal2" class="features-modal">
+        <div class="features-modal-content">
+            <span class="close-btn" onclick="hideModal('featuresModal2')">&times;</span>
+            <p><span style="color: red;">Внимание! Адресная доставка недоступна для рецептурных препаратов, наркотических
+                    средств, психотропных,
+                    сильнодействующих и ядовитых веществ, а также для препаратов, требующих особых условий хранения и
+                    транспортировки. </span> <br>
+                <b>Доставка курьером</b>
+                <br>
+                Курьерская доставка осуществляется только для безрецептурных препаратов.
+                Стоимость доставки рассчитывается по тарифам Yandex Delivery.
+                Оплата возможна наличными курьеру при получении заказа. <br>
+                <b>Способы оплаты</b> <br>
+                Оплата наличными доступна только при покупке лекарств непосредственно в аптеке. <br>
+    
+                При оформлении доставки оплата возможна только картой. Вы можете оплатить заказ через банковские приложения
+                как при оформлении доставки, так и непосредственно в аптеке при получении товара.
+                <br>
+                <b>Самовывоз из аптеки</b>
+                <br>
+                Доставка рецептурных препаратов в Республике Узбекистан запрещена. Их можно получить только при
+                самостоятельном визите в аптеку.
+                <br>
+                Оформить самовывоз можно на сайте, оплата производится наличными при получении или картой.
+                Дополнительные комиссии за самовывоз не взимаются.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('features-modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = document.getElementsByClassName('features-modal');
+                for (let modal of modals) {
+                    if (modal.style.display === 'block') {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                }
+            }
+        });
+    </script>
+
 </div>
 
-<!-- reklama tugatilid -->
-{% endblock content %}
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'own-js/slider.js' %}"></script>
+{% endblock %}
