@@ -13,6 +13,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     uid = models.BigIntegerField(db_index=True)
     # category = models.ManyToManyField(Category, related_name="products")
@@ -31,7 +32,6 @@ class Product(models.Model):
         return str(self.uid)
 
 
-
 class Filial(models.Model):
     users = models.ManyToManyField(CustomUser, related_name='filials')
     name = models.CharField(max_length=255)
@@ -48,10 +48,10 @@ class Order(models.Model):
         ('click', 'Click'),
     )
     TYPE_CHOICES = [
-        (1, 'Rad etilgan'),
-        (2, 'Kutilmoqda'),
-        (3, 'Tasdiqlangan'),
-        (4, 'Topshirildi '),
+        ('Rad etilgan', 'Rad etilgan'),
+        ('Kutilmoqda', 'Kutilmoqda'),
+        ('Tasdiqlangan', 'Tasdiqlangan'),
+        ('Topshirildi', 'Topshirildi '),
         
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
@@ -69,7 +69,7 @@ class Order(models.Model):
     is_completed = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=now)
-    status = models.IntegerField( choices=TYPE_CHOICES, default=2)
+    status = models.CharField(max_length=255, choices=TYPE_CHOICES, default='Kutilmoqda')
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
@@ -89,10 +89,10 @@ class Order(models.Model):
     @property
     def status_color(self):
         return {
-            1: 'text-danger',
-            2: 'text-warning',
-            3: 'text-primary',
-            4: 'text-success',
+            'Rad etilgan': 'text-danger',
+            'Kutilmoqda': 'text-warning',
+            'Tasdiqlangan': 'text-primary',
+            'Topshirildi': 'text-success',
         }.get(self.status, 'text-secondary')
     
     @property
@@ -114,7 +114,8 @@ class OrderItem(models.Model):
     @property
     def total_price(self):
         return self.price * self.quantity
-       
+
+     
 class Wishlist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

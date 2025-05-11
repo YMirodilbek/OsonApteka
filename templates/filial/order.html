@@ -9,8 +9,8 @@
   <div class="card tbl-card">
     <div class="card-body">
       <div class="table-responsive">
-       
-           
+
+
 
         {% for filial, orders in orders_by_filial.items %}
         {% if orders %}
@@ -37,7 +37,7 @@
                     <i class="fas fa-circle f-10 m-r-5 {{ i.status_color }}"></i>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}">{{ i.get_status_display }}</a>
                   </span>
-      
+
                   <!-- Modal -->
                   <div class="modal fade" id="exampleModal{{ i.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
@@ -65,7 +65,7 @@
                     </div>
                   </div>
                 </td>
-                <td >  
+                <td >
                   <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}item">Product</a>
                   <div class="modal fade" id="exampleModal{{ i.id }}item" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">  <!-- bu yerga classlar qo‘shildi -->
@@ -83,6 +83,7 @@
                                   <th>Name</th>
                                   <th>Quantity</th>
                                   <th>Price</th>
+                                  <th>Total Price</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -92,6 +93,7 @@
                                   <td>{{ i.name |slice:":30" }}</td>
                                   <td>{{ i.quantity }}</td>
                                   <td>{{ i.price }}</td>
+                                  <td>{{ i.total_price }}</td>
                                 </tr>
                                 {% endfor %}
                               </tbody>
@@ -105,14 +107,14 @@
                       </div>
                     </div>
                   </div>
-                  
+
                 </td>
                 <td class="text-end">{{ i.get_payment_method_display }}</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
-      
+
           <!-- Paginatsiya -->
           <nav>
             <ul class="pagination justify-content-end mt-3">
@@ -128,7 +130,7 @@
           </nav>
         {% endif %}
       {% endfor %}
-      
+
         <br>
         <br>
 
@@ -161,14 +163,14 @@
           let icon = '';
           let color = '';
 
-          if (status == "1") {
+          if (status == "Rad etilgan") {
             icon = '🔴'; color = 'text-danger';
-          } else if (status == "2") {
+          } else if (status == "Kutilmoqda") {
             icon = '🟡'; color = 'text-warning';
-          } else if (status == "3") {
+          } else if (status == "Tasdiqlangan") {
+            icon = '🔵'; color = 'text-primar';
+          } else if (status == "Topshirildi") {
             icon = '🟢'; color = 'text-success';
-          } else if (status == "4") {
-            icon = '🔵'; color = 'text-primary';
           }
 
           const statusText = select.options[select.selectedIndex].text;

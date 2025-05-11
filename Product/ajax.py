@@ -69,7 +69,7 @@ def update_order_status(request, pk):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            status = int(data.get('status'))
+            status = data.get('status')
             order = Order.objects.get(pk=pk)
             order.status = status
             order.save()
