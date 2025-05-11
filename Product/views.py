@@ -5,8 +5,8 @@ from django.db.models.functions import TruncDate, TruncDay
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  login ,logout
 from django.core.paginator import Paginator
-from click_up.views import ClickWebhook
 from datetime import datetime, timedelta
+from click_up.views import ClickWebhook
 from django.utils.timezone import now
 from django.shortcuts import render
 from django.contrib import messages
