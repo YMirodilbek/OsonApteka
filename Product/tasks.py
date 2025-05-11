@@ -31,6 +31,8 @@ def refresh_products_cache():
 
     for item in data:
         try:
+            if item.get(int('Amount')) <=0:
+                continue
             uid_list.append(int(item.get("UID")))
         except (TypeError, ValueError):
             continue
