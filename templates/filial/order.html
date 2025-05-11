@@ -9,8 +9,8 @@
   <div class="card tbl-card">
     <div class="card-body">
       <div class="table-responsive">
-       
-           
+
+
 
         {% for filial, orders in orders_by_filial.items %}
         {% if orders %}
@@ -37,7 +37,7 @@
                     <i class="fas fa-circle f-10 m-r-5 {{ i.status_color }}"></i>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}">{{ i.get_status_display }}</a>
                   </span>
-      
+
                   <!-- Modal -->
                   <div class="modal fade" id="exampleModal{{ i.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
@@ -65,7 +65,7 @@
                     </div>
                   </div>
                 </td>
-                <td >  
+                <td >
                   <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}item">Product</a>
                   <div class="modal fade" id="exampleModal{{ i.id }}item" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">  <!-- bu yerga classlar qo‘shildi -->
@@ -107,14 +107,14 @@
                       </div>
                     </div>
                   </div>
-                  
+
                 </td>
                 <td class="text-end">{{ i.get_payment_method_display }}</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
-      
+
           <!-- Paginatsiya -->
           <nav>
             <ul class="pagination justify-content-end mt-3">
@@ -130,7 +130,7 @@
           </nav>
         {% endif %}
       {% endfor %}
-      
+
         <br>
         <br>
 
