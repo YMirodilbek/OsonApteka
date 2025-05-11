@@ -10,6 +10,7 @@
     margin-bottom: 30px;
     z-index: 1;
     box-sizing: border-box;
+    margin-top: 10px;
 }
 
 .slides {
@@ -54,11 +55,11 @@
 }
 
 .slider .prev1 {
-    left: 20px;
+    left: 180px;
 }
 
 .slider .next1 {
-    right: 20px;
+    right: 180px;
 }
 
 @media (max-width: 768px) {
