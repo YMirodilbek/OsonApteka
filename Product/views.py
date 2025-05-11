@@ -354,18 +354,18 @@ def filial_index(request):
         is_active=True,
         is_paid=True,
         **filial_filter
-    ).select_related('filial').prefetch_related('items')
-
-    count = orders.count()
-    count_now = orders.filter(created_at__date=end_date.date()).count()
-
-    daily_summary = orders.filter(created_at__gte=start_date).annotate(
+    ).select_related('filial').prefetch_related('items').annotate(
         day=TruncDay('created_at')
     ).values('day').annotate(
         total_amount=Sum(F('items__price') * F('items__quantity'))
     ).order_by('day')
 
-    for entry in daily_summary:
+    count = orders.count()
+    count_now = orders.filter(created_at__date=end_date.date()).count()
+
+    # daily_summary = orders
+
+    for entry in orders:
         result.append({
             'date': entry['day'].strftime('%Y-%m-%d'),
             'amount': int(entry['total_amount'] or 0)
@@ -379,6 +379,7 @@ def filial_index(request):
         'result': json.dumps(result), 
         'user_count_active': user_count_active,
     }
+    print(result)
     return render(request,'filial/index.html',context )
     
 
