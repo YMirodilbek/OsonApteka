@@ -1,0 +1,1 @@
+[{'day': datetime.datetime(2025, 5, 10, 0, 0, tzinfo=backports.zoneinfo.ZoneInfo(key='Asia/Tashkent')), 'total_amount': 800000}, {'day': datetime.datetime(2025, 5, 13, 0, 0, tzinfo=backports.zoneinfo.ZoneInfo(key='Asia/Tashkent')), 'total_amount': 155}]

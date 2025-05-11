@@ -25,7 +25,7 @@ import json
 
 @login_required(login_url='/auth/send-otp/')
 def cart_view(request):
-    order = Order.objects.filter(user=request.user, is_completed=False).first()  
+    order = Order.objects.filter(user=request.user, is_completed=False).select_related('filial').prefetch_related('items','items__product').first()  
     return render(request, "cart.html", {"order": order})
  
     
@@ -323,7 +323,8 @@ def product_create(request):
             messages.success(request, "Product q'shildi")
         else:
             messages.error(request, "Product yeratib bo'lmado")
-    return render(request,'filial/product-create.html')
+    filials = Filial.objects.all()  
+    return render(request,'filial/product-create.html', {'filials':filials})
 
 
 @is_staff
@@ -331,55 +332,55 @@ def filial_index(request):
     filial_id = request.GET.get('filial-id')
     filials = request.user.filials.all()
     
-    
     end_date = datetime.now()
     start_date = end_date - timedelta(days=30)
 
-    user_count = CustomUser.objects.filter(is_staff = False).count()
-    user_count_active = CustomUser.objects.filter(is_staff = False ,  last_login__gte=start_date).count()
+    user_count = CustomUser.objects.filter(is_staff=False).count()
+    user_count_active = CustomUser.objects.filter(is_staff=False, last_login__gte=start_date).count()
 
+    result = []
     count = 0
-    # if filial_id:
+    count_now = 0
+
+    if filial_id:
+        filial_filter = {'filial_id': filial_id}
+    elif request.user.is_superuser:
+        filial_filter = {}
+    else:
+        filial_filter = {'filial__in': filials}
+
+    # Buyurtmalar va kunlik savdolar
     orders = Order.objects.filter(
         is_active=True,
-        is_paid = True,
-        # created_at__gte = thirty_days_ago
-    )
+        is_paid=True,
+        **filial_filter
+    ).select_related('filial').prefetch_related('items')
+
     count = orders.count()
-    count_now = orders.filter(created_at__date=end_date).count()
+    count_now = orders.filter(created_at__date=end_date.date()).count()
 
-
-
-    daily_summary = Order.objects.filter(
-        created_at__gte=start_date,
-        is_paid=True
-    ).annotate(
+    daily_summary = orders.filter(created_at__gte=start_date).annotate(
         day=TruncDay('created_at')
     ).values('day').annotate(
         total_amount=Sum(F('items__price') * F('items__quantity'))
     ).order_by('day')
 
-    # elif request.user.is_superuser:
-    #     orders = Order.objects.filter(status = 4, is_active=True).order_by('-id').select_related(
-    #             'filial').prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
-
-    # else:
-    #     for filial in filials:
-    #         orders = Order.objects.filter(filial = filial,  status = 4 , is_active=True).order_by('-id').select_related(
-    #             'filial').prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
-
-    # orders =  Order.objects.all()
-
+    for entry in daily_summary:
+        result.append({
+            'date': entry['day'].strftime('%Y-%m-%d'),
+            'amount': int(entry['total_amount'] or 0)
+        })
+    filials = Filial.objects.all()
     context = {
-        'count':count,
-        'count_now':count_now,
-        'user_count':user_count,
-        'user_count_active':user_count_active
+        'count': count,
+        'filials':filials,
+        'count_now': count_now,
+        'user_count': user_count,
+        'result': json.dumps(result), 
+        'user_count_active': user_count_active,
     }
-    
-    
     return render(request,'filial/index.html',context )
-
+    
 
 @is_staff
 def filial_order(request):
@@ -421,19 +422,19 @@ def filial_order(request):
             orders_by_filial[filial] = page_obj
 
     # orders =  Order.objects.all()
-
+    filials = Filial.objects.all()
     context = {
+        'filials':filials,
+        'type_choices': type_choices,
         'orders_by_filial': orders_by_filial,
-        'type_choices': type_choices
     }
     return render(request, 'filial/order.html', context)
-
 
 
 @is_staff
 def filial_filial(request):
     filial = Filial.objects.all()
-    return render(request,'filial/filial.html',  {"filial":filial})
+    return render(request,'filial/filial.html',  {"filials":filial})
 
 
 @is_staff
@@ -459,7 +460,6 @@ def filial_regisret(request):
 def filial_logout(request):
     logout(request)
     return redirect('/filial/login')
-
 
 
 def filial_login(request):
