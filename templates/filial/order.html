@@ -161,14 +161,14 @@
           let icon = '';
           let color = '';
 
-          if (status == "1") {
+          if (status == "Rad etilgan") {
             icon = '🔴'; color = 'text-danger';
-          } else if (status == "2") {
+          } else if (status == "Kutilmoqda") {
             icon = '🟡'; color = 'text-warning';
-          } else if (status == "3") {
+          } else if (status == "Tasdiqlangan") {
+            icon = '🔵'; color = 'text-primar';
+          } else if (status == "Topshirildi") {
             icon = '🟢'; color = 'text-success';
-          } else if (status == "4") {
-            icon = '🔵'; color = 'text-primary';
           }
 
           const statusText = select.options[select.selectedIndex].text;
