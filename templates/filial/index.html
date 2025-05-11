@@ -71,6 +71,7 @@
 </div>
 
 <script>
+   var result = {{result | safe}} ;
   var options = {
     chart: {
       type: 'bar',
@@ -78,10 +79,10 @@
     },
     series: [{
       name: 'Savdo',
-      data: [100, 50, 75, 120, 90, 60, 110, 80, 130, 70, 95, 85, 140, 100, 105]  // Har bir kunning savdo summasi
+      data: result.map(item => item.amount)  // Har bir kunning savdo summasi
     }],
     xaxis: {
-      categories: ['5-aprel', '6-aprel', '7-aprel', '8-aprel', '9-aprel' ,'10-aprel'] // Kunlar
+      categories:  result.map(item => item.date) // Kunlar
     },
     colors: ['#3b82f6'],
     plotOptions: {
