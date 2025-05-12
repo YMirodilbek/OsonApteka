@@ -11,8 +11,8 @@ from .models import *
 from .forms import  *
 import redis
 import json
-# from clickup.views import ClickWebhook
-# from click_up import ClickUp
+from click_up.views import ClickWebhook
+from click_up import ClickUp
 from django.conf import settings
 
 
@@ -149,32 +149,32 @@ def add_to_cart_detail(request,pk):
     return redirect(f'/product/detail/{pk}')
 
 
-# class ClickWebhookAPIView(ClickWebhook):
-#     def successfully_payment(self, params):
-#         """
-#         Handle successful payments from Click
-#         """
-#         merchant_trans_id = params.get('merchant_trans_id')
-#         try:
-#             order = Order.objects.get(id=merchant_trans_id)
-#             order.is_paid = True
-#             order.save()
-#             # Here you can handle additional order processing
-#             # For example, send email notification, create shipping order, etc.
-#         except Order.DoesNotExist:
-#             pass
+class ClickWebhookAPIView(ClickWebhook):
+    def successfully_payment(self, params):
+        """
+        Handle successful payments from Click
+        """
+        merchant_trans_id = params.get('merchant_trans_id')
+        try:
+            order = Order.objects.get(id=merchant_trans_id)
+            order.is_paid = True
+            order.save()
+            # Here you can handle additional order processing
+            # For example, send email notification, create shipping order, etc.
+        except Order.DoesNotExist:
+            pass
         
-#     def cancelled_payment(self, params):
-#         """
-#         Handle cancelled payments from Click
-#         """
-#         merchant_trans_id = params.get('merchant_trans_id')
-#         try:
-#             order = Order.objects.get(id=merchant_trans_id)
-#             # Handle cancelled payment 
-#             # For example, mark the order as cancelled or notify admin
-#         except Order.DoesNotExist:
-#             pass
+    def cancelled_payment(self, params):
+        """
+        Handle cancelled payments from Click
+        """
+        merchant_trans_id = params.get('merchant_trans_id')
+        try:
+            order = Order.objects.get(id=merchant_trans_id)
+            # Handle cancelled payment 
+            # For example, mark the order as cancelled or notify admin
+        except Order.DoesNotExist:
+            pass
 
 
 def payment_success(request, order_id):
@@ -189,70 +189,70 @@ def payment_success(request, order_id):
         return redirect('order_history')
 
 
-# def checkout_view(request):
-#     order = Order.objects.filter(user=request.user, is_completed=False).first()
-#     if not order or not order.items.exists():
-#         messages.error(request, "Sizning savatingiz bo'sh!")
-#         return redirect("cart")
+def checkout_view(request):
+    order = Order.objects.filter(user=request.user, is_completed=False).first()
+    if not order or not order.items.exists():
+        messages.error(request, "Sizning savatingiz bo'sh!")
+        return redirect("cart")
     
-#     cart_items = order.items.all()
+    cart_items = order.items.all()
     
-#     filials = Filial.objects.all()
-#     if not filials.exists():
-#         default_filial = Filial.objects.create(
-#             name="Markaziy Filial",
-#             address="Toshkent sh., Yunusobod tumani"
-#         )
-#         filials = Filial.objects.all()  
+    filials = Filial.objects.all()
+    if not filials.exists():
+        default_filial = Filial.objects.create(
+            name="Markaziy Filial",
+            address="Toshkent sh., Yunusobod tumani"
+        )
+        filials = Filial.objects.all()  
 
-#     if request.method == 'POST':
-#         form = CheckoutForm(request.POST, instance=order)
-#         if form.is_valid():
-#             order = form.save(commit=False)
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST, instance=order)
+        if form.is_valid():
+            order = form.save(commit=False)
             
-#             address_type = request.POST.get('address_type')
-#             if address_type == 'maps':
-#                 lat = request.POST.get('address_lat')
-#                 lng = request.POST.get('address_lng')
-#                 if lat and lng:
-#                     order.address_text = f"Latitude: {lat}, Longitude: {lng}"
+            address_type = request.POST.get('address_type')
+            if address_type == 'maps':
+                lat = request.POST.get('address_lat')
+                lng = request.POST.get('address_lng')
+                if lat and lng:
+                    order.address_text = f"Latitude: {lat}, Longitude: {lng}"
             
-#             order.is_completed = True
-#             order.save()
+            order.is_completed = True
+            order.save()
             
-#             if order.payment_method == 'click':
-#                 click_up = ClickUp(
-#                     service_id=settings.CLICK_SERVICE_ID,
-#                     merchant_id=settings.CLICK_MERCHANT_ID
-#                 )
+            if order.payment_method == 'click':
+                click_up = ClickUp(
+                    service_id=settings.CLICK_SERVICE_ID,
+                    merchant_id=settings.CLICK_MERCHANT_ID
+                )
                 
-#                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
-#                 payment_link = click_up.initializer.generate_pay_link(
-#                     id=order.id,
-#                     amount=order.total_price + 15000,  
-#                     return_url=return_url
-#                 )
+                return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
+                payment_link = click_up.initializer.generate_pay_link(
+                    id=order.id,
+                    amount=order.total_price + 15000,  
+                    return_url=return_url
+                )
                 
-#                 return redirect(payment_link)
+                return redirect(payment_link)
             
-#             messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
-#             return redirect("order_history")
-#         else:
-#             for field, errors in form.errors.items():
-#                 for error in errors:
-#                     messages.error(request, f"{field}: {error}")
+            messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
+            return redirect("order_history")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
 
-#     else:
-#         form = CheckoutForm(instance=order)
+    else:
+        form = CheckoutForm(instance=order)
     
-#     context = {
-#         'form': form, 
-#         'cart_items': cart_items, 
-#         'order': order,
-#         'filials': filials  
-#     }
+    context = {
+        'form': form, 
+        'cart_items': cart_items, 
+        'order': order,
+        'filials': filials  
+    }
     
-#     return render(request, 'checkout.html', context)
+    return render(request, 'checkout.html', context)
 
 
 def Myaccount(request):
