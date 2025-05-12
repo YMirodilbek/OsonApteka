@@ -1,0 +1,175 @@
+{%  extends 'base.html'%}
+{% load static %}
+{% block content %}
+    <style>
+        .success-container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 40px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+        
+        .success-title {
+            font-size: 28px;
+            color: #2971f5;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .success-message {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .order-details-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .order-detail {
+            margin-bottom: 10px;
+            display: flex;
+        }
+        
+        .order-detail strong {
+            width: 150px;
+            color: #555;
+        }
+        
+        .order-detail span {
+            flex: 1;
+            color: #333;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: #2971f5;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d5cc3;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #2971f5;
+            border: 2px solid #2971f5;
+        }
+        
+        .btn-outline:hover {
+            background-color: #2971f5;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 25px;
+                margin: 40px auto;
+            }
+            
+            .success-title {
+                font-size: 24px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+    
+    <!--breadcrumbs area start-->
+    <div class="breadcrumbs_area commun_bread">
+        <div class="container">   
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb_content">
+                        <h3>To'lov muvaffaqiyatli</h3>
+                        <ul>
+                            <li><a href="/">Asosiy</a></li>
+                            <li><i class="fa fa-angle-right"></i></li>
+                            <li>To'lov yakunlandi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>         
+    </div>
+    <!--breadcrumbs area end-->
+    
+    <div class="success-container">
+        <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        </div>
+        
+        <h1 class="success-title">To'lov muvaffaqiyatli yakunlandi!</h1>
+        
+        <p class="success-message">Buyurtmangiz qabul qilindi va to'lov muvaffaqiyatli amalga oshirildi. 
+        Bizning operatorlarimiz tez orada siz bilan bog'lanishadi.</p>
+        
+        <div class="order-details-box">
+            <div class="order-detail">
+                <strong>Buyurtma raqami:</strong>
+                <span>#{{ order.id }}</span>
+            </div>
+            <div class="order-detail">
+                <strong>Umumiy summa:</strong>
+                <span>{{ order.total_price|add:15000 }} so'm</span>
+            </div>
+            <div class="order-detail">
+                <strong>To'lov turi:</strong>
+                <span>Click</span>
+            </div>
+            <div class="order-detail">
+                <strong>Sana:</strong>
+                <span>{{ order.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <a href="/" class="btn btn-outline">Asosiy sahifaga qaytish</a>
+            <a href="/myaccount/" class="btn btn-primary">Buyurtmalarni ko'rish</a>
+        </div>
+    </div>
+{% endblock content %}

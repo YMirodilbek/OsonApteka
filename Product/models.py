@@ -44,6 +44,7 @@ class Order(models.Model):
     PAYMENT_METHODS = (
         ('cash', 'Naqd'),
         ('card', 'Karta'),
+        ('click', 'Click'),
     )
     TYPE_CHOICES = [
         ('1', 'Rad etilgan'),
@@ -55,11 +56,17 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
     filial = models.ForeignKey(Filial, on_delete=models.SET_NULL, null=True, blank=True, related_name="finals")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='cash')
+    
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    filial = models.ForeignKey(Filial, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders")
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='click')
     # Google Maps orqali yoki qo'lda kiritiladigan manzil
     address_text = models.CharField(max_length=255, blank=True, null=True)  # Qo'lda kiritish
-    phone_number1 = models.CharField(max_length=13)
-    phone_number2 = models.CharField(max_length=13 , null=True)
+    phone_number1 = models.CharField(max_length=20)
+    phone_number2 = models.CharField(max_length=20 , null=True)
     is_completed = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=now)
     status = models.CharField(max_length=255, choices=TYPE_CHOICES, default=2)
     is_active = models.BooleanField(default=True)
@@ -67,6 +74,8 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} - {self.user.first_name} - {self.filial.name if self.filial else 'No Filial'}"
 
+
+    
     def complete_order(self):
         self.is_completed=True
         self.save()
@@ -84,6 +93,12 @@ class Order(models.Model):
             '3': 'text-primary',
             '4': 'text-success',
         }.get(self.status, 'text-secondary')
+    
+    @property
+    def amount(self):
+        """For Click integration - returns the total price in UZS"""
+        return self.total_price
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")

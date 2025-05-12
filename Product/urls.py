@@ -23,5 +23,6 @@ urlpatterns = [
     path('product/add/<int:pk>/' , add_to_cart_detail, name='product_card_detail'),
     path("increase-quantity/<int:item_id>/", increase_quantity, name="increase_quantity"),
     path("decrease-quantity/<int:item_id>/", decrease_quantity, name="decrease_quantity"),
-    # path("checkout/", checkout, name="checkout"),
+    path("payment/success/<int:order_id>/", payment_success, name="payment_success"),
+    path("payment/click/update/", ClickWebhookAPIView.as_view(), name="click_webhook"),
 ]

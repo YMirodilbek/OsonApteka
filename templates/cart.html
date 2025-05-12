@@ -45,7 +45,7 @@
                                     </tr>
                                     {% empty %}
                                     <tr>
-                                        <td colspan="6">Savat bo‘sh</td>
+                                        <td colspan="6">Savat bo'sh</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -78,7 +78,7 @@
                                     <p class="cart_amount">{{ order.total_price|add:15000 }} so'm</p>
                                 </div>
                                 <div class="checkout_btn">
-                                    <a href="#">To‘lovni yakunlash</a>
+                                    <a href="{% url 'checkout' %}">To'lovni yakunlash</a>
                                 </div>
                             </div>
                         </div>
