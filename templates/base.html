@@ -60,6 +60,7 @@
                 <a href="{% url 'landlords_url' %}" class="top-bar__link">Арендодателям</a>
                 <a href="{% url 'vacancy_url' %}" class="top-bar__link">Вакансии</a>
                 <a href="{% url 'pharm_url' %}" class="top-bar__link">Наши аптеки</a>
+                <a href="{% url 'blog' %}" class="top-bar__link">Новости и статьи</a>
                 <a href="{% url 'filial_index' %}" class="top-bar__link">Филиал</a>
             </nav>
             <div class="language-selector">
@@ -266,6 +267,12 @@
                 </a>
             </div>
             <div class="mobile-menu__item">
+                <a href="{% url 'blog' %}" class="mobile-menu__link">
+                    <i class="fas fa-newspaper mobile-menu__icon"></i>
+                    Новости и статьи
+                </a>
+            </div>
+            <div class="mobile-menu__item">
                 <a href="#" class="mobile-menu__link">
                     <i class="fas fa-headset mobile-menu__icon"></i>
                     Callcenter: 1080
@@ -345,7 +352,7 @@
                 <nav class="footer__nav">
                     <a href="{% url 'about_url' %}" class="footer__link">О нас</a>
                     <a href="{% url 'blog' %}" class="footer__link">Новости и статьи</a>
-                    <a href="{% url 'vacancy_url' %}" class="footer__link">Карьера</a>
+                    <a href="{% url 'vacancy_url' %}" class="footer__link">Вакансии</a>
                     <a href="{% url 'filial_index' %}" class="footer__link">Карта аптек</a>
                 </nav>
             </div>
