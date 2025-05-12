@@ -69,13 +69,13 @@ def send_sms(phone_number, code):
         return {"error": "Telefon raqami noto‘g‘ri formatda!"}
     payload = {
     "mobile_phone": phone_number, 
-    "message": f"АКМАЛ FARM Kirish kodingiz: {code}",
+    "message": f"Kodni hech kimga bermang! Akmal Farm mobil ilovasiga kirish uchun tasdiqlash kodi: {code}",
     "from": "4546",  
     "callback_url": "" 
     }
 
     response = requests.post(url, headers=headers, data=payload)
-    print("Eskizdan javob:", response.json())  
+    # print("Eskizdan javob:", response.json())  
     return response.json()
 
 
@@ -96,7 +96,7 @@ def send_otp(request):
         if form.is_valid():
             phone_number = form.cleaned_data['phone_number']
             is_agreed = form.cleaned_data['is_agreed']
-            print("Telefon raqami:", phone_number)  
+            # print("Telefon raqami:", phone_number)  
 
             if not can_send_otp(phone_number):
                 form.add_error(None, "Tasdiqlash kodini qayta so‘rash uchun biroz kuting!")
@@ -174,9 +174,11 @@ def success(request):
 def Product(request):
     return render(request,'about.html')
 
+
 def Logout(request):
     logout(request)
     return redirect('/auth/send-otp/')
+
 
 def blog_view(request):
     blogs = Blog.objects.all().order_by('-created_at')
@@ -190,12 +192,14 @@ def blog_view(request):
     }
     return render(request,'blog/blog.html', context)
 
+
 def BlogDetail(request, pk):
     blog = Blog.objects.get(pk=pk)
     context = {
         'blog': blog
     }
     return render(request, 'blog/blog-details.html', context)
+
 
 def blog_create(request):
     if not request.user.is_staff:
