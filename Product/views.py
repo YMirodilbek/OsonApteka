@@ -77,6 +77,11 @@ def Index(request):
             result = [{"class_name": category, "products": products[:per_class_limit]}]
         else:
             result = []
+        context = {
+            "data": result,
+            "category": category,
+            "blogs": Blog.objects.all().order_by('-id')[:4]
+        }
     else:
         filtered_classes = [
             class_name for class_name, items in grouped_by_class.items()
@@ -93,13 +98,13 @@ def Index(request):
             items = grouped_by_class[class_name][:per_class_limit]
             result.append({"class_name": class_name, "products": items})
 
-    context = {
-        "data": result,
-        "page": page,
-        "paginator": paginator,
-        "category": category,
-        "blogs": Blog.objects.all().order_by('-id')[:4]
-    }
+        context = {
+            "data": result,
+            "page": page,
+            "paginator": paginator,
+            "category": category,
+            "blogs": Blog.objects.all().order_by('-id')[:4]
+        }
     return render(request, 'index.html', context)
 
 

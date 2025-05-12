@@ -337,5 +337,21 @@
     <a href="#" class="scroll-top" id="scroll-top">
         <i class="fas fa-chevron-up"></i>
     </a>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        
+        const options = document.querySelectorAll(".option");
+
+        options.forEach(function (option) {
+            option.addEventListener("click", function () {
+                const categoryName = option.getAttribute("data-value");
+                // Bo'shliqlar va maxsus belgilarni URLga mos shaklga keltirish
+                const encodedCategoryName = encodeURIComponent(categoryName);
+                // URLga yo'naltirish
+                window.location.href = `http://127.0.0.1:8000/?category=${encodedCategoryName}`;
+            });
+        });
+    });
+    </script>
 </body>
 </html>
