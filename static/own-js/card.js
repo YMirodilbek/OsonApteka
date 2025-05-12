@@ -441,18 +441,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     showNotification(`${productName} добавлен в избранное`);
                 }
             }
-            
-            // Handle product detail clicks on cloned elements
-            if (e.target.closest('.cloned .product-item-card__button.about')) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const detailBtn = e.target.closest('.product-item-card__button.about');
-                const card = detailBtn.closest('.product-item-card');
-                const productName = card.querySelector('h4').textContent;
-                
-                showNotification(`Открываем информацию о товаре: ${productName}`);
-            }
         });
         
         // Set initial scroll position
