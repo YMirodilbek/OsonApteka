@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +19,38 @@
     <link rel="stylesheet" href="{% static 'own-styles/real_time_search.css' %}">
     <link rel="stylesheet" href="{% static 'own-styles/mobile_navbar.css' %}">
     <link rel="stylesheet" href="{% static 'own-styles/footer.css' %}">
+    <style>
+        /* Faqat mobil qurilmalar uchun */
+        @media (max-width: 768px) {
+            .mobile-category-btn {
+                
+                background-color: var(--primary-blue);
+                color: var(--text-light);
+                padding: 12px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                border: none;
+                outline: none;
+                position: relative;
+                text-align: left;
+            }
+        }
+
+        /* Kattaroq ekranlarda tugma ko'rinmasin */
+        @media (min-width: 769px) {
+            .mobile-category-btn {
+                display: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <!-- Top Bar -->
     <div class="top-bar">
@@ -47,9 +79,14 @@
                 <a href="/" class="logo">
                     <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Akmal Farm Medical Logo">
                 </a>
+                <button type="button" class="mobile-category-btn js-catalog-toggle" aria-label="Открыть каталог">
+                    <i class="fas fa-th-large"></i>
+                    <span>Каталог</span>
+                </button>
+
             </div>
 
-            
+
             <div class="custom-select">
                 <button type="button" class="select-header">
                     <i class="fas fa-bars"></i>
@@ -63,12 +100,12 @@
                     </div>
                     <div class="options-container">
                         {% for category in category_context %}
-                            <div class="option" data-value="{{ category.name }}">{{ category.name }}</div>
+                        <div class="option" data-value="{{ category.name }}">{{ category.name }}</div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-            
+
             <form class="search-form">
                 <input type="text" class="search-input" placeholder="Поиск лекарств и товаров..." autocomplete="off">
                 <button type="submit" class="search-btn">
@@ -84,7 +121,7 @@
                     </div>
                     <i class="fas fa-user action-item__icon"></i>
                 </a>
-                
+
                 <a href="#" class="action-item">
                     <div class="action-item__text-wrapper">
                         <span class="action-item__text">Callcenter</span>
@@ -119,13 +156,13 @@
             const notification = document.createElement('div');
             notification.className = 'product-notification';
             notification.textContent = message;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.classList.add('show');
             }, 10);
-            
+
             setTimeout(() => {
                 notification.classList.remove('show');
                 setTimeout(() => {
@@ -145,20 +182,20 @@
 
     <!-- Scroll to top JavaScript -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const scrollTopButton = document.getElementById('scroll-top');
-            
+
             // Show/hide scroll button based on scroll position
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 if (window.pageYOffset > 300) {
                     scrollTopButton.classList.add('visible');
                 } else {
                     scrollTopButton.classList.remove('visible');
                 }
             });
-            
+
             // Smooth scroll to top when clicked
-            scrollTopButton.addEventListener('click', function(e) {
+            scrollTopButton.addEventListener('click', function (e) {
                 e.preventDefault();
                 window.scrollTo({
                     top: 0,
@@ -169,20 +206,20 @@
     </script>
 
     <!-- Mobile Navigation -->
-    <nav class="mobile-nav">
-        <a href="/" class="mobile-nav-item">
+    <nav class="mobile-nav" >
+        <a href="/" class="mobile-nav-item" >
             <i class="fas fa-home"></i>
             <span>Главная</span>
         </a>
-        <a href="#" class="mobile-nav-item js-menu-toggle">
+        <a href="#" class="mobile-nav-item js-menu-toggle" >
             <i class="fas fa-bars"></i>
             <span>Меню</span>
         </a>
-        <a href="#" class="mobile-nav-item" id="mobile-cart-button">
+        <a href="#" class="mobile-nav-item" id="mobile-cart-button" >
             <i class="fas fa-shopping-cart"></i>
             <span>Корзина</span>
         </a>
-        <a href="#" class="mobile-nav-item">
+        <a href="#" class="mobile-nav-item" >
             <i class="fas fa-user"></i>
             <span>Профиль</span>
         </a>
@@ -264,7 +301,7 @@
             <ul class="mobile-catalog-filter__list">
                 {% for category in category_context %}
                 <li class="mobile-catalog-filter__item">
-                    <a href="#" class="mobile-catalog-filter__link">
+                    <a href="#" class="mobile-catalog-filter__link" data-value={{category.name}}>
                         <i class="fas fa-tag mobile-catalog-filter__icon"></i>
                         {{ category.name }}
                     </a>
@@ -302,7 +339,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <div class="footer__column">
                 <h3 class="footer__title">Информация</h3>
                 <nav class="footer__nav">
@@ -312,7 +349,7 @@
                     <a href="{% url 'filial_index' %}" class="footer__link">Карта аптек</a>
                 </nav>
             </div>
-            
+
             <div class="footer__column">
                 <h3 class="footer__title">Покупателю</h3>
                 <nav class="footer__nav">
@@ -321,7 +358,7 @@
                     <a href="#" class="footer__link">Условия возврата товара</a>
                 </nav>
             </div>
-            
+
             <div class="footer__column">
                 <h3 class="footer__title">Документы</h3>
                 <nav class="footer__nav">
@@ -332,26 +369,40 @@
             </div>
         </div>
     </footer>
-    
+
     <!-- Scroll to top button -->
     <a href="#" class="scroll-top" id="scroll-top">
         <i class="fas fa-chevron-up"></i>
     </a>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        
-        const options = document.querySelectorAll(".option");
 
-        options.forEach(function (option) {
-            option.addEventListener("click", function () {
-                const categoryName = option.getAttribute("data-value");
-                // Bo'shliqlar va maxsus belgilarni URLga mos shaklga keltirish
-                const encodedCategoryName = encodeURIComponent(categoryName);
-                // URLga yo'naltirish
-                window.location.href = `http://127.0.0.1:8000/?category=${encodedCategoryName}`;
+            const options = document.querySelectorAll(".option");
+
+            options.forEach(function (option) {
+                option.addEventListener("click", function () {
+                    const categoryName = option.getAttribute("data-value");
+                    // Bo'shliqlar va maxsus belgilarni URLga mos shaklga keltirish
+                    const encodedCategoryName = encodeURIComponent(categoryName);
+                    // URLga yo'naltirish
+                    window.location.href = `http://127.0.0.1:8000/?category=${encodedCategoryName}`;
+                });
             });
         });
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryLinks = document.querySelectorAll(".mobile-catalog-filter__link");
+
+            categoryLinks.forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault(); // sahifa yuqoriga sakramasligi uchun
+                    const categoryName = link.getAttribute("data-value");
+                    const encodedCategoryName = encodeURIComponent(categoryName);
+                    window.location.href = `http://127.0.0.1:8000/?category=${encodedCategoryName}`;
+                });
+            });
+        });
+
     </script>
 </body>
+
 </html>

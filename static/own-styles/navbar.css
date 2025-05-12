@@ -487,12 +487,17 @@ body {
     z-index: 1;
 }
 
+/* Mobile Category Button - Hidden by default */
+/* Faqat mobil qurilmalar uchun */
+
+  
+
 /* Mobile Header Styles */
 @media (max-width: 991px) {
     .main-content {
         max-width: 90%;
-        padding-top: 120px; /* Header height + space */
-        padding-bottom: 90px; /* Mobile nav height + space */
+        padding-top: 120px;
+        padding-bottom: 90px;
     }
 
     .main-header {
@@ -516,10 +521,12 @@ body {
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        gap: 15px;
     }
 
     .logo {
         margin: 0;
+        flex: 0 0 auto;
     }
 
     .logo img {
@@ -527,22 +534,9 @@ body {
         width: auto;
     }
 
-    .mobile-catalog-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 15px;
-        background: #f5f5f5;
-        border: none;
-        border-radius: 8px;
-        color: #333;
-        font-size: 14px;
-        cursor: pointer;
-    }
+    /* Show mobile category button only on mobile */
 
-    .mobile-catalog-btn i {
-        font-size: 16px;
-    }
+
 
     .search-form {
         order: 2;
@@ -574,12 +568,11 @@ body {
     .header-actions {
         display: none;
     }
-
-    /* Adjust body padding */
-    body {
-        padding-bottom: env(safe-area-inset-bottom, 80px);
-    }
 }
+
+/* Additional mobile optimizations */
+
+
 .mobile-nav {
     display: none;
     position: fixed;
