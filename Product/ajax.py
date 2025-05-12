@@ -6,6 +6,8 @@ from rapidfuzz import fuzz
 from .views import *
 
 
+
+
 @login_required(login_url='/auth/send-otp/')
 def add_to_cart(request, product_id):
     
@@ -32,10 +34,11 @@ def add_to_cart(request, product_id):
     if not created:
         order_item.quantity += 1
         order_item.save()
+        
     cart =  cart_context(request)
     cart_count = len(cart['cart_items'])
     cart_total = cart['cart_total']
-    messages.success(request, " mahsulot Savatchaga qo'shildi ")
+    # messages.success(request, " mahsulot Savatchaga qo'shildi ")
     return JsonResponse({"status":200,'cart_count':cart_count, 'cart_total':cart_total})
 
 

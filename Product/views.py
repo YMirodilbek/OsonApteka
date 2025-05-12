@@ -5,6 +5,7 @@ from django.db.models.functions import TruncDate, TruncDay
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  login ,logout
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 from datetime import datetime, timedelta
 from click_up.views import ClickWebhook
 from django.utils.timezone import now
@@ -27,7 +28,34 @@ import json
 def cart_view(request):
     order = Order.objects.filter(user=request.user, is_completed=False).select_related('filial').prefetch_related('items','items__product').first()  
     return render(request, "cart.html", {"order": order})
- 
+
+@login_required(login_url='/auth/send-otp/')
+def cart_view_json(request):
+    cart_items = []
+    cart_total = 0
+    cart_count = 0
+
+    if request.user.is_authenticated:
+        result = []
+        try:
+            cart_items = OrderItem.objects.filter(order__user=request.user, order__is_completed=False)
+            for item in cart_items:
+                result.append({
+                    "id": item.id,
+                    "product_id": item.product.id,
+                    "name": item.product.info,
+                    "price": float(item.price),
+                    "qty": item.quantity,
+                    "img": item.product.image1.url if item.product.image1 else '/static/media/default.jpg'
+                })
+            
+            cart_total = sum(item.total_price for item in cart_items)
+            cart_count = len(cart_items)
+        except Exception as e:
+            print(f"Error in cart_context: {e}")
+        
+
+    return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
     
 def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
@@ -70,7 +98,7 @@ def Index(request):
         "page": page,
         "paginator": paginator,
         "category": category,
-        "blogs": Blog.objects.all().order_by('-id')[:5]
+        "blogs": Blog.objects.all().order_by('-id')[:4]
     }
     return render(request, 'index.html', context)
 
@@ -81,7 +109,7 @@ def increase_quantity(request, item_id):
     order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user, order__is_completed=False)
     order_item.quantity += 1
     order_item.save()
-    return redirect("cart")
+    return cart_view_json(request)
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -94,17 +122,17 @@ def decrease_quantity(request, item_id):
         order_item.save()
     else:
         order_item.delete()  
-    return redirect("cart")
+    return cart_view_json(request)
 
 
 @login_required(login_url='/auth/send-otp/')
 def DeleteProduct(request, item_id):
     """ Savatdan bitta mahsulot turini butunlay o‘chirish """
     # order = Order.objects.filter(user=request.user, is_completed=False)
-    order_item = OrderItem.objects.get( id=item_id)
+    order_item = OrderItem.objects.get(id=item_id)
     if order_item:
         order_item.delete()
-    return redirect("cart")  
+    return cart_view_json(request)  
 
 
 def product_detail(request,pk):
