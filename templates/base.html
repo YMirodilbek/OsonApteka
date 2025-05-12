@@ -24,12 +24,11 @@
     <div class="top-bar">
         <div class="top-bar__container">
             <nav class="top-bar__nav">
-                <a href="#" class="top-bar__link">О Нас</a>
-                <a href="#" class="top-bar__link">Арендодателям</a>
-                <a href="#" class="top-bar__link">Вакансии</a>
-                <a href="#" class="top-bar__link">Наши аптеки</a>
-                <a href="#" class="top-bar__link">Загрузи рецепт</a>
-                <a href="#" class="top-bar__link">Филиал</a>
+                <a href="{% url 'about_url' %}" class="top-bar__link">О Нас</a>
+                <a href="{% url 'landlords_url' %}" class="top-bar__link">Арендодателям</a>
+                <a href="{% url 'vacancy_url' %}" class="top-bar__link">Вакансии</a>
+                <a href="{% url 'pharm_url' %}" class="top-bar__link">Наши аптеки</a>
+                <a href="{% url 'filial_index' %}" class="top-bar__link">Филиал</a>
             </nav>
             <div class="language-selector">
                 <select name="" id="" class="language-select">
@@ -206,33 +205,27 @@
 
         <nav class="mobile-menu__nav">
             <div class="mobile-menu__item">
-                <a href="#" class="mobile-menu__link">
+                <a href="{% url 'about_url' %}" class="mobile-menu__link">
                     <i class="fas fa-info-circle mobile-menu__icon"></i>
                     О Нас
                 </a>
             </div>
             <div class="mobile-menu__item">
-                <a href="#" class="mobile-menu__link">
+                <a href="{% url 'landlords_url' %}" class="mobile-menu__link">
                     <i class="fas fa-building mobile-menu__icon"></i>
                     Арендодателям
                 </a>
             </div>
             <div class="mobile-menu__item">
-                <a href="#" class="mobile-menu__link">
+                <a href="{% url 'vacancy_url' %}" class="mobile-menu__link">
                     <i class="fas fa-briefcase mobile-menu__icon"></i>
                     Вакансии
                 </a>
             </div>
             <div class="mobile-menu__item">
-                <a href="#" class="mobile-menu__link">
+                <a href="{% url 'pharm_url' %}" class="mobile-menu__link">
                     <i class="fas fa-clinic-medical mobile-menu__icon"></i>
                     Наши аптеки
-                </a>
-            </div>
-            <div class="mobile-menu__item">
-                <a href="#" class="mobile-menu__link">
-                    <i class="fas fa-file-medical mobile-menu__icon"></i>
-                    Загрузить рецепт
                 </a>
             </div>
             <div class="mobile-menu__item">
@@ -313,10 +306,10 @@
             <div class="footer__column">
                 <h3 class="footer__title">Информация</h3>
                 <nav class="footer__nav">
-                    <a href="#" class="footer__link">О нас</a>
-                    <a href="#" class="footer__link">Новости и статьи</a>
-                    <a href="#" class="footer__link">Карьера</a>
-                    <a href="#" class="footer__link">Карта аптек</a>
+                    <a href="{% url 'about_url' %}" class="footer__link">О нас</a>
+                    <a href="{% url 'blog' %}" class="footer__link">Новости и статьи</a>
+                    <a href="{% url 'vacancy_url' %}" class="footer__link">Карьера</a>
+                    <a href="{% url 'filial_index' %}" class="footer__link">Карта аптек</a>
                 </nav>
             </div>
             

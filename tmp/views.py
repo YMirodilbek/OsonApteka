@@ -37,5 +37,5 @@ def Landlords(request):
     return render(request,'new/arendatelim.html')
 
 def Vacancies(request):
-    return render(request,'new/farmaset.html')
+    return render(request,'new/vacancies.html')
 

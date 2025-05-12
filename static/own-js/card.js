@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get all add to cart buttons
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     const wishlistButtons = document.querySelectorAll('.product-item-card__button.wishlist');
-    const detailButtons = document.querySelectorAll('.product-item-card__button.about');
     const productCards = document.querySelectorAll('.product-item-card');
     
     // Track if we're dragging to prevent card clicks
@@ -123,21 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.querySelector('i').style.color = '#D91F3D';
                 showNotification(`${productName} добавлен в избранное`);
             }
-        });
-    });
-    
-    // Product details functionality
-    detailButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation(); // Prevent event bubbling
-            
-            const card = this.closest('.product-item-card');
-            const productName = card.querySelector('h4').textContent;
-            
-            // Here you would typically navigate to product detail page
-            // For demo, we'll just show a notification
-            showNotification(`Открываем информацию о товаре: ${productName}`);
         });
     });
     

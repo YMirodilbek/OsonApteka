@@ -1,153 +1,203 @@
+{% extends 'base.html' %}
+{% block content %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akmal Farm Medical</title>
-</head>
 <style>
-      .alh3 {
-            color: white;
-            background-color: #002d5c;
-            width: 100%;
-            text-align: center;
-            align-items: center;
-            height: 40px;
+    .about-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .about-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .about-header h1 {
+        font-size: 36px;
+        color: #2C3E50;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .about-header p {
+        font-size: 18px;
+        color: #666;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    .about-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .about-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .about-card__icon {
+        font-size: 40px;
+        color: #E31E24;
+        margin-bottom: 20px;
+    }
+
+    .about-card__title {
+        font-size: 22px;
+        color: #2C3E50;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .about-card__text {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .about-content {
+        background: #fff;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 50px;
+    }
+
+    .about-content p {
+        font-size: 16px;
+        color: #444;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .about-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .about-content li {
+        padding-left: 25px;
+        position: relative;
+        margin-bottom: 15px;
+        font-size: 16px;
+        color: #444;
+    }
+
+    .about-content li:before {
+        content: "⚪️";
+        position: absolute;
+        left: 0;
+        color: #E31E24;
+    }
+
+    .contact-section {
+        background: #f8f9fa;
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .contact-section h2 {
+        font-size: 24px;
+        color: #2C3E50;
+        margin-bottom: 20px;
+    }
+
+    .contact-info {
+        font-size: 18px;
+        color: #E31E24;
+        font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+        .about-header h1 {
+            font-size: 28px;
         }
-    .tugma22 {
-  text-decoration: none;
-}
 
-.button22 {
-  background-color: #c51f30; /* Qizil rang */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.button22:hover {
-  background-color: #c0392b; /* Qizilni qoraroq qilish */
-}
-
-/* Kichik ekranlar (masalan, mobil qurilmalar) uchun */
-@media (max-width: 600px) {
-  .button22 {
-    padding: 8px 15px;
-    font-size: 14px;
-    margin-bottom: 20px !important;
-  }
-}
-
-/* O'rtacha ekranlar (masalan, planshetlar) uchun */
-@media (max-width: 768px) {
-  .button22 {
-    padding: 10px 18px;
-    font-size: 15px;
-  }
-}
-
-</style>
-<body>
-    <a href="/" class="tugma22"><button class="button22">Back</button></a>
-
-    <div class="alls">
-        <!-- <img src="{% static 'assets/img2/labaratoriya.jpg'%}" alt="kutib turing" class="allimg"> -->
-        <h3 class="alh3">
-            О компании
-
-        </h3>
-        <p class="cltxt">Добро пожаловать в интернет-аптеку "Akmal Farm Medical"! Здесь и во всех наших филиалах вы
-            найдёте
-            всё
-            необходимое для заботы о своём здоровье. Мы используем современные технологии, а также всегда рады
-            покупателям. Вас ждёт быстрое обслуживание, широкий ассортимент, комфорт и удобство. И при этом главная
-            отличительная черта наших аптек в том, что сэкономить на лекарствах можно, нужно только прийти и убедиться!
-
-            Наша цель – предоставить каждому покупателю возможность приобрести необходимые медикаменты по самым выгодным
-            ценам, даже по сравнению с другими аптеками.
-
-            Как мы добиваемся низких цен?
-            ⚪️ Оптимизированная закупочная политика – мы сотрудничаем с крупнейшими поставщиками и закупаем продукцию в
-            больших объёмах.
-            ⚪️ Прямые поставки от производителей – сокращение цепочки посредников позволяет нам предлагать лучшие цены.
-            ⚪️ Гарантия качества – все лекарства сертифицированы и проходят строгую проверку.
-            ⚪️ Высокий товарооборот – благодаря активным продажам у нас нет препаратов с истёкшим сроком годности.
-
-            Как оформить заказ?
-            1. Найдите нужный препарат на сайте.
-            2. Добавьте его в корзину и перейдите к оформлению заказа.
-            3. Укажите контактные данные и адрес доставки.
-            4. Произведите оплату
-            5. Ожидайте доставку
-
-            Наши специалисты всегда готовы помочь! Для консультаций звоните по телефону: +998 (78) 298-00-88 или по
-            короткому номеру 1080.
-
-            Мы ценим доверие наших клиентов и стремимся сделать процесс покупки удобным и безопасным. Спасибо, что
-            выбираете интернет-аптеку "Akmal Farm Medical"!</p>
-    </div>
-    <style>
-        .alls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 100%;
-        }
-
-        .allimg {
-            width: 70%;
-            height: auto;
-            display: block;
-        }
-
-        .alh3 {
-            font-size: 24px;
-            margin-top: 20px;
-        }
-
-        .cltxt {
-            max-width: 1100px;
-            margin: 10px auto;
+        .about-header p {
             font-size: 16px;
-            line-height: 1.6;
-            text-align: justify;
         }
 
-        @media (max-width: 1024px) {
-
-            /* Planshetlar uchun */
-            .alh3 {
-                font-size: 24px;
-            }
-
-            .cltxt {
-                font-size: 16px;
-                max-width: 90%;
-            }
+        .about-card {
+            padding: 20px;
         }
 
-        @media (max-width: 768px) {
-
-            /* Mobil telefonlar uchun */
-            .alh3 {
-                font-size: 20px;
-            }
-
-            .cltxt {
-                font-size: 14px;
-                line-height: 1.5;
-                max-width: 95%;
-            }
+        .about-content {
+            padding: 25px;
         }
-    </style>
+    }
+</style>
 
-</body>
+<div class="about-container">
+    <div class="about-header">
+        <h1>Akmal Farm Medical haqida</h1>
+        <p>Sog'ligingiz uchun ishonchli hamkor</p>
+    </div>
 
-</html>
+    <div class="about-grid">
+        <div class="about-card">
+            <i class="fas fa-star about-card__icon"></i>
+            <h3 class="about-card__title">Sifat kafolati</h3>
+            <p class="about-card__text">Barcha dori vositalari sertifikatlangan va qat'iy tekshiruvdan o'tkaziladi.</p>
+        </div>
+
+        <div class="about-card">
+            <i class="fas fa-truck about-card__icon"></i>
+            <h3 class="about-card__title">To'g'ridan-to'g'ri yetkazib berish</h3>
+            <p class="about-card__text">Ishlab chiqaruvchilardan to'g'ridan-to'g'ri yetkazib berish tizimi orqali eng yaxshi narxlarni taklif qilamiz.</p>
+        </div>
+
+        <div class="about-card">
+            <i class="fas fa-users about-card__icon"></i>
+            <h3 class="about-card__title">Professional xizmat</h3>
+            <p class="about-card__text">Malakali mutaxassislarimiz sizga eng yaxshi maslahatlar va xizmatlarni taqdim etadi.</p>
+        </div>
+    </div>
+
+    <div class="about-content">
+        <p>
+            Добро пожаловать в интернет-аптеку "Akmal Farm Medical"! Здесь и во всех наших филиалах вы найдёте всё необходимое для заботы о своём здоровье. Мы используем современные технологии, а также всегда рады покупателям. Вас ждёт быстрое обслуживание, широкий ассортимент, комфорт и удобство.
+        </p>
+        <p>
+            И при этом главная отличительная черта наших аптек в том, что сэкономить на лекарствах можно, нужно только прийти и убедиться! Наша цель – предоставить каждому покупателю возможность приобрести необходимые медикаменты по самым выгодным ценам, даже по сравнению с другими аптеками.
+        </p>
+        
+        <p>Как мы добиваемся низких цен?</p>
+        <ul>
+            <li>Оптимизированная закупочная политика – мы сотрудничаем с крупнейшими поставщиками и закупаем продукцию в больших объёмах.</li>
+            <li>Прямые поставки от производителей – сокращение цепочки посредников позволяет нам предлагать лучшие цены.</li>
+            <li>Гарантия качества – все лекарства сертифицированы и проходят строгую проверку.</li>
+            <li>Высокий товарооборот – благодаря активным продажам у нас нет препаратов с истёкшим сроком годности.</li>
+        </ul>
+
+        <p>Как оформить заказ?</p>
+        <ol>
+            <li>Найдите нужный препарат на сайте.</li>
+            <li>Добавьте его в корзину и перейдите к оформлению заказа.</li>
+            <li>Укажите контактные данные и адрес доставки.</li>
+            <li>Произведите оплату</li>
+            <li>Ожидайте доставку</li>
+        </ol>
+    </div>
+
+    <div class="contact-section">
+        <h2>Bizning mutaxassislar doimo yordam berishga tayyor!</h2>
+        <p class="contact-info">Maslahat uchun qo'ng'iroq qiling:</p>
+        <p class="contact-info">+998 (78) 298-00-88 yoki 1080</p>
+    </div>
+</div>
+
+{% endblock content %}

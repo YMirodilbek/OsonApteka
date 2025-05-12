@@ -62,7 +62,7 @@
             <div class="product-item-card__actions">
                 <button class="add-to-cart">Добавить в корзину</button>
                 <div class="product-item-card__buttons">
-                    <a href="/product/detail/{{ product.id }}" class="product-item-card__button about"><i class="fas fa-eye"></i></a>
+                    <a href="{% url  'product_detail' product.id %}" class="product-item-card__button about"><i class="fas fa-eye"></i></a>
                     <button class="product-item-card__button wishlist"><i class="fas fa-heart"></i></button>
                 </div>
             </div>
