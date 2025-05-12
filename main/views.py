@@ -9,6 +9,7 @@ from .models import *
 import requests
 import random
 import re
+from django.core.paginator import Paginator
 
 
 def clean_phone_number(phone_number):
@@ -178,9 +179,14 @@ def Logout(request):
     return redirect('/auth/send-otp/')
 
 def blog_view(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all().order_by('-created_at')
+    paginator = Paginator(blogs, 10)  # Show 6 blogs per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     context = {
-        'blogs': blogs
+        'page_obj': page_obj,
+        'blogs': page_obj,
     }
     return render(request,'blog/blog.html', context)
 
