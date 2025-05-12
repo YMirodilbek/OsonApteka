@@ -165,7 +165,10 @@ def add_to_cart_detail(request,pk):
     result_dict = {item['id']: item for item in result}
     name = result_dict.get(pk, {}).get('name', '')
 
-    order, created = Order.objects.get_or_create(user=request.user, is_completed=False)
+    order = Order.objects.filter(user=request.user, is_completed=False).first()
+
+    if not order:
+        order = Order.objects.create(user=request.user, is_completed=False)
     order_item, created = OrderItem.objects.get_or_create(
                                     order=order,      
                                     product=product,

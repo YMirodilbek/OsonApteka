@@ -38,6 +38,16 @@
 # stdout_logfile=/var/log/celery_beat.out.log
 
 
+# [program:uvicorn]
+# directory=/home/ubuntu/project
+# command=/home/ubuntu/env/bin/uvicorn your_project.asgi:application --host 0.0.0.0 --port 8000
+# autostart=true
+# autorestart=true
+# stderr_logfile=/var/log/uvicorn.err.log
+# stdout_logfile=/var/log/uvicorn.out.log
+# user=ubuntu
+
+
 # sudo supervisorctl reread
 # sudo supervisorctl update
 # sudo supervisorctl restart celery_worker

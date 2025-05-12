@@ -1,0 +1,131 @@
+.footer {
+    background-color: #0e2749;
+    color: white;
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+.footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer__logo {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.footer__logo img {
+    max-width: 150px;
+}
+
+.footer__contact {
+    margin-bottom: 20px;
+}
+
+.footer__contact-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer__contact-text {
+    font-size: 14px;
+}
+
+.footer__social {
+    display: flex;
+    gap: 15px;
+}
+
+.footer__social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.footer__social-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.footer__social-icon {
+    color: white;
+    font-size: 18px;
+}
+
+.footer__column {
+    max-width: 250px;
+}
+
+.footer__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer__link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer__link:hover {
+    color: #ccc;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .footer__container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .footer__column {
+        max-width: 100%;
+    }
+}
+
+/* Scroll to top button */
+.scroll-top {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #0e2749;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-top:hover {
+    background-color: #174379;
+}

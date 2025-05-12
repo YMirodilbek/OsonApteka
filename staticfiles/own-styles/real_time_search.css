@@ -1,0 +1,544 @@
+/* Real-time Search Styles - Desktop */
+.real-time-search-dropdown {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: var(--z-index-dropdown);
+    display: none;
+}
+
+.real-time-search-dropdown.active {
+    display: block;
+}
+
+.real-time-search-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.2s;
+    gap: 12px;
+}
+
+.real-time-search-item:last-child {
+    border-bottom: none;
+}
+
+.real-time-search-item:hover {
+    background: #f8f9fa;
+}
+
+.real-time-search-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.real-time-search-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.real-time-search-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.real-time-search-price {
+    font-size: 13px;
+    color: #2196F3;
+    font-weight: 500;
+}
+
+.real-time-search-producer {
+    font-size: 12px;
+    color: #666;
+}
+
+.real-time-search-add {
+    padding: 8px 12px;
+    background: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.real-time-search-add i {
+    font-size: 14px;
+}
+
+.real-time-search-add:hover {
+    background: #1976D2;
+}
+
+.real-time-search-noresult {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+mark {
+    background: #fff3cd;
+    color: #856404;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+/* Loading State */
+.real-time-search-loading {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    display: none;
+}
+
+.real-time-search-loading.active {
+    display: block;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #2196F3;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile Real-time Search - Full-screen Professional Design */
+@media (max-width: 991px) {
+    /* Mobile Fullscreen Search Container */
+    .mobile-search-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: 9999 !important; /* Force highest z-index */
+        display: none !important;
+        flex-direction: column;
+        overflow: hidden;
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    /* Hide any .mobile-search-history elements that might be rendered outside the container */
+    body > .mobile-search-history {
+        display: none !important;
+    }
+
+    /* Ensure input fields outside the container are hidden */
+    body > input[placeholder="Поиск лекарств и товаров..."] {
+        display: none !important;
+    }
+
+    .mobile-search-container.active {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Mobile Search Header */
+    .mobile-search-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        background: #fff;
+        z-index: 2;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .mobile-search-back {
+        border: none;
+        background: none;
+        font-size: 20px;
+        padding: 8px;
+        margin-right: 10px;
+        color: #333;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-search-input-container {
+        flex: 1;
+        position: relative;
+    }
+
+    .mobile-search-input {
+        width: 100%;
+        padding: 12px 40px 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        background: #f5f5f5;
+    }
+
+    .mobile-search-input:focus {
+        outline: none;
+        border-color: #2196F3;
+        background: #fff;
+    }
+
+    .mobile-search-clear {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: none;
+        color: #999;
+        font-size: 16px;
+        padding: 5px;
+        cursor: pointer;
+        display: none;
+    }
+
+    .mobile-search-clear.active {
+        display: block;
+    }
+
+    /* Mobile Search Body */
+    .mobile-search-body {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Mobile Search Results */
+    .mobile-search-results {
+        padding: 10px 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+    }
+
+    .mobile-search-item {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        gap: 15px;
+    }
+
+    .mobile-search-item:last-child {
+        border-bottom: none;
+    }
+
+    .mobile-search-item:active {
+        background: #f0f0f0;
+    }
+
+    .mobile-search-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+        background: #f5f5f5;
+    }
+
+    .mobile-search-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .mobile-search-name {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .mobile-search-price {
+        font-size: 14px;
+        color: #2196F3;
+        font-weight: 500;
+    }
+
+    .mobile-search-producer {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .mobile-search-add {
+        padding: 10px 15px;
+        background: #2196F3;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .mobile-search-add i {
+        font-size: 16px;
+    }
+
+    /* Mobile Search Empty State */
+    .mobile-search-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+        color: #666;
+    }
+
+    .mobile-search-empty-icon {
+        font-size: 40px;
+        color: #ddd;
+        margin-bottom: 15px;
+    }
+
+    .mobile-search-empty-title {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .mobile-search-empty-text {
+        font-size: 14px;
+        color: #777;
+        max-width: 250px;
+        line-height: 1.5;
+    }
+
+    /* Mobile Search Loading */
+    .mobile-search-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+        color: #666;
+    }
+
+    .mobile-search-loading-spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #2196F3;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+    }
+
+    /* Mobile Search History */
+    .mobile-search-history {
+        padding: 15px;
+    }
+
+    .mobile-search-history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .mobile-search-history-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .mobile-search-history-clear {
+        font-size: 12px;
+        color: #2196F3;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .mobile-search-history-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .mobile-search-history-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        background: #f5f5f5;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #333;
+    }
+
+    .mobile-search-history-item i {
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Hide Original Dropdown */
+    .real-time-search-dropdown {
+        display: none !important;
+    }
+}
+
+/* Mobile Catalog Filter Styles */
+.mobile-catalog-filter {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 1002;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-catalog-filter.active {
+    transform: translateY(0);
+}
+
+.mobile-catalog-filter__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-catalog-filter__title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.mobile-catalog-filter__close {
+    border: none;
+    background: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+.mobile-catalog-filter__content {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.mobile-catalog-filter__search {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.mobile-catalog-filter__search input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.mobile-catalog-filter__search i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.mobile-catalog-filter__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-catalog-filter__item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-catalog-filter__item:last-child {
+    border-bottom: none;
+}
+
+.mobile-catalog-filter__link {
+    display: flex;
+    align-items: center;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.mobile-catalog-filter__icon {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+    color: #666;
+}
+
+@media (max-width: 991px) {
+    .mobile-catalog-filter {
+        display: block;
+    }
+}
