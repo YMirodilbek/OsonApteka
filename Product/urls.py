@@ -5,13 +5,17 @@ from .views import *
 
 urlpatterns = [
     path('',Index),
+    path('filial/',filial_index),
+    path('filial/order/',filial_order),
+    path('filial/filial/',filial_filial),
+    path('filial/registar/',filial_regisret ),
+    path('filial/product-create/',product_create ),
     path('contact/',Contact),
     path('myaccount/',Myaccount),
     path('cart/',cart_view, name="cart"),
     path('checkout/',checkout_view, name='checkout'),
     path('wishlist/', wishlist_view, name='wishlist'),
     path('search/', search_products, name='search_products'),
-    path('product-create/',product_create , name="product-create"),
     path('remove_from_cart/<int:item_id>/', DeleteProduct, name="delete"),
     path("add_to_cart/<int:product_id>/", add_to_cart, name="add_to_cart"),
     path('product/detail/<int:pk>/' , product_detail, name='product_detail'),

@@ -1,0 +1,98 @@
+{% extends 'base_filial.html' %}
+
+{% block title %}Filial bosh sahifa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">📊 Statistika Sahifasi</h2>
+
+  <div class="row g-4">
+    <!-- Kartochka 1 -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card shadow-sm border-0 text-center">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-users fa-2x text-primary"></i>
+          </div>
+          <h5 class="card-title">Foydalanuvchilar</h5>
+          <h3>1,234</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kartochka 2 -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card shadow-sm border-0 text-center">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-shopping-cart fa-2x text-success"></i>
+          </div>
+          <h5 class="card-title">Buyurtmalar</h5>
+          <h3>567</h3>
+        </div>
+      </div>
+    </div> 
+    <div class="col-md-6 col-xl-3">
+      <div class="card shadow-sm border-0 text-center">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-shopping-cart fa-2x text-success"></i>
+          </div>
+          <h5 class="card-title"> Bubungi Buyurtmalar</h5>
+          <h3>150</h3>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <!-- Kartochka 4 -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card shadow-sm border-0 text-center">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-chart-line fa-2x text-danger"></i>
+          </div>
+          <h5 class="card-title">Faollik</h5>
+          <h3>85%</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container py-5">
+  <h3 class="mb-4">📈 Savdo Statistikasi (Oxirgi kunlar)</h3>
+  
+  <div id="bar-chart"></div>
+</div>
+
+<script>
+  var options = {
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    series: [{
+      name: 'Savdo',
+      data: [100, 50, 75, 120, 90, 60, 110, 80, 130, 70, 95, 85, 140, 100, 105]  // Har bir kunning savdo summasi
+    }],
+    xaxis: {
+      categories: ['5-aprel', '6-aprel', '7-aprel', '8-aprel', '9-aprel' ,'10-aprel'] // Kunlar
+    },
+    colors: ['#3b82f6'],
+    plotOptions: {
+      bar: {
+        columnWidth: '15%',
+        borderRadius: 5
+      }
+    }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#bar-chart"), options);
+  chart.render();
+</script>
+
+{% endblock %}

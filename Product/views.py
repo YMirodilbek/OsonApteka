@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -5,10 +6,12 @@ from django.contrib import messages
 from django.shortcuts import render
 from .lotin_krill import compress
 from unidecode import unidecode
+from .decorator import *
 from .models import *
 from .forms import  *
 import redis
 import json
+
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -238,34 +241,50 @@ def checkout_view(request):
     return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items})
 
 
+@is_staff
 def product_create(request):
-    if request.user.is_staff:
-        if request.method == 'POST':
-            uid = request.POST.get('uid')
-            info = request.POST.get('info')
-            img_1 = request.FILES.get('img_1')
-            # img_2 = request.FILES.get('img_2')
-            # img_3 = request.FILES.get('img_3')
-            product =  Product.objects.create(
-                uid = int(uid),
-                info = info
-            )
-            if img_1:
-                img_1 = compress(img_1)
-                product.image1 = img_1
+    if request.method == 'POST':
+        uid = request.POST.get('uid')
+        info = request.POST.get('info')
+        img_1 = request.FILES.get('img_1')
+        product =  Product.objects.create(
+            uid = int(uid),
+            info = info
+        )
+        if img_1:
+            img_1 = compress(img_1)
+            product.image1 = img_1
 
-            # if img_2:
-            #     img_2 = compress(img_2)
-            #     product.image2 = img_2
+        product.save()
+        if product:
+            messages.success(request, "Product q'shildi")
+        else:
+            messages.error(request, "Product yeratib bo'lmado")
+    return render(request,'filial/product-create.html')
 
-            # if img_3:
-            #     img_3 = compress(img_3)
-            #     product.image3 = img_3
-            product.save()
-            if product:
-                messages.success(request, "Product q'shildi")
-            else:
-                messages.error(request, "Product yeratib bo'lmado")
-        return render(request,'product-create.html')
-    return redirect('/')
+
+@is_staff
+def filial_index(request):
+    return render(request,'filial/index.html' )
+
+
+@is_staff
+def filial_order(request):
+    orders =  Order.objects.all()
     
+    
+    context = {
+        'orders': orders
+    }
+  
+    return render(request,'filial/order.html', context )
+
+
+@is_staff
+def filial_filial(request):
+    return render(request,'filial/filial.html' )
+
+
+@is_staff
+def filial_regisret(request):
+    return render(request,'filial/filial-register.html' )

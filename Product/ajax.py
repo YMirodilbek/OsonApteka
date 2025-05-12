@@ -1,5 +1,6 @@
 from .context_processors import cart_context
 from .lotin_krill import latin_to_cyrillic
+from django.http import JsonResponse
 from rapidfuzz import fuzz
 from .views import *
 

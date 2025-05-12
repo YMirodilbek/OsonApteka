@@ -33,6 +33,7 @@ class Product(models.Model):
 
 
 class Filial(models.Model):
+    users = models.ManyToManyField(CustomUser, related_name='filials')
     name = models.CharField(max_length=255)
     address = models.TextField()
 
@@ -44,7 +45,13 @@ class Order(models.Model):
         ('cash', 'Naqd'),
         ('card', 'Karta'),
     )
-
+    TYPE_CHOICES = [
+        ('1', 'Rad etilgan'),
+        ('2', 'Kutilmoqda'),
+        ('3', 'Tasdiqlangan'),
+        ('4', 'Topshirildi '),
+        
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
     filial = models.ForeignKey(Filial, on_delete=models.SET_NULL, null=True, blank=True, related_name="finals")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='cash')
@@ -54,23 +61,29 @@ class Order(models.Model):
     phone_number2 = models.CharField(max_length=13 , null=True)
     is_completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=now)
-
+    status = models.CharField(max_length=255, choices=TYPE_CHOICES, default=2)
+    is_active = models.BooleanField(default=True)
+    
     def __str__(self):
         return f"Order {self.id} - {self.user.first_name} - {self.filial.name if self.filial else 'No Filial'}"
-
-    
 
     def complete_order(self):
         self.is_completed=True
         self.save()
 
-
-
-
     @property
     def total_price(self):
         return sum(item.total_price for item in self.items.all())
-
+    
+    
+    @property
+    def status_color(self):
+        return {
+            '1': 'text-danger',
+            '2': 'text-warning',
+            '3': 'text-primary',
+            '4': 'text-success',
+        }.get(self.status, 'text-secondary')
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
@@ -82,11 +95,8 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"Buyurtma {self.product.uid} {self.id} - {self.order} - {self.quantity}"
 
-
-
     @property
     def total_price(self):
-        
         return self.price * self.quantity
        
 class Wishlist(models.Model):
