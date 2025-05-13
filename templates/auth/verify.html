@@ -7,12 +7,7 @@
   <title>Tasdiqlash</title>
   <link rel="stylesheet" href="{% static 'style.css' %}">
   <style>
-        #myInput {
-            display: none; /* Boshlang'ich holatda yashirin */
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-        }
+
 
     body {
         font-family: Arial, sans-serif;
@@ -27,7 +22,7 @@
 </style>
 </head>
 <body>
-  <div class="container" id="myInput">
+  <div class="container">
     <div class="login form">
       <header>Tasdiqlash Kodini Kiriting</header>
       {% if messages %}
@@ -38,7 +33,7 @@
         </ul>
       {% endif %}
         <h3>Telefon raqamga kod yuborildi: {{ phone_number }}</h3>
-        <div class="timer" id="countdown">63</div>
+        <div class="timer" id="countdown">60</div>
         <form  method="post">
           {% csrf_token %}
           {{ form.as_p }}
@@ -51,7 +46,7 @@
 
   <script>
       // 90 soniyadan boshlash
-      let timeLeft = 63;
+      let timeLeft = 60;
       const countdownElement = document.getElementById('countdown');
       
       // Har soniyada hisoblash
@@ -67,12 +62,7 @@
           }
       }, 1000); // Har 1000ms (1 soniya)
 
-      setTimeout(function() {
-            document.getElementById("myInput").style.display = "block";
-            
-            // Agar CSS-da visibility ishlatgan bo'lsangiz:
-            // document.getElementById("myInput").style.visibility = "visible";
-        }, 3000); // 4000ms = 4 soniya
+ 
   </script>
 </body>
 </html>

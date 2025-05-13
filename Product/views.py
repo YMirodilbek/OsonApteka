@@ -420,7 +420,7 @@ def filial_index(request):
 
 @is_staff
 def filial_order(request):
-
+    client_id = request.GET.get('client-id')
     filial_id = request.GET.get('filial-id')
     type_choices = Order.TYPE_CHOICES
     filials = request.user.filials.all()
@@ -446,7 +446,14 @@ def filial_order(request):
             paginator = Paginator(orders, 50)
             page_obj = paginator.get_page(page_number)
             orders_by_filial[filial] = page_obj
-
+    elif client_id:
+        orders = Order.objects.filter(user_id=client_id , is_active=True).order_by('-id').select_related(
+                'filial'
+            ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
+        page_number = request.GET.get(f'page_{filial.id}')
+        paginator = Paginator(orders, 50)
+        page_obj = paginator.get_page(page_number)
+        orders_by_filial[filial] = page_obj
     else:
         for filial in filials:
             orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id').select_related(
