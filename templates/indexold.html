@@ -43,59 +43,58 @@
                 <div class="row">
                     <div class="product_active owl-carousel">
                         {% for product in group.products %}
-                        <div class="col-lg-3" style="height: auto;">
-                            <div class="single_product">
-                                <div class="product_thumb">
-                                    <a href="/product/detail/{{ product.id }}" style="margin: 0px !important;">
-                                        <img src="{{ product.image1 }}" alt="" style="margin: 0px !important;">
-                                    </a>
-                                </div>
-                                <div class="product_content">
-                                    <a href="/product/detail/{{ product.id }}">
-                                        <h3>{{ product.name }}</h3>
-                                    </a>
-                                    <div>
-                                        <br>
-                                        <span>{{ product.producer }}</span><br>
+                        <div class="item">
+                            <div class="col-lg-3">
+                                <div class="single_product">
+                                    <div class="product_thumb">
+                                        <a href="/product/detail/{{ product.id }}" style="margin: 0px !important;">
+                                            <img src="{{ product.image1 }}" alt="" style="margin: 0px !important;">
+                                        </a>
                                     </div>
-                                    <div class="product_price">
-                                        <br>
-                                        <span class="current_price">{{ product.prices.0 }} so'm</span><br>
-                                    </div>
-                                    <div class="product_action">
-                                        <ul style="display: flex; justify-content: center; align-items: center;">
-                                            {% if user.is_authenticated %}
-                                            <li class="product_cart" style="margin-right: 10px;">
-                                                <a onclick="addToCart({{ product.id }})">корзина</a>
-                                            </li>
-                                            {% else %}
-                                            <li class="product_cart" style="margin-right: 10px;">
-                                                <a href="/auth/send-otp/">корзина</a>
-                                            </li>
-                                            {% endif %}
-                                            <li class="add_links">
-                                                <a href="/toggle/{{ product.id }}/" title="Add to Wishlist">
-                                                    <i class="ion-ios-heart-outline"></i>
-                                                </a>
-                                            </li>
-                                            <li class="add_links">
-                                                <a href="/product/detail/{{ product.id }}/" title="Add to Wishlist">
-                                                    <i class="ion-ios-eye"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="product_content">
+                                        <a href="/product/detail/{{ product.id }}">
+                                            <h3>{{ product.name }}</h3>
+                                        </a>
+                                        <div>
+                                            <span>{{ product.producer }}</span><br>
+                                        </div>
+                                        <div class="product_price">
+                                            <span class="current_price">{{ product.prices.0 }} so'm</span><br>
+                                        </div>
+                                        <div class="product_action">
+                                            <ul style="display: flex; justify-content: center; align-items: center;">
+                                                {% if user.is_authenticated %}
+                                                <li class="product_cart" style="margin-right: 10px;">
+                                                    <a onclick="addToCart({{ product.id }})">корзина</a>
+                                                </li>
+                                                {% else %}
+                                                <li class="product_cart" style="margin-right: 10px;">
+                                                    <a href="/auth/send-otp/">корзина</a>
+                                                </li>
+                                                {% endif %}
+                                                <li class="add_links">
+                                                    <a href="/toggle/{{ product.id }}/" title="Add to Wishlist">
+                                                        <i class="ion-ios-heart-outline"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="add_links">
+                                                    <a href="/product/detail/{{ product.id }}/" title="Add to Wishlist">
+                                                        <i class="ion-ios-eye"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         {% endfor %}
                     </div>
                 </div>
                 {% endfor %}
-
             </div>
         </div>
+        
 
     </div>
 </div>
@@ -577,6 +576,28 @@
                 // console.error("Xatolik yuz berdi:", error);
             });
     }
+
+
+    $(document).ready(function() {
+        $(".product_active").owlCarousel({
+            loop: true,          // Aylantirish
+            margin: 10,          // Kartalar orasidagi bo'shliq
+            nav: true,           // Navbutonlar qo'shish
+            dots: false,         // To'xtash nuqtalarini ko'rsatmaslik
+            responsive: {
+                0: {
+                    items: 1      // Mobil uchun 1 ta mahsulot
+                },
+                600: {
+                    items: 2      // O'rtacha ekranlar uchun 2 ta mahsulot
+                },
+                1000: {
+                    items: 4      // Kattaroq ekranlar uchun 4 ta mahsulot
+                }
+            }
+        });
+    });
+
 </script>
 
 <!-- reklama tugatilid -->
