@@ -95,8 +95,7 @@ def send_otp(request):
         form = PhoneNumberForm(request.POST)
         if form.is_valid():
             phone_number = form.cleaned_data['phone_number']
-            is_agreed = form.cleaned_data['is_agreed']
-            print("Telefon raqami:", phone_number)  
+            is_agreed = form.cleaned_data['is_agreed']  
 
             if not can_send_otp(phone_number):
                 form.add_error(None, "Tasdiqlash kodini qayta so‘rash uchun biroz kuting!")

@@ -7,24 +7,49 @@
   <title>Tasdiqlash</title>
   <link rel="stylesheet" href="{% static 'style.css' %}">
   <style>
-
-
     body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: #f5f5f5;
+        font-family: 'Arial', sans-serif;
     }
+    
+    .timer-container {
+        text-align: center;
+    }
+    
     .timer {
         font-size: 24px;
         font-weight: bold;
-        color: #f30f0f;
+        color: #ff4757;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+    }
+    
+    .timer-label {
+        font-size: 24px;
+        color: #333;
+    }
+    
+    /* Qo'shimcha animatsiya */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .timer {
+        animation: pulse 1s infinite;
     }
 </style>
 </head>
 <body>
   <div class="container">
     <div class="login form">
-      <header>Tasdiqlash Kodini Kiriting</header>
+      <header>Tasdiqlash Kodini Kiriting <div class="timer-container timer timer-label"  id="countdown">60</div></header>
       {% if messages %}
         <ul>
           {% for message in messages %}
@@ -33,11 +58,11 @@
         </ul>
       {% endif %}
         <h3>Telefon raqamga kod yuborildi: {{ phone_number }}</h3>
-        <div class="timer" id="countdown">60</div>
-        <form  method="post">
+        
+        <form  id="myInput" method="post">
           {% csrf_token %}
           {{ form.as_p }}
-          <input type="submit" class="button"   value="Tasdiqlash">
+          <input type="submit" class="button"    value="Tasdiqlash">
       </form>
       <br>
 
@@ -45,24 +70,97 @@
   </div>
 
   <script>
-      // 90 soniyadan boshlash
-      let timeLeft = 60;
-      const countdownElement = document.getElementById('countdown');
-      
-      // Har soniyada hisoblash
-      const timer = setInterval(() => {
-          timeLeft--;
-          countdownElement.textContent = timeLeft;
-          
-          // Agar vaqt tugasa
-          if (timeLeft <= 0) {
-              clearInterval(timer);
-              // Boshqa sahifaga o'tkazish (o'zgartiring)
-              window.location.href = "/"; // Boshqa sahifa manzili
-          }
-      }, 1000); // Har 1000ms (1 soniya)
+// 1. O'zgaruvchilar
+        // let timeLeft;
+        // let timer;
+        // const countdownElement = document.getElementById('countdown');
+        // const inputElement = document.getElementById('myInput');
 
- 
+        // // 2. LocalStorage'dan holatni yuklash
+        // const loadState = () => {
+        //     const savedTime = localStorage.getItem('timerTime');
+        //     const isInputHidden = localStorage.getItem('inputHidden') === 'true';
+            
+        //     timeLeft = savedTime ? parseInt(savedTime) : 60;
+        //     inputElement.style.display = isInputHidden ? 'none' : 'block';
+        // };
+
+        // // 3. Timerni boshlash
+        // const startTimer = () => {
+        //     clearInterval(timer); // Avvalgi intervalni tozalash
+            
+        //     timer = setInterval(() => {
+        //         timeLeft--;
+        //         countdownElement.textContent = timeLeft;
+        //         localStorage.setItem('timerTime', timeLeft);
+                
+        //         if (timeLeft <= 0) {
+        //             clearInterval(timer);
+        //             countdownElement.textContent = "Vaqt Tugadi!";
+        //             countdownElement.style.color = "#2ed573";
+        //             inputElement.style.display = 'none';
+        //             localStorage.setItem('inputHidden', 'true');
+        //         }
+        //     }, 1000);
+        // };
+
+        // // 4. Sahifa yuklanganda
+        // window.onload = () => {
+        //     loadState();
+        //     countdownElement.textContent = timeLeft;
+            
+        //     if (timeLeft > 0) {
+        //         startTimer(); // Vaqt qolgan bo'lsa davom et
+        //     } else {
+        //         countdownElement.textContent = "Vaqt Tugadi!";
+        //         countdownElement.style.color = "#2ed573";
+        //     }
+        // };
+
+        const COUNTDOWN_DURATION = 60; // 60 soniya
+        const RESET_TIME = 1 * 60 * 1000; // 3 daqiqa (ms)
+
+        // 2. O'zgaruvchilar
+        let timeLeft;
+        const countdownElement = document.getElementById('countdown');
+        const inputElement = document.getElementById('myInput');
+        // 3. Timer holatini tekshirish
+        const checkTimerState = () => {
+            const lastResetTime = sessionStorage.getItem('lastResetTime');
+            const currentTime = new Date().getTime();
+
+            // Agar 3 daqiqa o'tgan bo'lsa yoki birinchi marta kirilsa
+            if (!lastResetTime || (currentTime - lastResetTime > RESET_TIME)) {
+                sessionStorage.setItem('lastResetTime', currentTime);
+                timeLeft = COUNTDOWN_DURATION;
+            } else {
+                // Agar vaqt o'tmagan bo'lsa, oldingi holatda davom et
+                const savedTime = sessionStorage.getItem('timerTime');
+                timeLeft = savedTime ? parseInt(savedTime) : COUNTDOWN_DURATION;
+            }
+        };
+
+        // 4. Timerni boshlash
+        const startTimer = () => {
+            checkTimerState();
+            countdownElement.textContent = timeLeft;
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                countdownElement.textContent = timeLeft;
+                sessionStorage.setItem('timerTime', timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "Vaqt tugadi!";
+                    inputElement.style.display = 'none';
+                    COUNTDOWN_DURATION.style.display = "none"
+                }
+            }, 1000);
+        };
+
+        // Sahifa yuklanganda boshlash
+        window.onload = startTimer;
   </script>
 </body>
 </html>

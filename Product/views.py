@@ -420,12 +420,13 @@ def filial_index(request):
 
 @is_staff
 def filial_order(request):
-    client_id = request.GET.get('client-id')
+
     filial_id = request.GET.get('filial-id')
     type_choices = Order.TYPE_CHOICES
     filials = request.user.filials.all()
     orders_by_filial = {}
-
+    
+    
     if filial_id:
         selected_filial = get_object_or_404(Filial, id=filial_id)
         orders = Order.objects.filter(filial=selected_filial, is_active=True).order_by('-id').select_related(
@@ -435,6 +436,7 @@ def filial_order(request):
         paginator = Paginator(orders, 50    )
         page_obj = paginator.get_page(page_number)
         orders_by_filial[selected_filial] = page_obj
+
 
     elif request.user.is_superuser:
         selected_filials = Filial.objects.all()
@@ -446,14 +448,6 @@ def filial_order(request):
             paginator = Paginator(orders, 50)
             page_obj = paginator.get_page(page_number)
             orders_by_filial[filial] = page_obj
-    elif client_id:
-        orders = Order.objects.filter(user_id=client_id , is_active=True).order_by('-id').select_related(
-                'filial'
-            ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
-        page_number = request.GET.get(f'page_{filial.id}')
-        paginator = Paginator(orders, 50)
-        page_obj = paginator.get_page(page_number)
-        orders_by_filial[filial] = page_obj
     else:
         for filial in filials:
             orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id').select_related(
@@ -533,3 +527,13 @@ def filial_users(request):
     )
 )
     return render(request, 'filial/users.html', {'users':users})
+
+def filial_order_client(request):
+    client_id = request.GET.get('client-id')
+    # filial_id = request.GET.get('filial-id')
+    # orders_by_filial = {}
+    if client_id:
+        orders = Order.objects.filter(user_id=int(client_id) , is_active=True).order_by('-id').select_related(
+            'filial'
+        ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
+    return render(request, 'filial/user-order.html',{'orders':orders})

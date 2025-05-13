@@ -22,7 +22,7 @@
             {% for user in users %}
             <tr>
             <th scope="row">{{forloop.counter}}</th>
-            <td>{{user.first_name}}</td>
+            <td><a href="/filial/order-client/?client-id={{user.id}}">{{user.first_name}}</a></td>
             <td>{{user.phone_number}}</td>
             <td>{{user.last_login}}</td>
             <td> 
