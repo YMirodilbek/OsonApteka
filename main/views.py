@@ -106,7 +106,7 @@ def send_otp(request):
             cache.set(f"otp_{phone_number}", otp, timeout=300)           
             response = send_sms(phone_number, otp)
 
-
+            # print(otp)
             if "error" in response:
                 form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
                 return render(request, 'auth/phone.html', {'form': form})
@@ -137,7 +137,6 @@ def verify_otp(request):
             otp = form.cleaned_data['otp']
             stored_otp = cache.get(f"otp_{phone_number}")
             if stored_otp  == int(otp) :
-                print('nomer ten')
                 user, created = CustomUser.objects.get_or_create(
                     phone_number=phone_number,
                     defaults={'is_agree': is_agreed}
