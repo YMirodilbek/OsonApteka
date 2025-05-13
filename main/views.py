@@ -96,7 +96,7 @@ def send_otp(request):
         if form.is_valid():
             phone_number = form.cleaned_data['phone_number']
             is_agreed = form.cleaned_data['is_agreed']
-            # print("Telefon raqami:", phone_number)  
+            print("Telefon raqami:", phone_number)  
 
             if not can_send_otp(phone_number):
                 form.add_error(None, "Tasdiqlash kodini qayta so‘rash uchun biroz kuting!")
@@ -105,6 +105,7 @@ def send_otp(request):
             otp = random.randint(1000, 9999)
             cache.set(f"otp_{phone_number}", otp, timeout=300)           
             response = send_sms(phone_number, otp)
+
 
             if "error" in response:
                 form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
@@ -123,29 +124,31 @@ def send_otp(request):
 def verify_otp(request):
     """Foydalanuvchi OTP kodini tasdiqlaydi"""
     phone_number = request.session.get('phone_number')
+
+    
     is_agreed = request.session.get('is_agreed', False)
 
     if not phone_number:
-        return redirect('send_otp')
-
+        return redirect('/send_otp')
+    
     if request.method == "POST":
         form = OTPForm(request.POST)
         if form.is_valid():
             otp = form.cleaned_data['otp']
             stored_otp = cache.get(f"otp_{phone_number}")
-
-            if stored_otp and str(stored_otp) == otp:
+            if stored_otp  == int(otp) :
+                print('nomer ten')
                 user, created = CustomUser.objects.get_or_create(
                     phone_number=phone_number,
                     defaults={'is_agree': is_agreed}
                 )
-
                 if not created:
                     user.is_agree = True
                     user.save()
                     request.session['user'] = user.phone_number
-
                 login(request, user)
+                if user.first_name:
+                    return redirect('/')
                 return redirect('complete_registration')
 
             else:
@@ -166,6 +169,7 @@ def complete_registration(request):
         form = UserDetailsForm(instance=request.user)
 
     return render(request, 'auth/complete.html', {'form': form})
+
 
 def success(request):
     return render(request, 'index.html')
