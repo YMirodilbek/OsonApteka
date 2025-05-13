@@ -57,8 +57,8 @@
                               </select>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
-                            <button type="submit" class="btn btn-primary">Saqlash</button>
+                            <button type="button" class="btn btn-secondary p-2" data-bs-dismiss="modal">Yopish</button>
+                            <button type="submit" class="btn bg--color p-2">Saqlash</button>
                           </div>
                         </form>
                       </div>
@@ -117,11 +117,11 @@
 
           <!-- Paginatsiya -->
           <nav>
-            <ul class="pagination justify-content-end mt-3">
+            <ul class="pagination justify-content-end mt-3 ">
               {% for page_num in orders.paginator.page_range %}
-                <li class="page-item {% if orders.number == page_num %}active{% endif %}">
-                  <a class="page-link"
-                     href="?filial-id={{ filial.id }}&page_{{ filial.id }}={{ page_num }}">
+                <li class="page-item {% if orders.number == page_num %}active{% endif %} ">
+                  <a class="page-link bg--color "
+                     href="?filial-id={{ filial.id }}&page_{{ filial.id }}={{ page_num }} ">
                     {{ page_num }}
                   </a>
                 </li>

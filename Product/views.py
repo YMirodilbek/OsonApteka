@@ -415,7 +415,6 @@ def filial_index(request):
         'result': json.dumps(result), 
         'user_count_active': user_count_active,
     }
-    print(result)
     return render(request,'filial/index.html',context )
     
 

@@ -42,6 +42,14 @@
         }
       }
       .bg--color { background-color: #003366; color: white;}
+      .dropdown-item {
+    color: white !important;
+  }
+
+  .dropdown-item:hover {
+    background-color: #002244 !important; /* biroz toqroq fon */
+    color: white !important;
+  }
       </style>
       
 </head>
@@ -74,10 +82,10 @@
                 <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Ko'proq
                 </a>
-                <ul class="dropdown-menu bg-primary">
+                <ul class="dropdown-menu bg--color p-3">
                   {% if user.is_authenticated and user.is_superuser %}
                     <li>
-                      <a class="dropdown-item text-white" href="/filial/filial/">Filiallar</a>
+                      <a class="dropdown-item text-white " href="/filial/filial/">Filiallar</a>
                     </li>
                     <li>
                       <a class="dropdown-item text-white" href="/filial/registar/">Filial Qo'shish</a>
@@ -89,7 +97,7 @@
                       <a class="dropdown-item text-white dropdown-toggle" href="#" id="filialDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Filiallar Statistikasi
                       </a>
-                      <ul class="dropdown-menu bg-primary" aria-labelledby="filialDropdown">
+                      <ul class="dropdown-menu bg--color p-3" aria-labelledby="filialDropdown">
                         {% for i in filials %}
                           <li>
                             <a class="dropdown-item text-white" href="/filial/?filial-id={{ i.id }}">{{ i.name }}</a>
