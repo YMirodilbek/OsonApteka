@@ -4,7 +4,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('filial/',filial_index),
+    path('filial/',filial_index , name= 'filial_index'),
     path('filial/order/',filial_order),
     path('filial/login/',filial_login),
     path('filial/users/',filial_users),
