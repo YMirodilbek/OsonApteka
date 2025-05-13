@@ -1,22 +1,15 @@
-import random
-import requests
-
+from .forms import PhoneNumberForm, OTPForm, UserDetailsForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.core.cache import cache
-from django.contrib.auth.decorators import login_required
-
-from .models import CustomUser, PDFDocument
-from .forms import PhoneNumberForm, OTPForm, UserDetailsForm
-
-
-import random
+from django.utils import timezone
+from datetime import timedelta
+from .models import *
 import requests
-from django.core.cache import cache
-from django.shortcuts import render, redirect
-from .forms import PhoneNumberForm
-from .models import PDFDocument
+import random
 import re
+
 
 def clean_phone_number(phone_number):
     """Telefon raqamini 998XXXXXXXXX formatiga o'tkazish"""
@@ -30,49 +23,57 @@ def clean_phone_number(phone_number):
         return "998" + phone_number[1:] 
     else:
         return None 
+    
+
 def get_eskiz_token():
-    """Eskiz API tokenni cache-dan olish yoki yangilash"""
-    token = cache.get("eskiz_api_token")
-    if not token:
-        url = "https://notify.eskiz.uz/api/auth/login"
-        data = {"email": "willsellyou46@gmail.com", "password": "Zg43vfreQusvKPpJgAVGP0d60k1bZpbG1aDLQPSJ"}
-        response = requests.post(url, data=data)
 
-        if response.status_code == 200:
-            token = response.json().get("data", {}).get("token")
-            if token:
-                cache.set("eskiz_api_token", token, timeout=86400) 
-                return token
-            else:
-                print("Eskiz API tokenini olishda muammo!")
-                return None
-        else:
-            print("Eskiz API login xatosi:", response.json())
-            return None
-    return token
+    token  = EskizToken.objects.last()
+    if token and timezone.now() - token.created_at < timedelta(hours=24):
+        return token.token
+
+    url = "https://notify.eskiz.uz/api/auth/login"
+    payload = {
+        "email": "akmalfarmsanoat@mail.ru",  
+        "password": "eZ77mhFdKIGEH9ulaJEodkEbKhV79X20UZnODEbZ" 
+    }
+   
+    response = requests.post(url, data=payload)
+
+    if response.status_code == 200:
+        token = response.json().get("data", {}).get("token")
+        data = response.json()
+
+    if "data" in data and "token" in data["data"]:
+        new_token = data["data"]["token"]
+        EskizToken.objects.all().delete()  # eski tokenlarni o‘chirish
+        EskizToken.objects.create(token=new_token)  # yangisini saqlash
+        return new_token
+    else:
+        raise Exception(f"Eskiz token olishda xatolik: {data}")
 
 
-def send_sms(phone_number, otp):
+
+def send_sms(phone_number, code):
     """Eskiz orqali SMS yuborish"""
     token = get_eskiz_token()
     if not token:
         return {"error": "Eskiz API tokenini olishda xatolik!"}
 
     url = "https://notify.eskiz.uz/api/message/sms/send"
+    
     headers = {"Authorization": f"Bearer {token}"}
 
-   
     phone_number = phone_number.replace("+", "").replace(" ", "").strip()
     if not phone_number.startswith("998") or len(phone_number) != 12:
         return {"error": "Telefon raqami noto‘g‘ri formatda!"}
-
-    data = {
-        "mobile_phone": phone_number,
-        "message": f"Sizning tasdiqlash kodingiz: {otp}",
-        "from": "4546"
+    payload = {
+    "mobile_phone": phone_number, 
+    "message": f"АКМАЛ FARM Kirish kodingiz: {code}",
+    "from": "4546",  
+    "callback_url": "" 
     }
 
-    response = requests.post(url, headers=headers, data=data)
+    response = requests.post(url, headers=headers, data=payload)
     print("Eskizdan javob:", response.json())  
     return response.json()
 
@@ -83,7 +84,7 @@ def can_send_otp(phone_number):
     if last_sent:
         return False 
 
-    cache.set(f"otp_sent_time_{phone_number}", True, timeout=60)   
+    cache.set(f"otp_sent_time_{phone_number}", True, timeout=120)   
     return True
 
 
@@ -101,7 +102,6 @@ def send_otp(request):
                 return render(request, 'auth/phone.html', {'form': form})
 
             otp = random.randint(1000, 9999)
-            print(otp)
             cache.set(f"otp_{phone_number}", otp, timeout=300)           
             response = send_sms(phone_number, otp)
 

@@ -42,6 +42,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.phone_number
+    
+
 class PDFDocument(models.Model):
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='pdfs/')
@@ -50,3 +52,9 @@ class PDFDocument(models.Model):
         return self.title
 
 
+class EskizToken(models.Model):
+    token = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.token

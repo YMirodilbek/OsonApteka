@@ -1,8 +1,10 @@
+from django.views.decorators.csrf import csrf_exempt
 from .context_processors import cart_context
 from .lotin_krill import latin_to_cyrillic
 from django.http import JsonResponse
 from rapidfuzz import fuzz
 from .views import *
+
 
 @login_required(login_url='/auth/send-otp/')
 def add_to_cart(request, product_id):
@@ -58,6 +60,19 @@ def search_products(request):
 
     return JsonResponse(matched_items, safe=False)
 
+
+@csrf_exempt
+def update_order_status(request, pk):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            status = int(data.get('status'))
+            order = Order.objects.get(pk=pk)
+            order.status = status
+            order.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
 
 
 # from .tasks import *

@@ -47,10 +47,10 @@ class Order(models.Model):
         ('click', 'Click'),
     )
     TYPE_CHOICES = [
-        ('1', 'Rad etilgan'),
-        ('2', 'Kutilmoqda'),
-        ('3', 'Tasdiqlangan'),
-        ('4', 'Topshirildi '),
+        (1, 'Rad etilgan'),
+        (2, 'Kutilmoqda'),
+        (3, 'Tasdiqlangan'),
+        (4, 'Topshirildi '),
         
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
@@ -68,7 +68,7 @@ class Order(models.Model):
     is_completed = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=now)
-    status = models.CharField(max_length=255, choices=TYPE_CHOICES, default=2)
+    status = models.IntegerField( choices=TYPE_CHOICES, default=2)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
@@ -88,10 +88,10 @@ class Order(models.Model):
     @property
     def status_color(self):
         return {
-            '1': 'text-danger',
-            '2': 'text-warning',
-            '3': 'text-primary',
-            '4': 'text-success',
+            1: 'text-danger',
+            2: 'text-warning',
+            3: 'text-primary',
+            4: 'text-success',
         }.get(self.status, 'text-secondary')
     
     @property

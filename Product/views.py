@@ -2,19 +2,19 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from click_up.views import ClickWebhook
+from django.contrib.auth import  login ,logout
 from django.contrib import messages
 from django.shortcuts import render
 from .lotin_krill import compress
+from django.conf import settings
 from unidecode import unidecode
+from click_up import ClickUp
 from .decorator import *
 from .models import *
 from .forms import  *
 import redis
 import json
-from click_up.views import ClickWebhook
-from click_up import ClickUp
-from django.conf import settings
-
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -360,21 +360,90 @@ def filial_index(request):
 
 @is_staff
 def filial_order(request):
-    orders =  Order.objects.all()
-    
-    
+    filial_id = request.GET.get('filial-id')
+    type_choices = Order.TYPE_CHOICES
+    filials = request.user.filials.all()
+    orders_by_filial = {}
+
+    if filial_id:
+        selected_filial = get_object_or_404(Filial, id=filial_id)
+        orders = Order.objects.filter(filial=selected_filial, is_active=True).order_by('-id')
+        page_number = request.GET.get(f'page_{selected_filial.id}')
+        paginator = Paginator(orders, 2)
+        page_obj = paginator.get_page(page_number)
+        orders_by_filial[selected_filial] = page_obj
+
+    elif request.user.is_superuser:
+        selected_filials = Filial.objects.all()
+        for filial in selected_filials:
+            orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id')
+            page_number = request.GET.get(f'page_{filial.id}')
+            paginator = Paginator(orders, 2)
+            page_obj = paginator.get_page(page_number)
+            orders_by_filial[filial] = page_obj
+
+    else:
+        for filial in filials:
+            orders = Order.objects.filter(filial=filial, is_active=True).order_by('-id')
+            page_number = request.GET.get(f'page_{filial.id}')
+            paginator = Paginator(orders, 2)
+            page_obj = paginator.get_page(page_number)
+            orders_by_filial[filial] = page_obj
+
     context = {
-        'orders': orders
+        'orders_by_filial': orders_by_filial,
+        'type_choices': type_choices
     }
-  
-    return render(request,'filial/order.html', context )
+    return render(request, 'filial/order.html', context)
+
 
 
 @is_staff
 def filial_filial(request):
-    return render(request,'filial/filial.html' )
+    filial = Filial.objects.all()
+    return render(request,'filial/filial.html',  {"filial":filial})
 
 
 @is_staff
 def filial_regisret(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        user =  CustomUser.objects.create(
+            phone_number=username,
+            password=password,
+            is_staff = True
+        )
+        filial  = Filial.objects.create(
+                                        name=name,
+                                        address=address
+                                        )
+        filial.users.set([user])
     return render(request,'filial/filial-register.html' )
+
+
+def filial_logout(request):
+    logout(request)
+    return redirect('/filial/login')
+
+
+def filial_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        try:
+            user = CustomUser.objects.get(phone_number=username)
+
+            if user.check_password(password):
+                login(request, user)
+                return redirect('/filial/')  
+            else:
+                messages.error(request, "Parol noto‘g‘ri.")
+        except CustomUser.DoesNotExist:
+            messages.error(request, "Foydalanuvchi topilmadi.")
+    
+    return render(request, 'filial/login.html')
+
+

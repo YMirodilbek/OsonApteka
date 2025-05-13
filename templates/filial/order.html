@@ -9,50 +9,144 @@
   <div class="card tbl-card">
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-hover table-borderless mb-0">
-          <thead>
-            <tr>
-              <th>ORDER ID</th>
-              <th>USER</th>
-              <th>TOTAL ORDER</th>
-              <th>STATUS</th>
-              <th class="text-end">PAYMANT</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for i in orders %}
-            <tr>
-              <td><a href="#" class="text-muted">{{i.id}}</a></td>
-              <td>{{i.user}}</td>
-              <td>{{i.total_price}}</td>
-              <td><span class="d-flex align-items-center gap-2"> <i class="fas fa-circle  f-10 m-r-5 {{ i.status_color }}"></i>
-                    {{ i.get_status_display }}</span></span>
-              </td>
-              <td class="text-end">{{i.get_payment_method_display}}</td>
-            </tr>
-            {% endfor %}
+       
+           
 
-          </tbody>
-        </table>
+        {% for filial, orders in orders_by_filial.items %}
+        {% if orders %}
+          <h5 class="mt-4">{{ filial.name }}</h5>
+          <table class="table table-hover table-borderless mb-0">
+            <thead>
+              <tr>
+                <th>ORDER ID</th>
+                <th>USER</th>
+                <th>TOTAL ORDER</th>
+                <th>STATUS</th>
+                <th class="text-end">PAYMENT</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in orders %}
+              <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.user }}</td>
+                <td>{{ i.total_price }}</td>
+                <td>
+                  <span class="d-flex align-items-center gap-2" id="status-display-{{ i.id }}">
+                    <i class="fas fa-circle f-10 m-r-5 {{ i.status_color }}"></i>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}">{{ i.get_status_display }}</a>
+                  </span>
+      
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal{{ i.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <form class="update-status-form" data-order-id="{{ i.id }}">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Status</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body">
+                            <select name="order_status" class="form-control">
+                             
+                                {% for value, label in type_choices %}
+                                  <option value="{{ value }}" {% if i.status == value %}selected{% endif %}>
+                                    {% if value == 1 %}🔴{% elif value == 2 %}🟡{% elif value == 3 %}🟢{% elif value == 4 %}🔵{% endif %} {{ label }}
+                                  </option>
+                                {% endfor %}
+                              </select>
+                           
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                            <button type="submit" class="btn btn-primary">Saqlash</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-end">{{ i.get_payment_method_display }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      
+          <!-- Paginatsiya -->
+          <nav>
+            <ul class="pagination justify-content-end mt-3">
+              {% for page_num in orders.paginator.page_range %}
+                <li class="page-item {% if orders.number == page_num %}active{% endif %}">
+                  <a class="page-link"
+                     href="?filial-id={{ filial.id }}&page_{{ filial.id }}={{ page_num }}">
+                    {{ page_num }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% endfor %}
+      
         <br>
         <br>
 
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end">
-            <li class="page-item disabled">
-              <a class="page-link">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link  active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
+
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.querySelectorAll('.update-status-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const orderId = form.getAttribute('data-order-id');
+      const select = form.querySelector('select[name="order_status"]');
+      const status = select.value;
+
+      fetch(`/filial-order-status/${orderId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ status: status })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const display = document.getElementById(`status-display-${orderId}`);
+          let icon = '';
+          let color = '';
+
+          if (status == "1") {
+            icon = '🔴'; color = 'text-danger';
+          } else if (status == "2") {
+            icon = '🟡'; color = 'text-warning';
+          } else if (status == "3") {
+            icon = '🟢'; color = 'text-success';
+          } else if (status == "4") {
+            icon = '🔵'; color = 'text-primary';
+          }
+
+          const statusText = select.options[select.selectedIndex].text;
+
+          display.innerHTML = ` <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal${orderId}">${statusText}</a>`;
+
+          // modalni yopish
+          const modalEl = document.getElementById(`exampleModal${orderId}`);
+          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.hide();
+
+        } else {
+          alert('Xatolik: ' + (data.error || 'Nomaʼlum'));
+        }
+      });
+    });
+  });
+</script>
+
+
 
 {% endblock %}

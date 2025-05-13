@@ -33,6 +33,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(PDFDocument)
+admin.site.register(EskizToken)
 
 #Product
 

@@ -85,10 +85,9 @@
 
 import requests
 
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDkwODkzODYsImlhdCI6MTc0NjQ5NzM4Niwicm9sZSI6InRlc3QiLCJzaWduIjoiZmI1NDQ3N2MwODYyZTM0YTc2Mjk2Yjc0NjcwNGNlNDFiMjJjYjg0ZDExNmIwNWY4ZjE5OTA2YmM4M2NjODc0YSIsInN1YiI6IjEwODE0In0.lDKkNZlcVCuMY9Yh7OmRyrC_bGHDlQJXCwFvRBJfh4w"
+token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDkzNDEzMjYsImlhdCI6MTc0Njc0OTMyNiwicm9sZSI6InVzZXIiLCJzaWduIjoiYzk1M2JmZjA0NDA1MGNmNjY1OTVjNDgwNDQzYTMyYzFkZmMyMzAzOTBjNGExN2QwODk3YzRjNGJjNTY4YjM4OCIsInN1YiI6IjY5OTQifQ.Htuf28evPvuHKRIC-M8Z44rwfEsFN4knGz0H_9qeq_4"
 
 url = "https://notify.eskiz.uz/api/message/sms/send"
-
 payload = {
     "mobile_phone": "998951180970",  # raqamni to‘liq formatda yozing
     "message": "Bu Eskiz dan test",

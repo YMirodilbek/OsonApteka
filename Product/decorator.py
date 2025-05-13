@@ -6,5 +6,5 @@ def is_staff(fun):
     def wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_staff:
             return fun(request, *args, **kwargs)
-        return redirect( '/')
+        return redirect( '/filial/login/')
     return wrapper
