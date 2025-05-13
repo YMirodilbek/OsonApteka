@@ -1,0 +1,49 @@
+{% extends 'base_filial.html' %}
+
+{% block title %}Foydalamuchilar Sahifasi {% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<div class="col-md-12 col-xl-10 mx-auto">
+    <table class="table table-bordered border-primary">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Active</th>
+            <th scope="col">Order Last</th>
+            <th scope="col">Registrations</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{user.first_name}}</td>
+            <td>{{user.phone_number}}</td>
+            <td>{{user.last_login}}</td>
+            <td> 
+                {% if user.prefetched_orders %}
+                {% with user.prefetched_orders.0 as last_order %}
+                 
+                  {{ last_order.created_at|date:"d-m-Y H:i" }}
+                {% endwith %}
+              {% else %}
+                Yo‘q
+              {% endif %}
+            </td>
+            <td>{{user.date_joined}}</td>
+            </tr>
+            {% endfor %}
+          
+        </tbody>
+    </table>
+
+</div>
+
+
+
+{% endblock content %}

@@ -432,7 +432,7 @@ def filial_order(request):
                 'filial'
             ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
         page_number = request.GET.get(f'page_{selected_filial.id}')
-        paginator = Paginator(orders, 2)
+        paginator = Paginator(orders, 50    )
         page_obj = paginator.get_page(page_number)
         orders_by_filial[selected_filial] = page_obj
 
@@ -443,7 +443,7 @@ def filial_order(request):
                 'filial'
             ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
             page_number = request.GET.get(f'page_{filial.id}')
-            paginator = Paginator(orders, 2)
+            paginator = Paginator(orders, 50)
             page_obj = paginator.get_page(page_number)
             orders_by_filial[filial] = page_obj
 
@@ -453,7 +453,7 @@ def filial_order(request):
                 'filial'
             ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
             page_number = request.GET.get(f'page_{filial.id}')
-            paginator = Paginator(orders, 2)
+            paginator = Paginator(orders, 50)
             page_obj = paginator.get_page(page_number)
             orders_by_filial[filial] = page_obj
 
@@ -516,3 +516,13 @@ def filial_login(request):
     return render(request, 'filial/login.html')
 
 
+@is_staff
+def filial_users(request):
+    users = CustomUser.objects.filter(is_staff = False).order_by('-id').prefetch_related(
+    Prefetch(
+        'orders',
+        queryset=Order.objects.order_by('-created_at'), 
+        to_attr='prefetched_orders'
+    )
+)
+    return render(request, 'filial/users.html', {'users':users})

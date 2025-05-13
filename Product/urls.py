@@ -4,16 +4,17 @@ from .views import *
 
 
 urlpatterns = [
-    path('',Index, name='index'),
-    path('filial/',filial_index, name='filial_index'),
+    path('filial/',filial_index),
     path('filial/order/',filial_order),
     path('filial/login/',filial_login),
+    path('filial/users/',filial_users),
     path('filial/logout/',filial_logout),
     path('filial/filial/',filial_filial),
     path('filial/registar/',filial_regisret ),
     path('filial/product-create/',product_create ),
     path("filial-order-status/<int:pk>/",update_order_status, name="update_order_status"),
 
+    path('',Index, name='index'),
     path('contact/',Contact),
     path('myaccount/',Myaccount),
     path('cart/',cart_view, name="cart"),
