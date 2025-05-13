@@ -1,6 +1,394 @@
 {% extends 'base.html'%}
 {% load static %}
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/index.css' %}">
+
+<!-- Proper loading of jQuery and Owl Carousel libraries -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<!-- Добавляем скрытый CSRF токен -->
+{% csrf_token %}
+
+<style>
+/* Fix for sliders to ensure proper display even if JavaScript fails */
+.owl-carousel {
+    display: block;
+    width: 100%;
+}
+
+.owl-carousel .owl-stage-outer {
+    overflow: hidden;
+    position: relative;
+}
+
+.owl-carousel .owl-stage {
+    display: flex;
+    position: relative;
+}
+
+.owl-carousel .owl-item {
+    float: left;
+    min-height: 1px;
+    position: relative;
+}
+
+/* Container styling for product, gallery, and blog sliders */
+.product_active,
+.product_gallery_active,
+.blog_active {
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Card styling */
+.single_product {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    transition: transform 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    background: #fff;
+}
+
+.single_product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product_content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 5px;
+}
+
+.product_content h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 16px;
+    height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.product_content span {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.product_price {
+    margin-top: auto;
+    padding-top: 5px;
+}
+
+.current_price {
+    display: block;
+    color: #2971f5;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Updated Styles to Match Example Image */
+.product_thumb {
+    width: 100% !important;
+    padding: 5px !important;
+    height: 220px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.product_thumb img {
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 200px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    object-fit: contain !important;
+}
+
+.product_thumb a {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.item {
+    height: 100%;
+    padding-bottom: 10px;
+}
+
+.product_action {
+    margin-top: 10px;
+}
+
+.product_action ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Card button styling */
+.product_action ul li.add_links {
+    margin: 0 3px;
+}
+
+.product_action ul li.add_links a {
+    background: #f8f8f8;
+    color: #555;
+    border: 1px solid #eee;
+    width: 35px;
+    height: 35px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product_action ul li.add_links a i {
+    font-size: 16px !important;
+    color: #777 !important;
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+.product_action ul li.add_links a:hover i {
+    color: #2196F3 !important;
+}
+
+.product_action ul li.product_cart {
+    flex-grow: 1;
+    margin-right: 5px;
+}
+
+.product_action ul li.product_cart a {
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 10px;
+    background: #2971f5;
+    color: white;
+    border-radius: 4px;
+    height: 35px;
+    width: 100%;
+}
+
+.product_action ul li.product_cart a:hover {
+    background: #1c60d9;
+}
+
+.product_content a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Desktop screens (1080p and above) */
+@media (min-width: 1080px) {
+    .single_product {
+        max-width: 250px !important; /* Force exact width of 250px with !important */
+        width: 250px !important; /* Add fixed width as well */
+    }
+    
+    .product_thumb {
+        min-height: 180px;
+        height: 180px !important;
+    }
+    
+    .owl-item {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .item {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* Very large screens */
+@media (min-width: 1400px) {
+    .single_product {
+        max-width: 250px !important; /* Keep at 250px for larger screens with !important */
+        width: 250px !important; /* Add fixed width as well */
+    }
+}
+
+/* Medium screens */
+@media (min-width: 768px) and (max-width: 1079px) {
+    .single_product {
+        max-width: 220px !important;
+        width: 220px !important;
+    }
+    
+    .product_thumb {
+        height: 160px !important;
+    }
+    
+    .product_content h3 {
+        font-size: 14px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+    .single_product {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    
+    .product_thumb {
+        height: 180px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .product_action ul {
+        flex-wrap: nowrap;
+        gap: 5px;
+    }
+    
+    .product_action ul li.product_cart {
+        width: 60%;
+        margin-right: 0;
+    }
+    
+    .product_action ul li.add_links {
+        width: 40px;
+        margin: 0;
+    }
+    
+    .product_action ul li.add_links a {
+        width: 100%;
+        min-width: 35px;
+    }
+    
+    /* Make icons always visible on mobile */
+    .product_action {
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: static !important;
+        transform: none !important;
+    }
+}
+
+/* Fix for mobile right space issue */
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+    
+    .container {
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .slider, .slides {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .slides img {
+        max-width: 100%;
+    }
+    
+    .single_product_wrapper {
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    /* Fix all images from causing overflow */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Fix for modal text content */
+    .text-modal-content {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Blog area fixes */
+    .blog_area {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+}
+
+/* Modal window styles */
+.text-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.text-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
 <!-- slide start -->
 <div class="slider">
     <div class="slides">
@@ -11,10 +399,6 @@
     </div>
     <button class="prev1" onclick="prevSlide1()">&#10094;</button>
     <button class="next1" onclick="nextSlide1()">&#10095;</button>
-    <script>
-
-
-    </script>
 </div><br>
 
 <!-- slid end -->
@@ -43,60 +427,53 @@
                 <div class="row">
                     <div class="product_active owl-carousel">
                         {% for product in group.products %}
-                        <div class="col-lg-3" style="height: auto;">
+                        <div class="item">
                             <div class="single_product">
                                 <div class="product_thumb">
-                                    <a href="/product/detail/{{ product.id }}" style="margin: 0px !important;">
-                                        <img src="{{ product.image1 }}" alt="" style="margin: 0px !important;">
+                                    <a href="/product/detail/{{ product.id }}">
+                                        <img src="{{ product.image1 }}" alt="{{ product.name }}">
                                     </a>
                                 </div>
                                 <div class="product_content">
                                     <a href="/product/detail/{{ product.id }}">
                                         <h3>{{ product.name }}</h3>
                                     </a>
-                                    <div>
-                                        <br>
-                                        <span>{{ product.producer }}</span><br>
-                                    </div>
+                                    <span>{{ product.producer }}</span>
                                     <div class="product_price">
-                                        <br>
-                                        <span class="current_price">{{ product.prices.0 }} so'm</span><br>
+                                        <span class="current_price">{{ product.prices.0 }} so'm</span>
                                     </div>
-                                    <div class="product_action">
-                                        <ul style="display: flex; justify-content: center; align-items: center;">
-                                            {% if user.is_authenticated %}
-                                            <li class="product_cart" style="margin-right: 10px;">
-                                                <a onclick="addToCart({{ product.id }})">корзина</a>
-                                            </li>
-                                            {% else %}
-                                            <li class="product_cart" style="margin-right: 10px;">
-                                                <a href="/auth/send-otp/">корзина</a>
-                                            </li>
-                                            {% endif %}
-                                            <li class="add_links">
-                                                <a href="/toggle/{{ product.id }}/" title="Add to Wishlist">
-                                                    <i class="ion-ios-heart-outline"></i>
-                                                </a>
-                                            </li>
-                                            <li class="add_links">
-                                                <a href="/product/detail/{{ product.id }}/" title="Add to Wishlist">
-                                                    <i class="ion-ios-eye"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                </div>
+                                <div class="product_action">
+                                    <ul>
+                                        {% if user.is_authenticated %}
+                                        <li class="product_cart">
+                                            <a href="#" data-product-id="{{ product.id }}" onclick="addToCartClick(event, '{{ product.id }}')" class="add-to-cart-btn">корзина</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="product_cart">
+                                            <a href="/auth/send-otp/" class="add-to-cart-btn">корзина</a>
+                                        </li>
+                                        {% endif %}
+                                        <li class="add_links">
+                                            <a href="/toggle/{{ product.id }}/" title="В избранное">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                        </li>
+                                        <li class="add_links">
+                                            <a href="/product/detail/{{ product.id }}/" title="Подробнее">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-
                         {% endfor %}
                     </div>
                 </div>
                 {% endfor %}
-
             </div>
         </div>
-
     </div>
 </div>
 <!-- 1-tugadi -->
@@ -107,39 +484,38 @@
     <div class="container">
         <div class="row">
             <h4 style="color: black;">Популярные бренды</h4>
-            <div class="product_gallery_active owl-carousel"
-                style="margin: 0px !important; flex: 0 0 calc(50% - 12px); gap: 0px !important;">
-                <div class="col-lg-3">
+            <div class="product_gallery_active owl-carousel">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Abbott.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Bayer.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Dr.reddys.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Farmak.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/KRKA.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-3" style="width: 50px !important;">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/Sandoz.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="item">
                     <div class="single_product_gallery">
                         <img src="../static/assets/rasm/SANOFI.png" alt="">
                     </div>
@@ -164,74 +540,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="blog_active owl-carousel" style=" flex: 0 0 calc(80% - 16px); padding: 0px !important;">
-
-                <div class="col-lg-4">
+            <div class="blog_active owl-carousel">
+                {% for blog in blogs %}
+                <div class="item">
                     <div class="single_blog">
                         <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal1()"><img src="../static/assets/img3/01.jpg"
+                            <a class="open-info-btn" onclick="showTextModal1()"><img src="{{ blog.image.url }}"
                                     alt="Kutib turing"></a>
                         </div>
-
                         <div class="blog_content"><br>
-                            <h5>Что делать при аллергии?</h5>
-                            <a href="#">24.03.2025</a>
-                            <p>Причины, симптомы и эффективные способы лечения.
+                            <h5>{{ blog.title }}</h5>
+                            <a href="#">{{ blog.created_at|date:"d.m.Y" }}</a>
+                            <p>{{ blog.text|truncatechars:60 }}
                             </p>
                         </div>
-                        <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-
-
+                        <a href="{% url 'blog_details' blog.pk %}" class="tugma22"><button class="button22">Подробно</button></a>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal2()"><img
-                                    src="../static/assets/img3/02.jpg"></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h6>Как укрепить иммунитет: простые шаги к здоровью</h6>
-                            <a>25.022025</a>
-                            <p> Иммунная система – это главный защитник организма от вирусов и инфекций.
-                            </p>
-                            <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal3()"><img src="../static/assets/img3/03.jpg"
-                                    alt=""></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h5>Как быстро восстановить организм после болезни.</h5>
-                            <a href="#">23.02.2025</a>
-                            <p>После болезни организм ослаблен и нуждается в правильном восстановлении.
-                            </p>
-                            <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a class="open-info-btn" onclick="showTextModal4()"><img src="../static/assets/img3/04.jpg"
-                                    alt=""></a>
-                        </div>
-                        <div class="blog_content"><br>
-                            <h5>Идеальная кожа: секреты ухода и выбор средств</h5>
-                            <a href="#">22.02.2025</a>
-                            <p>Здоровая, сияющая кожа — мечта каждого. Но ежедневные стрессы.
-                            </p>
-                            <a href="/auth/blog/" class="tugma22"><button class="button22">Подробно</button></a>
-
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -240,205 +566,6 @@
 <!-- info start -->
 
 
-
-<div id="textModal1" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal1()">&times;</span>
-        <p>Аллергия – это реакция иммунной системы на определённые вещества, которые организм воспринимает как угрозу.
-            Она может проявляться в любое время года и доставлять немало дискомфорта. Разберёмся, как избежать
-            неприятных симптомов и защитить себя.
-
-            Основные причины аллергии
-
-            Аллергены могут быть разными:
-
-            ▫️Пыльца растений – вызывает сезонный аллергический ринит (сенную лихорадку).
-
-            ▫️Пыль и плесень – содержат микроскопические клещи и грибки, раздражающие дыхательные пути.
-
-            ▫️Шерсть животных – особые белки в коже и слюне питомцев могут провоцировать реакцию.
-
-            ▫️Продукты питания – орехи, молочные продукты, морепродукты часто вызывают аллергию.
-
-            ▫️Лекарства – некоторые препараты, особенно антибиотики, могут вызывать аллергическую реакцию.
-
-            Симптомы аллергии
-
-            Проявления аллергии могут быть разными:
-
-            ▫️Чихание, заложенность носа, насморк.
-
-            ▫️Слезотечение, покраснение глаз.
-
-            ▫️Зуд, высыпания на коже.
-
-            ▫️Одышка, кашель.
-
-            ▫️В редких случаях – анафилаксия (тяжелая реакция, требующая неотложной помощи).
-
-            Как защитить себя от аллергии?
-
-            ▫️Избегайте контакта с аллергенами: регулярно делайте влажную уборку, используйте очистители воздуха,
-            исключите опасные продукты.
-
-            ▫️Принимайте антигистаминные препараты: они помогают снизить симптомы и улучшить самочувствие.
-
-            ▫️Используйте гипоаллергенную косметику: она снижает риск раздражения кожи.
-
-            ▫️Обратитесь к врачу: специалист поможет выявить причины аллергии и назначит правильное лечение.
-
-            Будьте готовы к сезону аллергии!
-
-            В нашей интернет-аптеке вы найдете антигистаминные препараты, назальные спреи, глазные капли и другие
-            средства для борьбы с аллергией. Не ждите ухудшения самочувствия – позаботьтесь о своем здоровье заранее!
-
-            Закажите нужные лекарства прямо сейчас и забудьте о дискомфорте!</p>
-    </div>
-</div>
-<div id="textModal2" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal2()">&times;</span>
-        <p>Основные факторы, влияющие на иммунитет
-
-            Состояние иммунной системы зависит от множества факторов, среди которых:
-
-            ▫️Питание – нехватка витаминов и микроэлементов снижает защитные функции организма.
-
-            ▫️Физическая активность – регулярные упражнения помогают улучшить кровообращение и ускорить обмен веществ.
-
-            ▫️Сон и отдых – недостаток сна негативно влияет на выработку иммунных клеток.
-
-            ▫️Закаливание - контрастный душ или обливания холодной водой помогают адаптировать организм к перепадам
-            температуры
-
-            ▫️Стресс – повышенный уровень кортизола ослабляет защитные силы организма.
-
-            Как повысить иммунитет?
-
-            ▫️Чтобы укрепить иммунную систему, следуйте простым, но эффективным рекомендациям:
-
-            ▫️Употребляйте больше витаминов – особенно важны витамин C (цитрусовые, киви, болгарский перец), витамин D
-            (рыба, яйца) и цинк (орехи, бобовые).
-
-            ▫️Пейте больше воды – достаточное количество жидкости помогает организму выводить токсины.
-
-            ▫️Занимайтесь спортом – прогулки на свежем воздухе, йога или пробежки укрепляют организм.
-
-            ▫️Высыпайтесь – 7–8 часов полноценного сна поддерживают нормальное функционирование иммунной системы.
-
-            ▫️Избегайте стрессов – найдите время для отдыха, медитации или занятий любимыми хобби.
-
-            Где найти всё необходимое для поддержания иммунитета?
-
-            В нашей интернет-аптеке вы найдете широкий выбор витаминов, минералов и иммуномодуляторов. Закажите нужные
-            средства прямо сейчас и позаботьтесь о своем здоровье заранее!
-
-            Переходите в каталог и выберите лучшие продукты для поддержания иммунитета!</p>
-    </div>
-</div>
-<div id="textModal3" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal3()">&times;</span>
-        <p>Что происходит с организмом после болезни?
-
-            Ослабленный иммунитет
-            Потеря сил и быстрая утомляемость
-            Дисбаланс микрофлоры кишечника (особенно после приёма антибиотиков)
-            Дефицит витаминов и минералов
-            Возможные остаточные симптомы: слабость, головокружение, сухость кожи
-
-            Как восстановить организм?
-
-            ▫️Сбалансированное питание
-
-            Включите в рацион белки, полезные жиры и медленные углеводы.
-
-            Употребляйте больше овощей, зелени, орехов, кисломолочных продуктов.
-
-            Пейте больше жидкости: воду, травяные чаи, морсы для выведения токсинов.
-
-            ▫️Витамины и микроэлементы
-
-            Витамин C — ускоряет восстановление и поддерживает иммунитет.
-
-            Витамин D — помогает в борьбе с усталостью и укрепляет организм.
-
-            Цинк и магний — улучшают самочувствие и поддерживают работу нервной системы.
-
-            Пробиотики — восстанавливают микрофлору кишечника после приёма лекарств.
-
-            ▫️Физическая активность и свежий воздух
-
-            Лёгкие прогулки на свежем воздухе ускоряют обмен веществ и насыщают кровь кислородом.
-
-            Йога и растяжка помогают снять напряжение и восстановить тонус мышц.
-
-            ▫️Режим сна и отдыха
-
-            Высыпайтесь: 7–9 часов сна помогут организму быстрее восстановиться.
-
-            Избегайте перегрузок и стресса, восстанавливайтесь постепенно.
-
-            ▫️Дополнительная поддержка организма
-
-            Чаи с ромашкой, имбирём и мёдом помогают укрепить иммунитет.
-
-            Лёгкие дыхательные упражнения способствуют улучшению работы лёгких.
-
-            Где найти всё необходимое для восстановления?
-
-            В нашей интернет-аптеке вы найдёте витаминные комплексы, пробиотики и натуральные средства для поддержки
-            организма. Закажите необходимое и восстанавливайтесь быстрее!
-
-            Позаботьтесь о здоровье — оформите заказ прямо сейчас!</p>
-    </div>
-</div>
-<div id="textModal4" class="text-modal">
-    <div class="text-modal-content">
-        <span class="close-btn" onclick="hideTextModal4()">&times;</span>
-        <p>Основные этапы ухода за кожей
-
-            Очищение — удаляет загрязнения и излишки себума, подготавливает кожу к последующему уходу. Выбирайте мягкие
-            гели или пенки, соответствующие вашему типу кожи.
-
-            Тонизирование — восстанавливает pH-баланс, сужает поры и подготавливает кожу к увлажнению.
-
-            Увлажнение — ключевой этап, который поддерживает защитный барьер кожи и предотвращает её пересушивание.
-
-            Дополнительный уход — маски, сыворотки и скрабы помогают решить специфические проблемы: пигментацию,
-            воспаления, сухость или первые морщины.
-
-            Защита — солнцезащитные кремы предотвращают фотостарение и защищают кожу от вредного воздействия УФ-лучей.
-
-            Как выбрать косметику для ухода?
-
-            Выбор средств зависит от типа кожи:
-
-            Сухая кожа — требует питательных кремов и мягких очищающих средств.
-
-            Жирная кожа — нуждается в лёгких текстурах и средствах с матирующим эффектом.
-
-            Чувствительная кожа — предпочитает гипоаллергенную косметику без агрессивных компонентов.
-
-            Комбинированная кожа — требует баланса увлажнения и контроля себума.
-
-            Полезные советы по уходу
-
-            ✔️ Используйте средства с натуральными экстрактами и витаминами.
-            ✔️ Не забывайте пить достаточно воды для увлажнения кожи изнутри.
-            ✔️ Регулярно меняйте наволочки и избегайте прикосновений к лицу грязными руками.
-            ✔️ Не злоупотребляйте жёсткими скрабами, чтобы не травмировать кожу.
-            ✔️ Подбирайте косметику с учётом сезона: зимой — питательные кремы, летом — лёгкие увлажняющие гели.
-
-            Найдите идеальные средства в нашей интернет-аптеке
-
-            В нашем каталоге вы найдёте всё для комплексного ухода за кожей: от деликатных очищающих пенок до мощных
-            антивозрастных сывороток. Выберите подходящие средства прямо сейчас и наслаждайтесь здоровой, ухоженной
-            кожей каждый день!
-
-            Закажите эффективный уход для кожи прямо сейчас!</p>
-    </div>
-</div>
 <!-- haqimizda tugatildi -->
 <!-- matinlar boshlandi -->
 
@@ -501,21 +628,357 @@
 </div>
 <br><br><br><br>
 <script>
-    function showTextModal5() {
-        document.getElementById("textModal5").style.display = "block";
-    }
+// Debugging flag to log carousel initialization steps
+const DEBUG = true;
 
-    function hideTextModal5() {
-        document.getElementById("textModal5").style.display = "none";
+function log(message) {
+    if (DEBUG) {
+        console.log(`[Slider Debug] ${message}`);
     }
-    function showTextModal6() {
-        document.getElementById("textModal6").style.display = "block";
-    }
+}
 
-    function hideTextModal6() {
-        document.getElementById("textModal6").style.display = "none";
+// Main slider functionality (top slider)
+log('Script initializing...');
+let slideIndex = 0;
+const slides = document.querySelectorAll('.slides img');
+
+function showSlides() {
+    if (slides.length === 0) {
+        log('No slides found!');
+        return;
     }
+    
+    // Hide all slides
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    
+    // Adjust index if out of bounds
+    if (slideIndex >= slides.length) {
+        slideIndex = 0;
+    }
+    if (slideIndex < 0) {
+        slideIndex = slides.length - 1;
+    }
+    
+    // Show current slide
+    slides[slideIndex].style.display = "block";
+    log(`Showing slide ${slideIndex + 1} of ${slides.length}`);
+}
+
+function nextSlide1() {
+    slideIndex++;
+    showSlides();
+}
+
+function prevSlide1() {
+    slideIndex--;
+    showSlides();
+}
+
+// Initialize all sliders and cart functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    log('DOM Content Loaded');
+    
+    // Initialize main slider
+    showSlides();
+    
+    // Auto-advance main slider
+    setInterval(nextSlide1, 5000);
+    
+    // Check if jQuery is available
+    if (typeof jQuery === 'undefined') {
+        log('jQuery not loaded! Loading dynamically...');
+        
+        // Dynamically load jQuery
+        const script = document.createElement('script');
+        script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+        script.onload = function() {
+            log('jQuery loaded dynamically');
+            
+            // After jQuery loads, load Owl Carousel
+            const owlScript = document.createElement('script');
+            owlScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js';
+            owlScript.onload = function() {
+                log('Owl Carousel loaded dynamically');
+                
+                // Initialize carousels after a short delay
+                setTimeout(function() {
+                    initCarousels(jQuery);
+                }, 500);
+            };
+            document.head.appendChild(owlScript);
+        };
+        document.head.appendChild(script);
+    } else {
+        log('jQuery already loaded');
+        
+        // Initialize when jQuery is ready
+        jQuery(function($) {
+            if (typeof $.fn.owlCarousel === 'undefined') {
+                log('Owl Carousel not loaded! Loading dynamically...');
+                
+                // Dynamically load Owl Carousel if not present
+                $.getScript('https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', function() {
+                    log('Owl Carousel loaded via $.getScript');
+                    initCarousels($);
+                });
+            } else {
+                log('Owl Carousel already loaded');
+                initCarousels($);
+            }
+        });
+    }
+});
+
+// Function to initialize all Owl Carousel instances
+function initCarousels($) {
+    log('Initializing Owl Carousels');
+    
+    // First destroy any existing carousels
+    try {
+        $('.owl-carousel').each(function() {
+            const $this = $(this);
+            try {
+                if ($this.data('owl.carousel')) {
+                    log('Destroying existing carousel');
+                    $this.trigger('destroy.owl.carousel');
+                }
+            } catch (e) {
+                log(`Error destroying carousel: ${e.message}`);
+            }
+        });
+    } catch (e) {
+        log(`Error in carousel cleanup: ${e.message}`);
+    }
+    
+    // Initialize product carousels
+    try {
+        $('.product_active').each(function(index) {
+            log(`Initializing product carousel #${index}`);
+            $(this).owlCarousel({
+                items: 4,
+                loop: true,
+                nav: true,
+                dots: false,
+                margin: 20,
+                autoplay: false,
+                navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
+                responsive: {
+                    0: { items: 1 },
+                    576: { items: 2 },
+                    768: { items: 3 },
+                    992: { items: 4 }
+                },
+                onInitialized: function() {
+                    // Find the tallest item and set all items to that height
+                    let maxHeight = 0;
+                    $(this.$element).find('.single_product').each(function() {
+                        let height = $(this).outerHeight();
+                        if (height > maxHeight) {
+                            maxHeight = height;
+                        }
+                    });
+                    $(this.$element).find('.single_product').css('min-height', maxHeight + 'px');
+                    log(`Set product card height to ${maxHeight}px`);
+                }
+            });
+        });
+    } catch (e) {
+        log(`Error initializing product carousels: ${e.message}`);
+    }
+    
+    // Initialize brand carousel
+    try {
+        $('.product_gallery_active').owlCarousel({
+            items: 5,
+            loop: true,
+            nav: true,
+            dots: false,
+            margin: 20,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
+            responsive: {
+                0: { items: 2 },
+                576: { items: 3 },
+                768: { items: 4 },
+                992: { items: 5 }
+            }
+        });
+        log('Brand carousel initialized');
+    } catch (e) {
+        log(`Error initializing brand carousel: ${e.message}`);
+    }
+    
+    // Initialize blog carousel
+    try {
+        $('.blog_active').owlCarousel({
+            items: 3,
+            loop: true,
+            nav: true,
+            dots: false,
+            margin: 20,
+            autoplay: false,
+            navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
+            responsive: {
+                0: { items: 1 },
+                576: { items: 1 },
+                768: { items: 2 },
+                992: { items: 3 }
+            }
+        });
+        log('Blog carousel initialized');
+    } catch (e) {
+        log(`Error initializing blog carousel: ${e.message}`);
+    }
+    
+    // Attach manual event handlers for navigation buttons
+    $('.owl-prev, .owl-next').on('click', function(e) {
+        e.preventDefault();
+        log('Navigation button clicked');
+    });
+    
+    // Force refresh carousels after a short delay
+    setTimeout(function() {
+        try {
+            $('.owl-carousel').each(function() {
+                if ($(this).data('owl.carousel')) {
+                    $(this).trigger('refresh.owl.carousel');
+                }
+            });
+            log('Carousels refreshed');
+        } catch (e) {
+            log(`Error refreshing carousels: ${e.message}`);
+        }
+    }, 1000);
+}
+
+// Direct cart button click function - will be called directly from onclick attribute
+function addToCartClick(event, productId) {
+    // Prevent default action (navigation)
+    event.preventDefault();
+    
+    if (!productId) {
+        console.error("No product ID provided to addToCartClick");
+        return;
+    }
+    
+    console.log("Adding product to cart with direct click function:", productId);
+    
+    try {
+        // Find the button that was clicked
+        const button = event.currentTarget;
+        
+        // Visual feedback
+        const originalText = button.textContent;
+        const originalBg = button.style.backgroundColor;
+        button.textContent = 'Добавлено';
+        button.style.backgroundColor = '#4CAF50';
+        
+        // Get CSRF token
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        // Create request
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/add_to_cart/' + productId + '/', true);
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                const response = JSON.parse(xhr.responseText);
+                console.log("Product added successfully (direct click):", response);
+                
+                // Update cart counters
+                const cartItemsCount = document.getElementById('cart_items_fetch');
+                if (cartItemsCount) {
+                    cartItemsCount.textContent = response.cart_count;
+                }
+                
+                const cartTotal = document.getElementById('cart_total_id');
+                if (cartTotal) {
+                    cartTotal.textContent = response.cart_total;
+                }
+                
+                // Show success message
+            } else {
+                console.error("Error adding to cart. Status:", xhr.status);
+            }
+            
+            // Restore button appearance after delay
+            setTimeout(function() {
+                button.textContent = originalText;
+                button.style.backgroundColor = originalBg;
+            }, 1000);
+        };
+        
+        xhr.onerror = function() {
+            console.error("Request failed in direct click");
+            alert("Ошибка при добавлении товара в корзину");
+            
+            // Restore button appearance
+            button.textContent = originalText;
+            button.style.backgroundColor = originalBg;
+        };
+        
+        // Send request
+        xhr.send(JSON.stringify({}));
+        
+    } catch (error) {
+        console.error("Error in direct cart click handler:", error);
+    }
+    
+    return false;
+}
+
+// Add event listeners for DOM elements once loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add window resize handler for consistent card heights
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.owlCarousel !== 'undefined') {
+                jQuery('.owl-carousel').trigger('refresh.owl.carousel');
+                
+                // Equalize heights for product cards
+                jQuery('.product_active').each(function() {
+                    let maxHeight = 0;
+                    jQuery(this).find('.single_product').css('min-height', '');
+                    
+                    jQuery(this).find('.single_product').each(function() {
+                        let height = jQuery(this).outerHeight();
+                        if (height > maxHeight) {
+                            maxHeight = height;
+                        }
+                    });
+                    
+                    jQuery(this).find('.single_product').css('min-height', maxHeight + 'px');
+                });
+            }
+        }, 250);
+    });
+});
+
+// Modal functions
+function showTextModal5() { document.getElementById("textModal5").style.display = "block"; }
+function hideTextModal5() { document.getElementById("textModal5").style.display = "none"; }
+function showTextModal6() { document.getElementById("textModal6").style.display = "block"; }
+function hideTextModal6() { document.getElementById("textModal6").style.display = "none"; }
+
+// Close modals when clicking outside
+window.onclick = function(event) {
+    const modals = ["textModal1", "textModal2", "textModal3", "textModal4", "textModal5", "textModal6"];
+    modals.forEach(function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal && event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+};
 </script>
+
 <div id="textModal5" class="text-modal">
     <div class="text-modal-content">
         <span class="close-btn" onclick="hideTextModal5()">&times;</span>
@@ -552,32 +1015,6 @@
         </p>
     </div>
 </div>
-
-
-
-<script>
-
-
-    function addToCart(productId) {
-        fetch(`/add_to_cart/${productId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({})
-        })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("cart_items_fetch").innerText = data.cart_count;
-                document.getElementById("cart_total_id").innerText = data.cart_total;
-
-            })
-            .catch(error => {
-                // console.error("Xatolik yuz berdi:", error);
-            });
-    }
-</script>
 
 <!-- reklama tugatilid -->
 {% endblock content %}

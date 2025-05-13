@@ -66,6 +66,7 @@ def Index(request):
             "data": result,
             "current_page": page,
             "total_pages": paginator.num_pages,
+            "blogs": Blog.objects.all().order_by('-id')[:5]
         }
         return render(request, 'index.html', context)
 
@@ -301,36 +302,6 @@ def Contact(request):
     return render(request,'contact.html',context)
 
 
-def checkout_view(request):
-    cart_items = request.user.cart.items.all()  
-
-    if not cart_items:
-        messages.error(request, "Sizning savatingiz bo‘sh!")
-        return redirect("cart")
-
-    if request.method == 'POST':
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
-            order.is_completed = False
-            order.save()
-
-           
-            # for item in cart_items:
-            #     OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
-
-            request.user.cart.items.all().delete()
-            
-            messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
-            return redirect("order_history")
-
-    else:
-        form = CheckoutForm()
-    
-    return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items})
-
-
 @is_staff
 def product_create(request):
     if request.method == 'POST':
@@ -360,6 +331,7 @@ def filial_index(request):
 
 @is_staff
 def filial_order(request):
+
     filial_id = request.GET.get('filial-id')
     type_choices = Order.TYPE_CHOICES
     filials = request.user.filials.all()
@@ -389,6 +361,8 @@ def filial_order(request):
             paginator = Paginator(orders, 2)
             page_obj = paginator.get_page(page_number)
             orders_by_filial[filial] = page_obj
+
+    orders =  Order.objects.all()
 
     context = {
         'orders_by_filial': orders_by_filial,

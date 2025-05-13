@@ -1,8 +1,8 @@
-from unicodedata import category
-
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
+from unicodedata import category
 from .models import *
+
 
 class CustomUserAdmin(UserAdmin):
     def save_model(self, request, obj, form, change):
@@ -33,7 +33,8 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(PDFDocument)
+
 admin.site.register(EskizToken)
 
-#Product
+admin.site.register(Blog)
 
