@@ -293,12 +293,36 @@ def checkout_view(request):
     
     return render(request, 'checkout.html', context)
 
-
+@login_required(login_url='/auth/send-otp/')
 def Myaccount(request):
-    return render(request,'my-account.html')
+    orders = Order.objects.filter(user=request.user)
+    if request.GET.get('order-id'):
+        order = Order.objects.get(id=request.GET.get('order-id'))
+        order_items =  OrderItem.objects.filter(order=order)
+        order_items_list = []
+        for item in order_items:
+            order_items_list.append({
+                'id': item.id,
+                'name': item.name,
+                'quantity': item.quantity,
+                'price': item.price,
+                'total_price': item.total_price,
+                'product': item.product.info,
+                'product_id': item.product.id,
+                'product_image': item.product.image1.url if item.product.image1 else '/static/media/default.jpg'
+            })
+        return  JsonResponse(order_items_list)
+    
+    wishlist_items = Wishlist.objects.filter(user=request.user)
 
+    context = {
+        'orders': orders,
+        'wishlist_items': wishlist_items
+    }
 
-@login_required
+    return render(request, 'profile.html', context)
+
+@login_required(login_url='/auth/send-otp/')
 def toggle_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
@@ -310,16 +334,7 @@ def toggle_wishlist(request, product_id):
         Wishlist.objects.create(user=request.user, product=product)
         messages.success(request, "Mahsulot wishlistga qo‘shildi!")
 
-    return redirect(request.META.get('HTTP_REFERER', 'wishlist')) 
-
-
-@login_required(login_url='/auth/send-otp/')
-def wishlist_view(request):
-    wishlist_items= Wishlist.objects.filter(user=request.user)
-    context = {
-        'wishlist_items': wishlist_items,
-    }
-    return render(request,'wishlist.html',context)
+    return redirect(request.META.get('HTTP_REFERER', '/')) 
 
 
 def Contact(request):

@@ -1,0 +1,1271 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Profile Page Styles */
+    .profile-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .profile-header {
+        background-color: #fff;
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .profile-header h1 {
+        margin: 0;
+        font-size: 26px;
+        color: #333;
+    }
+
+    .profile-header .profile-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .profile-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #4285F4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    .profile-details h3 {
+        margin: 0 0 5px;
+        font-size: 18px;
+    }
+
+    .profile-details p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* Tabs Navigation */
+    .profile-tabs {
+        display: flex;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .profile-tab {
+        padding: 15px 25px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 500;
+        color: #666;
+        position: relative;
+        transition: all 0.2s ease;
+    }
+
+    .profile-tab:hover {
+        color: #4285F4;
+        background-color: #f5f9ff;
+    }
+
+    .profile-tab.active {
+        color: #4285F4;
+        background-color: #f5f9ff;
+    }
+
+    .profile-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #4285F4;
+    }
+
+    /* Tab Content */
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* Orders Section */
+    .orders-list {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .order-item {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        transition: background 0.2s;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .order-item:hover {
+        background-color: #f9f9f9;
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .order-id {
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+    }
+
+    .order-date {
+        color: #888;
+        font-size: 14px;
+    }
+
+    .order-status {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .order-info {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .order-info-column {
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .order-label {
+        display: block;
+        color: #888;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .order-value {
+        font-weight: 500;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .order-actions {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .order-button {
+        padding: 8px 15px;
+        border-radius: 6px;
+        border: none;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .order-button.primary {
+        background-color: #4285F4;
+        color: white;
+    }
+
+    .order-button.primary:hover {
+        background-color: #3b77db;
+    }
+
+    .order-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Order Details Modal */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .modal-backdrop.show {
+        display: flex;
+        opacity: 1;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-container {
+        background-color: #fff;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        transform: translateY(30px);
+        transition: transform 0.3s;
+    }
+
+    .modal-backdrop.show .modal-container {
+        transform: translateY(0);
+    }
+
+    .modal-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 1;
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #888;
+        transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+        color: #333;
+    }
+
+    .modal-body {
+        padding: 20px 25px;
+    }
+
+    .modal-footer {
+        padding: 15px 25px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+    }
+
+    /* Order Items in Modal */
+    .order-items-list {
+        margin: 20px 0;
+    }
+
+    .order-item-card {
+        display: flex;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        gap: 15px;
+    }
+
+    .order-item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 6px;
+        overflow: hidden;
+        background-color: #f0f0f0;
+        flex-shrink: 0;
+    }
+
+    .order-item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .order-item-details {
+        flex: 1;
+    }
+
+    .order-item-name {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .order-item-price {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .order-item-quantity {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .order-item-total {
+        font-weight: 600;
+        color: #4285F4;
+        font-size: 16px;
+        align-self: center;
+        text-align: right;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    /* Order Timeline */
+    .order-timeline {
+        margin: 30px 0;
+        position: relative;
+        padding-left: 25px;
+    }
+
+    .timeline-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 8px;
+        width: 2px;
+        background-color: #eee;
+    }
+
+    .timeline-step {
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .timeline-step:last-child {
+        padding-bottom: 0;
+    }
+
+    .timeline-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: #eee;
+        position: absolute;
+        left: -25px;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .timeline-dot.active {
+        background-color: #4285F4;
+    }
+
+    .timeline-dot i {
+        font-size: 10px;
+        color: white;
+    }
+
+    .timeline-content {
+        padding-left: 10px;
+    }
+
+    .timeline-title {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .timeline-date {
+        font-size: 13px;
+        color: #888;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .empty-state-icon {
+        font-size: 60px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-state-title {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-state-message {
+        color: #888;
+        margin-bottom: 25px;
+    }
+
+    .empty-state-button {
+        padding: 10px 20px;
+        background-color: #4285F4;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .empty-state-button:hover {
+        background-color: #3b77db;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .profile-tab {
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+        
+        .order-info {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .order-info-column {
+            min-width: 100%;
+        }
+        
+        .order-header {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .order-item-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .order-item-image {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .order-item-total {
+            align-self: flex-start;
+            text-align: left;
+            margin-top: 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .order-actions {
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .order-button {
+            width: 100%;
+        }
+    }
+
+    /* Wishlist specific styles */
+    .wishlist-container {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 20px;
+        overflow: hidden;
+    }
+    
+    /* Remove product card hover effects in wishlist tab */
+    #wishlist .product-item-card {
+        flex: 0 0 calc(33.33% - 20px);
+        min-width: auto;
+        max-width: none;
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 992px) {
+        #wishlist .product-item-card {
+            flex: 0 0 calc(50% - 15px);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        #wishlist .product-item-card {
+            flex: 0 0 calc(50% - 8px);
+        }
+    }
+    
+    /* Settings Form Styles */
+    .settings-form {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 25px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #333;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: border-color 0.2s;
+    }
+    
+    .form-control:focus {
+        border-color: #4285F4;
+        outline: none;
+    }
+    
+    .form-submit {
+        margin-top: 10px;
+        text-align: right;
+    }
+</style>
+
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>Мой профиль</h1>
+        <div class="profile-info">
+            <div class="profile-details">
+                <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+                <p>{{ request.user.email }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="profile-tabs">
+        <button class="profile-tab active" data-tab="orders">Мои заказы</button>
+        <button class="profile-tab" data-tab="wishlist">Избранное</button>
+        <button class="profile-tab" data-tab="settings">Настройки</button>
+    </div>
+    
+    <div id="orders" class="tab-content active">
+        {% if orders %}
+        <div class="orders-list">
+            {% for order in orders %}
+            <div class="order-item">
+                <div class="order-header">
+                    <div class="order-id">Заказ #{{ order.id }}</div>
+                    <div class="order-date">{{ order.created_at|date:"d.m.Y H:i" }}</div>
+                    <div class="order-status {{ order.status_color }}">{{ order.status }}</div>
+                </div>
+                <div class="order-info">
+                    <div class="order-info-column">
+                        <span class="order-label">Способ оплаты</span>
+                        <span class="order-value">
+                            {% if order.payment_method == 'cash' %}
+                                <i class="fas fa-money-bill-wave"></i> Наличные
+                            {% elif order.payment_method == 'card' %}
+                                <i class="fas fa-credit-card"></i> Карта
+                            {% else %}
+                                <i class="fas fa-mobile-alt"></i> Click
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="order-info-column">
+                        <span class="order-label">Статус оплаты</span>
+                        <span class="order-value">
+                            {% if order.is_paid %}
+                                <i class="fas fa-check-circle" style="color: #4CAF50;"></i> Оплачен
+                            {% else %}
+                                <i class="fas fa-clock" style="color: #FFC107;"></i> Ожидает оплаты
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="order-info-column">
+                        <span class="order-label">Сумма</span>
+                        <span class="order-value">{{ order.total_price }} сум</span>
+                    </div>
+                    <div class="order-info-column">
+                        <span class="order-label">Филиал</span>
+                        <span class="order-value">
+                            <i class="fas fa-store"></i> 
+                            {{ order.filial.name|default:"Доставка" }}
+                        </span>
+                    </div>
+                </div>
+                <div class="order-actions">
+                    <button class="order-button primary view-details" data-order-id="{{ order.id }}">
+                        <i class="fas fa-eye"></i> Детали заказа
+                    </button>
+                    {% if order.status == 'Kutilmoqda' %}
+                    <button class="order-button">
+                        <i class="fas fa-times"></i> Отменить заказ
+                    </button>
+                    {% endif %}
+                    <button class="order-button">
+                        <i class="fas fa-headset"></i> Поддержка
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <h3 class="empty-state-title">У вас пока нет заказов</h3>
+            <p class="empty-state-message">Начните покупки прямо сейчас!</p>
+            <a href="/" class="empty-state-button">Перейти к каталогу</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div id="wishlist" class="tab-content">
+        {% if wishlist_items %}
+        <div class="wishlist-container">
+            <div class="product-list" style="flex-wrap: wrap; overflow: visible; padding-bottom: 30px;">
+                {% for wishlist_item in wishlist_items %}
+                <div class="product-item-card" data-product-id="{{ wishlist_item.product.id }}">
+                    <div class="product-item-card__image">
+                        <img src="{{ wishlist_item.product.image1.url }}" alt="{{ wishlist_item.product.name }}">
+                    </div>
+                    <div class="product-item-card__content">
+                        <h4>{{ wishlist_item.product.name }}</h4>
+                        <p>{{ wishlist_item.product.producer }}</p>
+                        <span class="price">{{ wishlist_item.product.prices.0 }}</span>
+                    </div>
+                    <div class="product-item-card__actions">
+                        <button class="add-to-cart"><span>Добавить в корзину</span><i class="fas fa-shopping-cart"></i></button>
+                        <div class="product-item-card__buttons">
+                            <a href="{% url 'product_detail' wishlist_item.product.id %}" class="product-item-card__button about"><i class="fas fa-eye"></i></a>
+                            <button class="product-item-card__button wishlist active" data-id="{{ wishlist_item.product.id }}"><i class="fas fa-heart" style="color: #D91F3D;"></i></button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3 class="empty-state-title">Ваш список избранного пуст</h3>
+            <p class="empty-state-message">Добавьте товары, которые вам нравятся!</p>
+            <a href="/" class="empty-state-button">Перейти к каталогу</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div id="settings" class="tab-content">
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-cog"></i>
+            </div>
+            <h3 class="empty-state-title">Настройки профиля</h3>
+            <p class="empty-state-message">Функционал настроек будет доступен в ближайшем обновлении.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Order Details Modal -->
+<div id="orderDetailsModal" class="modal-backdrop">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3>Детали заказа #<span id="modalOrderId"></span></h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="order-info">
+                <div class="order-info-column">
+                    <span class="order-label">Дата заказа</span>
+                    <span class="order-value" id="modalDate"></span>
+                </div>
+                <div class="order-info-column">
+                    <span class="order-label">Статус</span>
+                    <span class="order-value" id="modalStatus"></span>
+                </div>
+                <div class="order-info-column">
+                    <span class="order-label">Способ оплаты</span>
+                    <span class="order-value" id="modalPaymentMethod"></span>
+                </div>
+                <div class="order-info-column">
+                    <span class="order-label">Статус оплаты</span>
+                    <span class="order-value" id="modalPaymentStatus"></span>
+                </div>
+            </div>
+            
+            <h4 style="margin-top: 30px;">Товары в заказе</h4>
+            <div class="order-items-list" id="orderItemsList">
+                <!-- Order items will be loaded here -->
+            </div>
+            
+            <div class="order-total" style="text-align: right; margin-top: 20px; font-size: 18px; font-weight: 600;">
+                Итого: <span id="modalOrderTotal">0</span> сум
+            </div>
+            
+            <h4 style="margin-top: 30px;">Статус заказа</h4>
+            <div class="order-timeline">
+                <div class="timeline-line"></div>
+                <div class="timeline-step">
+                    <div class="timeline-dot active">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Заказ создан</div>
+                        <div class="timeline-date" id="createdDate"></div>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-dot" id="confirmDot">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Заказ подтвержден</div>
+                        <div class="timeline-date">В обработке</div>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-dot" id="deliveryDot">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Заказ доставлен</div>
+                        <div class="timeline-date">Ожидается</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="order-button" id="modalClose">Закрыть</button>
+            <button class="order-button primary" id="modalReorder">Повторить заказ</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add a hidden form for traditional submissions -->
+<div style="display:none;">
+    <form id="wishlistForm" method="POST" action="">
+        <input type="hidden" name="csrfmiddlewaretoken" value="">
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tab switching
+        const tabs = document.querySelectorAll('.profile-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Check if there's a tab parameter in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        
+        if (tabParam) {
+            // Find the tab that matches the parameter
+            const targetTab = document.querySelector(`.profile-tab[data-tab="${tabParam}"]`);
+            if (targetTab) {
+                // Switch to that tab
+                switchTab(targetTab);
+            }
+        }
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchTab(this);
+                
+                // Update URL without reloading the page
+                const tabId = this.getAttribute('data-tab');
+                const url = new URL(window.location);
+                url.searchParams.set('tab', tabId);
+                window.history.pushState({}, '', url);
+            });
+        });
+        
+        function switchTab(tabElement) {
+            const tabId = tabElement.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to current tab and content
+            tabElement.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // Order details modal
+        const orderDetailsButtons = document.querySelectorAll('.view-details');
+        const modal = document.getElementById('orderDetailsModal');
+        const modalClose = document.querySelector('.modal-close');
+        const modalCloseButton = document.getElementById('modalClose');
+        
+        orderDetailsButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-order-id');
+                loadOrderDetails(orderId);
+            });
+        });
+        
+        function showModal() {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        modalClose.addEventListener('click', hideModal);
+        modalCloseButton.addEventListener('click', hideModal);
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+        
+        // Load order details via AJAX
+        function loadOrderDetails(orderId) {
+            showLoading('orderItemsList');
+            
+            fetch(`?order-id=${orderId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    populateOrderDetails(orderId, data);
+                    showModal();
+                })
+                .catch(error => {
+                    console.error('Error loading order details:', error);
+                    showNotification('Ошибка при загрузке данных заказа', 'error');
+                })
+                .finally(() => {
+                    hideLoading('orderItemsList');
+                });
+        }
+        
+        // Simple loading indicator
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Загрузка...</div>';
+            }
+        }
+        
+        function hideLoading(elementId) {
+            // Just leave the content as is, it will be replaced
+        }
+        
+        // Populate order details in modal
+        function populateOrderDetails(orderId, items) {
+            // Set order ID in modal
+            document.getElementById('modalOrderId').textContent = orderId;
+            
+            // Get order element to extract other details
+            const orderElement = document.querySelector(`.order-item .order-button[data-order-id="${orderId}"]`)
+                .closest('.order-item');
+            
+            // Set date
+            const orderDate = orderElement.querySelector('.order-date').textContent;
+            document.getElementById('modalDate').textContent = orderDate;
+            document.getElementById('createdDate').textContent = orderDate;
+            
+            // Set status
+            const statusElement = orderElement.querySelector('.order-status');
+            const status = statusElement.textContent;
+            const statusColor = statusElement.classList[1] || '';
+            document.getElementById('modalStatus').textContent = status;
+            document.getElementById('modalStatus').className = `order-value ${statusColor}`;
+            
+            // Update timeline based on status
+            updateTimeline(status);
+            
+            // Set payment method
+            const paymentMethod = orderElement.querySelector('.order-info-column:nth-child(1) .order-value').innerHTML;
+            document.getElementById('modalPaymentMethod').innerHTML = paymentMethod;
+            
+            // Set payment status
+            const paymentStatus = orderElement.querySelector('.order-info-column:nth-child(2) .order-value').innerHTML;
+            document.getElementById('modalPaymentStatus').innerHTML = paymentStatus;
+            
+            // Populate order items
+            const orderItemsList = document.getElementById('orderItemsList');
+            orderItemsList.innerHTML = '';
+            
+            if (items.length === 0) {
+                orderItemsList.innerHTML = '<div class="empty-state-message" style="text-align: center; padding: 20px;">Нет товаров в заказе</div>';
+                return;
+            }
+            
+            let totalPrice = 0;
+            
+            items.forEach(item => {
+                totalPrice += item.total_price;
+                
+                const itemCard = document.createElement('div');
+                itemCard.className = 'order-item-card';
+                itemCard.innerHTML = `
+                    <div class="order-item-image">
+                        <img src="${item.product_image}" alt="${item.name}">
+                    </div>
+                    <div class="order-item-details">
+                        <div class="order-item-name">${item.name}</div>
+                        <div class="order-item-price">${item.price} сум</div>
+                        <div class="order-item-quantity">Количество: ${item.quantity}</div>
+                    </div>
+                    <div class="order-item-total">${item.total_price} сум</div>
+                `;
+                
+                orderItemsList.appendChild(itemCard);
+            });
+            
+            document.getElementById('modalOrderTotal').textContent = totalPrice;
+        }
+        
+        // Update timeline based on order status
+        function updateTimeline(status) {
+            const confirmDot = document.getElementById('confirmDot');
+            const deliveryDot = document.getElementById('deliveryDot');
+            
+            // Reset all
+            confirmDot.classList.remove('active');
+            deliveryDot.classList.remove('active');
+            
+            // Update based on status
+            if (status === 'Tasdiqlangan' || status === 'Topshirildi') {
+                confirmDot.classList.add('active');
+            }
+            
+            if (status === 'Topshirildi') {
+                deliveryDot.classList.add('active');
+            }
+        }
+        
+        // Initialize CSRF token in the hidden form
+        const csrftoken = getCookie('csrftoken');
+        const wishlistForm = document.getElementById('wishlistForm');
+        const csrfInput = wishlistForm.querySelector('input[name="csrfmiddlewaretoken"]');
+        csrfInput.value = csrftoken;
+        
+        // ==================== WISHLIST FUNCTIONALITY ====================
+        
+        // HANDLE ALL WISHLIST BUTTON CLICKS (both in listings and profile)
+        document.addEventListener('click', function(e) {
+            // Find if user clicked on a wishlist button or its child icon
+            const wishlistBtn = e.target.closest('.product-item-card__button.wishlist');
+            if (!wishlistBtn) return; // Not a wishlist button click
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Get product data
+            const card = wishlistBtn.closest('.product-item-card');
+            const inWishlistPage = !!wishlistBtn.closest('#wishlist');
+            
+            // Get product ID from appropriate attribute
+            const productId = inWishlistPage ? 
+                wishlistBtn.getAttribute('data-id') : 
+                card.getAttribute('data-product-id');
+                
+            if (!productId) {
+                console.error('No product ID found for wishlist button:', wishlistBtn);
+                return;
+            }
+            
+            console.log('Wishlist toggle request for product:', productId, 'In wishlist page:', inWishlistPage);
+            
+            // If on wishlist page and removing, confirm first
+            if (inWishlistPage) {
+                if (!confirm('Вы уверены, что хотите удалить этот товар из избранного?')) {
+                    return;
+                }
+            }
+            
+            // Get wishlist state (adding or removing)
+            const isActive = wishlistBtn.classList.contains('active');
+            const isRemoving = inWishlistPage || isActive;
+            
+            // Prepare visual feedback
+            const icon = wishlistBtn.querySelector('i');
+            const productName = card.querySelector('h4').textContent;
+            
+            // Update UI optimistically if not on wishlist page
+            if (!inWishlistPage) {
+                wishlistBtn.classList.toggle('active');
+                icon.style.color = wishlistBtn.classList.contains('active') ? '#D91F3D' : '';
+            }
+            
+            // First try the modern fetch API
+            toggleWishlistFetch(productId, isRemoving, card, wishlistBtn, productName, inWishlistPage);
+        });
+        
+        // FETCH API IMPLEMENTATION
+        function toggleWishlistFetch(productId, isRemoving, card, button, productName, inWishlistPage) {
+            // Make API request
+            fetch(`/toggle/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `csrfmiddlewaretoken=${csrftoken}`
+            })
+            .then(response => {
+                console.log('Toggle response status:', response.status);
+                
+                if (response.ok) {
+                    handleSuccess();
+                } else {
+                    // If the server returns an error, fall back to traditional form submission
+                    console.warn('Fetch API failed, falling back to traditional form...');
+                    fallbackToTraditional();
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                fallbackToTraditional();
+            });
+            
+            // Success handler
+            function handleSuccess() {
+                // Show notification
+                showNotification(
+                    isRemoving ? 
+                    `${productName} удален из избранного` : 
+                    `${productName} добавлен в избранное`
+                );
+                
+                // If on wishlist page and removing, animate and remove card
+                if (inWishlistPage) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                    card.style.transition = 'all 0.3s ease';
+                    
+                    setTimeout(() => {
+                        card.remove();
+                        checkEmptyWishlist();
+                    }, 300);
+                }
+            }
+            
+            // Check if wishlist is empty after removal
+            function checkEmptyWishlist() {
+                if (!inWishlistPage) return;
+                
+                const remainingItems = document.querySelectorAll('#wishlist .product-item-card');
+                if (remainingItems.length === 0) {
+                    const container = document.querySelector('#wishlist .wishlist-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h3 class="empty-state-title">Ваш список избранного пуст</h3>
+                                <p class="empty-state-message">Добавьте товары, которые вам нравятся!</p>
+                                <a href="/" class="empty-state-button">Перейти к каталогу</a>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            // Fallback to traditional form submission if fetch fails
+            function fallbackToTraditional() {
+                console.log('Using traditional form submission for wishlist toggle');
+                
+                // Reset UI if optimistically updated
+                if (!inWishlistPage) {
+                    button.classList.toggle('active');
+                    const icon = button.querySelector('i');
+                    icon.style.color = button.classList.contains('active') ? '#D91F3D' : '';
+                }
+                
+                // Set form action and submit
+                wishlistForm.action = `/toggle/${productId}/`;
+                wishlistForm.submit();
+            }
+        }
+        
+        // Add to cart functionality for wishlist items
+        const addToCartButtons = document.querySelectorAll('#wishlist .add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.product-item-card');
+                const productId = card.getAttribute('data-product-id');
+                const productName = card.querySelector('h4').textContent;
+                
+                // Send request to add to cart
+                fetch(`/add_to_cart/${productId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 200) {
+                        // Visual feedback
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '<span>Добавлено ✓</span><i class="fas fa-check"></i>';
+                        button.style.backgroundColor = '#4CAF50';
+                        
+                        // Update cart badge if exists
+                        const cartBadge = document.querySelector('.cart-badge');
+                        if (cartBadge) {
+                            cartBadge.setAttribute('data-count', data.cart_count);
+                        }
+                        
+                        showNotification(`${productName} добавлен в корзину`);
+                        
+                        // Reset button after delay
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.style.backgroundColor = '';
+                        }, 1500);
+                    } else {
+                        showNotification('Ошибка при добавлении в корзину', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Ошибка при добавлении в корзину', 'error');
+                });
+            });
+        });
+        
+        // Reorder button
+        document.getElementById('modalReorder').addEventListener('click', function() {
+            const orderId = document.getElementById('modalOrderId').textContent;
+            
+            fetch(`/reorder/${orderId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('Заказ успешно повторен! Перенаправление в корзину...');
+                    setTimeout(() => {
+                        window.location.href = '/cart/';
+                    }, 1500);
+                } else {
+                    showNotification('Невозможно повторить заказ: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Функция повторного заказа будет доступна в скором времени');
+                hideModal();
+            });
+        });
+        
+        // Help function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // Enhanced notification function
+        function showNotification(message, type = 'success') {
+            if (window.showNotification) {
+                window.showNotification(message);
+            } else {
+                // Fallback if global notification function isn't available
+                const notification = document.createElement('div');
+                notification.className = 'product-notification';
+                if (type === 'error') {
+                    notification.style.backgroundColor = '#F44336';
+                }
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                // Show animation
+                setTimeout(() => notification.classList.add('show'), 10);
+                
+                // Hide and remove
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        }
+    });
+</script>
+
+
+{% endblock %}

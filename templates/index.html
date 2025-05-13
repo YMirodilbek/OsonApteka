@@ -2,6 +2,962 @@
 {% load static %}
 {% block content %}
 
+{% block css %}
+
+
+<!-- Product Pagination -->
+<style>
+    .product-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 0 10px 0;
+        width: 100%;
+    }
+
+    .product-pagination__controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        padding: 10px 18px;
+    }
+
+    .product-pagination__control {
+        background: #f5f5f5;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+        font-size: 16px;
+    }
+    .product-pagination__control:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    .product-pagination__control:hover:not(:disabled) {
+        background: #e0e0e0;
+    }
+
+    .product-pagination__pages {
+        display: flex;
+        gap: 6px;
+    }
+
+    .product-pagination__page {
+        background: transparent;
+        border: none;
+        border-radius: 6px;
+        min-width: 36px;
+        height: 36px;
+        font-size: 15px;
+        color: #333;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .product-pagination__page:hover {
+        background: #f5f5f5;
+        color: #D91F3D;
+    }
+    .product-pagination__page.active,
+    .product-pagination__page:focus {
+        background: #4285F4;
+        color: #fff;
+        font-weight: 600;
+        outline: none;
+    }
+
+    @media (max-width: 576px) {
+        .product-pagination__controls {
+            padding: 6px 8px;
+            gap: 6px;
+        }
+        .product-pagination__control,
+        .product-pagination__page {
+            min-width: 28px;
+            height: 28px;
+            font-size: 13px;
+        }
+        .product-pagination__pages {
+            gap: 2px;
+        }
+    }
+
+</style>
+
+<!-- Main Slider -->
+<style>
+    /* Slider Container */
+.main_picture_slider {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+/* Slider Items */
+.main_picture_slider__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+}
+
+.main_picture_slider__item.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Image Styling */
+.main_picture_slider__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Navigation Arrows */
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.slider-nav:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.slider-nav.prev {
+    left: 15px;
+}
+
+.slider-nav.next {
+    right: 15px;
+}
+
+.slider-nav i {
+    color: #333;
+    font-size: 18px;
+}
+
+/* Dots Navigation */
+.slider-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .main_picture_slider {
+        height: 300px;
+    }
+    
+    .slider-nav {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main_picture_slider {
+        height: 250px;
+        border-radius: 6px;
+    }
+    
+    .slider-nav {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .slider-dot {
+        width: 10px;
+        height: 10px;
+    }
+} 
+</style>
+
+<!-- Product Cards -->
+<style>
+    /* Product Cards */
+.product-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px 5px 20px;
+    margin: 20px 0;
+    position: relative;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    cursor: grab; /* Add grab cursor for better UX */
+    scroll-snap-type: x mandatory; /* Enable scroll snapping */
+}
+
+/* Hide scrollbar but keep functionality */
+.product-list::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome/Safari/Edge */
+}
+
+.product-list:active {
+    cursor: grabbing; /* Change cursor when actively scrolling */
+}
+
+/* For cloned cards in infinite carousel */
+.product-item-card.cloned {
+    opacity: 1; /* Ensure cloned cards have full opacity */
+    pointer-events: auto; /* Ensure cloned cards are interactive */
+}
+
+.product-list__title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-list__controls {
+    display: flex;
+    gap: 10px;
+}
+
+.product-list__control {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    z-index: 5; /* Ensure controls are above content */
+}
+
+.product-list__control:hover {
+    background-color: #4285F4;
+    color: white;
+    transform: scale(1.1);
+}
+
+.product-list__control:active {
+    transform: scale(0.95);
+}
+
+.product-list__control i {
+    color: #333;
+    font-size: 14px;
+}
+
+.product-item-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease; /* Smooth hover transition */
+    display: flex;
+    flex-direction: column;
+    min-width: 240px;
+    width: 240px;
+    max-width: 240px;
+    height: 360px;
+    flex: 0 0 auto;
+    position: relative;
+    scroll-snap-align: start; /* Align items with scroll snapping */
+}
+
+.product-item-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect on hover */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.product-item-card__image {
+    height: 140px;
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #f8f8f8;
+}
+
+.product-item-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-item-card:hover .product-item-card__image img {
+    transform: scale(1.05);
+}
+
+.product-item-card__content {
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-item-card__content h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-item-card__content p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #E31E24;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    margin-bottom: 8px;
+}
+
+.price::after {
+    content: "сум";
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+}
+
+.product-item-card__actions {
+    padding: 0 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-item-card__buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.add-to-cart {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-to-cart i {
+    display: none; /* Hide icon by default (shown on mobile) */
+    font-size: 16px;
+}
+
+.add-to-cart:hover {
+    background-color: #3b77db;
+}
+
+.product-item-card__button {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    width: 36px;
+    height: 32px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-item-card__button i {
+    font-size: 16px;
+    color: #666;
+}
+
+.product-item-card__button.about:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+.product-item-card__button.wishlist:hover {
+    background-color: #ffebee;
+    border-color: #ffcdd2;
+    color: #D91F3D;
+}
+
+/* Badge for discounts or special offers */
+.product-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #E31E24;
+    color: white;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+/* Out of stock overlay */
+.out-of-stock {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-list__title {
+        font-size: 20px;
+    }
+    
+    .product-list {
+        gap: 10px; /* Reduce gap for tablets */
+    }
+    
+    .product-item-card {
+        min-width: 220px;
+        width: 220px;
+        max-width: 220px;
+        height: 340px;
+    }
+    
+    .product-item-card__image {
+        height: 140px;
+    }
+    
+    .product-item-card__content h4 {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-list__title {
+        font-size: 18px;
+    }
+    
+    .product-list {
+        gap: 8px; /* Smaller gap for mobile */
+        padding: 8px 4px 16px;
+    }
+    
+    .product-item-card {
+        min-width: calc(50% - 4px); /* Exactly 2 cards per view */
+        width: calc(50% - 4px);
+        max-width: calc(50% - 4px);
+        height: 320px; /* Slightly shorter */
+    }
+    
+    .product-item-card__image {
+        height: 120px;
+    }
+    
+    .product-item-card__content {
+        padding: 8px;
+    }
+    
+    .product-item-card__content h4 {
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+    
+    .product-item-card__content p {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    
+    .price {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+    
+    .price::after {
+        font-size: 12px;
+    }
+    
+    .product-item-card__actions {
+        padding: 0 8px 8px;
+        gap: 6px;
+    }
+    
+    .add-to-cart {
+        padding: 7px;
+    }
+    
+    .add-to-cart span {
+        display: none; /* Hide text on mobile */
+    }
+    
+    .add-to-cart i {
+        display: inline-block; /* Show icon on mobile */
+    }
+    
+    .product-item-card__buttons {
+        gap: 6px;
+    }
+    
+    .product-item-card__button {
+        width: 32px;
+        height: 30px;
+    }
+    
+    .product-item-card__button i {
+        font-size: 14px;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 375px) {
+    .product-item-card {
+        height: 300px;
+    }
+    
+    .product-item-card__image {
+        height: 110px;
+    }
+    
+    .product-item-card__content h4 {
+        font-size: 12px;
+    }
+    
+    .product-item-card__content p {
+        font-size: 11px;
+    }
+    
+    .price {
+        font-size: 14px;
+    }
+}
+
+/* Product Notification */
+.product-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.product-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Disabled button style */
+.add-to-cart:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Active wishlist button */
+.product-item-card__button.wishlist.active {
+    background-color: #ffebee;
+    border-color: #ffcdd2;
+    color: #D91F3D;
+}
+
+/* Product slider container */
+.main-content__container {
+    position: relative;
+    padding: 10px 0;
+}
+
+/* Horizontal line */
+.main-content__container hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0 0 20px 0;
+}
+
+/* Disabled state for slider controls */
+.product-list__control.disabled {
+    pointer-events: none;
+}
+
+/* Active state for dragging */
+.product-list.active {
+    cursor: grabbing;
+    user-select: none;
+}
+
+/* Fix the gradient effect */
+.product-list::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 30px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.product-list::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5px;
+    background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Smooth snap scrolling for better UX */
+@media (hover: hover) {
+    .product-list {
+        scroll-snap-type: x mandatory;
+    }
+    
+    .product-item-card {
+        scroll-snap-align: start;
+    }
+}
+
+.brand-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.brand-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-card__image {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.brand-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.blog-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.blog-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    max-width: 100%;
+    min-height: 420px;
+}
+
+.blog-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.16);
+    transform: translateY(-4px) scale(1.01);
+}
+
+.blog-card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.blog-card__image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+.blog-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.blog-card__content {
+    padding: 20px 18px 10px 18px;
+    flex: 1 1 auto;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.blog-card__actions {
+    padding: 0 18px 18px 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.help-text {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+    
+}
+
+
+.features-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 0 15px;
+}
+
+.features-index__item {
+    position: relative;
+    width: 500px;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+}
+
+.features-index__item-image {
+    width: 100%;
+    height: 100%;
+}
+
+.features-index__item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.features-index__item:hover .features-index__item-image img {
+    transform: scale(1.05);
+}
+
+.features-index__item-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 30px;
+    background-color: #0e2749;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.features-index__item-button:hover {
+    background-color: #174379;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .features-index__item {
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
+/* Features Modal */
+.features-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+    overflow-y: auto;
+}
+
+.features-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.features-modal-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .features-modal-content {
+        margin: 20px;
+        padding: 20px;
+        width: auto;
+    }
+    
+    .features-modal-content p {
+        font-size: 14px;
+    }
+}
+
+
+</style>
+
+
+
+{% endblock %}
+
+
 
 <div class="main-content__container">
     <div class="main_picture_slider">
@@ -60,7 +1016,7 @@
                 <span class="price">{{ product.prices.0 }} сум</span>
             </div>
             <div class="product-item-card__actions">
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart"><span>Добавить в корзину</span><i class="fas fa-shopping-cart"></i></button>
                 <div class="product-item-card__buttons">
                     <a href="{% url  'product_detail' product.id %}" class="product-item-card__button about"><i class="fas fa-eye"></i></a>
                     <button class="product-item-card__button wishlist"><i class="fas fa-heart"></i></button>
@@ -335,5 +1291,663 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static 'own-js/slider.js' %}"></script>
+<!-- Optimized JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all components
+        initializeMainSlider();
+        initializeProductSliders();
+        setupNotifications();
+        setupCartAndWishlist();
+        
+        // ======= Main Image Slider =======
+        function initializeMainSlider() {
+        const slider = document.querySelector('.main_picture_slider');
+            if (!slider) return;
+
+        const slides = slider.querySelectorAll('.main_picture_slider__item');
+        const dots = slider.querySelectorAll('.slider-dot');
+        const prevBtn = slider.querySelector('.slider-nav.prev');
+        const nextBtn = slider.querySelector('.slider-nav.next');
+        
+        let currentIndex = 0;
+        let slideInterval;
+            const slideDelay = 5000;
+            
+            // Update slider display
+        function updateSlider() {
+                slides.forEach((slide, index) => 
+                    slide.classList.toggle('active', index === currentIndex));
+                dots.forEach((dot, index) => 
+                    dot.classList.toggle('active', index === currentIndex));
+            }
+            
+            // Navigation
+            function goToSlide(index) {
+                currentIndex = (index + slides.length) % slides.length;
+            updateSlider();
+                resetTimer();
+            }
+            
+            function nextSlide() { goToSlide(currentIndex + 1); }
+            function prevSlide() { goToSlide(currentIndex - 1); }
+            
+            // Timer control
+            function startTimer() {
+                stopTimer();
+            slideInterval = setInterval(nextSlide, slideDelay);
+        }
+        
+            function stopTimer() {
+                if (slideInterval) clearInterval(slideInterval);
+            }
+            
+            function resetTimer() {
+                stopTimer();
+                startTimer();
+            }
+            
+            // Event listeners
+            if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+            if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    goToSlide(parseInt(this.getAttribute('data-index')));
+                });
+            });
+            
+            // Touch controls
+            let touchStartX;
+            slider.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                stopTimer();
+            }, { passive: true });
+            
+            slider.addEventListener('touchend', e => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const diff = touchEndX - touchStartX;
+                
+                if (Math.abs(diff) > 50) {
+                    diff > 0 ? prevSlide() : nextSlide();
+                }
+                
+                startTimer();
+            }, { passive: true });
+            
+            // Initialize
+            updateSlider();
+            startTimer();
+        }
+        
+        // ======= Product Card Sliders =======
+        function initializeProductSliders() {
+            // Get all product list titles, each with its own controls and slider
+            const productContainers = document.querySelectorAll('.product-list__title');
+            
+            // For each product title (which contains the controls)
+            productContainers.forEach(container => {
+                // Find the controls for this title
+                const controls = container.querySelector('.product-list__controls');
+                if (!controls) return;
+                
+                // Find the next/prev buttons in these controls
+                const nextBtn = controls.querySelector('.next');
+                const prevBtn = controls.querySelector('.prev');
+                if (!nextBtn || !prevBtn) return;
+                
+                // Find the associated product list (next sibling after HR)
+                const hr = container.nextElementSibling;
+                if (!hr || hr.tagName !== 'HR') return;
+                
+                const productList = hr.nextElementSibling;
+                if (!productList || !productList.classList.contains('product-list')) return;
+                
+                // Prepare cards
+                setupCarousel(productList);
+                
+                // Set up mouse dragging
+                setupDragScrolling(productList);
+                
+                // Set up next button click
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollCarousel(productList, 'next');
+                });
+                
+                // Set up prev button click
+                prevBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                    scrollCarousel(productList, 'prev');
+                });
+                
+                // Set up touch controls
+                setupTouchControls(productList, nextBtn, prevBtn);
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', debounce(() => {
+            const productLists = document.querySelectorAll('.product-list');
+                productLists.forEach(setupCarousel);
+            }, 250));
+            
+            // Setup infinite scroll carousel
+            function setupCarousel(carousel) {
+                if (!carousel) return;
+                
+                // Set transition for smooth scrolling
+                carousel.style.scrollBehavior = 'smooth';
+                
+                // Remove any existing cloned cards
+                carousel.querySelectorAll('.product-item-card.cloned').forEach(clone => 
+                    clone.remove());
+                
+                // Get original cards
+                const cards = carousel.querySelectorAll('.product-item-card:not(.cloned)');
+                if (!cards.length) return;
+                
+                // Create clones for infinite scrolling
+                cards.forEach(card => {
+                    const clone = card.cloneNode(true);
+                    clone.classList.add('cloned');
+                    carousel.appendChild(clone);
+                });
+                
+                // Reset scroll position
+                carousel.scrollLeft = 0;
+            }
+            
+            // Handle carousel scrolling
+            function scrollCarousel(carousel, direction) {
+                const cards = carousel.querySelectorAll('.product-item-card:not(.cloned)');
+                if (!cards.length) return;
+                
+                const firstCard = cards[0];
+                const cardWidth = firstCard.offsetWidth;
+                const gapSize = parseInt(getComputedStyle(carousel).gap) || 20;
+                const itemWidth = cardWidth + gapSize;
+                
+                // Calculate visible cards and scroll amount
+                const visibleWidth = carousel.clientWidth;
+                const visibleCards = Math.floor(visibleWidth / itemWidth);
+                const scrollAmount = itemWidth * Math.max(1, Math.min(2, visibleCards));
+                
+                const scrollMax = carousel.scrollWidth - visibleWidth;
+                
+                if (direction === 'next') {
+                    if (carousel.scrollLeft + scrollAmount >= scrollMax - 20) {
+                        // At the end, scroll smoothly then jump to start
+                        carousel.scrollBy({
+                                left: scrollAmount,
+                                behavior: 'smooth'
+                            });
+                            
+                            setTimeout(() => {
+                            carousel.style.scrollBehavior = 'auto';
+                            carousel.scrollLeft = 0;
+                            void carousel.offsetWidth; // Force reflow
+                            carousel.style.scrollBehavior = 'smooth';
+                        }, 500);
+                        } else {
+                            // Normal scrolling
+                        carousel.scrollBy({
+                                left: scrollAmount,
+                                behavior: 'smooth'
+                            });
+                        }
+                    } else {
+                    if (carousel.scrollLeft <= itemWidth) {
+                        // At the beginning, jump to end then scroll smoothly
+                        carousel.style.scrollBehavior = 'auto';
+                        carousel.scrollLeft = scrollMax;
+                        void carousel.offsetWidth; // Force reflow
+                        carousel.style.scrollBehavior = 'smooth';
+                        
+                        carousel.scrollBy({
+                                left: -scrollAmount,
+                                behavior: 'smooth'
+                            });
+                        } else {
+                            // Normal scrolling
+                        carousel.scrollBy({
+                                left: -scrollAmount,
+                                behavior: 'smooth'
+                            });
+                        }
+                }
+            }
+            
+            // Touch controls with sensitivity adjustment
+            function setupTouchControls(carousel, nextBtn, prevBtn) {
+                let startX;
+                let startScrollLeft;
+                let touchTime;
+                
+                carousel.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                    startScrollLeft = carousel.scrollLeft;
+                    touchTime = Date.now();
+                    carousel.style.scrollBehavior = 'auto'; // Disable smooth scrolling during touch
+                }, { passive: true });
+                
+                carousel.addEventListener('touchmove', function(e) {
+                    if (!startX) return;
+                    
+                    const x = e.touches[0].clientX;
+                    const diff = startX - x;
+                    
+                    // Slow down the scroll speed by adjusting the multiplier (0.8 is slower than 1)
+                    carousel.scrollLeft = startScrollLeft + diff * 0.8;
+                }, { passive: true });
+                
+                carousel.addEventListener('touchend', function(e) {
+                    const endX = e.changedTouches[0].clientX;
+                    const diff = startX - endX;
+                    const timeDiff = Date.now() - touchTime;
+                    
+                    // Restore smooth scrolling
+                    carousel.style.scrollBehavior = 'smooth';
+                    
+                    // Calculate velocity (pixels per millisecond)
+                    const velocity = Math.abs(diff) / timeDiff;
+                    
+                    // Determine if it's a swipe based on velocity and distance
+                    // Lower threshold for better sensitivity but not too low to avoid accidental swipes
+                    if (Math.abs(diff) > 50 && velocity > 0.2) {
+                        if (diff > 0) {
+                            nextBtn.click(); // Swipe left, go next
+                        } else {
+                            prevBtn.click(); // Swipe right, go prev
+                        }
+                    } else {
+                        // It wasn't a clear swipe, just snap to nearest item
+                        const cards = carousel.querySelectorAll('.product-item-card:not(.cloned)');
+                        if (cards.length) {
+                            const cardWidth = cards[0].offsetWidth;
+                            const gapSize = parseInt(getComputedStyle(carousel).gap) || 20;
+                            const itemWidth = cardWidth + gapSize;
+                            
+                            // Round to nearest item
+                            const currentPosition = carousel.scrollLeft;
+                            const nearestItem = Math.round(currentPosition / itemWidth) * itemWidth;
+                            
+                            carousel.scrollTo({
+                                left: nearestItem,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                    
+                    startX = null;
+                }, { passive: true });
+            }
+                
+            // Mouse drag scrolling with improved physics
+            function setupDragScrolling(carousel) {
+                let isDown = false;
+                let startX;
+                let startScrollLeft;
+                let startTime;
+                let lastX;
+                let lastTime;
+                let velocity = 0;
+                
+                carousel.addEventListener('mousedown', function(e) {
+                    isDown = true;
+                    carousel.classList.add('active');
+                    startX = e.pageX;
+                    lastX = startX;
+                    startScrollLeft = carousel.scrollLeft;
+                    startTime = Date.now();
+                    lastTime = startTime;
+                    velocity = 0;
+                    
+                    // Disable transition during drag for more responsive feel
+                    carousel.style.scrollBehavior = 'auto';
+                    
+                    e.preventDefault();
+                });
+                
+                carousel.addEventListener('mouseleave', function() {
+                    if (isDown) {
+                        handleDragEnd();
+                    }
+                });
+                
+                carousel.addEventListener('mouseup', function() {
+                    if (isDown) {
+                        handleDragEnd();
+                    }
+                });
+                
+                carousel.addEventListener('mousemove', function(e) {
+                    if (!isDown) return;
+                    
+                    const x = e.pageX;
+                    const now = Date.now();
+                    
+                    // Calculate instantaneous velocity
+                    if (now - lastTime > 0) {
+                        velocity = (lastX - x) / (now - lastTime);
+                    }
+                    
+                    lastX = x;
+                    lastTime = now;
+                    
+                    // Apply a slower drag rate (0.6 multiplier slows it down)
+                    const walk = (startX - x) * 0.6;
+                    carousel.scrollLeft = startScrollLeft + walk;
+                });
+                
+                function handleDragEnd() {
+                    isDown = false;
+                    carousel.classList.remove('active');
+                    
+                    // Re-enable smooth scrolling for inertia effect
+                    carousel.style.scrollBehavior = 'smooth';
+                    
+                    // Apply momentum based on velocity
+                    const momentumDistance = velocity * 200; // Adjust multiplier for momentum effect
+                    
+                    if (Math.abs(momentumDistance) > 5) {
+                        carousel.scrollBy({
+                            left: momentumDistance,
+                            behavior: 'smooth'
+                        });
+                        
+                        // After momentum, snap to nearest item
+                        setTimeout(() => {
+                            snapToNearestItem();
+                        }, 250);
+                    } else {
+                        // If no significant momentum, just snap to nearest
+                        snapToNearestItem();
+                    }
+                }
+                
+                function snapToNearestItem() {
+                    const cards = carousel.querySelectorAll('.product-item-card:not(.cloned)');
+                    if (!cards.length) return;
+                    
+                    const cardWidth = cards[0].offsetWidth;
+                    const gapSize = parseInt(getComputedStyle(carousel).gap) || 20;
+                    const itemWidth = cardWidth + gapSize;
+                    
+                    // Snap to the nearest item
+                    const position = carousel.scrollLeft;
+                    const nearestItem = Math.round(position / itemWidth) * itemWidth;
+                    
+                    carousel.scrollTo({
+                        left: nearestItem,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        }
+        
+        // ======= Cart and Wishlist Functionality =======
+        function setupCartAndWishlist() {
+            // Get all buttons
+            const addToCartButtons = document.querySelectorAll('.add-to-cart:not(.cloned .add-to-cart)');
+            const wishlistButtons = document.querySelectorAll('.product-item-card__button.wishlist:not(.cloned .wishlist)');
+            const productCards = document.querySelectorAll('.product-item-card:not(.cloned)');
+            
+            // Track drag state
+            let isDragging = false;
+            
+            // Prevent clicks when dragging
+            productCards.forEach(card => {
+                card.addEventListener('mousedown', () => isDragging = false);
+                card.addEventListener('mousemove', () => isDragging = true);
+                card.addEventListener('click', e => {
+                    if (isDragging) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                });
+            });
+            
+            // Setup cart buttons
+            addToCartButtons.forEach(button => {
+                if (button.disabled) return;
+                
+                button.addEventListener('click', function() {
+                    const card = this.closest('.product-item-card');
+                    const productId = card.getAttribute('data-product-id');
+                    const productName = card.querySelector('h4').textContent;
+                    
+                    addToCart(productId, productName, this);
+                });
+            });
+            
+            // Setup wishlist buttons
+            wishlistButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const card = this.closest('.product-item-card');
+                    const productName = card.querySelector('h4').textContent;
+                    const icon = this.querySelector('i');
+                    const isActive = this.classList.contains('active');
+                    
+                    this.classList.toggle('active', !isActive);
+                    icon.style.color = isActive ? '' : '#D91F3D';
+                    
+                    showNotification(
+                        isActive 
+                        ? `${productName} удален из избранного` 
+                        : `${productName} добавлен в избранное`
+                    );
+                });
+            });
+            
+            // Handle cloned cart/wishlist buttons with event delegation
+            document.addEventListener('click', e => {
+                // Handle add to cart clicks on clones
+                const addToCartBtn = e.target.closest('.cloned .add-to-cart');
+                if (addToCartBtn) {
+                    e.preventDefault();
+                    
+                    const card = addToCartBtn.closest('.product-item-card');
+                    const productId = card.getAttribute('data-product-id');
+                    const productName = card.querySelector('h4').textContent;
+                    
+                    addToCart(productId, productName, addToCartBtn);
+                }
+                
+                // Handle wishlist clicks on clones
+                const wishlistBtn = e.target.closest('.cloned .product-item-card__button.wishlist');
+                if (wishlistBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const card = wishlistBtn.closest('.product-item-card');
+                    const productName = card.querySelector('h4').textContent;
+                    const icon = wishlistBtn.querySelector('i');
+                    const isActive = wishlistBtn.classList.contains('active');
+                    
+                    wishlistBtn.classList.toggle('active', !isActive);
+                    icon.style.color = isActive ? '' : '#D91F3D';
+                    
+                    showNotification(
+                        isActive 
+                        ? `${productName} удален из избранного` 
+                        : `${productName} добавлен в избранное`
+                    );
+                }
+            });
+            
+            // Add to cart API function
+            function addToCart(productId, productName, buttonElement) {
+                    fetch(`/add_to_cart/${productId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 200) {
+                            // Update cart badge
+                            const cartBadge = document.querySelector('.cart-badge');
+                            if (cartBadge) {
+                                cartBadge.setAttribute('data-count', data.cart_count);
+                            }
+                            
+                        // Visual feedback
+                        const originalText = buttonElement.textContent;
+                        buttonElement.textContent = 'Добавлено ✓';
+                        buttonElement.style.backgroundColor = '#4CAF50';
+                            
+                            // Show notification
+                            showNotification(`${productName} добавлен в корзину`);
+                            
+                            // Reset button after delay
+                            setTimeout(() => {
+                            buttonElement.textContent = originalText;
+                            buttonElement.style.backgroundColor = '';
+                            }, 1500);
+                        } else {
+                            showNotification('Ошибка при добавлении в корзину');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Ошибка при добавлении в корзину');
+                    });
+                }
+        }
+        
+        // ======= Notification System =======
+        function setupNotifications() {
+            // Initialize notification queue
+            window.notificationQueue = [];
+            window.isNotificationActive = false;
+            
+            // Add to global scope for other functions to use
+            window.showNotification = function(message) {
+                window.notificationQueue.push(message);
+                
+                if (!window.isNotificationActive) {
+                    processNextNotification();
+                }
+            };
+            
+            function processNextNotification() {
+                if (window.notificationQueue.length === 0) {
+                    window.isNotificationActive = false;
+                    return;
+                }
+                
+                window.isNotificationActive = true;
+                const message = window.notificationQueue.shift();
+                
+                // Create notification
+            const notification = document.createElement('div');
+            notification.className = 'product-notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+                // Animate in
+                requestAnimationFrame(() => {
+                notification.classList.add('show');
+                });
+            
+            // Remove after delay
+            setTimeout(() => {
+                notification.classList.remove('show');
+                    
+                    // Remove element after animation
+                setTimeout(() => {
+                        notification.remove();
+                        processNextNotification();
+                }, 300);
+                }, 2000);
+            }
+        }
+        
+        // ======= Utility Functions =======
+        
+        // Debounce function for rate-limiting
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+    });
+    
+    // Get CSRF token for API requests
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+    
+    // ======= Modal System =======
+    const modalSystem = {
+        init() {
+            // Close modal when clicking outside
+            window.addEventListener('click', event => {
+                if (event.target.classList.contains('features-modal')) {
+                    this.hideModal(event.target.id);
+                }
+            });
+            
+            // Close modal on escape key
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') {
+                    document.querySelectorAll('.features-modal').forEach(modal => {
+                        if (window.getComputedStyle(modal).display === 'block') {
+                            this.hideModal(modal.id);
+                        }
+                    });
+                }
+            });
+        },
+        
+        showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        },
+        
+        hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    };
+
+    // Initialize modal system
+    modalSystem.init();
+    
+    // Global modal functions for HTML onclick attributes
+    function showModal(modalId) {
+        modalSystem.showModal(modalId);
+    }
+    
+    function hideModal(modalId) {
+        modalSystem.hideModal(modalId);
+    }
+    
+    // Global notification function for external use
+    function showNotification(message) {
+        if (window.showNotification) {
+            window.showNotification(message);
+        } else {
+            console.log('Notification:', message);
+        }
+    }
+</script>
 {% endblock %}
