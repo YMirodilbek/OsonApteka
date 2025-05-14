@@ -37,6 +37,7 @@ window.addEventListener('scroll', () => {
 // Custom Select Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const customSelect = document.querySelector('.custom-select');
+
     if (!customSelect) return; // Agar element topilmasa, funksiyadan chiqish
 
     const selectHeader = customSelect.querySelector('.select-header');
@@ -87,7 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
+    
+    
     // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
         const selects = document.querySelectorAll('.custom-select');
