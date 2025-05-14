@@ -2,15 +2,15 @@ from .forms import PhoneNumberForm, OTPForm, UserDetailsForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
+from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.utils import timezone
 from datetime import timedelta
 from .models import *
 import requests
 import random
+import redis
 import re
-from django.core.paginator import Paginator
-
 
 def clean_phone_number(phone_number):
     """Telefon raqamini 998XXXXXXXXX formatiga o'tkazish"""
@@ -102,13 +102,14 @@ def send_otp(request):
                 return render(request, 'auth/phone.html', {'form': form})
 
             otp = random.randint(1000, 9999)
-            cache.set(f"otp_{phone_number}", otp, timeout=300)           
-            response = send_sms(phone_number, otp)
+            r = redis.Redis(host='localhost', port=6379, db=0)
 
-            # print(otp)
-            if "error" in response:
-                form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
-                return render(request, 'auth/phone.html', {'form': form})
+            r.setex(f"otp_{phone_number}", 300, str(otp))  
+            # response = send_sms(phone_number, otp)
+            print(otp)
+            # if "error" in response:
+            #     form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
+            #     return render(request, 'auth/phone.html', {'form': form})
 
             request.session['phone_number'] = phone_number
             request.session['is_agreed'] = is_agreed
@@ -123,10 +124,8 @@ def send_otp(request):
 def verify_otp(request):
     """Foydalanuvchi OTP kodini tasdiqlaydi"""
     phone_number = request.session.get('phone_number')
-
     
     is_agreed = request.session.get('is_agreed', False)
-
     if not phone_number:
         return redirect('/send_otp')
     
@@ -134,8 +133,11 @@ def verify_otp(request):
         form = OTPForm(request.POST)
         if form.is_valid():
             otp = form.cleaned_data['otp']
-            stored_otp = cache.get(f"otp_{phone_number}")
-            if stored_otp  == int(otp) :
+            # stored_otp = cache.get(f"otp_{phone_number}")
+            r = redis.Redis(host='localhost', port=6379, db=0)
+            stored_otp = r.get(f"otp_{phone_number}")
+
+            if stored_otp is not None and int(stored_otp.decode()) == int(otp):
                 user, created = CustomUser.objects.get_or_create(
                     phone_number=phone_number,
                     defaults={'is_agree': is_agreed}
