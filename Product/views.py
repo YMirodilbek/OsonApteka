@@ -295,7 +295,7 @@ def checkout_view(request):
 
 @login_required(login_url='/auth/send-otp/')
 def Myaccount(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).order_by('-id')
     if request.GET.get('order-id'):
         order = Order.objects.get(id=request.GET.get('order-id'))
         order_items =  OrderItem.objects.filter(order=order)
@@ -311,7 +311,7 @@ def Myaccount(request):
                 'product_id': item.product.id,
                 'product_image': item.product.image1.url if item.product.image1 else '/static/media/default.jpg'
             })
-        return  JsonResponse(order_items_list)
+        return  JsonResponse(order_items_list, safe=False)
     
     wishlist_items = Wishlist.objects.filter(user=request.user)
 

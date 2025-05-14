@@ -1727,18 +1727,45 @@
                     e.stopPropagation();
                     
                     const card = this.closest('.product-item-card');
+                    const productId = card.getAttribute('data-product-id');
                     const productName = card.querySelector('h4').textContent;
                     const icon = this.querySelector('i');
                     const isActive = this.classList.contains('active');
                     
+                    // Update UI optimistically
                     this.classList.toggle('active', !isActive);
                     icon.style.color = isActive ? '' : '#D91F3D';
                     
-                    showNotification(
-                        isActive 
-                        ? `${productName} удален из избранного` 
-                        : `${productName} добавлен в избранное`
-                    );
+                    // Make API request to toggle wishlist
+                    fetch(`/toggle/${productId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `csrfmiddlewaretoken=${getCookie('csrftoken')}`
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            showNotification(
+                                isActive 
+                                ? `${productName} удален из избранного` 
+                                : `${productName} добавлен в избранное`
+                            );
+                        } else {
+                            // Revert UI change if request failed
+                            this.classList.toggle('active', isActive);
+                            icon.style.color = isActive ? '#D91F3D' : '';
+                            showNotification('Ошибка при обновлении избранного');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Wishlist error:', error);
+                        // Revert UI change on error
+                        this.classList.toggle('active', isActive);
+                        icon.style.color = isActive ? '#D91F3D' : '';
+                        showNotification('Ошибка при обновлении избранного');
+                    });
                 });
             });
             
@@ -1763,18 +1790,45 @@
                     e.stopPropagation();
                     
                     const card = wishlistBtn.closest('.product-item-card');
+                    const productId = card.getAttribute('data-product-id');
                     const productName = card.querySelector('h4').textContent;
                     const icon = wishlistBtn.querySelector('i');
                     const isActive = wishlistBtn.classList.contains('active');
                     
+                    // Update UI optimistically
                     wishlistBtn.classList.toggle('active', !isActive);
                     icon.style.color = isActive ? '' : '#D91F3D';
                     
-                    showNotification(
-                        isActive 
-                        ? `${productName} удален из избранного` 
-                        : `${productName} добавлен в избранное`
-                    );
+                    // Make API request to toggle wishlist
+                    fetch(`/toggle/${productId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `csrfmiddlewaretoken=${getCookie('csrftoken')}`
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            showNotification(
+                                isActive 
+                                ? `${productName} удален из избранного` 
+                                : `${productName} добавлен в избранное`
+                            );
+                        } else {
+                            // Revert UI change if request failed
+                            wishlistBtn.classList.toggle('active', isActive);
+                            icon.style.color = isActive ? '#D91F3D' : '';
+                            showNotification('Ошибка при обновлении избранного');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Wishlist error:', error);
+                        // Revert UI change on error
+                        wishlistBtn.classList.toggle('active', isActive);
+                        icon.style.color = isActive ? '#D91F3D' : '';
+                        showNotification('Ошибка при обновлении избранного');
+                    });
                 }
             });
             
