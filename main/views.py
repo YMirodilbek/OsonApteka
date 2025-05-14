@@ -105,11 +105,11 @@ def send_otp(request):
             r = redis.Redis(host='localhost', port=6379, db=0)
 
             r.setex(f"otp_{phone_number}", 300, str(otp))  
-            # response = send_sms(phone_number, otp)
-            print(otp)
-            # if "error" in response:
-            #     form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
-            #     return render(request, 'auth/phone.html', {'form': form})
+            response = send_sms(phone_number, otp)
+            # print(otp)
+            if "error" in response:
+                form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
+                return render(request, 'auth/phone.html', {'form': form})
 
             request.session['phone_number'] = phone_number
             request.session['is_agreed'] = is_agreed
