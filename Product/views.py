@@ -543,6 +543,7 @@ def filial_users(request):
 )
     return render(request, 'filial/users.html', {'users':users})
 
+
 def filial_order_client(request):
     client_id = request.GET.get('client-id')
     # filial_id = request.GET.get('filial-id')
