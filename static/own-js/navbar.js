@@ -16,7 +16,7 @@ function toggleMobileMenu() {
     nav.classList.toggle('active');
 }
 
-// Sticky Header on Scroll
+// // Sticky Header on Scroll
 let lastScroll = 0;
 const header = document.querySelector('.main-header');
 

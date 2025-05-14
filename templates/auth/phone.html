@@ -5,36 +5,257 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login & Registration Form</title>
-  <!---Custom CSS File--->
-  <link rel="stylesheet" href="{%  static 'style.css' %}">
+  <title>AkmalPharm - Login</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4285F4;
+      --secondary: #34A853;
+      --accent: #5F6368;
+      --bg-light: #f8f9fa;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .login-header h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+    
+    .login-header p {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+    
+    .login-header .logo-img {
+      width: 150px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    
+    .form-group {
+      margin-bottom: 22px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      opacity: 0.6;
+    }
+    
+    .input-with-prefix {
+      position: relative;
+    }
+    
+    .input-with-prefix .prefix {
+      position: absolute;
+      left: 45px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #333;
+      font-weight: 500;
+      z-index: 10;
+    }
+    
+    .input-with-prefix input {
+      padding-left: 85px !important;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 14px 14px 14px 45px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s;
+      background: var(--bg-light);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+    }
+    
+    .terms-agreement {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    
+    .terms-agreement input {
+      margin-top: 5px;
+      margin-right: 10px;
+      min-width: 20px;
+      min-height: 20px;
+      accent-color: var(--primary);
+    }
+    
+    .terms-agreement a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .terms-agreement a:hover {
+      text-decoration: underline;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background: #3367d6;
+      transform: translateY(-2px);
+    }
+    
+    .submit-btn:disabled {
+      background-color: #a5c7ff;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .error-message {
+      color: #d93025;
+      font-size: 14px;
+      margin-top: 10px;
+      list-style-type: none;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
-<style>
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-</style>
 <body>
   <div class="container">
-    <input type="checkbox" id="check">
-    <div class="login form">
-      <header>Login</header>
-      <form method="post">
-          {% csrf_token %}
-          <p>{{ form.phone_number.label }}</p>
-          {{form.phone_number}}
-          <label>
-        <input type="checkbox" name="is_agreed" style="height: 20px; width: 20px; margin-top: 5px;" required>
-            <a href="{{ pdf.file.url }}">{{ pdf.title}}</a>
-        </label>
-        
-        <input type="submit" class="button" id="submitButton" value="Kodni Yuborish">
-          <h4 style="list-style-type: none;" >{{form.errors }}</h4>
-      </form>
+    <div class="login-header">
+      <img src="{% static 'media/AFM MEDICAL.png' %}" alt="AFM MEDICAL Logo" class="logo-img">
+      <h1>AkmalPharm</h1>
+      <p>Login to your account</p>
     </div>
-
+    
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_phone_number">{{ form.phone_number.label }}</label>
+        <div class="input-with-icon input-with-prefix">
+          <i class="fas fa-phone-alt"></i>
+          <span class="prefix">+998</span>
+          <input type="hidden" name="phone_number" id="real_phone_number">
+          <input type="text" id="visible_phone_number" class="form-control" maxlength="9" placeholder="XX XXX XX XX" autocomplete="off">
+        </div>
+      </div>
+      
+      <div class="terms-agreement">
+        <input type="checkbox" name="is_agreed" id="terms" required>
+        <label for="terms">I agree to the <a href="{{ pdf.file.url }}">{{ pdf.title }}</a></label>
+      </div>
+      
+      <button type="submit" class="submit-btn" id="submitButton">Kodni Yuborish</button>
+      
+      {% if form.errors %}
+      <div class="error-message">
+        {{ form.errors }}
+      </div>
+      {% endif %}
+    </form>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const visiblePhoneInput = document.getElementById('visible_phone_number');
+      const realPhoneInput = document.getElementById('real_phone_number');
+      const form = document.querySelector('form');
+      
+      // Format input as user types
+      visiblePhoneInput.addEventListener('input', function(e) {
+        // Allow only numbers
+        this.value = this.value.replace(/[^0-9]/g, '');
+        
+        // Update the hidden field with the complete phone number
+        realPhoneInput.value = '+998' + this.value;
+      });
+      
+      // Handle form submission
+      form.addEventListener('submit', function(e) {
+        // Ensure the hidden field has the full phone number with +998 prefix
+        realPhoneInput.value = '+998' + visiblePhoneInput.value;
+        
+        // Validate the phone number length
+        if (visiblePhoneInput.value.length !== 9) {
+          e.preventDefault();
+          alert('Please enter a valid 9-digit phone number');
+        }
+      });
+      
+      // If there's an error and form reloads, fill the visible input from the hidden one
+      if (realPhoneInput.value) {
+        // Remove the +998 prefix if it exists
+        visiblePhoneInput.value = realPhoneInput.value.replace('+998', '');
+      }
+    });
+  </script>
 </body>
 </html>
 
