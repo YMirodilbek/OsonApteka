@@ -56,7 +56,8 @@ def cart_view_json(request):
         
 
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
-    
+
+  
 def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
@@ -245,6 +246,10 @@ def checkout_view(request):
         filials = Filial.objects.all()  
 
     if request.method == 'POST':
+        filial_id = int(request.POST.get('filial'))
+
+        
+        
         form = CheckoutForm(request.POST, instance=order)
         if form.is_valid():
             order = form.save(commit=False)
@@ -255,8 +260,9 @@ def checkout_view(request):
                 lng = request.POST.get('address_lng')
                 if lat and lng:
                     order.address_text = f"Latitude: {lat}, Longitude: {lng}"
-            
+            filial = Filial.objects.get(id=filial_id)
             order.is_completed = True
+            order.filial = filial
             order.save()
             
             if order.payment_method == 'click':
@@ -264,7 +270,12 @@ def checkout_view(request):
                     service_id=settings.CLICK_SERVICE_ID,
                     merchant_id=settings.CLICK_MERCHANT_ID
                 )
-                
+                from main.bot_messages import send_telegram_message
+                telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
+                for i in telegram_ids:
+                    send_telegram_message(telegram_id=i,message=f'{order.id} bilan   \
+                        {filial.name} filialiga ga  tolovqilishga urinmoqda \
+                            iltimos tekshirib productni yetkazin ')
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
                     id=order.id,

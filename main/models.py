@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-
+import uuid
 
 class UserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
@@ -34,7 +34,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)  
     is_agree = models.BooleanField(default=False) 
     date_joined = models.DateTimeField(auto_now_add=True)
-
+    telegram_id = models.BigIntegerField(null=True, blank=True)
+    telegram_token = models.CharField(max_length=100, unique=True, null=True, blank=True, default=uuid.uuid4)
     objects = UserManager()
 
     USERNAME_FIELD = "phone_number"

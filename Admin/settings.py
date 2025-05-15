@@ -75,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Admin.wsgi.application'
+DJANGO_ALLOW_ASYNC_UNSAFE = True
 # settings.py
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 
