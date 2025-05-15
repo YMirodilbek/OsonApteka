@@ -78,10 +78,11 @@
                 <a class="nav-link text-white" href="/filial/login/">Login</a>
               </li>
               {% endif %}
-              
+              {% if not request.user.telegram_id %}
               <li class="nav-item">
                 <a class="nav-link text-white" href="https://t.me/akmalfarimorder_bot.?start={{ user.telegram_token }}">Telegram bot </a>
               </li>
+              {% endif %}
             
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
