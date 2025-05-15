@@ -803,7 +803,7 @@
         <h1>Мой профиль</h1>
         <div class="profile-info">
             <div class="profile-details">
-                <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+                <a href="/auth/logout/"><h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3></a>
                 <p>{{ request.user.email }}</p>
             </div>
         </div>
