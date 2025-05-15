@@ -38,6 +38,24 @@
 # stdout_logfile=/var/log/celery_beat.out.log
 
 
+
+
+# sudo nano /etc/supervisor/conf.d/telegram_bot.conf
+# [program:telegram_bot]
+# command=/home/ubuntu/env/bin/python3 /home/ubuntu/main/bot.py
+# directory=/home/ubuntu/main
+# user=ubuntu
+# autostart=true
+# autorestart=true
+# stderr_logfile=/var/log/telegram_bot.err.log
+# stdout_logfile=/var/log/telegram_bot.out.log
+
+
+# sudo supervisorctl start telegram_bot
+
+
+
+
 # [program:uvicorn]
 # directory=/home/ubuntu/project
 # command=/home/ubuntu/env/bin/uvicorn your_project.asgi:application --host 0.0.0.0 --port 8000
