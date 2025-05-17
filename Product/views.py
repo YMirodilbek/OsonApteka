@@ -273,9 +273,16 @@ def checkout_view(request):
                 from main.bot_messages import send_telegram_message
                 telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
                 for i in telegram_ids:
-                    send_telegram_message(telegram_id=i,message=f'{order.id} bilan   \
-                        {filial.name} filialiga ga  tolovqilishga urinmoqda \
-                            iltimos tekshirib productni yetkazin ')
+                    send_telegram_message(
+                            telegram_id=i,
+                            message=f"buyurtma id: {order.id}\n"
+                                    f"soat : {datetime.now().date()}\n"
+                                    f"filial : {order.filial}\n"
+                                    f"summa: {order.total_price} sum\n"
+                                    f"dorilar soni: {order.items.all().count()} ta\n"
+                                    f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
+                            )
+
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
                     id=order.id,
@@ -284,7 +291,18 @@ def checkout_view(request):
                 )
                 
                 return redirect(payment_link)
-            
+            from main.bot_messages import send_telegram_message
+            telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
+            for i in telegram_ids:
+                send_telegram_message(
+                        telegram_id=i,
+                        message=f"buyurtma id: {order.id}\n"
+                                f"soat : {datetime.now().date()}\n"
+                                f"filial : {order.filial}\n"
+                                f"summa: {order.total_price} sum\n"
+                                f"dorilar soni: {order.items.all().count()} ta\n"
+                                f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
+                        )
             messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
             return redirect("order_history")
         else:
