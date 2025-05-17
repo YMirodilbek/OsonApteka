@@ -297,7 +297,7 @@ def checkout_view(request):
                 send_telegram_message(
                         telegram_id=i,
                         message=f"buyurtma id: {order.id}\n"
-                                f"soat : {datetime.now().date()}\n"
+                                f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
                                 f"filial : {order.filial}\n"
                                 f"summa: {order.total_price} sum\n"
                                 f"dorilar soni: {order.items.all().count()} ta\n"
