@@ -178,7 +178,7 @@ STATIC_URL = '/static/'  # Static fayllar uchun URL
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static fayllarni yig'ish uchun joy
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Local static fayllar joyi
 
-MEDIA_URL = '/media/'  #
+MEDIA_URL = '/media/'  
 
 
 
@@ -189,11 +189,6 @@ LOGIN_REDIRECT_URL = '/auth/send-otp/'
 CLICK_SERVICE_ID = env.str('CLICK_SERVICE_ID') 
 CLICK_MERCHANT_ID = env.str('CLICK_MERCHANT_ID') 
 CLICK_SECRET_KEY = env.str('CLICK_SECRET_KEY')
-print(CLICK_SECRET_KEY)
-print(CLICK_SECRET_KEY)
-print(CLICK_SECRET_KEY)
-print(CLICK_SECRET_KEY)
-print(CLICK_SECRET_KEY)
 CLICK_ACCOUNT_MODEL = "Product.models.Order"
 CLICK_AMOUNT_FIELD = "amount"
 

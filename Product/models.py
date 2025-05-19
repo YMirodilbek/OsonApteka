@@ -54,7 +54,7 @@ class Order(models.Model):
         ('Topshirildi', 'Topshirildi '),
         
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
     filial = models.ForeignKey(Filial, on_delete=models.SET_NULL, null=True, blank=True, related_name="finals")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='cash')
     
