@@ -198,7 +198,6 @@ class ClickWebhookAPIView(ClickWebhook):
         try:
             order = Order.objects.get(id=merchant_trans_id)
             order.is_paid = True
-            order.is_completed = True
             order.save()
             # Here you can handle additional order processing
             # For example, send email notification, create shipping order, etc.
@@ -262,6 +261,7 @@ def checkout_view(request):
                 if lat and lng:
                     order.address_text = f"Latitude: {lat}, Longitude: {lng}"
             filial = Filial.objects.get(id=filial_id)
+            order.is_completed = True
             order.filial = filial
             order.save()
             
