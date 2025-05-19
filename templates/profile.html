@@ -795,6 +795,14 @@
             width: 95%; /* Немного шире на мобильных */
         }
     }
+
+    .logout-button {
+        background-color: #E31E24;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+    }
 </style>
 
 
@@ -803,7 +811,7 @@
         <h1>Мой профиль</h1>
         <div class="profile-info">
             <div class="profile-details">
-                <a href="/auth/logout/"><h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3></a>
+                <a href="{% url 'logout_url' %}"><h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3></a>
                 <p>{{ request.user.email }}</p>
             </div>
         </div>

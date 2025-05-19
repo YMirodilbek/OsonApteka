@@ -190,9 +190,9 @@ AUTH_USER_MODEL = "main.CustomUser"
 LOGIN_REDIRECT_URL = '/auth/send-otp/'
 
 
-CLICK_SERVICE_ID = "your-service-id"  
-CLICK_MERCHANT_ID = "your-merchant-id" 
-CLICK_SECRET_KEY = "your-secret-key" 
+CLICK_SERVICE_ID = "73303"  
+CLICK_MERCHANT_ID = "12523" 
+CLICK_SECRET_KEY = "U8xDdmNK17" 
 CLICK_ACCOUNT_MODEL = "Product.models.Order"
 CLICK_AMOUNT_FIELD = "amount"
 

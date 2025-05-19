@@ -7,7 +7,7 @@ urlpatterns = [
     path('verify-otp/', verify_otp, name='verify_otp'),
     path('complete-registration/', complete_registration, name='complete_registration'),
     path('success/', success, name='success'),
-    path('logout/',Logout),
+    path('logout/',Logout, name='logout_url'),
     path('blog/',blog_view, name='blog'),
     path('blog/<int:pk>/', BlogDetail, name='blog_details'),
     path('blog/create/', blog_create, name='blog_create'),
