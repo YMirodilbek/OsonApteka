@@ -600,6 +600,7 @@
                     addToCart(productId, () => {
                         showNotification(`${name} добавлен в корзину`);
                     }, () => {
+                        window.location.href('')
                         showNotification('Ошибка при добавлении в корзину');
                     });
                     
@@ -864,10 +865,11 @@
                 .catch(error => {
                     console.error('Add to cart error:', error);
                     showNotification('Ошибка при добавлении в корзину');
-                    
+                    window.location.href = '{% url "send_otp" %}';
                     if (errorCallback) errorCallback();
                 });
             }
+            
         });
 
         // Helper function to get CSRF token
