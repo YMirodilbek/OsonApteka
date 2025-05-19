@@ -11,24 +11,23 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
 import os
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+env = environ.Env()
+environ.Env.read_env() 
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+SECRET_KEY = env.str('SECRET_KEY')
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%ob5vcdmd^n2c0q1qw7fyg&ii9e6_44n3m6t@&g-$92rja^o^n'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
 
-# Application definition
+
 
 INSTALLED_APPS = [
     # 'jet',
@@ -179,20 +178,22 @@ STATIC_URL = '/static/'  # Static fayllar uchun URL
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static fayllarni yig'ish uchun joy
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Local static fayllar joyi
 
-MEDIA_URL = '/media/'  # Media fayllar uchun URL
+MEDIA_URL = '/media/'  #
 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "main.CustomUser"
 LOGIN_REDIRECT_URL = '/auth/send-otp/'
 
-
-CLICK_SERVICE_ID = "73303"  
-CLICK_MERCHANT_ID = "12523" 
-CLICK_SECRET_KEY = "U8xDdmNK17" 
+CLICK_SERVICE_ID = env.str('CLICK_SERVICE_ID') 
+CLICK_MERCHANT_ID = env.str('CLICK_MERCHANT_ID') 
+CLICK_SECRET_KEY = env.str('CLICK_SECRET_KEY')
+print(CLICK_SECRET_KEY)
+print(CLICK_SECRET_KEY)
+print(CLICK_SECRET_KEY)
+print(CLICK_SECRET_KEY)
+print(CLICK_SECRET_KEY)
 CLICK_ACCOUNT_MODEL = "Product.models.Order"
 CLICK_AMOUNT_FIELD = "amount"
 
