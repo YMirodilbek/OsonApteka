@@ -1834,45 +1834,52 @@
             
             // Add to cart API function
             function addToCart(productId, productName, buttonElement) {
-                    fetch(`/add_to_cart/${productId}/`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': getCookie('csrftoken'),
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 200) {
-                            // Update cart badge
-                            const cartBadge = document.querySelector('.cart-badge');
-                            if (cartBadge) {
-                                cartBadge.setAttribute('data-count', data.cart_count);
-                            }
-                            
-                        // Visual feedback
-                        const originalText = buttonElement.textContent;
-                        buttonElement.textContent = 'Добавлено ✓';
-                        buttonElement.style.backgroundColor = '#4CAF50';
-                            
-                            // Show notification
-                            showNotification(`${productName} добавлен в корзину`);
-                            
-                            // Reset button after delay
-                            setTimeout(() => {
-                            buttonElement.textContent = originalText;
-                            buttonElement.style.backgroundColor = '';
-                            }, 1500);
-                        } else {
-                            showNotification('Ошибка при добавлении в корзину');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showNotification('Ошибка при добавлении в корзину');
-                    });
-                }
+    fetch(`/add_to_cart/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return response.json();
+        } else {
+            window.location.href = '{% url 'send_otp' %}';
+            throw new Error("Server returned non-JSON data (probably a login page).");
+        }
+    })
+    .then(data => {
+        if (data.status === 200) {
+            const cartBadge = document.querySelector('.cart-badge');
+            if (cartBadge) {
+                cartBadge.setAttribute('data-count', data.cart_count);
+            }
+
+            const originalText = buttonElement.textContent;
+            buttonElement.textContent = 'Добавлено ✓';
+            buttonElement.style.backgroundColor = '#4CAF50';
+
+            showNotification(`${productName} добавлен в корзину`);
+
+            setTimeout(() => {
+                buttonElement.textContent = originalText;
+                buttonElement.style.backgroundColor = '';
+            }, 1500);
+        } else {
+            showNotification('Ошибка при добавлении в корзину');
+            window.location.href = '{% url 'send_otp' %}';
+        }
+    })
+    .catch(error => {
+        console.error('Xatolik:', error);
+        showNotification('Ошибка при добавлении в корзину');
+    });
+}
+
+       
+            }
         
         // ======= Notification System =======
         function setupNotifications() {
