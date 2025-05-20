@@ -18,6 +18,7 @@ from click_up import ClickUp
 from .decorator import *
 from .models import *
 from .forms import  *
+from tmp.models import *
 import redis
 import json
 
