@@ -1,0 +1,171 @@
+{% extends 'website_dashboard/web_base.html' %}
+
+{% block title %}Vakansiyalarni boshqarish - AkmalFarm{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Vakansiyalarni boshqarish</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createVacancyModal">
+            <i class="bi bi-plus-circle me-2"></i>Yangi vakansiya qo'shish
+        </button>
+    </div>
+
+    <!-- Vacancies Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Lavozim</th>
+                            <th>Yosh</th>
+                            <th>Manzil</th>
+                            <th>Smena</th>
+                            <th>Maosh</th>
+                            <th>Telefon</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in vacancy %}
+                        <tr>
+                            <td>{{ v.title }}</td>
+                            <td>{{ v.age }}</td>
+                            <td>{{ v.address }}</td>
+                            <td>{{ v.shift }}</td>
+                            <td>{{ v.salary }}</td>
+                            <td>{{ v.phone_number }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editVacancyModal{{ v.id }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteVacancyModal{{ v.id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editVacancyModal{{ v.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Vakansiyani tahrirlash</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="{% url 'vacancyUpdate' v.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Lavozim</label>
+                                                <input type="text" class="form-control" name="title" value="{{ v.title }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Yosh</label>
+                                                <input type="text" class="form-control" name="age" value="{{ v.age }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Manzil</label>
+                                                <input type="text" class="form-control" name="address" value="{{ v.address }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Smena</label>
+                                                <input type="text" class="form-control" name="shift" value="{{ v.shift }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Maosh</label>
+                                                <input type="text" class="form-control" name="salary" value="{{ v.salary }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Telefon raqami</label>
+                                                <input type="text" class="form-control" name="phone_number" value="{{ v.phone_number }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                            <button type="submit" class="btn btn-primary">O'zgarishlarni saqlash</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteVacancyModal{{ v.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Vakansiyani o'chirish</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>"{{ v.title }}" vakansiyasini o'chirishni xohlaysizmi?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                        <form action="{% url 'vacancyDelete' v.id %}" method="POST" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">O'chirish</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">Vakansiyalar topilmadi</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Vacancy Modal -->
+<div class="modal fade" id="createVacancyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yangi vakansiya qo'shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'vacancyCreate' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Lavozim</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Yosh</label>
+                        <input type="text" class="form-control" name="age" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Manzil</label>
+                        <input type="text" class="form-control" name="address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Smena</label>
+                        <input type="text" class="form-control" name="shift" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Maosh</label>
+                        <input type="text" class="form-control" name="salary" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telefon raqami</label>
+                        <input type="text" class="form-control" name="phone_number" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Vakansiya qo'shish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

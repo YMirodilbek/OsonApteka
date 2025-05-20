@@ -1,0 +1,185 @@
+{% extends 'website_dashboard/web_base.html' %}
+
+{% block title %}Blog boshqarish - AkmalFarm{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Blog boshqarish</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createBlogModal">
+            <i class="bi bi-plus-circle me-2"></i>Yangi maqola qo'shish
+        </button>
+    </div>
+
+    <!-- Blog Posts Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rasm</th>
+                            <th>Sarlavha</th>
+                            <th>Matn</th>
+                            <th>Yaratilgan sana</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for blog in blogs %}
+                        <tr>
+                            <td>
+                                {% if blog.image %}
+                                <img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="width: 100px; height: 60px; object-fit: cover;">
+                                {% else %}
+                                <span class="text-muted">Rasm yo'q</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ blog.title }}</td>
+                            <td>{{ blog.text|truncatechars:100 }}</td>
+                            <td>{{ blog.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editBlogModal{{ blog.id }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBlogModal{{ blog.id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editBlogModal{{ blog.id }}" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Maqolani tahrirlash</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="{% url 'blog_update' blog.id %}" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Rasm</label>
+                                                {% if blog.image %}
+                                                <div class="mb-2">
+                                                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="max-width: 200px;">
+                                                </div>
+                                                {% endif %}
+                                                <input type="file" class="form-control" name="image" accept="image/*">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Sarlavha</label>
+                                                <input type="text" class="form-control" name="title" value="{{ blog.title }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Matn</label>
+                                                <textarea class="form-control" name="text" rows="10" required>{{ blog.text }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                            <button type="submit" class="btn btn-primary">O'zgarishlarni saqlash</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteBlogModal{{ blog.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Maqolani o'chirish</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>"{{ blog.title }}" maqolasini o'chirishni xohlaysizmi?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                        <form action="{% url 'blog_delete' blog.id %}" method="POST" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">O'chirish</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Maqolalar topilmadi</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldingi</a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyingi</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Create Blog Modal -->
+<div class="modal fade" id="createBlogModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yangi maqola qo'shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'blog_create' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Rasm</label>
+                        <input type="file" class="form-control" name="image" accept="image/*" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Sarlavha</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Matn</label>
+                        <textarea class="form-control" name="text" rows="10" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Maqola qo'shish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

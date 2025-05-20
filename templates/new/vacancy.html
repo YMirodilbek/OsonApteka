@@ -118,179 +118,37 @@
     </style>
 
     <div class="afm-vacancy-container">
+        {% for i in vacancy %}
         <div class="afm-vacancy-card">
             <h2 class="afm-vacancy-title">
                 <i class="fas fa-notes-medical"></i>
-                Aptekaga sotuvchi olamiz!
+                {{i.title}}
             </h2>
             <div class="afm-vacancy-info">
                 <div class="afm-vacancy-detail">
                     <i class="fas fa-user"></i>
-                    <span>Yosh chegarasi: 18+</span>
+                    <span>{{i.age}}</span>
                 </div>
                 <div class="afm-vacancy-detail">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>Toshkent, Chilonzor</span>
+                    <span>{{i.address}}</span>
                 </div>
                 <div class="afm-vacancy-detail">
                     <i class="fas fa-clock"></i>
-                    <span>Ish vaqti: 8:00 - 18:30</span>
+                    <span>{{i.shift}}</span>
                 </div>
                 <div class="afm-vacancy-detail">
                     <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">200$ dan boshlab (ish tajribasiga qarab)</span>
+                    <span class="afm-vacancy-salary">{{i.salary}}</span>
                 </div>
                 <div class="afm-vacancy-detail">
                     <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">+998 99 909 12 82</a>
+                    <a href="tel:+998999091282" class="afm-vacancy-phone">{{i.phone_number}}</a>
                 </div>
             </div>
         </div>
+        {% endfor %}
 
-        <div class="afm-vacancy-card">
-            <h2 class="afm-vacancy-title">
-                <i class="fas fa-notes-medical"></i>
-                Aptekaga sotuvchi olamiz!
-            </h2>
-            <div class="afm-vacancy-info">
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-user"></i>
-                    <span>Yosh chegarasi: 18+</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Toshkent, Chilonzor</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-clock"></i>
-                    <span>Ish vaqti: 8:00 - 18:30</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">200$ dan boshlab (ish tajribasiga qarab)</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">+998 99 909 12 82</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="afm-vacancy-card">
-            <h2 class="afm-vacancy-title">
-                <i class="fas fa-notes-medical"></i>
-                Aptekaga sotuvchi olamiz!
-            </h2>
-            <div class="afm-vacancy-info">
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-user"></i>
-                    <span>Yosh chegarasi: 18+</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Toshkent, Chilonzor</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-clock"></i>
-                    <span>Ish vaqti: 8:00 - 18:30</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">200$ dan boshlab (ish tajribasiga qarab)</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">+998 99 909 12 82</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="afm-vacancy-card">
-            <h2 class="afm-vacancy-title">
-                <i class="fas fa-notes-medical"></i>
-                Aptekaga sotuvchi olamiz!
-            </h2>
-            <div class="afm-vacancy-info">
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-user"></i>
-                    <span>Yosh chegarasi: 18+</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Toshkent, Chilonzor</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-clock"></i>
-                    <span>Ish vaqti: 8:00 - 18:30</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">200$ dan boshlab (ish tajribasiga qarab)</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">+998 99 909 12 82</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="afm-vacancy-card">
-            <h2 class="afm-vacancy-title">
-                <i class="fas fa-notes-medical"></i>
-                Aptekaga sotuvchi olamiz!
-            </h2>
-            <div class="afm-vacancy-info">
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-user"></i>
-                    <span>Yosh chegarasi: 18+</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Toshkent, Chilonzor</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-clock"></i>
-                    <span>Ish vaqti: 8:00 - 18:30</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">200$ dan boshlab (ish tajribasiga qarab)</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">+998 99 909 12 82</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="afm-vacancy-card">
-            <h2 class="afm-vacancy-title">
-                <i class="fas fa-notes-medical"></i>
-                Aptekaga sotuvchi olamiz!
-            </h2>
-            <div class="afm-vacancy-info">
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-user"></i>
-                    <span>Yosh chegarasi: 18+</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Toshkent, Chilonzor</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-clock"></i>
-                    <span>Ish vaqti: 8:00 - 18:30</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">200$ dan boshlab (ish tajribasiga qarab)</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">+998 99 909 12 82</a>
-                </div>
-            </div>
-        </div>
     </div>
 
 

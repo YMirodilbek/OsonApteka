@@ -1,0 +1,81 @@
+{% extends 'website_dashboard/web_base.html' %}
+
+{% block title %}Boshqaruv - AkmalFarm{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4">Boshqaruv paneli</h2>
+    
+    <div class="row g-4">
+        <!-- Vacancies Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-briefcase text-primary me-2"></i>
+                        Vakansiyalar
+                    </h5>
+                    <p class="card-text">Jami vakansiyalar: {{ vacancy|length }}</p>
+                    <a href="{% url 'dashboard_vacancy_url' %}" class="btn btn-primary">Vakansiyalarni boshqarish</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pharmacies Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-shop text-success me-2"></i>
+                        Aptekalar
+                    </h5>
+                    <p class="card-text">Jami aptekalar: {{ pharm|length }}</p>
+                    <a href="{% url 'dashboard_pharmacy_url' %}" class="btn btn-success">Aptekalarni boshqarish</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Landlords Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-building text-info me-2"></i>
+                        Ijara beruvchilar
+                    </h5>
+                    <p class="card-text">Jami ijara beruvchilar: {{ landlords|length }}</p>
+                    <a href="{% url 'dashboard_landlords_url' %}" class="btn btn-info text-white">Ijara beruvchilarni boshqarish</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Us Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle text-warning me-2"></i>
+                        Biz haqimizda
+                    </h5>
+                    <p class="card-text">Kompaniya ma'lumotlari va tavsifini boshqarish</p>
+                    <a href="{% url 'dashboard_about_url' %}" class="btn btn-warning text-white">Tahrirlash</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Public Offer Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-file-text text-danger me-2"></i>
+                        Ommaviy taklif
+                    </h5>
+                    <p class="card-text">Ommaviy taklif shartlari va sharoitlarini boshqarish</p>
+                    <a href="{% url 'dashboard_public_url' %}" class="btn btn-danger">Tahrirlash</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

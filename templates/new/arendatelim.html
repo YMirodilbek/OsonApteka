@@ -62,36 +62,14 @@
     </style>
 
     <div class="container_2">
+        {% for i in landlords %}
         <div class="cardp">
-            <h1>Toshkent shahar</h1>
-            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> +998 99 909 1282</p>
-            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
-            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
+            <h1>{{i.title}}</h1>
+            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> {{i.phone_number_1}}</p>
+            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> {{i.phone_number_2}}</p>
+            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> {{i.address}}</p>
         </div>
-        <div class="cardp">
-            <h1>Toshkent shahar</h1>
-            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> +998 99 909 1282</p>
-            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
-            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
-        </div>
-        <div class="cardp">
-            <h1>Toshkent shahar</h1>
-            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> +998 99 909 1282</p>
-            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
-            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
-        </div>
-        <div class="cardp">
-            <h1>Toshkent shahar</h1>
-            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> +998 99 909 1282</p>
-            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
-            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
-        </div>
-        <div class="cardp">
-            <h1>Toshkent shahar</h1>
-            <p><i class="fas fa-phone" style="color: red;"></i> <strong>Telefon-1:</strong> +998 99 909 1282</p>
-            <p><i class="fas fa-phone-volume" style="color: red;"></i> <strong>Telefon-2:</strong> +998 99 909 1283</p>
-            <p><i class="fas fa-map-marker-alt" style="color: red;"></i> <strong>Adress:</strong> Chilonzor 12.uy</p>
-        </div>
+        {% endfor %}    
 
     </div>
 {% endblock %}

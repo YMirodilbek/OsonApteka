@@ -1,0 +1,169 @@
+{% extends 'website_dashboard/web_base.html' %}
+
+{% block title %}Aptekalarni boshqarish - AkmalFarm{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Aptekalarni boshqarish</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPharmacyModal">
+            <i class="bi bi-plus-circle me-2"></i>Yangi apteka qo'shish
+        </button>
+    </div>
+
+    <!-- Pharmacies Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nomi</th>
+                            <th>Manzil</th>
+                            <th>Smena</th>
+                            <th>Telefon</th>
+                            <th>Joylashuv</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in pharm %}
+                        <tr>
+                            <td>{{ p.title }}</td>
+                            <td>{{ p.address }}</td>
+                            <td>{{ p.shift }}</td>
+                            <td>{{ p.phone_number }}</td>
+                            <td>{{ p.lat }}, {{ p.lon }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editPharmacyModal{{ p.id }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePharmacyModal{{ p.id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editPharmacyModal{{ p.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Aptekani tahrirlash</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="{% url 'pharmUpdate' p.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nomi</label>
+                                                <input type="text" class="form-control" name="title" value="{{ p.title }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Manzil</label>
+                                                <input type="text" class="form-control" name="address" value="{{ p.address }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Smena</label>
+                                                <input type="text" class="form-control" name="shift" value="{{ p.shift }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Telefon raqami</label>
+                                                <input type="text" class="form-control" name="phone_number" value="{{ p.phone_number }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Kenglik</label>
+                                                <input type="number" step="any" class="form-control" name="lat" value="{{ p.lat }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Uzunlik</label>
+                                                <input type="number" step="any" class="form-control" name="lon" value="{{ p.lon }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                            <button type="submit" class="btn btn-primary">O'zgarishlarni saqlash</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deletePharmacyModal{{ p.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Aptekani o'chirish</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>"{{ p.title }}" aptekasini o'chirishni xohlaysizmi?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                        <form action="{% url 'pharmDelete' p.id %}" method="POST" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">O'chirish</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">Aptekalar topilmadi</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Pharmacy Modal -->
+<div class="modal fade" id="createPharmacyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yangi apteka qo'shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'pharmCreate' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nomi</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Manzil</label>
+                        <input type="text" class="form-control" name="address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Smena</label>
+                        <input type="text" class="form-control" name="shift" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telefon raqami</label>
+                        <input type="text" class="form-control" name="phone_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kenglik</label>
+                        <input type="number" step="any" class="form-control" name="lat" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Uzunlik</label>
+                        <input type="number" step="any" class="form-control" name="lon" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Apteka qo'shish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

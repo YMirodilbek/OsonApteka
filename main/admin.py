@@ -36,5 +36,3 @@ admin.site.register(PDFDocument)
 
 admin.site.register(EskizToken)
 
-admin.site.register(Blog)
-

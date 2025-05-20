@@ -145,42 +145,15 @@
     <div class="main-container">
 
         <div class="left-panel">
+            {% for i in pharm %}
             <div class="store">
-                <h3>Аптека №22 Текстиль г Ташкент</h3>
-                <p><strong>Адрес:</strong> г.Ташкент, ул. У.Носира, 84</p>
-                <p><strong>График работы:</strong> 8:00–22:00</p>
-                <p><strong>Телефон:</strong> 71 280-62-22</p>
-                <a href="#" class="button">Посмотреть на карте</a>
+                <h3>{{i.title}}</h3>
+                <p><strong>Адрес:</strong> {{i.address}}</p>
+                <p><strong>График работы:</strong> {{i.shift}}</p>
+                <p><strong>Телефон:</strong> {{i.phone_number}}</p>
+                <a href="#" class="button" onclick="showMap('{{i.lat}}','{{i.lon}}')">Посмотреть на карте</a>
             </div>
-
-            <div class="store">
-                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
-                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
-                <p><strong>График работы:</strong> 08:00–16:00</p>
-                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
-                <a href="#" class="button">Посмотреть на карте</a>
-            </div>
-            <div class="store">
-                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
-                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
-                <p><strong>График работы:</strong> 08:00–16:00</p>
-                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
-                <a href="#" class="button">Посмотреть на карте</a>
-            </div>
-            <div class="store">
-                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
-                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
-                <p><strong>График работы:</strong> 08:00–16:00</p>
-                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
-                <a href="#" class="button">Посмотреть на карте</a>
-            </div>
-            <div class="store">
-                <h3>Аптека №155 Сарыкульская г Ташкент</h3>
-                <p><strong>Адрес:</strong> г.Ташкент, Мирободский район, ул. А.Кадырова дом 45 кв 1</p>
-                <p><strong>График работы:</strong> 08:00–16:00</p>
-                <p><strong>Телефон:</strong> 998 95 193 13 23</p>
-                <a href="#" class="button">Посмотреть на карте</a>
-            </div>
+            {% endfor %}
 
             <!-- Yana filiallar qo‘shish mumkin shu formatda -->
         </div>

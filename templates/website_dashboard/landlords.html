@@ -1,0 +1,151 @@
+{% extends 'website_dashboard/web_base.html' %}
+
+{% block title %}Manage Landlords - AkmalFarm{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manage Landlords</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createLandlordModal">
+            <i class="bi bi-plus-circle me-2"></i>Yangi ijarachi qo'shish
+        </button>
+    </div>
+
+    <!-- Landlords Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nomi</th>
+                            <th>Manzil</th>
+                            <th>Telefon 1</th>
+                            <th>Telefon 2</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in landlords %}
+                        <tr>
+                            <td>{{ l.title }}</td>
+                            <td>{{ l.address }}</td>
+                            <td>{{ l.phone_number_1 }}</td>
+                            <td>{{ l.phone_number_2 }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editLandlordModal{{ l.id }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteLandlordModal{{ l.id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editLandlordModal{{ l.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Ijarachi o'zgartirish</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="{% url 'landlordUpdate' l.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nomi</label>
+                                                <input type="text" class="form-control" name="title" value="{{ l.title }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Manzil</label>
+                                                <input type="text" class="form-control" name="address" value="{{ l.address }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Telefon 1</label>
+                                                <input type="text" class="form-control" name="phone_number_1" value="{{ l.phone_number_1 }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Telefon 2</label>
+                                                <input type="text" class="form-control" name="phone_number_2" value="{{ l.phone_number_2 }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                            <button type="submit" class="btn btn-primary">Saqlash</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteLandlordModal{{ l.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Ijarachi o'chirish</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Ijarachi "{{ l.title }}" ni o'chirishni xohlaysizmi?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                                        <form action="{% url 'landlordDelete' l.id %}" method="POST" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">O'chirish</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Ijarachi topilmadi</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Landlord Modal -->
+<div class="modal fade" id="createLandlordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yangi ijarachi qo'shish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'landlordCreate' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nomi</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Manzil</label>
+                        <input type="text" class="form-control" name="address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telefon 1</label>
+                        <input type="text" class="form-control" name="phone_number_1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telefon 2</label>
+                        <input type="text" class="form-control" name="phone_number_2" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Ijarachi qo'shish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

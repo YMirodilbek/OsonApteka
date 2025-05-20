@@ -280,7 +280,7 @@ def checkout_view(request):
                                     f"filial : {order.filial}\n"
                                     f"summa: {order.total_price} sum\n"
                                     f"dorilar soni: {order.items.all().count()} ta\n"
-                                    f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
+                                    f"tolov : {'bajarildi' if order.is_paid else 'kutilmoqda'}"
                             )
 
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
@@ -349,7 +349,7 @@ def Myaccount(request):
         'wishlist_items': wishlist_items
     }
 
-    return render(request, 'profile.html', context)
+    return render(request, 'profile.html', context) 
 
 @login_required(login_url='/auth/send-otp/')
 def toggle_wishlist(request, product_id):

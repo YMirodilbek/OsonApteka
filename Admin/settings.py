@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'main',
     'Product',
-    'click_up'
+    'click_up',
+    'tmp'
 ]
 
 MIDDLEWARE = [

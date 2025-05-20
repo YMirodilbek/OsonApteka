@@ -182,37 +182,3 @@ def Product(request):
 def Logout(request):
     logout(request)
     return redirect('/auth/send-otp/')
-
-
-def blog_view(request):
-    blogs = Blog.objects.all().order_by('-created_at')
-    paginator = Paginator(blogs, 10)  # Show 6 blogs per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
-    context = {
-        'page_obj': page_obj,
-        'blogs': page_obj,
-    }
-    return render(request,'blog/blog.html', context)
-
-
-def BlogDetail(request, pk):
-    blog = Blog.objects.get(pk=pk)
-    context = {
-        'blog': blog
-    }
-    return render(request, 'blog/blog-details.html', context)
-
-
-def blog_create(request):
-    if not request.user.is_staff:
-        return redirect('blog')
-    
-    if request.method == "POST":
-        image = request.FILES.get('image')
-        title = request.POST.get('title')
-        text = request.POST.get('text')
-        blog = Blog.objects.create(image=image, title=title, text=text)
-        return redirect('blog_details', pk=blog.pk)    
-    return render(request, 'blog/blog-create.html')
