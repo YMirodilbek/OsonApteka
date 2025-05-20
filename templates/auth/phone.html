@@ -191,8 +191,8 @@
   <div class="container">
     <div class="login-header">
       <img src="{% static 'media/AFM MEDICAL.png' %}" alt="AFM MEDICAL Logo" class="logo-img">
-      <h1>AkmalPharm</h1>
-      <p>Login to your account</p>
+      <h1>AkmalFarm</h1>
+      <p>авторизоваться</p>
     </div>
     
     <form method="post">
@@ -209,10 +209,10 @@
       
       <div class="terms-agreement">
         <input type="checkbox" name="is_agreed" id="terms" required>
-        <label for="terms">Offerta bilan tanishdim <a href="{{ pdf.file.url }}">{{ pdf.title }}</a></label>
+        <label for="terms">офферта <a href="{{ pdf.file.url }}">{{ pdf.title }}</a></label>
       </div>
       
-      <button type="submit" class="submit-btn" id="submitButton">Kodni Yuborish</button>
+      <button type="submit" class="submit-btn" id="submitButton">Отправить код</button>
       
       {% if form.errors %}
       <div class="error-message">
