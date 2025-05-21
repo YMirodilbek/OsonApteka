@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from . import models
 from django.contrib import messages
 from django.core.paginator import Paginator
-
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 
 def Vacancy(request):
@@ -13,6 +13,7 @@ def Vacancy(request):
     return render(request,'new/vacancy.html',context)
 
 
+@login_required(login_url='/auth/send-otp/')
 def vacancyCreate(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -27,6 +28,7 @@ def vacancyCreate(request):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required(login_url='/auth/send-otp/')
 def vacancyUpdate(request,id):
     vacancy = models.Vacancy.objects.get(id=id)
     if request.method == 'POST':
@@ -46,6 +48,7 @@ def vacancyUpdate(request,id):
         messages.success(request,'Vacancy updated successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='/auth/send-otp/')
 def vacancyDelete(request,id):
     vacancy = models.Vacancy.objects.get(id=id)
     vacancy.delete()
@@ -61,6 +64,7 @@ def Pharm(request):
     }
     return render(request,'new/farmaset.html',context)
 
+@login_required(login_url='/auth/send-otp/')
 def pharmCreate(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -73,6 +77,7 @@ def pharmCreate(request):
         messages.success(request,'Pharmacy created successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='/auth/send-otp/')
 def pharmUpdate(request,id):
     pharm = models.OurPharmacie.objects.get(id=id)
     if request.method == 'POST':
@@ -92,6 +97,7 @@ def pharmUpdate(request,id):
         messages.success(request,'Pharmacy updated successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='/auth/send-otp/')
 def pharmDelete(request,id):
     pharm = models.OurPharmacie.objects.get(id=id)
     pharm.delete()
@@ -108,6 +114,7 @@ def About(request):
     return render(request,'new/onas.html',context)
 
 
+@login_required(login_url='/auth/send-otp/')
 def aboutUpdate(request):
     about = models.AboutUs.objects.last()
     body = request.POST.get('body')
@@ -130,6 +137,7 @@ def Public(request):
     return render(request,'new/oferta.html',context)
 
 
+@login_required(login_url='/auth/send-otp/')
 def publicUpdate(request):
     public = models.Public.objects.last()
     body = request.POST.get('body')
@@ -150,6 +158,8 @@ def Landlords(request):
     }
     return render(request,'new/arendatelim.html',context)
 
+
+@login_required(login_url='/auth/send-otp/')
 def landlordCreate(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -160,6 +170,7 @@ def landlordCreate(request):
         messages.success(request,'Landlord created successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='/auth/send-otp/')
 def landlordUpdate(request,id):
     landlord = models.Landlord.objects.get(id=id)
     if request.method == 'POST':
@@ -175,6 +186,7 @@ def landlordUpdate(request,id):
         messages.success(request,'Landlord updated successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='/auth/send-otp/')
 def landlordDelete(request,id):
     landlord = models.Landlord.objects.get(id=id)
     landlord.delete()
@@ -204,6 +216,7 @@ def BlogDetail(request, pk):
     return render(request, 'blog/blog-details.html', context)
 
 
+@login_required(login_url='/auth/send-otp/')
 def blog_create(request):
     if not request.user.is_staff:
         return redirect('blog')
@@ -215,6 +228,8 @@ def blog_create(request):
         models.Blog.objects.create(image=image, title=title, text=text)
     return redirect(request.META.get('HTTP_REFERER'))    
 
+
+@login_required(login_url='/auth/send-otp/')
 def blog_update(request,id):
     blog = models.Blog.objects.get(id=id)
     if request.method == 'POST':
@@ -228,7 +243,7 @@ def blog_update(request,id):
         messages.success(request,'Blog updated successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required(login_url='/auth/send-otp/')
 def blog_delete(request,id):
     blog = models.Blog.objects.get(id=id)
     blog.delete()
@@ -237,6 +252,7 @@ def blog_delete(request,id):
 
 
 # Dashboard views
+@login_required(login_url='/auth/send-otp/')
 def dashboard(request):
     context = {
         'vacancy': models.Vacancy.objects.all(),
@@ -245,6 +261,7 @@ def dashboard(request):
     }
     return render(request, 'website_dashboard/index.html', context)
 
+@login_required(login_url='/auth/send-otp/')
 def dashboard_vacancy(request):
     vacancy = models.Vacancy.objects.all()
     context = {
@@ -252,6 +269,7 @@ def dashboard_vacancy(request):
     }
     return render(request, 'website_dashboard/vacancy.html', context)
 
+@login_required(login_url='/auth/send-otp/')
 def dashboard_pharmacy(request):
     pharm = models.OurPharmacie.objects.all()
     context = {
@@ -259,6 +277,7 @@ def dashboard_pharmacy(request):
     }
     return render(request, 'website_dashboard/pharmacy.html', context)
 
+@login_required(login_url='/auth/send-otp/')
 def dashboard_landlords(request):
     landlords = models.Landlord.objects.all()
     context = {
@@ -266,6 +285,7 @@ def dashboard_landlords(request):
     }
     return render(request, 'website_dashboard/landlords.html', context)
 
+@login_required(login_url='/auth/send-otp/')
 def dashboard_about(request):
     about = models.AboutUs.objects.last()
     context = {
@@ -273,6 +293,7 @@ def dashboard_about(request):
     }
     return render(request, 'website_dashboard/about.html', context)
 
+@login_required(login_url='/auth/send-otp/')
 def dashboard_public(request):
     public = models.Public.objects.last()
     context = {
@@ -280,6 +301,7 @@ def dashboard_public(request):
     }
     return render(request, 'website_dashboard/public.html', context)
 
+@login_required(login_url='/auth/send-otp/')
 def dashboard_blog(request):
     blogs = models.Blog.objects.all().order_by('-created_at')
     paginator = Paginator(blogs, 10)  # Show 6 blogs per page
