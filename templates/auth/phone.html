@@ -209,7 +209,7 @@
       
       <div class="terms-agreement">
         <input type="checkbox" name="is_agreed" id="terms" required>
-        <label for="terms">офферта <a href="{{ pdf.file.url }}">{{ pdf.title }}</a></label>
+        <label for="terms"><a href="{% url 'public'%}">офферта</a> </label>
       </div>
       
       <button type="submit" class="submit-btn" id="submitButton">Отправить код</button>
