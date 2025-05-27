@@ -23,7 +23,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 
 
 DEBUG = True
-SECURE_SSL_REDIRECT = True
+
 
 ALLOWED_HOSTS = ["*"]
 
