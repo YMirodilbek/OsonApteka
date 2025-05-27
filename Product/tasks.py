@@ -59,6 +59,27 @@ def refresh_products_cache():
         name = item.get("Name", "")
         category = item.get("Class", "") or "None-Class"
         price = item.get("Price", 0)
+        ikpu = item.get("IKPU", "")
+        package_code = item.get("PackageCode", "")
+        inn = item.get("INN", "")
+        vat_percent = item.get("VATPercent", 0)
+
+        # Calculate VAT amount using the formula: VAT = (Price / 1.12) × 0.12
+        vat_amount = (price / 1.12) * 0.12 if price > 0 else 0
+
+        # Create fiscal_items dict according to the required structure
+        fiscal_items = {
+            "Name": name,
+            "SPIC": ikpu,
+            "PackageCode": package_code,
+            "Price": price * 100,
+            # "Amount": amount, TODO: # amount should be get from order item product quantity # noqa
+            "VAT": vat_amount * 100,
+            "VATPercent": vat_percent,
+            "CommissionInf": {
+                "TIN": inn,
+            }
+        }
 
         if uid in final_result_dict:
             if price not in final_result_dict[uid]["prices"]:
@@ -79,6 +100,7 @@ def refresh_products_cache():
                 "ExpDate": item.get("ExpDate", ""),
                 "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
+                "fiscal_items": fiscal_items,
             }
 
     final_result = list(final_result_dict.values())
