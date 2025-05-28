@@ -65,10 +65,10 @@
                 <a href="{% url 'vacancy_url' %}" class="top-bar__link">Вакансии</a>
                 <a href="{% url 'pharm_url' %}" class="top-bar__link">Наши аптеки</a>
                 <a href="{% url 'blog' %}" class="top-bar__link">Новости и статьи</a>
-                {% if request.user.is_staff %}
+                
                 <a href="{% url 'filial_index' %}" class="top-bar__link">Филиал</a>
                 <a href="{% url 'dashboard_url' %}" class="top-bar__link">Дашбоард</a>
-                {% endif %}
+           
             </nav>
             <div class="language-selector">
                 <select name="" id="" class="language-select">
