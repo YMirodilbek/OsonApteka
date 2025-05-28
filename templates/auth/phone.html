@@ -125,8 +125,7 @@
     }
     
     .terms-agreement {
-      display: flex;
-      align-items: flex-start;
+
       margin-bottom: 20px;
     }
     
@@ -137,12 +136,30 @@
       min-height: 20px;
       accent-color: var(--primary);
     }
-    
-    .terms-agreement a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
+    .terms-agreement {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .terms-agreement input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .terms-agreement a {
+    text-decoration: underline;
+    color: #007bff;
+  }
+
+  .terms-agreement a:hover {
+    text-decoration: none;
+    color: #0056b3;
+  }
+
     
     .terms-agreement a:hover {
       text-decoration: underline;
@@ -207,9 +224,9 @@
         </div>
       </div>
       
-      <div class="terms-agreement">
+      <div class="terms-agreement ">
         <input type="checkbox" name="is_agreed" id="terms" required>
-        <label for="terms">офферта</label>
+        <label for="terms"><a href="https://lex.uz/docs/-4396419"  target="_blank">Офферта</a></label>
       </div>
       
       <button type="submit" class="submit-btn" id="submitButton">Отправить код</button>

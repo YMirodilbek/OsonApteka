@@ -81,6 +81,19 @@ def update_order_status(request, pk):
             return JsonResponse({'success': False, 'error': str(e)})
 
 
+
+def dogovor(request):
+    return render(request,'oferta/dogovor.html')
+
+
+def uslugi(request):
+    return render(request,'oferta/uslugi.html')
+
+
+def document(request):
+    return render(request,'oferta/document.html')
+
+
 # from .tasks import *
 # url = "http://93.170.11.10:8088/RM_OPT/hs/online/stock"
 # username = "Online"

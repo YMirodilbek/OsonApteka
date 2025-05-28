@@ -4,6 +4,11 @@ from .ajax import *
 
 
 urlpatterns = [
+    
+    path('uslugi', uslugi, ),
+    path('dogovor', dogovor, ),
+    path('document', document, ),
+    
     path('filial/',filial_index , name= 'filial_index'),
     path('filial/order/',filial_order),
     path('filial/login/',filial_login),
