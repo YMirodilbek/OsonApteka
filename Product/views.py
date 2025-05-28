@@ -341,6 +341,7 @@ def checkout_view(request):
                                 f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
                                 f"filial : {order.filial}\n"
                                 f"summa: {order.total_price} sum\n"
+                                f"tel: {order.user.username}\n"
                                 f"dorilar soni: {order.items.all().count()} ta\n"
                                 f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
                         )
@@ -391,6 +392,7 @@ def Myaccount(request):
     }
 
     return render(request, 'profile.html', context)
+
 
 @login_required(login_url='/auth/send-otp/')
 def toggle_wishlist(request, product_id):
