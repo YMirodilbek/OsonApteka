@@ -84,7 +84,7 @@ lotin_krill.py
 *.pyc
 __pycache__/
 local_settings.py
-
+data_bot.py
 .env
 .venv
 db.sqlite3
