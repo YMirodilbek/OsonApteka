@@ -271,6 +271,10 @@ def payment_success(request, order_id):
 
 
 def checkout_view(request):
+    dostaff = 0 
+    dostafca = Dostafca.objects.last()
+    if dostafca and dostafca.amount:
+        dostaff = dostafca.amount
     order = Order.objects.filter(user=request.user, is_completed=False).first()
     if not order or not order.items.exists():
         messages.error(request, "Sizning savatingiz bo'sh!")
@@ -327,7 +331,7 @@ def checkout_view(request):
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
                     id=order.id,
-                    amount=order.total_price,
+                    amount=order.total_price + dostaff ,
                     return_url=return_url
                 )
 
@@ -354,12 +358,13 @@ def checkout_view(request):
 
     else:
         form = CheckoutForm(instance=order)
-
+    
     context = {
         'form': form,
         'cart_items': cart_items,
         'order': order,
-        'filials': filials
+        'filials': filials,
+        'dostafka': dostaff
     }
 
     return render(request, 'checkout.html', context)

@@ -32,6 +32,12 @@ class Product(models.Model):
         return str(self.uid)
 
 
+class Dostafca(models.Model):
+    amount = models.PositiveIntegerField(default=0)
+    
+    def __str__(self):
+        return f"{self.amount}"
+
 class Filial(models.Model):
     users = models.ManyToManyField(CustomUser, related_name='filials')
     name = models.CharField(max_length=255)
