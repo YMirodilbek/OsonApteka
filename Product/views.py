@@ -364,7 +364,7 @@ def checkout_view(request):
         'cart_items': cart_items,
         'order': order,
         'filials': filials,
-        'dostafka': dostaff,
+        'dostaff': dostaff,
         'total_sum': order.total_price + dostaff 
     }
 
