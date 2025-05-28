@@ -44,9 +44,9 @@ def refresh_products_cache():
     grouped_by_class = {}
 
     for item in data:
-        try:
-            Category.objects.get_or_create(name=item.get('Class'))
-        except:pass
+        # try:
+        #     Category.objects.get_or_create(name=item.get('Class'))
+        # except:pass
         try:
             uid = int(item.get("UID"))
         except (TypeError, ValueError):
