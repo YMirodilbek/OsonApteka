@@ -21,21 +21,25 @@ TOKEN = '7886547250:AAFv0cFJc607ZTRsLHgl_ldRcDGyg5CS9l0'  # Tokeningizni shu yer
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
+from urllib.parse import unquote
+
 @dp.message(CommandStart(deep_link=True))
 async def start_handler(message: types.Message, command: CommandObject):
-    token = command.args
-    if not token:
+    raw_token = command.args
+    if not raw_token:
         await message.answer("❗ Token topilmadi.")
         return
+
+    token = unquote(raw_token).strip()  # URL dan yechib olib, bo‘sh joylarni tozalaymiz
 
     try:
         user = await sync_to_async(CustomUser.objects.get)(telegram_token=token)
         user.telegram_id = message.from_user.id
         await sync_to_async(user.save)()
-
-        await message.answer(f"✅ Telegram profilingizga ulandi!{user.telegram_id}")
+        await message.answer(f"✅ Telegram profilingizga ulandi! ID: {user.telegram_id}")
     except CustomUser.DoesNotExist:
-        await message.answer("❌ Token noto‘g‘ri.")
+        await message.answer(f"❌ Token noto‘g‘ri: {token}")
+
 
 async def main():
     await dp.start_polling(bot)

@@ -54,7 +54,7 @@ var/
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
+set_database.py
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -84,10 +84,11 @@ lotin_krill.py
 *.pyc
 __pycache__/
 local_settings.py
-
+data_bot.py
 .env
 .venv
 db.sqlite3
 images
 celerybeat-schedule
 https://github.com/YMirodilbek/qwe.git
+venv/

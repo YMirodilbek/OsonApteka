@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect
-from . import models
-from django.contrib import messages
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render,redirect
+from django.core.paginator import Paginator
 from Product.decorator import is_staff
+from django.contrib import messages
+from . import models
 
 # Create your views here.
 

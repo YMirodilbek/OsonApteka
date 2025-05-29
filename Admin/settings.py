@@ -22,12 +22,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG = True
+DEBUG = False
+
 
 ALLOWED_HOSTS = ["*"]
-
-
-
 
 INSTALLED_APPS = [
     # 'jet',
@@ -83,12 +81,11 @@ CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+from .set_database import LOCAL_DATABASE
+
+DATABASES = LOCAL_DATABASE
+
+
 
 
 # Password validation

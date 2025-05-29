@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -50,75 +51,126 @@
     background-color: #002244 !important; /* biroz toqroq fon */
     color: white !important;
   }
+
+  .navbar-toggler {
+    
+    border-color: #198754;     /* Chegara ham yashil */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
       </style>
       
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg  p-3 bg--color"  >
-        <div class="container-fluid">
+  <form action="/dastafca/" method="post">
+    {% csrf_token %}
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Dostafka</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <input class="input-group" type="number" name="amount">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" >Save </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+  <nav class="navbar navbar-expand-lg p-3 bg--color">
+    <div class="container-fluid">
+      <!-- Toggler tugmasi mobil uchun -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Navigatsiya bo‘limi -->
+      <div class="collapse navbar-collapse"  id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <div class="card" >
 
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active text-white" aria-current="page" href="/filial">Statistika</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="/filial/order">Byurtmalar</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="/filial/product-create/">Product qo'shish</a>
-              </li>
-          
-              {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link text-white" href="/filial/logout/">Logout</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a class="nav-link text-white" href="/filial/login/">Login</a>
-              </li>
-              {% endif %}
-              {% if not request.user.telegram_id %}
-              <li class="nav-item">
-                <a class="nav-link text-white" href="https://t.me/akmalfarimorder_bot?start={{ user.telegram_token }}">Telegram bot </a>
-              </li>
-              {% endif %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Ko'proq
-                </a>
-                <ul class="dropdown-menu bg--color p-3">
-                  {% if user.is_authenticated and user.is_superuser %}
-                    <li>
-                      <a class="dropdown-item text-white " href="/filial/filial/">Filiallar</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item text-white" href="/filial/registar/">Filial Qo'shish</a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    
-                    <!-- Ichki dropdown menyu -->
-                    <li class="dropdown-submenu">
-                      <a class="dropdown-item text-white dropdown-toggle" href="#" id="filialDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Filiallar Statistikasi
-                      </a>
-                      <ul class="dropdown-menu bg--color p-3" aria-labelledby="filialDropdown">
-                        {% for i in filials %}
-                          <li>
-                            <a class="dropdown-item text-white" href="/filial/?filial-id={{ i.id }}">{{ i.name }}</a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    </li>
-                  {% endif %}
-                </ul>
-              </li>
-             
-            </ul>
-          </div>
-          
-        </div>
-      </nav>
+              <a href="/" class="logo">
+                <img width="80px" src="{% static 'media/AFM MEDICAL.png' %}" alt="Akmal Farm Medical Logo">
+              </a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active text-white" aria-current="page" href="/filial">Statistika</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/filial/order">Byurtmalar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/filial/product-create/">Product qo'shish</a>
+          </li>
+  
+         
+  
+          {% if not request.user.telegram_id %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="https://t.me/akmalfarimorder_bot?start={{ request.user.telegram_token }}">Telegram bot </a>
+          </li>
+          {% endif %}
+  
+          {% if user.is_authenticated and user.is_superuser %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Ko'proq
+            </a>
+            <ul class="dropdown-menu bg--color p-3">
+                <li>
+                  <a class="dropdown-item text-white" href="/filial/filial/">Filiallar</a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-white" href="/filial/registar/">Filial Qo'shish</a>
+                </li>
+                
+                <li><hr class="dropdown-divider"></li>
+  
+                <!-- Ichki menyu -->
+                <li class="dropdown-submenu">
+                  <a class="dropdown-item text-white dropdown-toggle" href="#" id="filialDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filiallar Statistikasi
+                  </a>
+                  <ul class="dropdown-menu bg--color p-3" aria-labelledby="filialDropdown">
+                    {% for i in filials %}
+                      <li>
+                        <a class="dropdown-item text-white" href="/filial/?filial-id={{ i.id }}">{{ i.name }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+
+                  <li>
+        
+                    <a class="dropdown-item text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Edit Dostafka
+                    </a>
+                </li>
+                </li>
+              </ul>
+            </li>
+            {% endif %}
+           {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/filial/logout/">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/filial/login/">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
       <div class="container">
 
         <div class="col-md-8 col-lg-6 mx-auto bg--color">

@@ -1,19 +1,16 @@
-from django.db.models import Sum, F, ExpressionWrapper, IntegerField, Prefetch
-from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Sum, F, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models.functions import TruncDate, TruncDay
+from django.db.models.functions import TruncDay
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  login ,logout
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 from click_up.views import ClickWebhook
-from django.utils.timezone import now
 from django.shortcuts import render
 from django.contrib import messages
 from .lotin_krill import compress
 from django.conf import settings
-from unidecode import unidecode
 from click_up import ClickUp
 from .decorator import *
 from .models import *
@@ -23,11 +20,9 @@ import redis
 import json
 
 
-        
-
 @login_required(login_url='/auth/send-otp/')
 def cart_view(request):
-    order = Order.objects.filter(user=request.user, is_completed=False).select_related('filial').prefetch_related('items','items__product').first()  
+    order = Order.objects.filter(user=request.user, is_completed=False).select_related('filial').prefetch_related('items','items__product').first()
     return render(request, "cart.html", {"order": order})
 
 @login_required(login_url='/auth/send-otp/')
@@ -49,16 +44,16 @@ def cart_view_json(request):
                     "qty": item.quantity,
                     "img": item.product.image1.url if item.product.image1 else '/static/media/default.jpg'
                 })
-            
+
             cart_total = sum(item.total_price for item in cart_items)
             cart_count = len(cart_items)
         except Exception as e:
             print(f"Error in cart_context: {e}")
-        
+
 
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
 
-  
+
 def Index(request):
     r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
@@ -90,12 +85,12 @@ def Index(request):
             if len(items) > 0
         ]
         paginator = Paginator(filtered_classes, per_page_classes)
-        
+
         try:
             current_page = paginator.page(page)
         except :
             current_page = paginator.page(1)
-        
+
         for class_name in current_page.object_list:
             items = grouped_by_class[class_name][:per_class_limit]
             result.append({"class_name": class_name, "products": items})
@@ -128,7 +123,7 @@ def decrease_quantity(request, item_id):
         order_item.quantity -= 1
         order_item.save()
     else:
-        order_item.delete()  
+        order_item.delete()
     return cart_view_json(request)
 
 
@@ -139,13 +134,13 @@ def DeleteProduct(request, item_id):
     order_item = OrderItem.objects.get(id=item_id)
     if order_item:
         order_item.delete()
-    return cart_view_json(request)  
+    return cart_view_json(request)
 
 
 def product_detail(request,pk):
     product = Product.objects.get(id=int(pk))
     r = redis.Redis(host='localhost', port=6379, db=0)
-    result = r.get('final_result') 
+    result = r.get('final_result')
     if result:
         result = json.loads(result.decode('utf-8'))
 
@@ -164,11 +159,11 @@ def add_to_cart_detail(request,pk):
     price = int(request.GET.get('price',0))
     product = get_object_or_404(Product, id=pk)
     r = redis.Redis(host='localhost', port=6379, db=0)
-    result = r.get('final_result') 
+    result = r.get('final_result')
     if result:
         result = json.loads(result.decode('utf-8'))
-    
-    
+
+
     result_dict = {item['id']: item for item in result}
     name = result_dict.get(pk, {}).get('name', '')
 
@@ -177,7 +172,7 @@ def add_to_cart_detail(request,pk):
     if not order:
         order = Order.objects.create(user=request.user, is_completed=False)
     order_item, created = OrderItem.objects.get_or_create(
-                                    order=order,      
+                                    order=order,
                                     product=product,
                                     price =price,
                                     name = name,
@@ -191,6 +186,51 @@ def add_to_cart_detail(request,pk):
 
 
 class ClickWebhookAPIView(ClickWebhook):
+    def get_fiscal_items_for_account(self, account):
+        """
+        Override this method to return fiscal items for the account.
+        This method is called when the webhook receives a payment request.
+
+        Args:
+            account: The order ID (merchant_trans_id)
+
+        Returns:
+            list: List of fiscal items for the order
+        """
+        try:
+            result_dict = {}
+            order = Order.objects.get(id=account.id)
+            fiscal_items = []
+
+            r = redis.Redis(host='localhost', port=6379, db=0)
+            result = r.get('final_result')
+            if result:
+                result = json.loads(result.decode('utf-8'))
+                result_dict = {item['id']: item for item in result}
+
+            for item in order.items.all():
+                product_data = result_dict.get(item.product.id, {})
+                if product_data.get('fiscal_items'):
+                    fiscal_item = product_data['fiscal_items'].copy()
+                    fiscal_item['Amount'] = item.quantity
+                    fiscal_items.append(fiscal_item)
+
+            price_info = {
+                "received_ecash": order.total_price,
+                "received_cash": 0,
+                "received_card": 0
+            }
+            fiscal_items.append(price_info)
+
+            return fiscal_items
+
+        except Order.DoesNotExist:
+            return []
+
+        except Exception as e:
+            print(f"Error getting fiscal items for account {account}: {e}")
+            return []
+
     def successfully_payment(self, params):
         """
         Handle successful payments from Click
@@ -202,7 +242,7 @@ class ClickWebhookAPIView(ClickWebhook):
             order.save()
         except Order.DoesNotExist:
             pass
-        
+
     def cancelled_payment(self, params):
         """
         Handle cancelled payments from Click
@@ -210,7 +250,7 @@ class ClickWebhookAPIView(ClickWebhook):
         merchant_trans_id = params.get('merchant_trans_id')
         try:
             order = Order.objects.get(id=merchant_trans_id)
-            # Handle cancelled payment 
+            # Handle cancelled payment
             # For example, mark the order as cancelled or notify admin
         except Order.DoesNotExist:
             pass
@@ -229,30 +269,34 @@ def payment_success(request, order_id):
 
 
 def checkout_view(request):
+    dostaff = 0 
+    dostafca = Dostafca.objects.last()
+    if dostafca and dostafca.amount:
+        dostaff = dostafca.amount
     order = Order.objects.filter(user=request.user, is_completed=False).first()
     if not order or not order.items.exists():
         messages.error(request, "Sizning savatingiz bo'sh!")
         return redirect("cart")
-    
+
     cart_items = order.items.all()
-    
+
     filials = Filial.objects.all()
     if not filials.exists():
         default_filial = Filial.objects.create(
             name="Markaziy Filial",
             address="Toshkent sh., Yunusobod tumani"
         )
-        filials = Filial.objects.all()  
+        filials = Filial.objects.all()
 
     if request.method == 'POST':
         filial_id = int(request.POST.get('filial'))
 
-        
-        
+
+
         form = CheckoutForm(request.POST, instance=order)
         if form.is_valid():
             order = form.save(commit=False)
-            
+
             address_type = request.POST.get('address_type')
             if address_type == 'maps':
                 lat = request.POST.get('address_lat')
@@ -263,32 +307,33 @@ def checkout_view(request):
             order.is_completed = True
             order.filial = filial
             order.save()
-            
+
             if order.payment_method == 'click':
                 click_up = ClickUp(
                     service_id=settings.CLICK_SERVICE_ID,
                     merchant_id=settings.CLICK_MERCHANT_ID
                 )
-                from main.bot_messages import send_telegram_message
-                telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
-                for i in telegram_ids:
-                    send_telegram_message(
-                            telegram_id=i,
-                            message=f"buyurtma id: {order.id}\n"
-                                    f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                                    f"filial : {order.filial}\n"
-                                    f"summa: {order.total_price} sum\n"
-                                    f"dorilar soni: {order.items.all().count()} ta\n"
-                                    f"tolov : {'bajarildi' if order.is_paid else 'kutilmoqda'}"
-                            )
+                # from main.bot_messages import send_telegram_message
+                # telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
+                # for i in telegram_ids:
+                #     send_telegram_message(
+                #             telegram_id=i,
+                #             message=f"buyurtma id: {order.id}\n"
+                #                     f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                #                     f"filial : {order.filial}\n"
+                #                     f"summa: {order.total_price} sum\n"
+                #                     f"dorilar soni: {order.items.all().count()} ta\n"
+                #                     f"tel: {order.user}\n"
+                #                     f"tolov : {'bajarildi' if order.is_paid else 'kutilmoqda'}"
+                #             )
 
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
                     id=order.id,
-                    amount=order.total_price,  
+                    amount=order.amount,
                     return_url=return_url
                 )
-                
+
                 return redirect(payment_link)
             from main.bot_messages import send_telegram_message
             telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
@@ -299,6 +344,7 @@ def checkout_view(request):
                                 f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
                                 f"filial : {order.filial}\n"
                                 f"summa: {order.total_price} sum\n"
+                                f"tel: {order.user.username}\n"
                                 f"dorilar soni: {order.items.all().count()} ta\n"
                                 f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
                         )
@@ -313,12 +359,14 @@ def checkout_view(request):
         form = CheckoutForm(instance=order)
     
     context = {
-        'form': form, 
-        'cart_items': cart_items, 
+        'form': form,
+        'cart_items': cart_items,
         'order': order,
-        'filials': filials  
+        'filials': filials,
+        'dostaff': dostaff,
+        'total_sum': order.total_price
     }
-    
+
     return render(request, 'checkout.html', context)
 
 @login_required(login_url='/auth/send-otp/')
@@ -340,7 +388,7 @@ def Myaccount(request):
                 'product_image': item.product.image1.url if item.product.image1 else '/static/media/default.jpg'
             })
         return  JsonResponse(order_items_list, safe=False)
-    
+
     wishlist_items = Wishlist.objects.filter(user=request.user)
 
     context = {
@@ -348,7 +396,8 @@ def Myaccount(request):
         'wishlist_items': wishlist_items
     }
 
-    return render(request, 'profile.html', context) 
+    return render(request, 'profile.html', context)
+
 
 @login_required(login_url='/auth/send-otp/')
 def toggle_wishlist(request, product_id):
@@ -362,7 +411,7 @@ def toggle_wishlist(request, product_id):
         Wishlist.objects.create(user=request.user, product=product)
         messages.success(request, "Mahsulot wishlistga qo‘shildi!")
 
-    return redirect(request.META.get('HTTP_REFERER', '/')) 
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def Contact(request):
@@ -402,7 +451,7 @@ def product_create(request):
             messages.success(request, "Product q'shildi")
         else:
             messages.error(request, "Product yeratib bo'lmado")
-    filials = Filial.objects.all()  
+    filials = Filial.objects.all()
     return render(request,'filial/product-create.html', {'filials':filials})
 
 
@@ -410,7 +459,7 @@ def product_create(request):
 def filial_index(request):
     filial_id = request.GET.get('filial-id')
     filials = request.user.filials.all()
-    
+
     end_date = datetime.now()
     start_date = end_date - timedelta(days=30)
 
@@ -455,11 +504,11 @@ def filial_index(request):
         'filials':filials,
         'count_now': count_now,
         'user_count': user_count,
-        'result': json.dumps(result), 
+        'result': json.dumps(result),
         'user_count_active': user_count_active,
     }
     return render(request,'filial/index.html',context )
-    
+
 
 @is_staff
 def filial_order(request):
@@ -468,8 +517,8 @@ def filial_order(request):
     type_choices = Order.TYPE_CHOICES
     filials = request.user.filials.all()
     orders_by_filial = {}
-    
-    
+
+
     if filial_id:
         selected_filial = get_object_or_404(Filial, id=filial_id)
         orders = Order.objects.filter(filial=selected_filial, is_active=True).order_by('-id').select_related(
@@ -551,12 +600,12 @@ def filial_login(request):
 
             if user.check_password(password):
                 login(request, user)
-                return redirect('/filial/')  
+                return redirect('/filial/')
             else:
                 messages.error(request, "Parol noto‘g‘ri.")
         except CustomUser.DoesNotExist:
             messages.error(request, "Foydalanuvchi topilmadi.")
-    
+
     return render(request, 'filial/login.html')
 
 
@@ -565,7 +614,7 @@ def filial_users(request):
     users = CustomUser.objects.filter(is_staff = False).order_by('-id').prefetch_related(
     Prefetch(
         'orders',
-        queryset=Order.objects.order_by('-created_at'), 
+        queryset=Order.objects.order_by('-created_at'),
         to_attr='prefetched_orders'
     )
 )
