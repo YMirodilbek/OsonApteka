@@ -159,8 +159,8 @@ STATIC_URL = '/static/'  # Static fayllar uchun URL
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static fayllarni yig'ish uchun joy
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Local static fayllar joyi
 
-MEDIA_URL = '/images/'  
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images') 
+MEDIA_URL = '/media/'  
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'images') 
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
