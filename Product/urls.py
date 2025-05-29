@@ -8,6 +8,7 @@ urlpatterns = [
     path('uslugi', uslugi, ),
     path('dogovor', dogovor, ),
     path('document', document, ),
+    path('dastafca/', dastafca, ),
     
     path('filial/',filial_index , name= 'filial_index'),
     path('filial/order/',filial_order),
