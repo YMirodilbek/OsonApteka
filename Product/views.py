@@ -365,7 +365,7 @@ def checkout_view(request):
         'order': order,
         'filials': filials,
         'dostaff': dostaff,
-        'total_sum': order.total_price + dostaff 
+        'total_sum': order.total_price
     }
 
     return render(request, 'checkout.html', context)
