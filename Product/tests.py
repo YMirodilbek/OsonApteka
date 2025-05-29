@@ -54,8 +54,6 @@
 # sudo supervisorctl start telegram_bot
 
 
-
-
 # [program:uvicorn]
 # directory=/home/ubuntu/project
 # command=/home/ubuntu/env/bin/uvicorn your_project.asgi:application --host 0.0.0.0 --port 8000
