@@ -2,8 +2,10 @@ from django.views.decorators.csrf import csrf_exempt
 from .context_processors import cart_context
 from .lotin_krill import latin_to_cyrillic
 from django.http import JsonResponse
+from Product.models import Dostafca
 from rapidfuzz import fuzz
 from .views import *
+
 
 
 
@@ -92,6 +94,15 @@ def uslugi(request):
 
 def document(request):
     return render(request,'oferta/document.html')
+
+def dastafca(request):
+    amount = request.POST.get('amount')
+    
+    dostafca =  Dostafca.objects.last()
+    dostafca.amount = int(amount)
+    dostafca.save()
+    return  redirect('/filial/')
+
 
 
 # from .tasks import *

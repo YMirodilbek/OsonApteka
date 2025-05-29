@@ -132,7 +132,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   // Asosiy ma'lumotlar
-  var result = {{ result|safe }};
+  var result = JSON.parse('{{ result|escapejs }}');
   
   
   // Formatlash funksiyasi

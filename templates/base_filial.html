@@ -64,13 +64,32 @@
       
 </head>
 <body>
+  <form action="/dastafca/" method="post">
+    {% csrf_token %}
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Dostafka</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <input class="input-group" type="number" name="amount">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" >Save </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
   <nav class="navbar navbar-expand-lg p-3 bg--color">
     <div class="container-fluid">
       <!-- Toggler tugmasi mobil uchun -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-  
       <!-- Navigatsiya bo‘limi -->
       <div class="collapse navbar-collapse"  id="navbarNavDropdown">
         <ul class="navbar-nav">
@@ -100,18 +119,19 @@
           </li>
           {% endif %}
   
+          {% if user.is_authenticated and user.is_superuser %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Ko'proq
             </a>
             <ul class="dropdown-menu bg--color p-3">
-              {% if user.is_authenticated and user.is_superuser %}
                 <li>
                   <a class="dropdown-item text-white" href="/filial/filial/">Filiallar</a>
                 </li>
                 <li>
                   <a class="dropdown-item text-white" href="/filial/registar/">Filial Qo'shish</a>
                 </li>
+                
                 <li><hr class="dropdown-divider"></li>
   
                 <!-- Ichki menyu -->
@@ -126,10 +146,17 @@
                       </li>
                     {% endfor %}
                   </ul>
+
+                  <li>
+        
+                    <a class="dropdown-item text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Edit Dostafka
+                    </a>
                 </li>
-              {% endif %}
-            </ul>
-          </li>
+                </li>
+              </ul>
+            </li>
+            {% endif %}
            {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link text-white" href="/filial/logout/">Logout</a>
