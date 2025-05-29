@@ -147,23 +147,6 @@ LOGGING = {
 
 
 
-# LOGGING = {
-#     'version':1,
-#     'handlers':{
-#          'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'debug.log'
-#         },
-#         'console':{'class':'logging.StreamHandler'}
-#     },
-#     'loggers':{
-#         'django.db.backends':{
-#             'handlers':['file'],
-#             'level':'DEBUG'
-#             }
-#         }
-#     }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -176,8 +159,8 @@ STATIC_URL = '/static/'  # Static fayllar uchun URL
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Static fayllarni yig'ish uchun joy
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Local static fayllar joyi
 
-MEDIA_URL = '/media/'  
-
+MEDIA_URL = '/images/'  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images') 
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
