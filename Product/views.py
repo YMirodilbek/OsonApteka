@@ -315,18 +315,18 @@ def checkout_view(request):
                     service_id=settings.CLICK_SERVICE_ID,
                     merchant_id=settings.CLICK_MERCHANT_ID
                 )
-                from main.bot_messages import send_telegram_message
-                telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
-                for i in telegram_ids:
-                    send_telegram_message(
-                            telegram_id=i,
-                            message=f"buyurtma id: {order.id}\n"
-                                    f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                                    f"filial : {order.filial}\n"
-                                    f"summa: {order.total_price} sum\n"
-                                    f"dorilar soni: {order.items.all().count()} ta\n"
-                                    f"tolov : {'bajarildi' if order.is_paid else 'kutilmoqda'}"
-                            )
+                # from main.bot_messages import send_telegram_message
+                # telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
+                # for i in telegram_ids:
+                #     send_telegram_message(
+                #             telegram_id=i,
+                #             message=f"buyurtma id: {order.id}\n"
+                #                     f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                #                     f"filial : {order.filial}\n"
+                #                     f"summa: {order.total_price} sum\n"
+                #                     f"dorilar soni: {order.items.all().count()} ta\n"
+                #                     f"tolov : {'bajarildi' if order.is_paid else 'kutilmoqda'}"
+                #             )
 
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
