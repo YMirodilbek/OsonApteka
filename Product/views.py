@@ -331,7 +331,7 @@ def checkout_view(request):
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
                     id=order.id,
-                    amount=order.total_price ,
+                    amount=order.amount,
                     return_url=return_url
                 )
 
