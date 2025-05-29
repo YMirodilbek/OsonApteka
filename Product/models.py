@@ -89,8 +89,14 @@ class Order(models.Model):
 
     @property
     def total_price(self):
-        return sum(item.total_price for item in self.items.all())
-    
+        """
+        Hisobdagi barcha item'lar narxining yig'indisi va dostavka narxini qaytaradi
+        """
+        dostafca = Dostafca.objects.last()
+        dostaff = dostafca.amount if dostafca and dostafca.amount else 0
+
+        total = sum(item.total_price or 0 for item in self.items.all())
+        return total + dostaff
     
     @property
     def status_color(self):
@@ -103,8 +109,9 @@ class Order(models.Model):
     
     @property
     def amount(self):
+        
         """For Click integration - returns the total price in UZS"""
-        return self.total_price
+        return self.total_price 
 
 
 class OrderItem(models.Model):
