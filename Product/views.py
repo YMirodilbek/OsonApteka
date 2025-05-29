@@ -235,13 +235,11 @@ class ClickWebhookAPIView(ClickWebhook):
         """
         Handle successful payments from Click
         """
-        merchant_trans_id = params.get('merchant_trans_id')
+        merchant_trans_id = params.get('id')
         try:
             order = Order.objects.get(id=merchant_trans_id)
             order.is_paid = True
             order.save()
-            # Here you can handle additional order processing
-            # For example, send email notification, create shipping order, etc.
         except Order.DoesNotExist:
             pass
 
