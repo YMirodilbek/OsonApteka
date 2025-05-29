@@ -87,7 +87,7 @@
   
           {% if not request.user.telegram_id %}
           <li class="nav-item">
-            <a class="nav-link text-white" href="https://t.me/akmalfarimorder_bot?start={{ user.telegram_token }}">Telegram bot </a>
+            <a class="nav-link text-white" href="https://t.me/akmalfarimorder_bot?start={{ request.user.telegram_token }}">Telegram bot </a>
           </li>
           {% endif %}
   
