@@ -325,6 +325,7 @@ def checkout_view(request):
                 #                     f"filial : {order.filial}\n"
                 #                     f"summa: {order.total_price} sum\n"
                 #                     f"dorilar soni: {order.items.all().count()} ta\n"
+                #                     f"tel: {order.user}\n"
                 #                     f"tolov : {'bajarildi' if order.is_paid else 'kutilmoqda'}"
                 #             )
 

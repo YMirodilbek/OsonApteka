@@ -52,6 +52,7 @@
 
 
 # sudo supervisorctl start telegram_bot
+# sudo supervisorctl restart telegram_bot
 
 
 # [program:uvicorn]
