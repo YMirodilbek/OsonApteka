@@ -609,7 +609,9 @@
                 if (e.target.classList.contains('real-time-search-item') || e.target.closest('.real-time-search-item')) {
                     const item = e.target.closest('.real-time-search-item');
                     const name = item.querySelector('.real-time-search-name').textContent;
+                    const productId = item.querySelector('.real-time-search-add').dataset.productId;
                     searchInput.value = name;
+                    window.location.href = `/product/detail/${productId}/`;
                     hideDropdown();
                 }
             }

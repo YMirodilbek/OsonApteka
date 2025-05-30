@@ -15,6 +15,7 @@
                 <th>ORDER ID</th>
                 <th>USER</th>
                 <th>TOTAL ORDER</th>
+                <th>ADRES</th>
                 <th>STATUS</th>
                 <th>PRODUCT</th>
                 <th class="text-end">PAYMENT</th>
@@ -26,6 +27,7 @@
                 <td>{{ i.id }}</td>
                 <td>{{ i.user }}</td>
                 <td>{{ i.total_price }}</td>
+                <td>{{ i.address_text }}</td>
                 <td>
                   <span class="d-flex align-items-center gap-2" id="status-display-{{ i.id }}">
                     <i class="fas fa-circle f-10 m-r-5 {{ i.status_color }}"></i>
@@ -89,6 +91,7 @@
                                   <td>{{ i.price }}</td>
                                   <td>{{ i.total_price }}</td>
                                 </tr>
+
                                 {% endfor %}
                               </tbody>
                             </table>
@@ -103,6 +106,7 @@
                   </div>
 
                 </td>
+                
                 <td class="text-end">{{ i.get_payment_method_display }}</td>
               </tr>
               {% endfor %}
