@@ -235,26 +235,13 @@ class ClickWebhookAPIView(ClickWebhook):
         """
         Handle successful payments from Click
         """
-        merchant_trans_id = params.get('id')
-        try:
-            order = Order.objects.get(id=merchant_trans_id)
-            order.is_paid = True
-            order.is_completed = True
-            order.save()
-        except Order.DoesNotExist:
-            pass
+        print("incoming params", params)
 
     def cancelled_payment(self, params):
         """
         Handle cancelled payments from Click
         """
-        merchant_trans_id = params.get('merchant_trans_id')
-        try:
-            order = Order.objects.get(id=merchant_trans_id)
-            # Handle cancelled payment
-            # For example, mark the order as cancelled or notify admin
-        except Order.DoesNotExist:
-            pass
+        print("incoming params", params)
 
 
 def payment_success(request, order_id):
