@@ -11,20 +11,24 @@ import requests
 import random
 import redis
 import re
+import logging
+
+# Get logger for main app
+logger = logging.getLogger('main')
 
 def clean_phone_number(phone_number):
     """Telefon raqamini 998XXXXXXXXX formatiga o'tkazish"""
-    phone_number = re.sub(r'\D', '', phone_number)  
-    
+    phone_number = re.sub(r'\D', '', phone_number)
+
     if phone_number.startswith("998") and len(phone_number) == 12:
-        return phone_number 
+        return phone_number
     elif phone_number.startswith("9") and len(phone_number) == 9:
-        return "998" + phone_number  
+        return "998" + phone_number
     elif phone_number.startswith("0") and len(phone_number) == 10:
-        return "998" + phone_number[1:] 
+        return "998" + phone_number[1:]
     else:
-        return None 
-    
+        return None
+
 
 def get_eskiz_token():
 
@@ -34,10 +38,10 @@ def get_eskiz_token():
 
     url = "https://notify.eskiz.uz/api/auth/login"
     payload = {
-        "email": "akmalfarmsanoat@mail.ru",  
-        "password": "eZ77mhFdKIGEH9ulaJEodkEbKhV79X20UZnODEbZ" 
+        "email": "akmalfarmsanoat@mail.ru",
+        "password": "eZ77mhFdKIGEH9ulaJEodkEbKhV79X20UZnODEbZ"
     }
-   
+
     response = requests.post(url, data=payload)
 
     if response.status_code == 200:
@@ -61,21 +65,21 @@ def send_sms(phone_number, code):
         return {"error": "Eskiz API tokenini olishda xatolik!"}
 
     url = "https://notify.eskiz.uz/api/message/sms/send"
-    
+
     headers = {"Authorization": f"Bearer {token}"}
 
     phone_number = phone_number.replace("+", "").replace(" ", "").strip()
     if not phone_number.startswith("998") or len(phone_number) != 12:
         return {"error": "Telefon raqami noto‘g‘ri formatda!"}
     payload = {
-    "mobile_phone": phone_number, 
+    "mobile_phone": phone_number,
     "message": f"Kodni hech kimga bermang! Akmal Farm mobil ilovasiga kirish uchun tasdiqlash kodi: {code}",
-    "from": "4546",  
-    "callback_url": "" 
+    "from": "4546",
+    "callback_url": ""
     }
 
     response = requests.post(url, headers=headers, data=payload)
-    # print("Eskizdan javob:", response.json())  
+    # print("Eskizdan javob:", response.json())
     return response.json()
 
 
@@ -83,9 +87,9 @@ def can_send_otp(phone_number):
     """Tasdiqlash kodini qayta yuborishni cheklash"""
     last_sent = cache.get(f"otp_sent_time_{phone_number}")
     if last_sent:
-        return False 
+        return False
 
-    cache.set(f"otp_sent_time_{phone_number}", True, timeout=120)   
+    cache.set(f"otp_sent_time_{phone_number}", True, timeout=120)
     return True
 
 
@@ -95,22 +99,29 @@ def send_otp(request):
         form = PhoneNumberForm(request.POST)
         if form.is_valid():
             phone_number = form.cleaned_data['phone_number']
-            is_agreed = form.cleaned_data['is_agreed']  
+            is_agreed = form.cleaned_data['is_agreed']
+
+            logger.info(f"OTP request for phone number: {phone_number}")
 
             if not can_send_otp(phone_number):
+                logger.warning(f"OTP rate limit exceeded for phone: {phone_number}")
                 form.add_error(None, "Tasdiqlash kodini qayta so‘rash uchun biroz kuting!")
                 return render(request, 'auth/phone.html', {'form': form})
 
             otp = random.randint(1000, 9999)
             r = redis.Redis(host='localhost', port=6379, db=0)
 
-            r.setex(f"otp_{phone_number}", 300, str(otp))  
+            r.setex(f"otp_{phone_number}", 300, str(otp))
+            logger.debug(f"OTP generated and stored for {phone_number}")
+
             response = send_sms(phone_number, otp)
             # print(otp)
             if "error" in response:
+                logger.error(f"SMS sending failed for {phone_number}: {response['error']}")
                 form.add_error(None, f"SMS yuborishda xatolik: {response['error']}")
                 return render(request, 'auth/phone.html', {'form': form})
 
+            logger.info(f"OTP sent successfully to {phone_number}")
             request.session['phone_number'] = phone_number
             request.session['is_agreed'] = is_agreed
             return redirect('verify_otp')
@@ -124,11 +135,11 @@ def send_otp(request):
 def verify_otp(request):
     """Foydalanuvchi OTP kodini tasdiqlaydi"""
     phone_number = request.session.get('phone_number')
-    
+
     is_agreed = request.session.get('is_agreed', False)
     if not phone_number:
         return redirect('/send_otp')
-    
+
     if request.method == "POST":
         form = OTPForm(request.POST)
         if form.is_valid():

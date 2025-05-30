@@ -18,6 +18,10 @@ from .forms import  *
 from tmp.models import *
 import redis
 import json
+import logging
+
+# Get logger for Product app
+logger = logging.getLogger('Product')
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -48,7 +52,7 @@ def cart_view_json(request):
             cart_total = sum(item.total_price for item in cart_items)
             cart_count = len(cart_items)
         except Exception as e:
-            print(f"Error in cart_context: {e}")
+            logger.error(f"Error in cart_context: {e}")
 
 
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
@@ -228,20 +232,40 @@ class ClickWebhookAPIView(ClickWebhook):
             return []
 
         except Exception as e:
-            print(f"Error getting fiscal items for account {account}: {e}")
+            logger.error(f"Error getting fiscal items for account {account}: {e}")
             return []
 
     def successfully_payment(self, params):
         """
         Handle successful payments from Click
         """
-        print("incoming params", params)
+        logger.info(f"Successfully payment received - incoming params: {params}")
+
+        # Log specific payment details
+        if isinstance(params, dict):
+            order_id = params.get('merchant_trans_id')
+            amount = params.get('amount')
+            click_trans_id = params.get('click_trans_id')
+            logger.info(f"Payment success - Order ID: {order_id}, Amount: {amount}, Click Trans ID: {click_trans_id}")
+
+        # You can add additional processing here
+        # For example, update order status, send notifications, etc.
 
     def cancelled_payment(self, params):
         """
         Handle cancelled payments from Click
         """
-        print("incoming params", params)
+        logger.warning(f"Payment cancelled - incoming params: {params}")
+
+        # Log specific cancellation details
+        if isinstance(params, dict):
+            order_id = params.get('merchant_trans_id')
+            amount = params.get('amount')
+            reason = params.get('reason', 'Unknown')
+            logger.warning(f"Payment cancelled - Order ID: {order_id}, Amount: {amount}, Reason: {reason}")
+
+        # You can add additional processing here
+        # For example, notify user, update order status, etc.
 
 
 def payment_success(request, order_id):
@@ -257,7 +281,7 @@ def payment_success(request, order_id):
 
 
 def checkout_view(request):
-    dostaff = 0 
+    dostaff = 0
     dostafca = Dostafca.objects.last()
     if dostafca and dostafca.amount:
         dostaff = dostafca.amount
@@ -344,7 +368,7 @@ def checkout_view(request):
 
     else:
         form = CheckoutForm(instance=order)
-    
+
     context = {
         'form': form,
         'cart_items': cart_items,

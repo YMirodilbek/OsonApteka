@@ -4,6 +4,10 @@ from django.core.paginator import Paginator
 from Product.decorator import is_staff
 from django.contrib import messages
 from . import models
+import logging
+
+# Get logger for tmp app
+logger = logging.getLogger('tmp')
 
 # Create your views here.
 
@@ -25,7 +29,10 @@ def vacancyCreate(request):
         shift = request.POST.get('shift')
         salary = request.POST.get('salary')
         phone_number = request.POST.get('phone_number')
+
+        logger.info(f"Creating new vacancy: {title} by user {request.user.phone_number}")
         models.Vacancy.objects.create(title=title,age=age,address=address,shift=shift,salary=salary,phone_number=phone_number)
+        logger.info(f"Vacancy '{title}' created successfully")
         messages.success(request,'Vacancy created successfully')
 
     return redirect(request.META.get('HTTP_REFERER'))
@@ -139,7 +146,7 @@ def aboutUpdate(request):
 
 
 def Public(request):
-    public = models.Public.objects.last()   
+    public = models.Public.objects.last()
     context = {
         'public':public
     }
@@ -187,7 +194,7 @@ def landlordUpdate(request,id):
     landlord = models.Landlord.objects.get(id=id)
     if request.method == 'POST':
         title = request.POST.get('title')
-        address = request.POST.get('address')   
+        address = request.POST.get('address')
         phone_number_1 = request.POST.get('phone_number_1')
         phone_number_2 = request.POST.get('phone_number_2')
         landlord.title = title if title else landlord.title
@@ -213,7 +220,7 @@ def blog_view(request):
     paginator = Paginator(blogs, 10)  # Show 6 blogs per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     context = {
         'page_obj': page_obj,
         'blogs': page_obj,
@@ -234,13 +241,13 @@ def BlogDetail(request, pk):
 def blog_create(request):
     if not request.user.is_staff:
         return redirect('blog')
-    
+
     if request.method == "POST":
         image = request.FILES.get('image')
         title = request.POST.get('title')
         text = request.POST.get('text')
         models.Blog.objects.create(image=image, title=title, text=text)
-    return redirect(request.META.get('HTTP_REFERER'))    
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required(login_url='/auth/send-otp/')
