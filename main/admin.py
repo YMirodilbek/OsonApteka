@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
         super().save_model(request, obj, form, change)
 
     model = CustomUser
-    list_display = ("phone_number", "first_name", "last_name","telegram_token", "is_agree", "is_staff", "is_superuser", "is_active")
+    list_display = ("phone_number", "first_name", "last_name","telegram_token","telegram_id", "is_agree", "is_staff", "is_superuser", "is_active")
     search_fields = ("phone_number", "first_name", "last_name")
     ordering = ("phone_number",)  # Telefon raqam bo‘yicha tartiblash
 

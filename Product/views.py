@@ -548,7 +548,7 @@ def filial_index(request):
         total_amount=Sum(F('items__price') * F('items__quantity'))
     ).order_by('day')
 
-    count = Order.objects.all()
+    count = Order.objects.all().count()
     count_now = Order.objects.filter(created_at__date=end_date.date()).count()
 
     # daily_summary = orders
