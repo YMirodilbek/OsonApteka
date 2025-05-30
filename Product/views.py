@@ -242,15 +242,22 @@ class ClickWebhookAPIView(ClickWebhook):
         """
         logger.info(f"Successfully payment received - incoming params: {params}")
 
-        # Log specific payment details
-        if isinstance(params, dict):
-            order_id = params.get('merchant_trans_id')
-            amount = params.get('amount')
-            click_trans_id = params.get('click_trans_id')
-            logger.info(f"Payment success - Order ID: {order_id}, Amount: {amount}, Click Trans ID: {click_trans_id}")
+        order_id = getattr(params, 'merchant_trans_id', None)
 
-        # You can add additional processing here
-        # For example, update order status, send notifications, etc.
+        if order_id:
+            try:
+                order = Order.objects.get(id=int(order_id))
+                order.is_paid = True
+                order.save()
+
+                logger.info(f"Order {order_id} marked as paid successfully")
+
+            except Order.DoesNotExist:
+                logger.error(f"Order {order_id} not found")
+            except Exception as e:
+                logger.error(f"Error updating order {order_id}: {str(e)}")
+        else:
+            logger.error("No order ID found in payment params")
 
     def cancelled_payment(self, params):
         """
@@ -258,15 +265,22 @@ class ClickWebhookAPIView(ClickWebhook):
         """
         logger.warning(f"Payment cancelled - incoming params: {params}")
 
-        # Log specific cancellation details
-        if isinstance(params, dict):
-            order_id = params.get('merchant_trans_id')
-            amount = params.get('amount')
-            reason = params.get('reason', 'Unknown')
-            logger.warning(f"Payment cancelled - Order ID: {order_id}, Amount: {amount}, Reason: {reason}")
+        order_id = getattr(params, 'merchant_trans_id', None)
 
-        # You can add additional processing here
-        # For example, notify user, update order status, etc.
+        if order_id:
+            try:
+                order = Order.objects.get(id=int(order_id))
+                order.is_paid = False
+                order.save()
+
+                logger.warning(f"Order {order_id} marked as payment cancelled")
+
+            except Order.DoesNotExist:
+                logger.error(f"Order {order_id} not found")
+            except Exception as e:
+                logger.error(f"Error updating cancelled order {order_id}: {str(e)}")
+        else:
+            logger.error("No order ID found in cancellation params")
 
 
 def payment_success(request, order_id):
@@ -282,15 +296,36 @@ def payment_success(request, order_id):
 
 
 def checkout_view(request):
+    logger.info(f"Checkout process started for user: {request.user.phone_number}")
+
     dostaff = 0
     dostafca = Dostafca.objects.last()
     if dostafca and dostafca.amount:
         dostaff = dostafca.amount
-    order = Order.objects.filter(user=request.user, is_completed=False).first()
-    if not order or not order.items.exists():
+
+    cart_order = Order.objects.filter(user=request.user, is_completed=False).first()
+    if not cart_order or not cart_order.items.exists():
+        logger.warning(f"Empty cart for user: {request.user.phone_number}")
         messages.error(request, "Sizning savatingiz bo'sh!")
         return redirect("cart")
 
+    logger.info(f"Creating new order for checkout - user: {request.user.phone_number}")
+    order = Order.objects.create(
+        user=request.user,
+        is_completed=False
+    )
+
+    cart_items = cart_order.items.all()
+    for cart_item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=cart_item.product,
+            quantity=cart_item.quantity,
+            price=cart_item.price,
+            name=cart_item.name
+        )
+
+    logger.info(f"New order created with ID: {order.id}, items count: {cart_items.count()}")
     cart_items = order.items.all()
 
     filials = Filial.objects.all()
@@ -304,7 +339,7 @@ def checkout_view(request):
     if request.method == 'POST':
         filial_id = int(request.POST.get('filial'))
 
-
+        logger.info(f"Processing checkout form for order ID: {order.id}")
 
         form = CheckoutForm(request.POST, instance=order)
         if form.is_valid():
@@ -316,11 +351,19 @@ def checkout_view(request):
                 lng = request.POST.get('address_lng')
                 if lat and lng:
                     order.address_text = f"Latitude: {lat}, Longitude: {lng}"
+
             filial = Filial.objects.get(id=filial_id)
             order.filial = filial
+            order.is_completed = True
             order.save()
 
+            logger.info(f"Clearing original cart for user: {request.user.phone_number}")
+            cart_order.delete()  # Remove the cart order since we've created a new order
+
+            logger.info(f"Order {order.id} completed successfully for user: {request.user.phone_number}")
+
             if order.payment_method == 'click':
+                logger.info(f"Processing Click payment for order {order.id}, amount: {order.amount}")
                 click_up = ClickUp(
                     service_id=settings.CLICK_SERVICE_ID,
                     merchant_id=settings.CLICK_MERCHANT_ID
@@ -346,7 +389,10 @@ def checkout_view(request):
                     return_url=return_url
                 )
 
+                logger.info(f"Click payment link generated for order {order.id}: {payment_link}")
                 return redirect(payment_link)
+
+            logger.info(f"Processing non-Click payment for order {order.id}, method: {order.payment_method}")
             from main.bot_messages import send_telegram_message
             telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
             for i in telegram_ids:
@@ -360,6 +406,7 @@ def checkout_view(request):
                                 f"dorilar soni: {order.items.all().count()} ta\n"
                                 f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
                         )
+            logger.info(f"Telegram notifications sent for order {order.id}")
             messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
             return redirect("order_history")
         else:
