@@ -402,9 +402,10 @@ def checkout_view(request):
                                 f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
                                 f"filial : {order.filial}\n"
                                 f"summa: {order.total_price} sum\n"
-                                f"tel: {order.user.username}\n"
+                                f"tel: {order.phone_number1}\n"
                                 f"dorilar soni: {order.items.all().count()} ta\n"
-                                f"tolov : {'bajatildi' if order.is_paid else 'kutilmoqda'}"
+                                f"Adres: {order.address_text} \n"
+                                f"tolov : {'bajatildi' }"#'bajatildi' if order.is_paid else 'kutilmoqda'
                         )
             logger.info(f"Telegram notifications sent for order {order.id}")
             messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
@@ -547,8 +548,8 @@ def filial_index(request):
         total_amount=Sum(F('items__price') * F('items__quantity'))
     ).order_by('day')
 
-    count = orders.count()
-    count_now = orders.filter(created_at__date=end_date.date()).count()
+    count = Order.objects.all()
+    count_now = Order.objects.filter(created_at__date=end_date.date()).count()
 
     # daily_summary = orders
 
