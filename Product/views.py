@@ -201,6 +201,7 @@ class ClickWebhookAPIView(ClickWebhook):
         Returns:
             list: List of fiscal items for the order
         """
+        return []
         try:
             result_dict = {}
             order = Order.objects.get(id=account.id)
