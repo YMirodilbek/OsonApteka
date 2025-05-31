@@ -18,6 +18,10 @@ app.conf.beat_schedule = {
         'task': 'Product.tasks.refresh_products_cache', 
         'schedule': crontab(minute='*/5'),
     },
+    'delete-unpaid-completed-orders': {
+        'task': 'Product.tasks.delete_unpaid_completed_orders',
+        'schedule': crontab(minute='*/1'),
+    },
 }
 
 app.conf.timezone = 'Asia/Tashkent'  
