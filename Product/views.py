@@ -1,24 +1,24 @@
-from django.db.models import Sum, F, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models.functions import TruncDay
+from django.db.models import Sum, F, Prefetch , Count , Q
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import TruncDay
 from django.contrib.auth import  login ,logout
 from django.core.paginator import Paginator
-from django.http import JsonResponse
 from datetime import datetime, timedelta
 from click_up.views import ClickWebhook
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib import messages
 from .lotin_krill import compress
 from django.conf import settings
 from click_up import ClickUp
+from tmp.models import *
 from .decorator import *
 from .models import *
 from .forms import  *
-from tmp.models import *
+import logging
 import redis
 import json
-import logging
 
 # Get logger for Product app
 logger = logging.getLogger('Product')
@@ -548,9 +548,12 @@ def filial_index(request):
         total_amount=Sum(F('items__price') * F('items__quantity'))
     ).order_by('day')
 
-    count = Order.objects.all().count()
-    count_now = Order.objects.filter(created_at__date=end_date.date()).count()
-
+    counts = Order.objects.aggregate(
+    count=Count('id', filter=Q(is_paid=True, **filial_filter)),
+    count_now=Count('id', filter=Q(created_at__date=end_date.date(), **filial_filter))
+    )
+    count = counts['count']
+    count_now = counts['count_now']
     # daily_summary = orders
 
     for entry in orders:
@@ -559,7 +562,7 @@ def filial_index(request):
             'amount': int(entry['total_amount'] or 0)
         })
     filials = Filial.objects.all()
-    context = {
+    context = {   
         'count': count,
         'filials':filials,
         'count_now': count_now,
