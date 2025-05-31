@@ -303,35 +303,19 @@ def checkout_view(request):
     if dostafca and dostafca.amount:
         dostaff = dostafca.amount
 
-    cart_order = Order.objects.filter(user=request.user, is_completed=False).first()
-    if not cart_order or not cart_order.items.exists():
+    order = Order.objects.filter(user=request.user, is_completed=False).first()
+    if not order or not order.items.exists():
         logger.warning(f"Empty cart for user: {request.user.phone_number}")
         messages.error(request, "Sizning savatingiz bo'sh!")
         return redirect("cart")
 
-    logger.info(f"Creating new order for checkout - user: {request.user.phone_number}")
-    order = Order.objects.create(
-        user=request.user,
-        is_completed=False
-    )
-
-    cart_items = cart_order.items.all()
-    for cart_item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=cart_item.product,
-            quantity=cart_item.quantity,
-            price=cart_item.price,
-            name=cart_item.name
-        )
-
-    logger.info(f"New order created with ID: {order.id}, items count: {cart_items.count()}")
+    logger.info(f"Using existing cart order for checkout - user: {request.user.phone_number}, order ID: {order.id}")
     cart_items = order.items.all()
 
     filials = Filial.objects.all()
     if not filials.exists():
         default_filial = Filial.objects.create(
-            name="Markaziy Filial",
+            name="Markaziy Filial", 
             address="Toshkent sh., Yunusobod tumani"
         )
         filials = Filial.objects.all()
@@ -356,9 +340,6 @@ def checkout_view(request):
             order.filial = filial
             order.is_completed = True
             order.save()
-
-            logger.info(f"Clearing original cart for user: {request.user.phone_number}")
-            cart_order.delete()  # Remove the cart order since we've created a new order
 
             logger.info(f"Order {order.id} completed successfully for user: {request.user.phone_number}")
 
@@ -428,6 +409,7 @@ def checkout_view(request):
     }
 
     return render(request, 'checkout.html', context)
+
 
 @login_required(login_url='/auth/send-otp/')
 def Myaccount(request):
