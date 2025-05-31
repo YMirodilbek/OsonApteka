@@ -352,30 +352,6 @@
         <div class="product-gallery">
             <img id="main-image" src="{{product.image1}}" alt="{{ product.name }}">
         </div>
-        {% if product.image2 or product.image3 or product.image4 %}
-        <div class="thumbnail-nav">
-            {% if product.image1 %}
-            <div class="thumbnail" onclick="changeImage('{{product.image1}}')">
-                <img src="{{product.image1}}" alt="{{ product.name }}">
-            </div>
-            {% endif %}
-            {% if product.image2 %}
-            <div class="thumbnail" onclick="changeImage('{{product.image2}}')">
-                <img src="{{product.image2}}" alt="{{ product.name }}">
-            </div>
-            {% endif %}
-            {% if product.image3 %}
-            <div class="thumbnail" onclick="changeImage('{{product.image3}}')">
-                <img src="{{product.image3}}" alt="{{ product.name }}">
-            </div>
-            {% endif %}
-            {% if product.image4 %}
-            <div class="thumbnail" onclick="changeImage('{{product.image4}}')">
-                <img src="{{product.image4}}" alt="{{ product.name }}">
-            </div>
-            {% endif %}
-        </div>
-        {% endif %}
     </div>
     <div class="product-info">
         <h1>{{ product.name }}</h1>
@@ -383,6 +359,8 @@
         <p class="country">{{ product.country }}</p>
         <p class="composition">ком.лек ({{ product.MNN }})</p>
         <p class="manufacturer">{{ product.producer }}</p>
+        <p class="manufacturer">{{ product.country }}</p>
+        <p class="manufacturer">{{ product.amount }}</p>
 
         <form method="GET" action="/product/add/{{ product.id }}/">
             <div class="price-select">

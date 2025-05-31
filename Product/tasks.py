@@ -31,8 +31,8 @@ def refresh_products_cache():
 
     for item in data:
         try:
-            if int(item.get('Amount')) <=0:
-                continue
+            # if int(item.get('Amount')) <=0:
+            #     continue
             uid_list.append(int(item.get("UID")))
         except (TypeError, ValueError):
             continue
@@ -98,6 +98,7 @@ def refresh_products_cache():
                 "ReleaseForm": item.get("ReleaseForm", ""),
                 "ProductType": item.get("ProductType", ""),
                 "ExpDate": item.get("ExpDate", ""),
+                "amount": item.get("Amount", ""),
                 "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
                 "fiscal_items": fiscal_items,
