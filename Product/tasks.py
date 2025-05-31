@@ -1,5 +1,5 @@
 from requests.auth import HTTPBasicAuth
-from .models import Product , Category
+from .models import Product , Category, Order
 from celery import shared_task
 import requests
 import datetime
@@ -114,6 +114,22 @@ def refresh_products_cache():
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
 
     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")
+
+@shared_task
+def delete_unpaid_completed_orders():
+    """
+    Delete orders that are marked as completed but not paid
+    """
+    try:
+        orders = Order.objects.filter(is_completed=True, is_paid=False)
+        count = orders.count()
+        orders.delete()
+        logger.info(f"Deleted {count} completed but unpaid orders at {datetime.datetime.now()}")
+    except Exception as e:
+        logger.error(f"Failed to delete unpaid completed orders: {e}")
+
+
+
 
 # from celery import shared_task
 # import requests
