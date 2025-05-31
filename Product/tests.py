@@ -65,12 +65,13 @@
 # user=ubuntu
 
 
-# sudo supervisorctl reread
-# sudo supervisorctl update
-# sudo supervisorctl restart celery_worker
-# sudo supervisorctl restart celery_beat
-# sudo supervisorctl status
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl restart celery_worker
+sudo supervisorctl restart celery_beat
+sudo supervisorctl status
 
+# sudo supervisorctl restart telegram_bot
 
 # sudo fallocate -l 2G /swapfile
 # sudo chmod 600 /swapfile

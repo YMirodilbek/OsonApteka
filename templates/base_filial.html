@@ -111,14 +111,6 @@
             <a class="nav-link text-white" href="/filial/product-create/">Product qo'shish</a>
           </li>
   
-         
-  
-          {% if not request.user.telegram_id %}
-          <li class="nav-item">
-            <a class="nav-link text-white" href="https://t.me/akmalfarimorder_bot?start={{ request.user.telegram_token }}">Telegram bot </a>
-          </li>
-          {% endif %}
-  
           {% if user.is_authenticated and user.is_superuser %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

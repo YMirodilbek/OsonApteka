@@ -31,9 +31,11 @@ def refresh_products_cache():
 
     for item in data:
         try:
-            # if int(item.get('Amount')) <=0:
-            #     continue
+            amount = item.get('Amount')
+            if amount <=0 :
+                continue
             uid_list.append(int(item.get("UID")))
+
         except (TypeError, ValueError):
             continue
 
@@ -44,6 +46,9 @@ def refresh_products_cache():
     grouped_by_class = {}
 
     for item in data:
+        amount = item.get('Amount')
+        if amount <=0 :
+            continue
         # try:
         #     Category.objects.get_or_create(name=item.get('Class'))
         # except:pass
@@ -84,6 +89,9 @@ def refresh_products_cache():
         if uid in final_result_dict:
             if price not in final_result_dict[uid]["prices"]:
                 final_result_dict[uid]["prices"].append(price)
+            if price not in final_result_dict[uid]["amount"]:
+                final_result_dict[uid]["amount"].append(f"{amount} shtuk  {price} sum ")
+                
         else:
             final_result_dict[uid] = {
                 "uid": uid,
@@ -98,7 +106,7 @@ def refresh_products_cache():
                 "ReleaseForm": item.get("ReleaseForm", ""),
                 "ProductType": item.get("ProductType", ""),
                 "ExpDate": item.get("ExpDate", ""),
-                "amount": item.get("Amount", ""),
+                "amount": [f"{amount} shtuk {price} sum "],
                 "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
                 "fiscal_items": fiscal_items,
@@ -115,6 +123,7 @@ def refresh_products_cache():
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
 
     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")
+    # logger.info(f"Redis cache updated successfully! {json.dumps(grouped_by_class)}")
 
 @shared_task
 def delete_unpaid_completed_orders():
