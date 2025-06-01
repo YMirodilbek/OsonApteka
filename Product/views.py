@@ -142,7 +142,7 @@ def DeleteProduct(request, item_id):
 
 
 def product_detail(request,pk):
-    product = Product.objects.get(id=int(pk))
+    product_ = Product.objects.get(id=int(pk))
     r = redis.Redis(host='localhost', port=6379, db=0)
     result = r.get('final_result')
     if result:
@@ -150,9 +150,10 @@ def product_detail(request,pk):
 
     result_dict = {item['id']: item for item in result}
 
-    product = result_dict.get(product.id, {})
+    product = result_dict.get(product_.id, {})
     context = {
         "product":product,
+        "product_":product_
     }
     return render(request, 'product-details.html',  context )
 

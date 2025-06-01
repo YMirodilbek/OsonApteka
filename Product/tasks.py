@@ -111,7 +111,7 @@ def refresh_products_cache():
                 "info": product.info,
 
                 "amount": [f"{amount} штук {price} сум "],
-                "info": product.info,
+                # "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
                 "fiscal_items": fiscal_items,
             }
