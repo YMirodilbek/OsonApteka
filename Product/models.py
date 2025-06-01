@@ -27,18 +27,7 @@ class Product(models.Model):
    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # sostav = models.CharField(max_length=255, null=True ,blank=True )
-    # sostaf_info = models.TextField(null=True, blank=True)
     
-    # opisanie = models.CharField(max_length=255, null=True ,blank=True )
-    # opisanie_info = models.TextField(null=True, blank=True)
-    
-    # lecastravnaya_forma = models.CharField(max_length=255, null=True ,blank=True )
-    # lecastravnaya_forma_info = models.TextField(null=True, blank=True)
-    
-    # lecastravnaya_forma = models.CharField(max_length=255, null=True ,blank=True )
-    # lecastravnaya_forma_info = models.TextField(null=True, blank=True)
-
     
     def __str__(self):
         return str(self.uid)
