@@ -1,4 +1,4 @@
-from .models import Order
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from .models import *
 
@@ -43,3 +43,17 @@ class CheckoutForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['filial', 'payment_method', 'address_text','phone_number1','phone_number2']
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['uid', 'info', 'image1']
+        widgets = {
+            'info': CKEditorWidget(config_name='default'),
+            'uid': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'uid': 'Mahsulot ID',
+            'info': 'Tavsif',
+            'image1': 'Rasm',
+        }
