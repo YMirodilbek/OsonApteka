@@ -390,39 +390,6 @@
     </div>
 
 
-    <div class="dosage-info ">
-        
-        <h3>{{ product.name }}</h3>
-        {% for i in sostaf %}
-
-
-          <div class="row my-5">
-            <div class="dropdown w-100 small-dropdown">
-
-                <a class="btn bg--color dropdown-toggle w-50 d-flex justify-content-center" 
-                href="#" role="button" 
-                id="dropdownMenu{{ forloop.counter }}" 
-                data-bs-toggle="dropdown" 
-                aria-expanded="false">
-                    {{ i.title }}
-                </a>
-
-                <!-- position-static --> 
-                <ul class="dropdown-menu w-100 position-static mt-2" 
-                aria-labelledby="dropdownMenu{{ forloop.counter }}"
-                     >
-                    <li>
-                        <p class="dropdown-item-text wrap-text">{{ i.info }}</p>
-                    </li>
-                </ul>       
-            </div>
-        </div>
-
-
-
-            <!-- Har bir item uchun alohida modal -->
-           
-            {% endfor %}
 
     <div class="dosage-info">
         {{ product.name }} , {{product.info}}
