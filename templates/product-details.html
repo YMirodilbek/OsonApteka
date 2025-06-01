@@ -383,34 +383,10 @@
     </div>
 
     <div class="dosage-info">
-        {{ product.name }}
-        {% for i in sostaf %}
-            <div class="row my-2">
-                <div class="dropdown w-100">
+        {{ product.name }} , {{product.info}}
+        
 
-                    <!-- Dropdown toggle tugma -->
-                    <a class="btn bg--color dropdown-toggle w-100 d-flex justify-content-center" 
-                       href="#" role="button" 
-                       id="dropdownMenu{{ forloop.counter }}" 
-                       data-bs-toggle="dropdown" 
-                       aria-expanded="false">
-                        {{ i.title }}
-                    </a>
 
-                    <!-- Dropdown menyu -->
-                    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenu{{ forloop.counter }}">
-                        <li>
-                            <!-- Ustiga "wrap-text" classi CSS bilan so‘zlarni keyingi qatorga tushirish uchun -->
-                            <p class="dropdown-item-text wrap-text">{{ i.info }}</p>
-                        </li>
-                        
-                    </ul>       
-                </div>
-            </div>
-
-            <!-- Har bir item uchun alohida modal -->
-           
-            {% endfor %}
     </div>
 </div>
 

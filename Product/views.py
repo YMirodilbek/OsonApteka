@@ -149,11 +149,10 @@ def product_detail(request,pk):
         result = json.loads(result.decode('utf-8'))
 
     result_dict = {item['id']: item for item in result}
-    sostaf = Sostaf.objects.filter(product=product)
+
     product = result_dict.get(product.id, {})
     context = {
         "product":product,
-        "sostaf":sostaf
     }
     return render(request, 'product-details.html',  context )
 
@@ -478,61 +477,45 @@ def Contact(request):
 
 @is_staff
 def product_create(request):
+    # if request.method == 'POST':
+    #     uid = request.POST.get('uid')
+    #     # info = request.POST.get('info')
+    #     img_1 = request.FILES.get('img_1')
+    #     product =  Product.objects.create(
+    #         uid = int(uid),
+    #         # info = info
+    #     )
+    #     if img_1:
+    #         img_1 = compress(img_1)
+    #         product.image1 = img_1
+
+    #     product.save()
+    #     if product:
+    #         messages.success(request, "Product q'shildi")
+    #     else:
+    #         messages.error(request, "Product yeratib bo'lmado")
     if request.method == 'POST':
-        uid = request.POST.get('uid')
-        # info = request.POST.get('info')
-        img_1 = request.FILES.get('img_1')
-        product =  Product.objects.create(
-            uid = int(uid),
-            # info = info
-        )
-        if img_1:
-            img_1 = compress(img_1)
-            product.image1 = img_1
-
-        product.save()
-        if product:
-            messages.success(request, "Product q'shildi")
-        else:
-            messages.error(request, "Product yeratib bo'lmado")
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            
+            # Rasmni forma ichida siqib olish
+            if 'image1' in request.FILES:
+                product.image1 = compress(request.FILES['image1'])
+            
+            product.save()
+            messages.success(request, 'Mahsulot muvaffaqiyatli qo\'shildi!')
+            return redirect('/filial/product-create/')
+    else:
+        form = ProductForm()
+    
+    # return render(request, 'products/product_form.html', {'form': form})
     filials = Filial.objects.all()
-    return render(request,'filial/product-create.html', {'filials':filials})
+    return render(request,'filial/product-create.html', {'filials':filials ,'form': form})
 
 
-@is_staff
-def products(request):
-    page_number = request.GET.get('page')
-    product = Product.objects.all()
-    paginator = Paginator(product, 50 )
-    page_obj = paginator.get_page(page_number)
-    return render (request, 'filial/product.html', {"page_obj":page_obj})
 
-@is_staff
-def product_edit(request, pk):
-    product =  Product.objects.get(id=pk)
-    sostaf = Sostaf.objects.filter(product=product)
-    return render(request, 'filial/product-edit.html', {"sostaf":sostaf,"product_id":pk, "uid":product.uid})
 
-@is_staff
-def sostaf_create(request):
-    id = request.POST.get('id')
-    title = request.POST.get('title')
-    info = request.POST.get('info')
-    Sostaf.objects.create(product_id=int(id),title=title,info = info)
-    return redirect(f'/filial/product/edit/{id}')
-
-@is_staff
-def sostaf_edit(request):
-    id = request.POST.get('id')
-    product_id = request.POST.get('product_id')
-    sostaf = Sostaf.objects.get(id=int(id))
-    title = request.POST.get('title')
-    info = request.POST.get('info')
-    sostaf.title = title
-    sostaf.info =info
-    sostaf.save()
-
-    return redirect(f'/filial/product/edit/{product_id}')
 
 @is_staff
 def filial_index(request):

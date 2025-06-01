@@ -23,13 +23,14 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG = False
+DEBUG = 1
 
 
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     # 'jet',
+    'ckeditor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -237,8 +238,34 @@ CELERY_ENABLE_UTC = False
 #     },
 # }
 
-
-
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar'],
+            ['Styles', 'Format', 'Font', 'FontSize'],
+            ['TextColor', 'BGColor'],
+            ['Maximize', 'ShowBlocks'],
+            ['Source']
+        ],
+        'height': 400,
+        'width': '100%',
+        'extraPlugins': ','.join([
+            'uploadimage',  # Rasm yuklash
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+        ]),
+        'removePlugins': 'stylesheetparser',
+        'allowedContent': True,
+        'filebrowserUploadUrl': '/ckeditor/upload/',
+        'language': 'ru',  # Til sozlamasi
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

@@ -1,48 +1,48 @@
-
 {% extends 'base_filial.html' %}
-
-{% block title %}Mahsulot yaratish{% endblock %}
+{% load static %}
 
 {% block content %}
+<style>
+    .wrap-text {
+    max-width: 400px; /* yoki kerakli kenglik */
+    white-space: normal; /* matn yangi qatorga tushsin */
+    word-wrap: break-word; /* so‘zlarni so‘ndirib yangi qatordan boshlash */
+    word-break: break-word;
+}
  
-   <br>
-    <div class="container">
+
+</style>
+  <div class="container">
         <div class="row justify-content-center">
-            
-            <div class="col-md-8 col-lg-6">
-            
-           
+            <div class="col-md-8 col-lg-8">
                 <div class="card shadow-lg">
                     <div class="card-header bg--color p-3 text-white text-center">
-                        <h4 class="mb-0">Yangi Mahsulot Qo‘shish</h4>
+                        <h4 class="mb-0">MAhsulot Qoshish </h4>
                     </div>
                     <div class="card-body">
-                        <form action="" id="myForm" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">UID</label>
-                                <input type="number" name="uid" class="form-control" id="exampleFormControlInput1" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label" >Images-1</label>
-                                <input class="form-control" name="img_1" type="file" id="formFile" required>
-                            </div>
+                    <form method="post" enctype="multipart/form-data" class="mt-4">
+                        {% csrf_token %}
+                        
+                        {{ form.media }}  
+                        {{ form.as_p }}
 
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-danger" id="resetBtn">Bekor qilish</button>
-                                <button type="submit" class="btn btn-success">Yaratish</button>
-                            </div>
-                        </form>
-                    </div>
+                        <button type="submit" class="btn btn-primary">Saqlash</button>
+                    </form>
+                     
                 </div>
             </div>
         </div>
     </div>
-</body>
+</div>
 
+<!-- CKEditor qo'shimcha sozlamalari -->
 <script>
-    document.getElementById('resetBtn').addEventListener('click', function() {
-        document.getElementById('myForm').reset();
+    // Agar rasm yuklash imkoniyati kerak bo'lsa
+    CKEDITOR.on('instanceReady', function(ev) {
+        ev.editor.on('fileUploadRequest', function(evt) {
+            var xhr = evt.data.fileLoader.xhr;
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+        });
     });
-    </script>
+</script>
 {% endblock %}
