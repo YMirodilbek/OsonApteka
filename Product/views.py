@@ -478,23 +478,7 @@ def Contact(request):
 
 @is_staff
 def product_create(request):
-    # if request.method == 'POST':
-    #     uid = request.POST.get('uid')
-    #     # info = request.POST.get('info')
-    #     img_1 = request.FILES.get('img_1')
-    #     product =  Product.objects.create(
-    #         uid = int(uid),
-    #         # info = info
-    #     )
-    #     if img_1:
-    #         img_1 = compress(img_1)
-    #         product.image1 = img_1
 
-    #     product.save()
-    #     if product:
-    #         messages.success(request, "Product q'shildi")
-    #     else:
-    #         messages.error(request, "Product yeratib bo'lmado")
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
@@ -514,7 +498,21 @@ def product_create(request):
     filials = Filial.objects.all()
     return render(request,'filial/product-create.html', {'filials':filials ,'form': form})
 
-
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = ProductForm(instance=product)
+    
+    return render(request, 'filial/edit_product.html', {
+        'form': form,
+        'product': product
+    })
 
 
 

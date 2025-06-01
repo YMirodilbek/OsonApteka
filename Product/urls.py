@@ -19,6 +19,7 @@ urlpatterns = [
     path('filial/registar/',filial_regisret ),
     path('filial/product-create/',product_create ),
     path('filial/order-client/',filial_order_client),
+    path('filial/product-edit/<int:product_id>/', edit_product),
     path("filial-order-status/<int:pk>/",update_order_status, name="update_order_status"),
 
     path('',Index, name='index'),

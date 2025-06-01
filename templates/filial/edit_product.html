@@ -1,0 +1,33 @@
+{% extends 'base_filial.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+
+        {{ form.media }}  <!-- CKEditor JS/CSS fayllari -->
+        {{form.as_p}}
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Saqlash</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof CKEDITOR !== 'undefined') {
+            CKEDITOR.on('instanceReady', function(ev) {
+                console.log('CKEditor tayyor!');
+            });
+        } else {
+            console.error('CKEditor yuklanmadi!');
+        }
+    });
+</script>
+{% endblock %}
