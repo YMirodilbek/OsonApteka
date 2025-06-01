@@ -1,0 +1,119 @@
+{% extends 'base_filial.html' %}
+
+{% block title %}Filial bosh sahifa{% endblock %}
+
+{% block content %}
+<style>
+    .wrap-text {
+    max-width: 400px; /* yoki kerakli kenglik */
+    white-space: normal; /* matn yangi qatorga tushsin */
+    word-wrap: break-word; /* so‘zlarni so‘ndirib yangi qatordan boshlash */
+    word-break: break-word;
+}
+ 
+
+</style>
+   <br>
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            
+            <div class="col-md-8 col-lg-6">
+            
+           
+                <div class="card shadow-lg">
+                    <div class="card-header bg--color p-3 text-white text-center">
+                        <h4 class="mb-0">{{uid}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/filial/sostaf/create/"  method="post" >
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Title</label>
+                                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" required>
+                            </div> 
+                            <div style="display: none !important;">
+                                
+                                <input type="number" name="id" class="form-control" value="{{product_id}}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Info</label>
+                                <textarea class="form-control" name="info" id="exampleFormControlTextarea1" rows="3" required></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-danger" id="resetBtn">Bekor qilish</button>
+                                <button type="submit" class="btn btn-success">Yaratish</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            {% for i in sostaf %}
+            <div class="row my-2">
+                <div class="dropdown w-100">
+
+                    <!-- Dropdown toggle tugma -->
+                    <a class="btn bg--color dropdown-toggle w-100 d-flex justify-content-center" 
+                       href="#" role="button" 
+                       id="dropdownMenu{{ forloop.counter }}" 
+                       data-bs-toggle="dropdown" 
+                       aria-expanded="false">
+                        {{ i.title }}
+                    </a>
+
+                    <!-- Dropdown menyu -->
+                    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenu{{ forloop.counter }}">
+                        <li>
+                            <!-- Ustiga "wrap-text" classi CSS bilan so‘zlarni keyingi qatorga tushirish uchun -->
+                            <p class="dropdown-item-text wrap-text">{{ i.info }}</p>
+                        </li>
+                        <li class="px-3 py-2">
+                            <!-- Modalni ochish tugmasi -->
+                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}">
+                                Edit
+                            </button>
+                        </li>
+                    </ul>       
+                </div>
+            </div>
+
+            <!-- Har bir item uchun alohida modal -->
+            <div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="modalLabel{{ forloop.counter }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="/filial/sostaf/edit/" method="post">
+                        {% csrf_token %}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ i.title }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- input va textarea lar -->
+                                <input style="display: none !important;" type="number" name="id" class="form-control mb-3"  value="{{ i.id }}" >
+                                <input style="display: none !important;" type="number" name="product_id" class="form-control mb-3"  value="{{ i.product_id}}" readonly>
+                                <input type="text" class="form-control mb-3" name="title" value="{{ i.title }}" >
+                                <textarea class="form-control" name="info" rows="5" >{{ i.info }}</textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                                <button type="submit" class="btn btn-primary">Saqlash</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

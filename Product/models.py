@@ -16,12 +16,8 @@ class Category(models.Model):
 
 class Product(models.Model):
     uid = models.BigIntegerField(db_index=True)
-    # category = models.ManyToManyField(Category, related_name="products")
+
     info = models.TextField(default='', blank=True)
-    # new_price = models.FloatField(null=True, blank=True)
-    # price = models.FloatField()
-    # rate = models.FloatField(null=True, blank=True)
-    # text = models.TextField()
     image1 = models.ImageField(upload_to="images/", null=True, blank=True)
    
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,6 +26,15 @@ class Product(models.Model):
 
     def __str__(self):
         return str(self.uid)
+
+
+class Sostaf(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    title = models.CharField(max_length=255)
+    info = models.TextField(default='', blank=True)
+
+    def __str__(self):
+        return str(self.title)
 
 
 class Dostafca(models.Model):

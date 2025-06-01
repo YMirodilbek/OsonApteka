@@ -107,7 +107,7 @@ def refresh_products_cache():
                 "ProductType": item.get("ProductType", ""),
                 "ExpDate": item.get("ExpDate", ""),
                 "amount": [f"{amount} shtuk {price} sum "],
-                "info": product.info,
+                # "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
                 "fiscal_items": fiscal_items,
             }

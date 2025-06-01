@@ -11,14 +11,18 @@ urlpatterns = [
     path('dastafca/', dastafca, ),
     
     path('filial/',filial_index , name= 'filial_index'),
+    path('filial/products/',products),
     path('filial/order/',filial_order),
     path('filial/login/',filial_login),
     path('filial/users/',filial_users),
     path('filial/logout/',filial_logout),
     path('filial/filial/',filial_filial),
+    path('filial/sostaf/edit/',sostaf_edit),
     path('filial/registar/',filial_regisret ),
+    path('filial/sostaf/create/',sostaf_create),
     path('filial/product-create/',product_create ),
     path('filial/order-client/',filial_order_client),
+    path('filial/product/edit/<int:pk>',product_edit),
     path("filial-order-status/<int:pk>/",update_order_status, name="update_order_status"),
 
     path('',Index, name='index'),
