@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <style>
     /* Product Details Styling */
     .product-details {
@@ -280,6 +282,10 @@
         margin-bottom: 15px;
     }
 
+    .bg--color { background-color: #003366; color: white;}
+        .dropdown-item {
+        color: white !important;
+    }
     .shop-logo {
         width: 50px;
         height: 50px;
@@ -344,6 +350,7 @@
             height: 300px;
         }
     }
+
 </style>
 
 <!-- Product Details Section -->
@@ -378,35 +385,38 @@
                 </select>
             </div>
             
-            <button type="submit" class="add-to-cart">Добавить в корзину</button>
+            <button type="submit" class="add-to-cart bg--color">Добавить в корзину</button>
         </form>
     </div>
 
-    <div class="dosage-info">
-        {{ product.name }}
+
+    <div class="dosage-info ">
+        
+        <h3>{{ product.name }}</h3>
         {% for i in sostaf %}
-            <div class="row my-2">
-                <div class="dropdown w-100">
 
-                    <!-- Dropdown toggle tugma -->
-                    <a class="btn bg--color dropdown-toggle w-100 d-flex justify-content-center" 
-                       href="#" role="button" 
-                       id="dropdownMenu{{ forloop.counter }}" 
-                       data-bs-toggle="dropdown" 
-                       aria-expanded="false">
-                        {{ i.title }}
-                    </a>
 
-                    <!-- Dropdown menyu -->
-                    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenu{{ forloop.counter }}">
-                        <li>
-                            <!-- Ustiga "wrap-text" classi CSS bilan so‘zlarni keyingi qatorga tushirish uchun -->
-                            <p class="dropdown-item-text wrap-text">{{ i.info }}</p>
-                        </li>
-                        
-                    </ul>       
-                </div>
+          <div class="row my-5">
+            <div class="dropdown w-100 small-dropdown">
+
+                <a class="btn bg--color dropdown-toggle w-50 d-flex justify-content-center" 
+                href="#" role="button" 
+                id="dropdownMenu{{ forloop.counter }}" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+                    {{ i.title }}
+                </a>
+
+                <!-- position-static --> 
+                <ul class="dropdown-menu w-50 position-static mt-2" aria-labelledby="dropdownMenu{{ forloop.counter }}">
+                    <li>
+                        <p class="dropdown-item-text wrap-text">{{ i.info }}</p>
+                    </li>
+                </ul>       
             </div>
+        </div>
+
+
 
             <!-- Har bir item uchun alohida modal -->
            
