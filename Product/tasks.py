@@ -90,7 +90,7 @@ def refresh_products_cache():
             if price not in final_result_dict[uid]["prices"]:
                 final_result_dict[uid]["prices"].append(price)
             if price not in final_result_dict[uid]["amount"]:
-                final_result_dict[uid]["amount"].append(f"{amount} shtuk  {price} sum ")
+                final_result_dict[uid]["amount"].append(f"{amount} штук  {price} сум ")
                 
         else:
             final_result_dict[uid] = {
@@ -106,7 +106,11 @@ def refresh_products_cache():
                 "ReleaseForm": item.get("ReleaseForm", ""),
                 "ProductType": item.get("ProductType", ""),
                 "ExpDate": item.get("ExpDate", ""),
+
                 "amount": [f"{amount} shtuk {price} sum "],
+                "info": product.info,
+
+                "amount": [f"{amount} штук {price} сум "],
                 # "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
                 "fiscal_items": fiscal_items,
