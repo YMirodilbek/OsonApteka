@@ -19,7 +19,7 @@ from .forms import  *
 import logging
 import redis
 import json
-
+import os
 # Get logger for Product app
 logger = logging.getLogger('Product')
 
@@ -494,26 +494,53 @@ def product_create(request):
     else:
         form = ProductForm()
     
-    # return render(request, 'products/product_form.html', {'form': form})
     filials = Filial.objects.all()
     return render(request,'filial/product-create.html', {'filials':filials ,'form': form})
 
+
+@is_staff
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = Product_editForm(request.POST, instance=product)  # FILES parametrini olib tashlang
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect(f'/filial/product-edit/{product_id}/')
     else:
-        form = ProductForm(instance=product)
+        form = Product_editForm(instance=product)
     
     return render(request, 'filial/edit_product.html', {
         'form': form,
         'product': product
     })
 
+def edit_product_image(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        new_image = request.FILES.get('image1')
+        if new_image:
+            if product.image1:
+                try:
+                    os.remove(product.image1.path)
+                except:
+                    pass
+            product.image1 = new_image
+            product.save()
+            return redirect('/filial/products/')
+    
+    return render(request, 'filial/edit_image.html', {'product': product})
+
+
+
+@is_staff
+def products(request):
+    page_number = request.GET.get('page')
+    product = Product.objects.all()
+    paginator = Paginator(product, 50 )
+    page_obj = paginator.get_page(page_number)
+    return render (request, 'filial/product.html', {"page_obj":page_obj})
 
 
 @is_staff

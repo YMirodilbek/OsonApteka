@@ -6,10 +6,9 @@ from django.contrib import admin
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('jet/', include('jet.urls', 'jet')), 
-    path('auth/',include('main.urls')),
+    path('admin/', admin.site.urls), 
     path('',include('Product.urls')),
+    path('auth/',include('main.urls')),
     path('front/',include('tmp.urls'))
 ]
 if settings.DEBUG:
@@ -17,6 +16,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
-handler404=handler_404
 handler500=handler_500
+handler404=handler_404
 

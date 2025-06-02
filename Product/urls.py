@@ -11,6 +11,7 @@ urlpatterns = [
     path('dastafca/', dastafca, ),
     
     path('filial/',filial_index , name= 'filial_index'),
+    path('filial/products/',products),
     path('filial/order/',filial_order),
     path('filial/login/',filial_login),
     path('filial/users/',filial_users),
@@ -19,7 +20,9 @@ urlpatterns = [
     path('filial/registar/',filial_regisret ),
     path('filial/product-create/',product_create ),
     path('filial/order-client/',filial_order_client),
+    path('filial/api/product-search/',product_search_api ),
     path('filial/product-edit/<int:product_id>/', edit_product),
+    path('filial/edit_product_image/<int:product_id>/', edit_product_image),
     path("filial-order-status/<int:pk>/",update_order_status, name="update_order_status"),
 
     path('',Index, name='index'),

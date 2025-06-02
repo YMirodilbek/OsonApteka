@@ -53,7 +53,18 @@ class ProductForm(forms.ModelForm):
             'uid': forms.NumberInput(attrs={'class': 'form-control'}),
         }
         labels = {
-            'uid': 'Mahsulot ID',
-            'info': 'Tavsif',
-            'image1': 'Rasm',
+            'uid': 'uid',
+            'info': 'info',
+            'image1': 'image',
+        }
+class Product_editForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['uid', 'info', ]
+        widgets = {
+            'info': CKEditorWidget(config_name='default'),
+        }
+        labels = {
+            'uid': 'uid',
+            'info': 'info',
         }

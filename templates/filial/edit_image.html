@@ -1,0 +1,33 @@
+
+{% extends 'base_filial.html' %}
+
+{% block title %}Edit IMG{% endblock %}
+
+{% block content %}
+
+<br>
+
+<div class="col-md-12 col-xl-6 mx-auto">
+    <div class="auth-main">
+        <div class="auth-wrapper v3">
+            <div class="auth-form">
+                <div class="card">
+
+                
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+
+                            <input type="file" class="form-control" name="image1">
+                        </div>
+                        <div class="mb-3">
+
+                            <button type="submit" class="btn btn-success">Rasmni yangilash</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
