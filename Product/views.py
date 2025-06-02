@@ -580,7 +580,7 @@ def filial_index(request):
 
     counts = Order.objects.aggregate(
     count=Count('id', filter=Q(is_paid=True, **filial_filter)),
-    count_now=Count('id', filter=Q(created_at__date=end_date.date(), **filial_filter))
+    count_now=Count('id', filter=Q(is_paid=True, created_at__date=end_date.date(), **filial_filter))
     )
     count = counts['count']
     count_now = counts['count_now']
