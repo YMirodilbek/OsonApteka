@@ -9,7 +9,7 @@
 
             <!-- Search input -->
             <div class="input-group mb-3 shadow-sm">
-                <input type="text" id="searchInput"  class="form-control" placeholder="uid or  name..." aria-label="Search" aria-describedby="button-search">
+                <input type="text" id="searchInput"  class="form-control" placeholder="uid..." aria-label="Search" aria-describedby="button-search">
             </div>
 
             <!-- Jadval -->
@@ -72,7 +72,7 @@
                             tableBody.innerHTML += `
                                 <tr>
                                     <td>${item.id}</td>
-                                    <td><a href="/filial/product/${item.id}/">${item.uid}</a></td>
+                                    <td><a href="/product/detail/${item.id}/">${item.uid}</a></td>
                                     <td>
                                         ${item.image1 ? 
                                             `<a href="/filial/edit_product_image/${item.id}/">

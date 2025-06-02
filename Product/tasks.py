@@ -93,6 +93,18 @@ def refresh_products_cache():
                 final_result_dict[uid]["amount"].append(f"{amount} штук  {price} сум ")
                 
         else:
+            ProductType = item.get("ProductType", "")
+            if isinstance(ProductType, list) and ProductType:
+                ProductType = ProductType[0]
+            else:
+                ProductType = ProductType
+
+
+            if ProductType == "Rx":
+                ProductType = "Рецепт билан"
+            elif ProductType == "ОТС":
+                ProductType = "Рецептсиз"
+                    
             final_result_dict[uid] = {
                 "uid": uid,
                 "id": product.id,
@@ -104,14 +116,10 @@ def refresh_products_cache():
                 "country": item.get("Country", ""),
                 "MNN": item.get("MNN", ""),
                 "ReleaseForm": item.get("ReleaseForm", ""),
-                "ProductType": item.get("ProductType", ""),
+                "ProductType": ProductType,
                 "ExpDate": item.get("ExpDate", ""),
 
-                "amount": [f"{amount} shtuk {price} sum "],
-                "info": product.info,
-
                 "amount": [f"{amount} штук {price} сум "],
-                # "info": product.info,
                 "image1": product.image1.url if product.image1 else "",
                 "fiscal_items": fiscal_items,
             }
@@ -126,6 +134,7 @@ def refresh_products_cache():
     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
 
     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")
+    
 
 
 @shared_task
@@ -141,91 +150,3 @@ def delete_unpaid_completed_orders():
     except Exception as e:
         logger.error(f"Failed to delete unpaid completed orders: {e}")
 
-
-
-
-# from celery import shared_task
-# import requests
-# import datetime
-# import logging
-# import redis
-# import json
-# from requests.auth import HTTPBasicAuth
-# from .models import Product, Category
-
-# logger = logging.getLogger('celery_tasks')
-# r = redis.Redis(host='localhost', port=6379, db=0)
-
-# API_URL = "http://93.170.11.10:8088/RM_OPT/hs/online/stock"
-# USERNAME = "Online"
-# PASSWORD = "cJXGLytPHb3nDNZf5gRh7jzwa"
-
-# @shared_task
-# def refresh_products_cache():
-#     try:
-#         response = requests.post(API_URL, auth=HTTPBasicAuth(USERNAME, PASSWORD), stream=True, json={})
-#         response.raise_for_status()
-#     except requests.RequestException as e:
-#         logger.error(f"Request failed: {e}")
-#         return
-
-#     data = response.json().get('array', [])
-#     uid_list = [int(item.get("UID")) for item in data if item.get('Amount', 0) > 0]
-
-#     # Batch fetch products
-#     products = Product.objects.filter(uid__in=uid_list)
-#     products_dict = {p.uid: p for p in products}
-
-#     final_result_dict = {}
-#     categories_to_create = set()
-
-#     for item in data:
-#         try:
-#             uid = int(item.get("UID"))
-#             product = products_dict.get(uid)
-#             if not product:
-#                 continue
-
-#             category_name = item.get("Class", "None-Class")
-#             categories_to_create.add(category_name)
-
-#             price = item.get("Price", 0)
-#             if uid in final_result_dict:
-#                 if price not in final_result_dict[uid]["prices"]:
-#                     final_result_dict[uid]["prices"].append(price)
-#             else:
-#                 final_result_dict[uid] = {
-#                     "uid": uid,
-#                     "id": product.id,
-#                     "name": item.get("Name", ""),
-#                     "name_lower": item.get("Name", "").lower(),
-#                     "prices": [price],
-#                     "class": category_name,
-#                     "producer": item.get("Producer", ""),
-#                     "country": item.get("Country", ""),
-#                     "MNN": item.get("MNN", ""),
-#                     "ReleaseForm": item.get("ReleaseForm", ""),
-#                     "ProductType": item.get("ProductType", ""),
-#                     "ExpDate": item.get("ExpDate", ""),
-#                     "info": product.info,
-#                     "image1": product.image1.url if product.image1 else "",
-#                 }
-
-#         except (TypeError, ValueError):
-#             continue
-
-#     # Bulk create categories
-#     Category.objects.bulk_create([Category(name=name) for name in categories_to_create], ignore_conflicts=True)
-
-#     final_result = list(final_result_dict.values())
-#     grouped_by_class = {}
-
-#     for item in final_result:
-#         category = item["class"]
-#         grouped_by_class.setdefault(category, []).append(item)
-
-#     # Store results in Redis
-#     r.setex('final_result', 86400, json.dumps(final_result))
-#     r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
-
-#     logger.info(f"Redis cache updated successfully! {datetime.datetime.now()}")

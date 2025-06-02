@@ -96,32 +96,7 @@ def product_search_api(request):
                     'uid': product.uid,
                     'image1': product.image1.url if product.image1 else None,
                 })
-        else:
-            r = redis.Redis(host='localhost', port=6379, db=0)
-            cached_data = r.get('final_result')
-
-            if cached_data:
-                cached_data = json.loads(cached_data.decode('utf-8'))
-
-                for item in cached_data:
-                    name = item.get('name_lower', '')
-                    if not name:
-                        continue
-
-                    if name == q or name.startswith(q):
-                        results.append({
-                            'id': item.get('id'),
-                            'uid': item.get('uid'),
-                            'image1': item.get('image1')
-                        })
-                    else:
-                        score = fuzz.ratio(q, name)
-                        if score >= 35:
-                            results.append({
-                                'id': item.get('id'),
-                                'uid': item.get('uid'),
-                                'image1': item.get('image1')
-                            })
+       
 
     return JsonResponse({'results': results})
 
