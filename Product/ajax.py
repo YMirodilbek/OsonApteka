@@ -1,14 +1,12 @@
+from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from .context_processors import cart_context
+from Product.models import Dostafca ,Product
 from .lotin_krill import latin_to_cyrillic
 from django.http import JsonResponse
-from Product.models import Dostafca
+from django.db.models import Q
 from rapidfuzz import fuzz
 from .views import *
-
-
-
-
 
 @login_required(login_url='/auth/send-otp/')
 def add_to_cart(request, product_id):
@@ -88,8 +86,9 @@ def product_search_api(request):
     results = []
 
     if len(q) >= 5:
-        products = Product.objects.filter(uid__icontains=q)[:20]
-
+        products = Product.objects.filter(
+                    Q(uid__icontains=q) | Q(name__icontains=latin_to_cyrillic(q))
+                )[:20]
         if products.exists():
             for product in products:
                 results.append({
@@ -98,9 +97,22 @@ def product_search_api(request):
                     'image1': product.image1.url if product.image1 else None,
                 })
        
-
     return JsonResponse({'results': results})
 
+
+
+@csrf_exempt  # faqat test uchun, real loyihada boshqa usul ishlating
+@require_http_methods(["DELETE"])
+def delete_product(request, pk):
+    from .models import Product
+    try:
+        product = Product.objects.get(id=pk)
+        if product.image1 and os.path.exists(product.image1.path):
+            os.remove(product.image1.path)
+        product.delete()
+        return JsonResponse({'success': True})
+    except Product.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
 
 
 def dogovor(request):

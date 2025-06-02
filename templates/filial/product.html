@@ -9,7 +9,7 @@
 
             <!-- Search input -->
             <div class="input-group mb-3 shadow-sm">
-                <input type="text" id="searchInput"  class="form-control" placeholder="uid..." aria-label="Search" aria-describedby="button-search">
+                <input type="text" id="searchInput"  class="form-control" placeholder="uid name..." aria-label="Search" aria-describedby="button-search">
             </div>
 
             <!-- Jadval -->
@@ -19,14 +19,16 @@
                         <th scope="col">ID</th>
                         <th scope="col">UID</th>
                         <th scope="col">IMG</th>
+                        <th scope="col">NAME</th>
                         <th scope="col">EDIT</th>
+                        <th scope="col">DELETE</th>
                     </tr>
                 </thead>
                 <tbody  id="productTableBody">
                     {% for i in page_obj %}
                     <tr>
                         <td>{{ i.id }}</td>
-                        <td><a href="{% url 'product_detail' i.id %}">{{ i.uid }}</a></td>
+                        <td>{{ i.uid }}</td>
                         <td>
                             {% if i.image1 %}
                                 <a href="/filial/edit_product_image/{{ i.id }}/"><img width="45px" src="{{ i.image1.url }}" alt=""></a>
@@ -34,7 +36,12 @@
                                 <span>No Image</span>
                             {% endif %}
                         </td>
+                        <td>{{i.name}}</td>
                         <td><a href="/filial/product-edit/{{ i.id }}" class="btn btn-success">Edit</a></td>
+                        <td>
+                        <button class="btn btn-danger delete-btn" data-id="{{i.id }}">Delete</button>
+                        </td>
+
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -55,24 +62,26 @@
     </div>
 </div>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("searchInput");
     const tableBody = document.getElementById("productTableBody");
 
+    // 🔍 Qidiruv funksiyasi
     input.addEventListener("input", function () {
         const query = this.value;
 
-        if (query.length >= 5) {
+        if (query.length >= 3) {
             fetch(`/filial/api/product-search/?q=${query}`)
                 .then(response => response.json())
                 .then(data => {
-                    tableBody.innerHTML = ""; // eski ma'lumotlarni tozalash
+                    tableBody.innerHTML = ""; // Eski natijalarni tozalash
 
                     if (data.results.length > 0) {
                         data.results.forEach(item => {
                             tableBody.innerHTML += `
                                 <tr>
                                     <td>${item.id}</td>
-                                    <td><a href="/product/detail/${item.id}/">${item.uid}</a></td>
+                                    <td>${item.uid}</td>
                                     <td>
                                         ${item.image1 ? 
                                             `<a href="/filial/edit_product_image/${item.id}/">
@@ -80,16 +89,61 @@
                                             </a>` : '<span>No Image</span>'
                                         }
                                     </td>
+                                    <td>${item.name}</td>
                                     <td><a href="/filial/product-edit/${item.id}/" class="btn btn-success">Edit</a></td>
+                                    <td><button class="btn btn-danger delete-btn" data-id="${item.id}">Delete</button></td>
                                 </tr>
                             `;
                         });
                     } else {
-                        tableBody.innerHTML = `<tr><td colspan="4" class="text-center">Hech narsa topilmadi</td></tr>`;
+                        tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Hech narsa topilmadi</td></tr>`;
                     }
                 });
         }
     });
+
+    // ✅ DELETE button uchun delegated event listener
+    tableBody.addEventListener("click", function (e) {
+        if (e.target.classList.contains("delete-btn")) {
+            const btn = e.target;
+            const productId = btn.getAttribute("data-id");
+            const row = btn.closest("tr");
+
+            if (confirm("Mahsulotni o'chirmoqchimisiz?")) {
+                fetch(`/filial/product-delete/${productId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        row.remove();
+                    } else {
+                        alert("O'chirishda xatolik yuz berdi!");
+                    }
+                });
+            }
+        }
+    });
+
+    // 🔐 CSRF token olish funksiyasi
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
 </script>
+
 
 {% endblock content %}

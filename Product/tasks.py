@@ -104,7 +104,9 @@ def refresh_products_cache():
                 ProductType = "Рецепт билан"
             elif ProductType == "ОТС":
                 ProductType = "Рецептсиз"
-                    
+            if product.name != name:
+                product.name = name
+                product.save()
             final_result_dict[uid] = {
                 "uid": uid,
                 "id": product.id,

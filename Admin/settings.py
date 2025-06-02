@@ -23,7 +23,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG =False
+DEBUG = False
 
 
 ALLOWED_HOSTS = ["*"]
@@ -67,7 +67,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "Product.context_processors.cart_context",
                 "Product.context_processors.category_contex"
             ],
         },

@@ -16,7 +16,7 @@ class Category(models.Model):
 from ckeditor.fields import RichTextField 
 class Product(models.Model):
     uid = models.BigIntegerField(db_index=True)
-
+    name = models.CharField(max_length=255, null=True, blank=True)
     info = RichTextField(
         config_name='default',
         default='',

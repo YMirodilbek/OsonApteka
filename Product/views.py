@@ -43,7 +43,7 @@ def cart_view_json(request):
                 result.append({
                     "id": item.id,
                     "product_id": item.product.id,
-                    "name": item.product.info,
+                    "name": item.product.name,
                     "price": float(item.price),
                     "qty": item.quantity,
                     "img": item.product.image1.url if item.product.image1 else '/static/media/default.jpg'
@@ -537,10 +537,12 @@ def edit_product_image(request, product_id):
 @is_staff
 def products(request):
     page_number = request.GET.get('page')
-    product = Product.objects.all()
+    product = Product.objects.all().order_by('id')
     paginator = Paginator(product, 50 )
     page_obj = paginator.get_page(page_number)
     return render (request, 'filial/product.html', {"page_obj":page_obj})
+
+
 
 
 @is_staff
