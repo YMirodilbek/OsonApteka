@@ -8,26 +8,43 @@
     <title>Онлайн аптека в Андижане — Заказ лекарств с доставкой | AkmalFarm.uz</title>
 
     <meta name="description" content="AkmalFarm.uz — интернет-аптека в Узбекистане. Удобный заказ лекарств онлайн с быстрой доставкой. Широкий ассортимент и доступные цены.">
-
-
     <meta name="keywords" content="онлайн аптека Андижан, купить лекарства онлайн, доставка лекарств Андижан, интернет аптека Узбекистан, AkmalFarm, Akmal Farm, Акмал Фарм">
-
-   
     <meta name="author" content="Akmal Farm ">
-
-    <link rel="icon" href="/static/rm.png" type="image/x-icon">
-    <!-- <img src="/static/rm.png" alt="Akmal Farm Logo" width="150"> -->
-    <!-- <img src="{% static 'media/AFM_MEDICAL.png' %}" alt="Akmal Farm logo"> -->
-
-    <!-- Facebook, Telegram va boshqa ijtimoiy tarmoqlarda chiqishi uchun Open Graph metalar -->
+    <link rel="shortcut icon" href="/static/rm.png" />
+    <!-- <link rel="icon" href="/static/rm.png" type="image/x-icon"> -->
     <meta property="og:title" content="Онлайн аптека в Андижане — Заказ лекарств с доставкой | AkmalFarm.uz" />
     <meta property="og:description" content="AkmalFarm.uz — интернет-аптека в Узбекистане. Удобный заказ лекарств онлайн с быстрой доставкой. Широкий ассортимент и доступные цены" />
-    <meta property="og:image" content="https://akmalfarm.uz/static/rm.png" /> <!-- Sayt rasmi (logo) -->
+
+    <meta property="og:image" content="https://akmalfarm.uz/static/rm.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://akmalfarm.uz/static/rm.png">
+
     <meta property="og:url" content="https://akmalfarm.uz" /> <!-- Sayt URL manzili -->
-
-    <!-- Saytning asosiy URL manzili (takroriy sahifalardan saqlaydi) -->
     <link rel="canonical" href="https://akmalfarm.uz/" />
-
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Pharmacy",
+        "name": "Akmal Farm",
+        "url": "https://akmalfarm.uz",
+        "logo": "https://akmalfarm.uz/static/rm.png",
+        "image": "https://akmalfarm.uz/static/rm.png",
+        "description": "Oʻzbekistondagi onlayn apteka. Dori-darmonlarni tez va qulay tarzda buyurtma qiling.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Andijon",
+            "addressRegion": "Andijon viloyati",
+            "addressCountry": "UZ"
+        },
+        "openingHours": "Mo-Su 08:00-20:00",
+        "telephone": "+998 XX XXX XX XX",
+        "priceRange": "$$"
+    }
+    </script>
     <!-- Mobil qurilmalarga moslashtirish -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -38,16 +55,7 @@
     <link rel="stylesheet" href="{% static 'own-styles/real_time_search.css' %}">
     <link rel="stylesheet" href="{% static 'own-styles/mobile_navbar.css' %}">
     <link rel="stylesheet" href="{% static 'own-styles/footer.css' %}">
-    <script type="application/ld+json">
-             {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Akmal Farm",
-      "url": "https://akmalfarm.uz",
-      "logo": "/static/rm.png"
-  }
   
-</script>
 
     {% block css %}
     
