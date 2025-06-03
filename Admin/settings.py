@@ -23,10 +23,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = env.str('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
     # 'jet',
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'click_up',
     'tmp'
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,22 +77,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Admin.wsgi.application'
 DJANGO_ALLOW_ASYNC_UNSAFE = True
-# settings.py
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-from .set_database import LOCAL_DATABASE
+
+from .set_database import *
 
 DATABASES = LOCAL_DATABASE
 
+security_config = get_security_settings()
 
+globals().update(security_config)
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

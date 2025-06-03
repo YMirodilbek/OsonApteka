@@ -273,7 +273,20 @@ class ClickWebhookAPIView(ClickWebhook):
                 order = Order.objects.get(id=int(order_id))
                 order.is_paid = True
                 order.save()
-
+                from main.bot_messages import send_telegram_message
+                telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
+                for i in telegram_ids:
+                    send_telegram_message(
+                        telegram_id=i,
+                        message=f"🆔 ид: {order.id}\n"
+                                f"⏰ соат : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                                f"🏢 филиал : {order.filial}\n"
+                                f"💰 сумма: {order.total_price} сум\n"
+                                f"📞 тел: {order.phone_number1}\n"
+                                f"💊 дорилар сони: {order.items.all().count()} та\n"
+                                f"📍 Адрес: {order.address_text} \n"
+                                f"💳 тўлов : {'бажатилди' if order.is_paid else 'кутиламоқда'}"
+                                                    )
                 logger.info(f"Order {order_id} marked as paid successfully")
 
             except Order.DoesNotExist:
@@ -373,20 +386,6 @@ def checkout_view(request):
                     service_id=settings.CLICK_SERVICE_ID,
                     merchant_id=settings.CLICK_MERCHANT_ID
                 )
-                from main.bot_messages import send_telegram_message
-                telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
-                for i in telegram_ids:
-                    send_telegram_message(
-                            telegram_id=i,
-                            message=f"buyurtma id: {order.id}\n"
-                                    f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                                    f"filial : {order.filial}\n"
-                                    f"summa: {order.total_price} sum\n"
-                                    f"tel: {order.phone_number1}\n"
-                                    f"dorilar soni: {order.items.all().count()} ta\n"
-                                    f"Adres: {order.address_text} \n"
-                                    f"tolov : {'bajatildi' }"#'bajatildi' if order.is_paid else 'kutilmoqda'
-                            )
 
                 return_url = request.build_absolute_uri(f'/payment/success/{order.id}/')
                 payment_link = click_up.initializer.generate_pay_link(
@@ -404,15 +403,15 @@ def checkout_view(request):
             for i in telegram_ids:
                 send_telegram_message(
                         telegram_id=i,
-                        message=f"buyurtma id: {order.id}\n"
-                                f"soat : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                                f"filial : {order.filial}\n"
-                                f"summa: {order.total_price} sum\n"
-                                f"tel: {order.phone_number1}\n"
-                                f"dorilar soni: {order.items.all().count()} ta\n"
-                                f"Adres: {order.address_text} \n"
-                                f"tolov : {'bajatildi' }"#'bajatildi' if order.is_paid else 'kutilmoqda'
-                        )
+                        message=f"🆔 ид: {order.id}\n"
+                                f"⏰ соат : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                                f"🏢 филиал : {order.filial}\n"
+                                f"💰 сумма: {order.total_price} сум\n"
+                                f"📞 тел: {order.phone_number1}\n"
+                                f"💊 дорилар сони: {order.items.all().count()} та\n"
+                                f"📍 Адрес: {order.address_text} \n"
+                                f"💳 тўлов : {'бажатилди' if order.is_paid else 'кутиламоқда'}"
+                                                    )
             logger.info(f"Telegram notifications sent for order {order.id}")
             messages.success(request, "Buyurtmangiz rasmiylashtirildi!")
             return redirect("order_history")
