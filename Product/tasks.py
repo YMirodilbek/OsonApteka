@@ -67,7 +67,7 @@ def refresh_products_cache():
         ikpu = item.get("IKPU", "")
         package_code = item.get("PackageCode", "")
         inn = item.get("INN", "")
-        vat_percent = item.get("VATPercent", 0)
+        vat_percent = item.get("VATPercent", 12)  # Default 12% if not provided
 
         # Calculate VAT amount using the formula: VAT = (Price / 1.12) × 0.12
         vat_amount = (price / 1.12) * 0.12 if price > 0 else 0
@@ -80,7 +80,7 @@ def refresh_products_cache():
             "Price": price * 100,
             # "Amount": amount, TODO: # amount should be get from order item product quantity # noqa
             "VAT": vat_amount * 100,
-            "VATPercent": vat_percent,
+            "VATPercent": vat_percent,  # This should now be 12 from API or default
             "CommissionInf": {
                 "TIN": inn,
             }

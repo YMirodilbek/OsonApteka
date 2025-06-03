@@ -191,6 +191,20 @@ def add_to_cart_detail(request,pk):
 
 
 class ClickWebhookAPIView(ClickWebhook):
+    def validate_fiscal_item(self, fiscal_item):
+        """
+        Validate that fiscal item has all required fields for Click
+        """
+        required_fields = ['Name', 'SPIC', 'PackageCode', 'Price', 'VAT', 'VATPercent']
+
+        if not all(field in fiscal_item for field in required_fields):
+            return False
+
+        if not fiscal_item.get('Name') or fiscal_item.get('Name').strip() == '':
+            return False
+
+        return True
+
     def get_fiscal_items_for_account(self, account):
         """
         Override this method to return fiscal items for the account.
@@ -202,8 +216,9 @@ class ClickWebhookAPIView(ClickWebhook):
         Returns:
             list: List of fiscal items for the order
         """
-        return []
+        # return []
         try:
+            logger.info(f"Generating fiscal items for order {account.id}")
             result_dict = {}
             order = Order.objects.get(id=account.id)
             fiscal_items = []
@@ -219,14 +234,22 @@ class ClickWebhookAPIView(ClickWebhook):
                 if product_data.get('fiscal_items'):
                     fiscal_item = product_data['fiscal_items'].copy()
                     fiscal_item['Amount'] = item.quantity
-                    fiscal_items.append(fiscal_item)
 
-            price_info = {
-                "received_ecash": order.total_price,
-                "received_cash": 0,
-                "received_card": 0
-            }
-            fiscal_items.append(price_info)
+                    # Validate fiscal item has all required fields
+                    if self.validate_fiscal_item(fiscal_item):
+                        fiscal_items.append(fiscal_item)
+                        logger.debug(f"Added complete fiscal item: {fiscal_item.get('Name')}")
+                    else:
+                        logger.warning(f"Skipped incomplete fiscal item for product {item.product.id}: {fiscal_item.get('Name', 'Unknown')}")
+
+            # Only return fiscal items if we have valid product fiscal items
+            # Do NOT add payment information - only send complete product fiscal items
+            if fiscal_items:
+                logger.info(f"Generated {len(fiscal_items)} complete fiscal items for order {account.id}")
+            else:
+                logger.warning(f"No complete fiscal items found for order {account.id} - returning empty list")
+
+            logger.debug(f"Final fiscal items: {fiscal_items}")
 
             return fiscal_items
 
