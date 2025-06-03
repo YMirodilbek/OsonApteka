@@ -1,6 +1,8 @@
 from requests.auth import HTTPBasicAuth
 from .models import Product , Category, Order
 from celery import shared_task
+from django.utils import timezone
+from datetime import timedelta
 import requests
 import datetime
 import logging
@@ -142,13 +144,19 @@ def refresh_products_cache():
 @shared_task
 def delete_unpaid_completed_orders():
     """
-    Delete orders that are marked as completed but not paid
+    Delete orders that are older than 15 minutes, marked as completed but not paid
     """
     try:
-        orders = Order.objects.filter(is_completed=True, is_paid=False)
+        cutoff_time = timezone.now() - timedelta(minutes=15)
+
+        orders = Order.objects.filter(
+            is_completed=True,
+            is_paid=False,
+            created_at__lt=cutoff_time
+        )
         count = orders.count()
         orders.delete()
-        logger.info(f"Deleted {count} completed but unpaid orders at {datetime.datetime.now()}")
+        logger.info(f"Deleted {count} completed but unpaid orders older than 15 minutes at {datetime.datetime.now()}")
     except Exception as e:
         logger.error(f"Failed to delete unpaid completed orders: {e}")
 
