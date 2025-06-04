@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
     <style>
         h2 {
             text-align: center;
@@ -151,24 +152,67 @@
                 <p><strong>Адрес:</strong> {{i.address}}</p>
                 <p><strong>График работы:</strong> {{i.shift}}</p>
                 <p><strong>Телефон:</strong> {{i.phone_number}}</p>
-                <a href="#" class="button" onclick="showMap('{{i.lat}}','{{i.lon}}')">Посмотреть на карте</a>
+              <a href="#" class="button"
+                    onclick="showMap('{{i.lat}}','{{i.lon}}','{{i.title|escapejs}}','{{i.address|escapejs}}','{{i.shift|escapejs}}','{{i.phone_number|escapejs}}')">
+                Посмотреть на карте
+                </a>
+
+
             </div>
             {% endfor %}
-
-            <!-- Yana filiallar qo‘shish mumkin shu formatda -->
         </div>
 
-        <div class="right-panel">
-            <iframe 
-            src="https://www.google.com/maps?q=Akmal%20Farm%20Tashkent%20Oltintepa%20169&output=embed" 
-            width="100%" 
-            height="600" 
-            style="border:0;" 
-            allowfullscreen 
-            loading="lazy">
-          </iframe>
-          
-        </div>
+      
+
+        <div class="right-panel" id="map" style="width: 100%; height: 600px;"></div>
+
+
         <br><br>
     </div>
+<script src="https://api-maps.yandex.com/2.1/?lang=uz_UZ&apikey=8063d6c2-07c0-4f2c-b350-2066c16afb78"></script>
+<script>
+  let myMap;
+  let placemarks = [];
+
+  ymaps.ready(function () {
+      myMap = new ymaps.Map('map', {
+          center: [40.7828, 72.3442], // Andijon markazi
+          zoom: 12,
+      });
+  });
+
+  function showMap(lat, lon, title, address, shift, phone) {
+    lat = lat.replaceAll(',', '.');
+    lon = lon.replaceAll(',', '.');
+
+    const coords = [parseFloat(lat), parseFloat(lon)];
+    console.log("Koordinatalar:", coords);
+
+    if (myMap) {
+        myMap.setCenter(coords, 16);
+
+        // Oldingi placemarklarni tozalash
+        placemarks.forEach(p => myMap.geoObjects.remove(p));
+        placemarks = [];
+
+        // Yangi placemark
+        const placemark = new ymaps.Placemark(coords, {
+            balloonContent: `
+                <h3>${title}</h3>
+                <p><strong>Адрес:</strong> ${address}</p>
+                <p><strong>График работы:</strong> ${shift}</p>
+                <p><strong>Телефон:</strong> ${phone}</p>
+            `
+        });
+
+        myMap.geoObjects.add(placemark);
+        placemarks.push(placemark);
+    } else {
+        console.log("myMap hali yaratilmadi!");
+    }
+}
+
+</script>
+
+
 {% endblock %}

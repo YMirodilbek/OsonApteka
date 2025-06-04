@@ -126,7 +126,7 @@
         <div class="main-header__container">
             <div class="main-header__top">
                 <a href="/" class="logo">
-                    <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Akmal Farm Medical Logo">
+                    <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Akmal Farm Medical Logo" loading="lazy">
                 </a>
                 <button type="button" class="mobile-category-btn js-catalog-toggle" aria-label="Открыть каталог">
                     <i class="fas fa-th-large"></i>
@@ -233,7 +233,7 @@
     <!-- Mobile Menu -->
     <div class="mobile-menu">
         <div class="mobile-menu__header">
-            <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Logo" style="height: 40px;">
+            <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Logo" style="height: 40px;" loading="lazy">
             <button class="mobile-menu__close js-menu-close">&times;</button>
         </div>
 
@@ -327,7 +327,7 @@
         <div class="footer__container">
             <div class="footer__column">
                 <a href="/" class="footer__logo">
-                    <img src="{% static 'media/AFM MEDICAL oq.png' %}" alt="Akmal Farm Medical Logo">
+                    <img src="{% static 'media/AFM MEDICAL oq.png' %}" alt="Akmal Farm Medical Logo" loading="lazy">
                 </a>
                 <div class="footer__contact">
                     <div class="footer__contact-item">
@@ -677,7 +677,7 @@
                     for (const product of results) {
                         html += `
                             <div class="real-time-search-item" tabindex="0">
-                                <img class="real-time-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}">
+                                <img class="real-time-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}" loading="lazy">
                                 <div class="real-time-search-info">
                                     <div class="real-time-search-name">${highlightMatch(product.name, query)}</div>
                                     <div class="real-time-search-price">${formatPrice(product.prices?.[0])} сум</div>
@@ -719,7 +719,7 @@
                     const price = product.prices && product.prices.length > 0 ? product.prices[0] : 0;
                     resultsHtml += `
                         <div class="mobile-search-item" data-id="${product.id}">
-                            <img class="mobile-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}">
+                            <img class="mobile-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}" loading="lazy">
                             <div class="mobile-search-info">
                                 <div class="mobile-search-name">${highlightMatch(product.name, query)}</div>
                                 <div class="mobile-search-price">${formatPrice(price)} сум</div>
@@ -1139,7 +1139,7 @@
             } else {
                 itemsHtml = `<ul class="mini-cart-list">` + cartItems.map(item => `
                     <li class="mini-cart-item">
-                        <img src="${item.img}" alt="${item.name}" class="mini-cart-item__img">
+                        <img src="${item.img}" alt="${item.name}" class="mini-cart-item__img" loading="lazy">
                         <div class="mini-cart-item__info">
                             <div class="mini-cart-item__name">${item.name}</div>
                             <div class="mini-cart-item__meta">
