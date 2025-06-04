@@ -85,9 +85,9 @@ from .set_database import *
 
 DATABASES = LOCAL_DATABASE
 
-security_config = get_security_settings()
+# security_config = get_security_settings()
 
-globals().update(security_config)
+# globals().update(security_config)
 
 
 AUTH_PASSWORD_VALIDATORS = [
