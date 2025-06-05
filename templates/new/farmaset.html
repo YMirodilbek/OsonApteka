@@ -113,12 +113,7 @@
         .button:hover {
             background-color: #1c3377;
         }
-        
-        iframe {
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            height: 650px;
-        }
+
         
         @media (max-width: 900px) {
             .main-container {
@@ -134,17 +129,28 @@
             .right-panel {
                 margin-top: 20px;
             }
-            
-            iframe {
-                height: 450px;
-            }
+
         }
+        #map {
+        width: 100%;
+        height: 600px;
+        min-height: 300px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 900px) {
+        #map {
+            height: 400px !important;
+        }
+    }
+
     </style>
 
     <h2>Наши аптеки</h2>
 
     <div class="main-container">
-
+        <div class="right-panel" id="map" style="width: 100%; height: 600px;"></div>
         <div class="left-panel">
             {% for i in pharm %}
             <div class="store">
@@ -164,7 +170,7 @@
 
       
 
-        <div class="right-panel" id="map" style="width: 100%; height: 600px;"></div>
+        
 
 
         <br><br>
@@ -174,12 +180,14 @@
   let myMap;
   let placemarks = [];
 
-  ymaps.ready(function () {
-      myMap = new ymaps.Map('map', {
-          center: [40.7828, 72.3442], // Andijon markazi
-          zoom: 12,
-      });
-  });
+    ymaps.ready(function () {
+        setTimeout(function() {
+            myMap = new ymaps.Map('map', {
+                center: [40.7828, 72.3442], // Andijon
+                zoom: 12,
+            });
+        }, 100); // 100ms kechikish
+    });
 
   function showMap(lat, lon, title, address, shift, phone) {
     lat = lat.replaceAll(',', '.');
@@ -191,11 +199,11 @@
     if (myMap) {
         myMap.setCenter(coords, 16);
 
-        // Oldingi placemarklarni tozalash
+
         placemarks.forEach(p => myMap.geoObjects.remove(p));
         placemarks = [];
 
-        // Yangi placemark
+
         const placemark = new ymaps.Placemark(coords, {
             balloonContent: `
                 <h3>${title}</h3>
@@ -207,8 +215,14 @@
 
         myMap.geoObjects.add(placemark);
         placemarks.push(placemark);
+
+        document.getElementById('map').scrollIntoView({
+            behavior: 'smooth', 
+            block: 'start'    
+        });
     }
 }
+
 
 </script>
 

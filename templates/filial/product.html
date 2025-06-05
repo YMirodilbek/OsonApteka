@@ -31,7 +31,7 @@
                         <td>{{ i.uid }}</td>
                         <td>
                             {% if i.image1 %}
-                                <a href="/filial/edit_product_image/{{ i.id }}/"><img width="45px" src="{{ i.image1.url }}" alt=""></a>
+                                <a href="/filial/edit_product_image/{{ i.id }}/"><img width="45px" src="{{ i.image1.url }}" alt=""  loading="lazy"></a>
                             {% else %}
                                 <span>No Image</span>
                             {% endif %}
