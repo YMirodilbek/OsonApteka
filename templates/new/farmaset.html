@@ -115,22 +115,21 @@
         }
 
         
-        @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column;
-            }
-            
-            .left-panel {
-                max-height: none;
-                overflow-y: visible;
-                padding-right: 0;
-            }
-            
-            .right-panel {
-                margin-top: 20px;
-            }
-
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: flex;
+            gap: 30px;
+            padding: 0 20px;
+            flex-direction: column; /* mobilda column */
         }
+
+        @media (min-width: 901px) {
+            .main-container {
+                flex-direction: row; /* kompyuterda row: chap-o‘ng */
+            }
+        }
+
         #map {
         width: 100%;
         height: 600px;
@@ -150,7 +149,9 @@
     <h2>Наши аптеки</h2>
 
     <div class="main-container">
-        <div class="right-panel" id="map" style="width: 100%; height: 600px;"></div>
+      
+        
+        
         <div class="left-panel">
             {% for i in pharm %}
             <div class="store">
@@ -171,7 +172,9 @@
       
 
         
-
+   <div class="right-panel">
+        <div id="map" style="width: 100%; height: 600px;"></div>
+    </div>
 
         <br><br>
     </div>
