@@ -14,9 +14,9 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    'refresh-every-5-minutes': {
+    'refresh-every-60-minutes': {
         'task': 'Product.tasks.refresh_products_cache', 
-        'schedule': crontab(minute='*/5'),
+        'schedule': crontab(minute='*/60'),
     },
     'delete-unpaid-completed-orders': {
         'task': 'Product.tasks.delete_unpaid_completed_orders',

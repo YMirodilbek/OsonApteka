@@ -1,5 +1,5 @@
-from requests.auth import HTTPBasicAuth
 from .models import Product , Category, Order
+from requests.auth import HTTPBasicAuth
 from celery import shared_task
 from django.utils import timezone
 from datetime import timedelta
@@ -8,27 +8,28 @@ import datetime
 import logging
 import redis
 import json
-
+import time
 logger = logging.getLogger('celery_tasks')
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 @shared_task
 def refresh_products_cache():
-    url = "http://93.170.11.10:8088/RM_OPT/hs/online/stock"
+    url = "http://93.170.11.10:8088/RM_OPT/hs/online/stock/update"
     username = "Online"
     password = "cJXGLytPHb3nDNZf5gRh7jzwa"
-
+    data = []
     try:
-        response = requests.post(url, auth=HTTPBasicAuth(username, password), stream=True, json={})
+        for i in range(16):
+            response = requests.post(url, auth=HTTPBasicAuth(username, password), stream=True, json={})
+            if response.status_code != 200:
+                logger.error(f"Failed to refresh product data! Status code: {response.status_code} , {i} sicil")
+                continue
+            data.extend(response.json().get('array', []))
+            time.sleep(30)
     except Exception as e:
         logger.error(f"Request failed: {e}")
         return
 
-    if response.status_code != 200:
-        logger.error(f"Failed to refresh product data! Status code: {response.status_code}")
-        return
-
-    data = response.json().get('array', [])
     uid_list = []
 
     for item in data:
@@ -51,9 +52,9 @@ def refresh_products_cache():
         amount = item.get('Amount')
         if amount <=0 :
             continue
-        # try:
-        #     Category.objects.get_or_create(name=item.get('Class'))
-        # except:pass
+        try:
+            Category.objects.get_or_create(name=item.get('Class'))
+        except:pass
         try:
             uid = int(item.get("UID"))
         except (TypeError, ValueError):

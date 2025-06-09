@@ -94,6 +94,7 @@ def product_search_api(request):
                 results.append({
                     'id': product.id,
                     'uid': product.uid,
+                    'name': product.name,
                     'image1': product.image1.url if product.image1 else None,
                 })
        
@@ -101,7 +102,7 @@ def product_search_api(request):
 
 
 
-@csrf_exempt  # faqat test uchun, real loyihada boshqa usul ishlating
+
 @require_http_methods(["DELETE"])
 def delete_product(request, pk):
     from .models import Product
