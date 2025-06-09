@@ -1008,12 +1008,12 @@
         {% for product in group.products %}
         <div class="product-item-card" data-product-id="{{ product.id }}">
             <div class="product-item-card__image">
-                <img src="{{ product.image1 }}" alt="">
+               <a href="{% url  'product_detail' product.id %}" ><img src="{{ product.image1 }}" alt=""  loading="lazy"><a></a>
             </div>
             <div class="product-item-card__content">
-                <h4>{{ product.name }}</h4>
+                <a href="{% url  'product_detail' product.id %}" ><h4>{{ product.name }}</h4>
                 <p>{{ product.producer }}</p>
-                <span class="price">{{ product.prices.0 }}  </span>
+                <span class="price">{{ product.prices.0 }}  </span></a>
             </div>
             <div class="product-item-card__actions">
                 <button class="add-to-cart"><span>Добавить в корзину</span><i class="fas fa-shopping-cart"></i></button>

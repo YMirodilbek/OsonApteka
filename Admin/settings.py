@@ -23,10 +23,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG = env.bool('DEBUG')
+DEBUG = False
 
 
-ALLOWED_HOSTS = env.str('ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # 'jet',
@@ -85,9 +85,9 @@ from .set_database import *
 
 DATABASES = LOCAL_DATABASE
 
-security_config = get_security_settings()
+# security_config = get_security_settings()
 
-globals().update(security_config)
+# globals().update(security_config)
 
 
 AUTH_PASSWORD_VALIDATORS = [
