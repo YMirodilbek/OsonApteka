@@ -43,6 +43,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.phone_number
+    @property
+    def user_cart_items(self):
+        from Product.models import OrderItem  
+        return OrderItem.objects.filter(order__user=self, order__is_completed=False).count()
 
 class PDFDocument(models.Model):
     title = models.CharField(max_length=255)

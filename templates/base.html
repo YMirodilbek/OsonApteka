@@ -190,6 +190,8 @@
                 <a href="#" class="action-item" id="cart-action">
                     <div class="action-item__text-wrapper">
                         <span class="action-item__text">Корзина</span>
+                        <span class="action-item__subtext">{{request.user.user_cart_items}}</span>
+                        
                     </div>
                     <i class="fas fa-shopping-cart action-item__icon"></i>
                 </a>
@@ -222,7 +224,8 @@
         </a>
         <a href="#" class="mobile-nav-item" id="mobile-cart-button" >
             <i class="fas fa-shopping-cart"></i>
-            <span>Корзина</span>
+           
+           <span class="action-item__text">Корзина  <span class="action-item__subtext" > {{request.user.user_cart_items}} </span></span>
         </a>
         <a href="{% url 'myaccount' %}" class="mobile-nav-item" >
             <i class="fas fa-user"></i>
