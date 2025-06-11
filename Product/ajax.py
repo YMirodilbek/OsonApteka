@@ -46,25 +46,28 @@ def add_to_cart(request, product_id):
 
 
 def search_products(request):
-    query = latin_to_cyrillic(request.GET.get('q', '')).strip().lower()
-    matched_items = []
-    if len(query) >= 4:
-        r = redis.Redis(host='localhost', port=6379, db=0)
-        result = r.get('final_result')
+    query = latin_to_cyrillic(request.GET.get('q', ''))
+    if len(query)>3:
+        result = Product.objects.filter(Q(name__icontains=query))
+        matched_items = []
 
-        if result and query:
-            result = json.loads(result.decode('utf-8'))
-        for  item in result:
-            name = item.get('name_lower')
+        for item in result:
+            price = 1
+            if item.product_prise.exists():
 
-            if name: 
-                if query == name or name.startswith(query):
-                    matched_items.append(item)
-                else:
-                    score = fuzz.ratio(query, name)
-                    if score >= 35:
-                        matched_items.append(item)
+                price = item.product_prise.first().price
 
+
+
+            image_url = item.image1.url if item.image1 else None
+
+            matched_items.append({
+                "id": item.id,
+                "name": item.name,
+                "producer": item.producer,
+                "image1": image_url,
+                "price": price,
+            })
     return JsonResponse(matched_items, safe=False)
 
 

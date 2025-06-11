@@ -59,53 +59,43 @@ def cart_view_json(request):
 
 
 def Index(request):
-    r = redis.Redis(host='localhost', port=6379, db=0)
     category = request.GET.get('category')
     page = int(request.GET.get("page", 1))
-    per_page_classes = 5
-    per_class_limit = 50
 
-    grouped_data_json = r.get('products_by_class')
-    if not grouped_data_json:
-        return render(request, 'index.html', {"data": []})
-
-    grouped_by_class = json.loads(grouped_data_json)
-    result = []
+    # Start with base queryset
+    categories = Category.objects.all()
+    
 
     if category:
-        products = grouped_by_class.get(category, [])
-        if products:
-            result = [{"class_name": category, "products": products[:per_class_limit]}]
-        else:
-            result = []
-        context = {
-            "data": result,
-            "category": category,
-            "blogs": Blog.objects.all().order_by('-id')[:4]
-        }
-    else:
-        filtered_classes = [
-            class_name for class_name, items in grouped_by_class.items()
-            if len(items) > 0
-        ]
-        paginator = Paginator(filtered_classes, per_page_classes)
+        categories = categories.filter(name=category)
+    
 
-        try:
-            current_page = paginator.page(page)
-        except :
-            current_page = paginator.page(1)
+    categories = categories.prefetch_related(
+        Prefetch(
+            'products',
+            queryset=Product.objects.filter(
+                name__isnull=False
+            ).exclude(name='').select_related(
+                'category'
+            ).prefetch_related(
+                Prefetch(
+                    'product_prise',
+                    queryset=ProductPrice.objects.all(),
+                    to_attr='prices'
+                )
+            )[:50],
+            to_attr='filtered_products'
+        )
+    )
 
-        for class_name in current_page.object_list:
-            items = grouped_by_class[class_name][:per_class_limit]
-            result.append({"class_name": class_name, "products": items})
+    paginator = Paginator(categories, 3)
+    page_obj = paginator.get_page(page)
 
-        context = {
-            "data": result,
-            "page": page,
-            "paginator": paginator,
-            "category": category,
-            "blogs": Blog.objects.all().order_by('-id')[:4]
-        }
+    context = {
+        "page": page,
+        "paginator": page_obj,
+        "blogs": Blog.objects.all().order_by('-id')[:4]
+    }
     return render(request, 'index.html', context)
 
 
@@ -142,18 +132,11 @@ def DeleteProduct(request, item_id):
 
 
 def product_detail(request,pk):
-    product_ = Product.objects.get(id=int(pk))
-    r = redis.Redis(host='localhost', port=6379, db=0)
-    result = r.get('final_result')
-    if result:
-        result = json.loads(result.decode('utf-8'))
+    product = Product.objects.get(id=int(pk))
 
-    result_dict = {item['id']: item for item in result}
-
-    product = result_dict.get(product_.id, {})
     context = {
-        "product":product,
-        "product_":product_
+
+        "product":product
     }
     return render(request, 'product-details.html',  context )
 
@@ -163,14 +146,7 @@ def add_to_cart_detail(request,pk):
     quantity = int(request.GET.get('quantity',1))
     price = int(request.GET.get('price',0))
     product = get_object_or_404(Product, id=pk)
-    r = redis.Redis(host='localhost', port=6379, db=0)
-    result = r.get('final_result')
-    if result:
-        result = json.loads(result.decode('utf-8'))
 
-
-    result_dict = {item['id']: item for item in result}
-    name = result_dict.get(pk, {}).get('name', '')
 
     order = Order.objects.filter(user=request.user, is_completed=False).first()
 
@@ -180,7 +156,7 @@ def add_to_cart_detail(request,pk):
                                     order=order,
                                     product=product,
                                     price =price,
-                                    name = name,
+                                    name = product.name,
                                     defaults={'quantity':quantity}
                                     )
 
@@ -205,61 +181,102 @@ class ClickWebhookAPIView(ClickWebhook):
 
         return True
 
+    # def get_fiscal_items_for_account(self, account):
+    #     """
+    #     Override this method to return fiscal items for the account.
+    #     This method is called when the webhook receives a payment request.
+
+    #     Args:
+    #         account: The order ID (merchant_trans_id)
+
+    #     Returns:
+    #         list: List of fiscal items for the order
+    #     """
+    #     # return []
+    #     try:
+    #         logger.info(f"Generating fiscal items for order {account.id}")
+    #         result_dict = {}
+    #         order = Order.objects.get(id=account.id)
+    #         fiscal_items = []
+
+    #         r = redis.Redis(host='localhost', port=6379, db=0)
+    #         result = r.get('final_result')
+    #         if result:
+    #             result = json.loads(result.decode('utf-8'))
+    #             result_dict = {item['id']: item for item in result}
+
+    #         for item in order.items.all():
+    #             product_data = result_dict.get(item.product.id, {})
+    #             if product_data.get('fiscal_items'):
+    #                 fiscal_item = product_data['fiscal_items'].copy()
+    #                 fiscal_item['Amount'] = item.quantity
+
+    #                 # Validate fiscal item has all required fields
+    #                 if self.validate_fiscal_item(fiscal_item):
+    #                     fiscal_items.append(fiscal_item)
+    #                     logger.debug(f"Added complete fiscal item: {fiscal_item.get('Name')}")
+    #                 else:
+    #                     logger.warning(f"Skipped incomplete fiscal item for product {item.product.id}: {fiscal_item.get('Name', 'Unknown')}")
+
+    #         # Only return fiscal items if we have valid product fiscal items
+    #         # Do NOT add payment information - only send complete product fiscal items
+    #         if fiscal_items:
+    #             logger.info(f"Generated {len(fiscal_items)} complete fiscal items for order {account.id}")
+    #         else:
+    #             logger.warning(f"No complete fiscal items found for order {account.id} - returning empty list")
+
+    #         logger.debug(f"Final fiscal items: {fiscal_items}")
+
+    #         return fiscal_items
+
+    #     except Order.DoesNotExist:
+    #         return []
+
+    #     except Exception as e:
+    #         logger.error(f"Error getting fiscal items for account {account}: {e}")
+    #         return []
+
     def get_fiscal_items_for_account(self, account):
-        """
-        Override this method to return fiscal items for the account.
-        This method is called when the webhook receives a payment request.
 
-        Args:
-            account: The order ID (merchant_trans_id)
-
-        Returns:
-            list: List of fiscal items for the order
-        """
-        # return []
         try:
             logger.info(f"Generating fiscal items for order {account.id}")
-            result_dict = {}
             order = Order.objects.get(id=account.id)
             fiscal_items = []
 
-            r = redis.Redis(host='localhost', port=6379, db=0)
-            result = r.get('final_result')
-            if result:
-                result = json.loads(result.decode('utf-8'))
-                result_dict = {item['id']: item for item in result}
-
             for item in order.items.all():
-                product_data = result_dict.get(item.product.id, {})
-                if product_data.get('fiscal_items'):
-                    fiscal_item = product_data['fiscal_items'].copy()
-                    fiscal_item['Amount'] = item.quantity
+                
+                product_price = item.product.product_prise.first()
 
-                    # Validate fiscal item has all required fields
+                if product_price:
+                    fiscal_item = product_price.fiscal_items.copy()
+                    fiscal_item["Amount"] = item.quantity
+
                     if self.validate_fiscal_item(fiscal_item):
                         fiscal_items.append(fiscal_item)
                         logger.debug(f"Added complete fiscal item: {fiscal_item.get('Name')}")
                     else:
                         logger.warning(f"Skipped incomplete fiscal item for product {item.product.id}: {fiscal_item.get('Name', 'Unknown')}")
+                else:
+                    logger.warning(f"No ProductPrice found for product {item.product.id}")
 
-            # Only return fiscal items if we have valid product fiscal items
-            # Do NOT add payment information - only send complete product fiscal items
             if fiscal_items:
                 logger.info(f"Generated {len(fiscal_items)} complete fiscal items for order {account.id}")
             else:
                 logger.warning(f"No complete fiscal items found for order {account.id} - returning empty list")
 
             logger.debug(f"Final fiscal items: {fiscal_items}")
-
             return fiscal_items
 
         except Order.DoesNotExist:
+            logger.error(f"Order with ID {account.id} does not exist")
             return []
 
         except Exception as e:
             logger.error(f"Error getting fiscal items for account {account}: {e}")
             return []
 
+    
+    
     def successfully_payment(self, params):
         """
         Handle successful payments from Click

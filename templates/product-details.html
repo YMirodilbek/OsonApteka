@@ -357,7 +357,7 @@
 <div class="product-details">
     <div class="gallery-container">
         <div class="product-gallery">
-            <img id="main-image" src="{{product.image1}}" alt="{{ product.name }}">
+            <img id="main-image" src="{{product.image1.url}}" alt="{{ product.name }}">
         </div>
     </div>
     <div class="product-info">
@@ -367,21 +367,21 @@
         <p class="composition">ком.лек ({{ product.MNN }})</p>
         <p class="manufacturer">{{ product.producer }}</p>
         <p class="">{{ product.ProductType}}</p>
-        {% for i in product.amount %}
+        {% for i in product.product_prise.all %}
         <hr>
-        <p class="manufacturer">{{ i }}</p>
+            <p class="manufacturer">{{ i.amount }} , штук  {{i.price }} , сум </p>
 
         {% endfor %}
         <form method="GET" action="/product/add/{{ product.id }}/">
             <div class="price-select">
                 <select name="price">
-                    {% if product.prices %}
-                        {% for price in product.prices %}
-                            <option value="{{price}}">{{price}} sum</option>
+                   
+                        {% for i in product.product_prise.all %}
+                            <option value="{{i.price}}">{{i.price}} sum</option>
+                             {% empty %}
+                            <option value="0">Не доступно</option>
                         {% endfor %}
-                    {% else %}
-                        <option value="0">Не доступно</option>
-                    {% endif %}
+
                 </select>
             </div>
             
@@ -392,7 +392,7 @@
 
 
     <div class="dosage-info">
-        {{ product.name }} <br> {{product_.info|safe }}
+        {{ product.name }} <br> {{product.info|safe }}
         
 
 

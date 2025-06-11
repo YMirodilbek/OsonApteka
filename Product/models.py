@@ -15,8 +15,20 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
-    uid = models.BigIntegerField(db_index=True)
-    name = models.CharField(max_length=255, null=True, blank=True)
+    uid = models.BigIntegerField(db_index=True) #bor 
+    name = models.CharField(max_length=255, null=True, blank=True) # bor 
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,related_name='products') # bor 
+    
+    producer = models.CharField(max_length=255, blank=True, null=True) # bor 
+    country = models.CharField(max_length=255, blank=True, null=True) # bor 
+    mnn = models.CharField(max_length=255, blank=True, null=True) # mor
+    release_form = models.CharField(max_length=255, blank=True, null=True) # bor 
+    product_type = models.CharField(max_length=255, blank=True, null=True) # bor  
+    exp_date = models.CharField( max_length=155,blank=True, null=True)   # bor 
+    ikpu = models.CharField(max_length=255, blank=True, null=True) # bor 
+    package_code = models.CharField(max_length=255, blank=True, null=True) # bor 
+    vat_percent = models.PositiveIntegerField(default=12)  # bor 
+    inn = models.CharField(max_length=20, blank=True, null=True) #bor
     info = RichTextField(
         config_name='default',
         default='',
@@ -28,12 +40,47 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    
+    class Meta:
+        indexes = [
+            models.Index(fields=['name']),
+            models.Index(fields=['category']),
+        ]
     def __str__(self):
         return str(self.uid)
 
 
+class ProductPrice(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_prise')
+    price = models.PositiveIntegerField(default=0) # bor 
+    amount = models.PositiveIntegerField( default=0) #bor 
+    unique_identifier = models.CharField(max_length=255, unique=True, null=True, blank=True) # bor 
 
+    def __str__(self):
+        return f"{self.product.uid}"
+    
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['product']),
+        ]
+    
+    @property
+    def fiscal_items(self):
+
+        vat_amount = (self.price / 1.12) * 0.12 if self.price > 0 else 0
+
+        return {
+            "Name": self.product.name,
+            "SPIC": self.product.ikpu,
+            "PackageCode": self.product.package_code,
+            "Price": self.price * 100,  # tiyinlarda
+            "Amount": self.amount,
+            "VAT": vat_amount * 100,  # tiyinlarda
+            "VATPercent": self.product.vat_percent,
+            "CommissionInf": {
+                "TIN": self.product.inn,
+            },
+        }
 
 class Dostafca(models.Model):
     amount = models.PositiveIntegerField(default=0)
