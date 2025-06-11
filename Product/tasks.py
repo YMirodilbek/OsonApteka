@@ -1,7 +1,7 @@
 from .models import Product , Category, Order , ProductPrice
 from requests.auth import HTTPBasicAuth
-from django.db import transaction
 from datetime import timedelta ,datetime
+from django.db import transaction
 from django.utils import timezone
 from celery import shared_task
 import requests
@@ -139,120 +139,6 @@ def refresh_products_cache():
             ProductPrice.objects.bulk_create(product_prices_to_create)
 
     logger.info(f"Successfully updated {len(products_to_update)}, products and {len(product_prices_to_update) + len(product_prices_to_create)}, prices")
-
-   
-   
-   
-    # uid_list = []
-    # data = response.json().get('array', []) 
-    # for item in data:
-    #     try:
-    #         amount = item.get('Amount')
-    #         if amount <=0 :
-    #             continue
-    #         uid_list.append(int(item.get("UID")))
-
-    #     except (TypeError, ValueError):
-    #         continue
-
-    # products = Product.objects.filter(uid__in=uid_list)
-    # products_dict = {p.uid: p for p in products},
-
-    # final_result_dict = {}, 
-    # grouped_by_class = {},
-
-    # for item in data:
-    #     amount = item.get('Amount')
-    #     if amount <=0 :
-    #         continue
-    #     try:
-    #         Category.objects.get_or_create(name=item.get('Class'))
-    #     except:pass
-    #     try:
-    #         uid = int(item.get("UID"))
-    #     except (TypeError, ValueError):
-    #         continue
-
-    #     product = products_dict.get(uid)
-    #     if not product:
-    #         continue
-
-    #     name = item.get("Name", "")
-    #     category = item.get("Class", "") or "None-Class"
-    #     price = item.get("Price", 0)
-    #     ikpu = item.get("IKPU", "")
-    #     package_code = item.get("PackageCode", "")
-    #     inn = item.get("INN", "")
-    #     vat_percent = item.get("VATPercent", 12)  # Default 12% if not provided
-
-    #     # Calculate VAT amount using the formula: VAT = (Price / 1.12) × 0.12
-        # vat_amount = (price / 1.12) * 0.12 if price > 0 else 0
-
-        # Create fiscal_items dict according to the required structure
-        # fiscal_items = {
-        #     "Name": name,
-        #     "SPIC": ikpu,
-        #     "PackageCode": package_code,
-        #     "Price": price * 100,
-        #     # "Amount": amount, TODO: # amount should be get from order item product quantity # noqa
-        #     "VAT": vat_amount * 100,
-        #     "VATPercent": vat_percent,  # This should now be 12 from API or default
-        #     "CommissionInf": {
-        #         "TIN": inn,
-        #     },
-        # },
-
-    #     if uid in final_result_dict:
-    #         if price not in final_result_dict[uid]["prices"]:
-    #             final_result_dict[uid]["prices"].append(price)
-    #         if price not in final_result_dict[uid]["amount"]:
-    #             final_result_dict[uid]["amount"].append(f"{amount}, штук  {price}, сум ")
-                
-    #     else:
-    #         ProductType = item.get("ProductType", "")
-    #         if isinstance(ProductType, list) and ProductType:
-    #             ProductType = ProductType[0]
-    #         else:
-    #             ProductType = ProductType
-
-
-    #         if ProductType == "Rx":
-    #             ProductType = "Рецепт билан"
-    #         elif ProductType == "ОТС":
-    #             ProductType = "Рецептсиз"
-    #         if product.name != name:
-    #             product.name = name
-    #             product.save()
-    #         final_result_dict[uid] = {
-    #             "uid": uid,
-    #             "id": product.id,
-    #             "name": name,
-    #             "name_lower": name.lower(),
-    #             "prices": [price],
-    #             "class": category,
-    #             "producer": item.get("Producer", ""),
-    #             "country": item.get("Country", ""),
-    #             "MNN": item.get("MNN", ""),
-    #             "ReleaseForm": item.get("ReleaseForm", ""),
-    #             "ProductType": ProductType,
-    #             "ExpDate": item.get("ExpDate", ""),
-
-    #             "amount": [f"{amount}, штук {price}, сум "],
-    #             "image1": product.image1.url if product.image1 else "",
-    #             "fiscal_items": fiscal_items,
-    #         },
-
-    # final_result = list(final_result_dict.values())
-
-    # for item in final_result:
-    #     category = item["class"]
-    #     grouped_by_class.setdefault(category, []).append(item)
-
-    # r.setex('final_result', 86400, json.dumps(final_result))
-    # r.setex('products_by_class', 86400, json.dumps(grouped_by_class))
-
-    # logger.info(f"Redis cache updated successfully! {datetime.datetime.now()},")
-    
 
 
 @shared_task

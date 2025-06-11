@@ -29,6 +29,7 @@ def cart_view(request):
     order = Order.objects.filter(user=request.user, is_completed=False).select_related('filial').prefetch_related('items','items__product').first()
     return render(request, "cart.html", {"order": order})
 
+
 @login_required(login_url='/auth/send-otp/')
 def cart_view_json(request):
     cart_items = []
@@ -186,61 +187,6 @@ class ClickWebhookAPIView(ClickWebhook):
             return False
 
         return True
-
-    # def get_fiscal_items_for_account(self, account):
-    #     """
-    #     Override this method to return fiscal items for the account.
-    #     This method is called when the webhook receives a payment request.
-
-    #     Args:
-    #         account: The order ID (merchant_trans_id)
-
-    #     Returns:
-    #         list: List of fiscal items for the order
-    #     """
-    #     # return []
-    #     try:
-    #         logger.info(f"Generating fiscal items for order {account.id}")
-    #         result_dict = {}
-    #         order = Order.objects.get(id=account.id)
-    #         fiscal_items = []
-
-    #         r = redis.Redis(host='localhost', port=6379, db=0)
-    #         result = r.get('final_result')
-    #         if result:
-    #             result = json.loads(result.decode('utf-8'))
-    #             result_dict = {item['id']: item for item in result}
-
-    #         for item in order.items.all():
-    #             product_data = result_dict.get(item.product.id, {})
-    #             if product_data.get('fiscal_items'):
-    #                 fiscal_item = product_data['fiscal_items'].copy()
-    #                 fiscal_item['Amount'] = item.quantity
-
-    #                 # Validate fiscal item has all required fields
-    #                 if self.validate_fiscal_item(fiscal_item):
-    #                     fiscal_items.append(fiscal_item)
-    #                     logger.debug(f"Added complete fiscal item: {fiscal_item.get('Name')}")
-    #                 else:
-    #                     logger.warning(f"Skipped incomplete fiscal item for product {item.product.id}: {fiscal_item.get('Name', 'Unknown')}")
-
-    #         # Only return fiscal items if we have valid product fiscal items
-    #         # Do NOT add payment information - only send complete product fiscal items
-    #         if fiscal_items:
-    #             logger.info(f"Generated {len(fiscal_items)} complete fiscal items for order {account.id}")
-    #         else:
-    #             logger.warning(f"No complete fiscal items found for order {account.id} - returning empty list")
-
-    #         logger.debug(f"Final fiscal items: {fiscal_items}")
-
-    #         return fiscal_items
-
-    #     except Order.DoesNotExist:
-    #         return []
-
-    #     except Exception as e:
-    #         logger.error(f"Error getting fiscal items for account {account}: {e}")
-    #         return []
 
     def get_fiscal_items_for_account(self, account):
 
@@ -560,6 +506,7 @@ def edit_product(request, product_id):
         'product': product
     })
 
+
 def edit_product_image(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
@@ -578,7 +525,6 @@ def edit_product_image(request, product_id):
     return render(request, 'filial/edit_image.html', {'product': product})
 
 
-
 @is_staff
 def products(request):
     page_number = request.GET.get('page')
@@ -586,8 +532,6 @@ def products(request):
     paginator = Paginator(product, 50 )
     page_obj = paginator.get_page(page_number)
     return render (request, 'filial/product.html', {"page_obj":page_obj})
-
-
 
 
 @is_staff
@@ -752,12 +696,12 @@ def filial_login(request):
 @is_staff
 def filial_users(request):
     users = CustomUser.objects.filter(is_staff = False).order_by('-id').prefetch_related(
-    Prefetch(
-        'orders',
-        queryset=Order.objects.order_by('-created_at'),
-        to_attr='prefetched_orders'
-    )
-)
+                    Prefetch(
+                        'orders',
+                        queryset=Order.objects.order_by('-created_at'),
+                        to_attr='prefetched_orders'
+                    )
+                )
     return render(request, 'filial/users.html', {'users':users})
 
 

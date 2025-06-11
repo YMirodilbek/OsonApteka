@@ -14,6 +14,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     uid = models.BigIntegerField(db_index=True) #bor 
     name = models.CharField(max_length=255, null=True, blank=True) # bor 
@@ -82,11 +83,13 @@ class ProductPrice(models.Model):
             },
         }
 
+
 class Dostafca(models.Model):
     amount = models.PositiveIntegerField(default=0)
     
     def __str__(self):
         return f"{self.amount}"
+
 
 class Filial(models.Model):
     users = models.ManyToManyField(CustomUser, related_name='filials')
