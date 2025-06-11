@@ -264,33 +264,33 @@
 
 <div class="checkout-page">
     <div class="checkout-header">
-        <h1>Buyurtmani rasmiylashtirish</h1>
-        <p>Iltimos, buyurtma ma'lumotlarini to'ldiring</p>
+        <h1>Оформление заказа</h1>
+        <p>Укажите данные</p>
     </div>
 
     <div class="checkout-grid">
         <div class="checkout-form-section">
-            <h2 class="section-title">Buyurtma ma'lumotlari</h2>
+            <h2 class="section-title">Итого</h2>
             <form method="post" class="checkout-form" action="{% url 'checkout' %}">
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <label for="id_phone_number1">Telefon raqam <span class="required">*</span></label>
+                    <label for="id_phone_number1">Контактная информация <span class="required">*</span></label>
                     <input type="tel" id="id_phone_number1" name="phone_number1" class="form-control" 
                            placeholder="+998 XX XXX XX XX" required pattern="^\+?[0-9\s\-\(\)]+$">
-                    <small class="form-text">Misol: +998 XX XXX XX XX</small>
+                    <small class="form-text">Например: +998 XX XXX XX XX</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_phone_number2">Qo'shimcha telefon raqam (ixtiyoriy)</label>
+                    <label for="id_phone_number2">Доп.номер</label>
                     <input type="tel" id="id_phone_number2" name="phone_number2" class="form-control" 
                            placeholder="+998 XX XXX XX XX" pattern="^\+?[0-9\s\-\(\)]+$">
                 </div>
 
                 <div class="form-group">
-                    <label for="id_filial">Filial <span class="required">*</span></label>
+                    <label for="id_filial">Филиал <span class="required">*</span></label>
                     <select id="id_filial" name="filial" class="form-control" required>
-                        <option value="">Filial tanlang</option>
+                        <option value="">Выберите Филиал</option>
                         {% if filials %}
                             {% for filial in filials %}
                                 <option value="{{ filial.id }}">{{ filial.name }}</option>
@@ -301,79 +301,67 @@
                             {% endfor %}
                         {% endif %}
                     </select>
-                    <div class="error-message">Iltimos, filial tanlang</div>
+                   
                 </div>
 
-                <h3 class="section-title">Manzilni tanlang <span class="required">*</span></h3>
+                <h3 class="section-title">Адрес доставки <span class="required">*</span></h3>
                 <div class="address-options">
                     <label class="address-option">
                         <input type="radio" name="address_type" value="manual" checked>
-                        Qo'lda kiritish
+                        Yandex Delivery
                     </label>
                     <label class="address-option">
                         <input type="radio" name="address_type" value="maps">
-                        Google Maps orqali
+                       Я сам заберу 
                     </label>
                 </div>
 
                 <div id="manual-address" class="form-group">
-                    <label for="address_text">Manzil <span class="required">*</span></label>
+                    <label for="address_text">Адрес<span class="required">*</span></label>
                     <input type="text" name="address_text" id="address_text" class="form-control" 
-                           placeholder="Viloyat, tuman, ko'cha, uy raqami" required>
-                    <small class="form-text">Misol: Toshkent sh., Yunusobod tumani, Amir Temur ko'chasi, 4-uy</small>
-                </div>
-
-                <div id="maps-address" style="display: none;">
-                    <div class="form-group">
-                        <label for="address-input">Xaritadan manzilni tanlang <span class="required">*</span></label>
-                        <input type="text" id="address-input" class="form-control" 
-                               placeholder="Xaritada joylashuvni belgilang" readonly>
-                        <small class="form-text">Xaritada belgi qo'yish uchun kerakli joyni bosing yoki belgi ustiga bosib, joylashuvni o'zgartiring</small>
-                    </div>
-                    <div id="map"></div>
-                    <input type="hidden" name="address_lat" id="address_lat">
-                    <input type="hidden" name="address_lng" id="address_lng">
+                           placeholder="Название улицы, дом, кв" required>
+                    <small class="form-text">Например: Андижан, 1 микрорайон, 19 дом</small>
                 </div>
 
                 <input type="hidden" name="payment_method" value="click">
 
                 <div class="payment-info">
-                    <p><strong>To'lov usuli:</strong> Click</p>
-                    <p>Buyurtmani rasmiylashtirgandan so'ng Click to'lov tizimiga yo'naltirilasiz. To'lov muvaffaqiyatli amalga oshirilgandan so'ng, buyurtmangiz ishlov beriladi.</p>
+                    <p><strong>Способ оплаты:</strong>Click:</p>
+                    <p>После оформления заказа Вы будете перенаправлены на сайт платёжной системы Click для проведения оплаты.После успешной оплаты с вами свяжутся специалисты колл-центра.</p>
                 </div>
 
-                <button type="submit" class="btn-checkout">Buyurtmani rasmiylashtirish</button>
+                <button type="submit" class="btn-checkout">Оформление заказа</button>
             </form>
         </div>
 
         <div class="checkout-summary-section">
-            <h2 class="section-title">Buyurtma tafsilotlari</h2>
+            <h2 class="section-title">Итого</h2>
             {% for item in cart_items %}
             <div class="cart-item">
                 <img src="{{ item.product.image1.url }}" alt="{{ item.product.name }}">
                 <div class="cart-item-details">
                     <div class="cart-item-title">{{ item.product.name }}</div>
                     <div class="cart-item-meta">
-                        {{ item.quantity }} dona
+                        {{ item.quantity }} шт
                     </div>
-                    <div class="cart-item-price">{{ item.total_price }} so'm</div>
+                    <div class="cart-item-price">{{ item.total_price }} сум</div>
                 </div>
             </div>
             {% endfor %}
 
             <div class="summary-row">
-                <span>Mahsulotlar:</span>
-                <span>{{ order.total_price }} so'm</span>
+                <span>Товар(ов):</span>
+                <span>{{ order.total_price }} сум</span>
             </div>
 
             <div class="summary-row">
-                <span>Yetkazib berish:</span>
+                <span>Фирменный пакет:</span>
                 <span>{{dostaff}}</span>
             </div>
 
             <div class="summary-row total">
-                <span>Umumiy summa:</span>
-                <span>{{total_sum}} so'm</span>
+                <span>Итого к оплате:</span>
+                <span>{{total_sum}} сум</span>
             </div>
         </div>
     </div>
