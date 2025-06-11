@@ -367,7 +367,7 @@
         <p class="composition">ком.лек ({{ product.MNN }})</p>
         <p class="manufacturer">{{ product.producer }}</p>
         <p class="">{{ product.ProductType}}</p>
-        {% for i in product.product_prise.all %}
+        {% for i in prices %}
         <hr>
             <p class="manufacturer">{{ i.amount }} , штук  {{i.price }} , сум </p>
 
@@ -376,7 +376,7 @@
             <div class="price-select">
                 <select name="price">
                    
-                        {% for i in product.product_prise.all %}
+                        {% for i in prices %}
                             <option value="{{i.price}}">{{i.price}} sum</option>
                              {% empty %}
                             <option value="0">Не доступно</option>

@@ -23,7 +23,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['*']
@@ -231,25 +231,6 @@ LOGGING = {
     },
 }
 
-
-
-LOGGING = {
-    'version':1,
-    'handlers':{
-         'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'debug.log'
-        },
-        'console':{'class':'logging.StreamHandler'}
-    },
-    'loggers':{
-        'django.db.backends':{
-            'handlers':['file'],
-            'level':'DEBUG'
-                    }
-               }
-}
 
 
 

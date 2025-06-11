@@ -1042,7 +1042,7 @@
     </div>
 {% endfor %}
 
-    {% if paginator.paginator.num_pages > 1 %}
+{% if paginator.paginator.num_pages > 1 %}
 <div class="product-pagination">
     <div class="product-pagination__controls">
         {% if paginator.has_previous %}
@@ -1052,13 +1052,34 @@
         {% endif %}
 
         <div class="product-pagination__pages">
-            {% for p in paginator.paginator.page_range %}
-                {% if p == paginator.number %}
-                    <a href="?page={{ p }}" class="product-pagination__page active">{{ p }}</a>
-                {% else %}
-                    <a href="?page={{ p }}" class="product-pagination__page">{{ p }}</a>
+            {% with current=paginator.number total=paginator.paginator.num_pages %}
+                {# Always show first page #}
+                {% if current > 3 %}
+                    <a href="?page=1" class="product-pagination__page">1</a>
+                    {% if current > 4 %}
+                        <span class="product-pagination__ellipsis">...</span>
+                    {% endif %}
                 {% endif %}
-            {% endfor %}
+
+                {# Show 2 pages before current #}
+                {% for p in paginator.paginator.page_range %}
+                    {% if p >= current|add:-2 and p <= current|add:2 %}
+                        {% if p == current %}
+                            <a href="?page={{ p }}" class="product-pagination__page active">{{ p }}</a>
+                        {% else %}
+                            <a href="?page={{ p }}" class="product-pagination__page">{{ p }}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {# Always show last page #}
+                {% if current < total|add:-2 %}
+                    {% if current < total|add:-3 %}
+                        <span class="product-pagination__ellipsis">...</span>
+                    {% endif %}
+                    <a href="?page={{ total }}" class="product-pagination__page">{{ total }}</a>
+                {% endif %}
+            {% endwith %}
         </div>
 
         {% if paginator.has_next %}
