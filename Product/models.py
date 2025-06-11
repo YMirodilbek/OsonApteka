@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from ckeditor.fields import RichTextField 
 from django.utils.timezone import now
 from main.models import CustomUser
 from django.db import models
@@ -13,7 +14,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-from ckeditor.fields import RichTextField 
 class Product(models.Model):
     uid = models.BigIntegerField(db_index=True)
     name = models.CharField(max_length=255, null=True, blank=True)
