@@ -88,7 +88,7 @@ def Index(request):
         )
     )
 
-    paginator = Paginator(categories, 3)
+    paginator = Paginator(categories, 5)
     page_obj = paginator.get_page(page)
 
     context = {
