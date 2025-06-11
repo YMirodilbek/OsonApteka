@@ -988,11 +988,10 @@
         </div>
     </div>
 </div>
-
 <div class="main-content__container">
-    {% for group in data %}
+   {% for c in paginator %}
     <h3 class="product-list__title">
-        {{ group.class_name }}
+        {{ c.name }}
         <div class="product-list__controls">
             <button class="product-list__control prev">
                 <i class="fas fa-chevron-left"></i>
@@ -1005,58 +1004,68 @@
     <hr>
     <div class="product-list">
 
-        {% for product in group.products %}
+        {% for product in c.filtered_products %}
         <div class="product-item-card" data-product-id="{{ product.id }}">
             <div class="product-item-card__image">
-               <a href="{% url  'product_detail' product.id %}" ><img src="{{ product.image1 }}" alt=""  loading="lazy"><a></a>
+               <a href="{% url 'product_detail' product.id %}">
+                   <img src="{{ product.image1.url }}" alt="" loading="lazy">
+               </a>
             </div>
             <div class="product-item-card__content">
-                <a href="{% url  'product_detail' product.id %}" ><h4>{{ product.name }}</h4>
-                <p>{{ product.producer }}</p>
-                <span class="price">{{ product.prices.0 }}  </span></a>
+                <a href="{% url 'product_detail' product.id %}">
+                    <h4>{{ product.name }}</h4>
+                    <p>{{ product.producer }}</p>
+                    <span class="price">
+                        {% with product.prices.0 as price %}
+                            {{ price.price }}
+                        {% endwith %}
+                    </span>
+                </a>
             </div>
             <div class="product-item-card__actions">
                 <button class="add-to-cart"><span>Добавить в корзину</span><i class="fas fa-shopping-cart"></i></button>
                 <div class="product-item-card__buttons">
-                    <a href="{% url  'product_detail' product.id %}" class="product-item-card__button about"><i class="fas fa-eye"></i></a>
-                    <button class="product-item-card__button wishlist"><i class="fas fa-heart"></i></button>
+                    <a href="{% url 'product_detail' product.id %}" class="product-item-card__button about">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <button class="product-item-card__button wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
                 </div>
             </div>
         </div>
         {% endfor %}
 
     </div>
-    {% endfor %}
+{% endfor %}
 
-    {% if not category and data %}
-    <div class="product-pagination">
-        <div class="product-pagination__controls">
-            {% if page > 1 %}
-                <button class="product-pagination__control prev">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            {% endif %}
-            <div class="product-pagination__pages">
-                {% for p in paginator.page_range %}
-                    {% if p == page %}
-                    <a href="?page={{ p }}" class="product-pagination__page active">
-                        {{ p }}
-                    </a>
-                    {% else %}
-                    <a href="?page={{ p }}" class="product-pagination__page">
-                        {{ p }}
-                    </a>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            {% if page < paginator.num_pages %}
-            <button class="product-pagination__control next">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-            {% endif %}
+    {% if paginator.paginator.num_pages > 1 %}
+<div class="product-pagination">
+    <div class="product-pagination__controls">
+        {% if paginator.has_previous %}
+            <a href="?page={{ paginator.previous_page_number }}" class="product-pagination__control prev">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        {% endif %}
+
+        <div class="product-pagination__pages">
+            {% for p in paginator.paginator.page_range %}
+                {% if p == paginator.number %}
+                    <a href="?page={{ p }}" class="product-pagination__page active">{{ p }}</a>
+                {% else %}
+                    <a href="?page={{ p }}" class="product-pagination__page">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
         </div>
+
+        {% if paginator.has_next %}
+            <a href="?page={{ paginator.next_page_number }}" class="product-pagination__control next">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        {% endif %}
     </div>
-    {% endif %}
+</div>
+{% endif %}
 
     <hr>
     <h3 class="product-list__title">

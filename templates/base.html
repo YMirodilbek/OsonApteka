@@ -680,7 +680,7 @@
                                 <img class="real-time-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}" loading="lazy">
                                 <div class="real-time-search-info">
                                     <div class="real-time-search-name">${highlightMatch(product.name, query)}</div>
-                                    <div class="real-time-search-price">${formatPrice(product.prices?.[0])} сум</div>
+                                    <div class="real-time-search-price">${formatPrice(product.price)} сум</div>
                                     <div class="real-time-search-producer">${product.producer || ''}</div>
                                 </div>
                                 <button class="real-time-search-add" data-product-id="${product.id}">
@@ -716,13 +716,13 @@
                 
                 let resultsHtml = '';
                 for (const product of results) {
-                    const price = product.prices && product.prices.length > 0 ? product.prices[0] : 0;
+
                     resultsHtml += `
                         <div class="mobile-search-item" data-id="${product.id}">
                             <img class="mobile-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}" loading="lazy">
                             <div class="mobile-search-info">
                                 <div class="mobile-search-name">${highlightMatch(product.name, query)}</div>
-                                <div class="mobile-search-price">${formatPrice(price)} сум</div>
+                                <div class="mobile-search-price">${product.price} сум</div>
                                 ${product.producer ? `<div class="mobile-search-producer">${product.producer}</div>` : ''}
                             </div>
                             <button class="mobile-search-add" data-id="${product.id}">

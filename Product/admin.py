@@ -1,11 +1,11 @@
-from django.contrib import admin
-from .models import *
-# Register your models here.
-
-admin.site.register([Category,Order,OrderItem,Filial,Dostafca])
 
 from ckeditor.widgets import CKEditorWidget
+from django.contrib import admin
 from django import forms
+from .models import *
+
+
+admin.site.register([Category,Order,OrderItem,Filial,Dostafca, ProductPrice])
 
 class ProductAdminForm(forms.ModelForm):
     info = forms.CharField(widget=CKEditorWidget())

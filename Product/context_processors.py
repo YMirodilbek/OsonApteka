@@ -36,5 +36,5 @@ def cart_context(request):
 
 
 def category_contex(request):
-    category = Category.objects.all()   
+    category = Category.objects.prefetch_related('products').all()   
     return {"category_context":category}
