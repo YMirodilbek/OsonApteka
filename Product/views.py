@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Sum, F, Prefetch , Count , Q
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator ,EmptyPage
 from django.db.models.functions import TruncDay
 from django.contrib.auth import  login ,logout
-from django.core.paginator import Paginator
 from datetime import datetime, timedelta
 from click_up.views import ClickWebhook
 from django.http import JsonResponse
@@ -59,37 +59,43 @@ def cart_view_json(request):
 
 
 def Index(request):
-    category = request.GET.get('category')
-    page = int(request.GET.get("page", 1))
+    category_name = request.GET.get('category')
+    page = request.GET.get("page", 1)
 
-    # Start with base queryset
-    categories = Category.objects.all()
-    
+    try:
+        page = int(page)
+    except (TypeError, ValueError):
+        page = 1
 
-    if category:
-        categories = categories.filter(name=category)
-    
+    # Asosiy Category queryset
+    categories_qs = Category.objects.all()
+    if category_name:
+        categories_qs = categories_qs.filter(name=category_name)
 
-    categories = categories.prefetch_related(
-        Prefetch(
-            'products',
-            queryset=Product.objects.filter(
-                name__isnull=False
-            ).exclude(name='').select_related(
-                'category'
-            ).prefetch_related(
-                Prefetch(
-                    'product_prise',
-                    queryset=ProductPrice.objects.all(),
-                    to_attr='prices'
-                )
-            )[:50],
-            to_attr='filtered_products'
-        )
+
+    product_price_qs = ProductPrice.objects.filter(amount__gt=0)
+
+
+    products_qs = Product.objects.filter(
+        name__isnull=False
+    ).exclude(name='').order_by('id').select_related('category').prefetch_related(
+        Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
     )
 
-    paginator = Paginator(categories, 5)
-    page_obj = paginator.get_page(page)
+    categories_qs = categories_qs.prefetch_related(
+        Prefetch('products', queryset=products_qs, to_attr='filtered_products_all')
+    )
+
+
+    paginator = Paginator(categories_qs, 5)
+    try:
+        page_obj = paginator.get_page(page)
+    except EmptyPage:
+        page_obj = paginator.get_page(1)
+
+
+    for category in page_obj:
+        category.filtered_products = category.filtered_products_all[:50]
 
     context = {
         "page": page,
