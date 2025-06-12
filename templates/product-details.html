@@ -369,17 +369,14 @@
         <p class="manufacturer">{{ product.exp_date |slice:":10"}}</p>
         <p class="manufacturer">{{ product.producer }}</p>
         {% if product.product_type == "Рецепт билан" %}
-        <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px;">
-                    {{ product.product_type }}
-         </div>
+        <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px; display: inline-block;">
+            {{ product.product_type }}
+        </div>
+
         {% else %}
         <p class="" >{{ product.product_type}}</p>
         {% endif %}
-        {% for i in prices %}
-        <hr>
-            <p class="manufacturer">{{ i.amount }} , штук  {{i.price }} , сум </p>
-
-        {% endfor %}
+         <p class="manufacturer">{{ prices.0.amount }} , штук  {{ prices.0.price }} , сум </p>
         <form method="GET" action="/product/add/{{ product.id }}/">
             <div class="price-select">
                 <select name="price">
