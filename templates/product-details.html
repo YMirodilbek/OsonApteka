@@ -369,7 +369,9 @@
         <p class="manufacturer">{{ product.exp_date |slice:":10"}}</p>
         <p class="manufacturer">{{ product.producer }}</p>
         {% if product.product_type == "Рецепт билан" %}
-            <div class="text-bg-dark p-1 rounded">{{ product.product_type}}</div>
+        <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px;">
+                    {{ product.product_type }}
+         </div>
         {% else %}
         <p class="" >{{ product.product_type}}</p>
         {% endif %}

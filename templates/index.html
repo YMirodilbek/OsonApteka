@@ -1024,6 +1024,11 @@
                         {% endwith %}
                     </span>
                 </a>
+                {% if product.product_type == "Рецепт билан" %}
+                <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px;">
+                    {{ product.product_type }}
+                </div>
+                {% endif %}
             </div>
             <div class="product-item-card__actions">
                 <button class="add-to-cart"><span>Добавить в корзину</span><i class="fas fa-shopping-cart"></i></button>
