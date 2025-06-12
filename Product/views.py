@@ -59,6 +59,7 @@ def cart_view_json(request):
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
 
 
+
 def Index(request):
     category_name = request.GET.get('category')
     page = request.GET.get("page", 1)
@@ -68,14 +69,8 @@ def Index(request):
     except (TypeError, ValueError):
         page = 1
 
-    # Asosiy Category queryset
-    categories_qs = Category.objects.all()
-    if category_name:
-        categories_qs = categories_qs.filter(name=category_name)
-
-
+    # Faqat product'lari bor bo‘lgan kategoriyalarni olish
     product_price_qs = ProductPrice.objects.filter(amount__gt=0)
-
 
     products_qs = Product.objects.filter(
         name__isnull=False
@@ -83,17 +78,23 @@ def Index(request):
         Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
     )
 
+    # Annotate bilan bog'langan productlar sonini hisoblab, faqat borlarini filter qilamiz
+    categories_qs = Category.objects.annotate(
+        product_count=Count('products', filter=Q(products__in=products_qs))
+    ).filter(product_count__gt=0)
+
+    if category_name:
+        categories_qs = categories_qs.filter(name=category_name)
+
     categories_qs = categories_qs.prefetch_related(
         Prefetch('products', queryset=products_qs, to_attr='filtered_products_all')
     )
-
 
     paginator = Paginator(categories_qs, 5)
     try:
         page_obj = paginator.get_page(page)
     except EmptyPage:
         page_obj = paginator.get_page(1)
-
 
     for category in page_obj:
         category.filtered_products = category.filtered_products_all[:50]
@@ -104,6 +105,7 @@ def Index(request):
         "blogs": Blog.objects.all().order_by('-id')[:4]
     }
     return render(request, 'index.html', context)
+
 
 
 @login_required(login_url='/auth/send-otp/')

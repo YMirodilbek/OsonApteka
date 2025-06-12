@@ -90,7 +90,11 @@ def refresh_products_cache():
                 
             price_val = int(item.get("Price", 0))
             amount_val = int(item.get('Amount', 0))
-            
+            amount_val = int(item.get('Amount', 0))
+            if amount_val < 0:
+                amount_val = 0 
+                # logger.warning(f"Skipped item with negative amount: {amount_val}, UID: {item.get('UID')}")
+                # continue
             if unique_id in existing_prices:
                 price_obj = existing_prices[unique_id]
                 price_obj.price = price_val
