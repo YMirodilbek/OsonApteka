@@ -1008,7 +1008,7 @@
     <div class="product-list">
 
         {% for product in c.filtered_products %}
-        <div class="product-item-card" data-product-id="{{ product.id }}">
+        <div class="product-item-card" data-product-id="{{ product.id }}" data-product-price="{{ product.product_prise.all.0.price }}">
             <div class="product-item-card__image">
                <a href="{% url 'product_detail' product.id %}">
                    <img src="{{ product.image1.url }}" alt="" loading="lazy">
@@ -1019,9 +1019,9 @@
                     <h4>{{ product.name }}</h4>
                     <p>{{ product.producer }}</p>
                     <span class="price">
-                        {% with product.prices.0 as price %}
-                            {{ price.price }}
-                        {% endwith %}
+                        
+                          {{ product.product_prise.all.0.price }}
+                    
                     </span>
                 </a>
                 {% if product.product_type == "Рецепт билан" %}
@@ -1737,8 +1737,9 @@
                     const card = this.closest('.product-item-card');
                     const productId = card.getAttribute('data-product-id');
                     const productName = card.querySelector('h4').textContent;
-                    
-                    addToCart(productId, productName, this);
+                    const productPrice = card.getAttribute('data-product-price');
+                    console.log(productPrice)
+                    addToCart(productId, productName ,productPrice ,this );
                 });
             });
             
@@ -1855,22 +1856,31 @@
             });
             
             // Add to cart API function
-            function addToCart(productId, productName, buttonElement) {
-    fetch(`/add_to_cart/${productId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': getCookie('csrftoken'),
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-            return response.json();
-        } else {
-            window.location.href = '{% url 'send_otp' %}';
-            throw new Error("Server returned non-JSON data (probably a login page).");
-        }
+            function addToCart(productId, productName,productPrice, buttonElement) {
+                 console.log(productPrice);
+                console.log("bu price");
+                    fetch(`/add_to_cart/${productId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            price: productPrice
+                        })
+                                    
+
+                    })
+            .then(response => {
+
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+        } 
+        // else {
+        //     window.location.href = '{% url 'send_otp' %}';
+        //     throw new Error("Server returned non-JSON data (probably a login page).");
+        // }
     })
     .then(data => {
         if (data.status === 200) {

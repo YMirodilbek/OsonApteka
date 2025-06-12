@@ -7,22 +7,16 @@ from django.http import JsonResponse
 from django.db.models import Q
 from rapidfuzz import fuzz
 from .views import *
+import json
+
 
 @login_required(login_url='/auth/send-otp/')
 def add_to_cart(request, product_id):
     
     product = get_object_or_404(Product, id=product_id)
-    r = redis.Redis(host='localhost', port=6379, db=0)
-    result = r.get('final_result') 
-    if result:
-        result = json.loads(result.decode('utf-8'))
-    
-    
-    result_dict = {item['id']: item for item in result}
-    price = result_dict.get( product_id, {}).get('prices', [0])
-    name= result_dict.get(product_id, {}).get('name', '')
 
-    
+    data = json.loads(request.body)
+    price = int(data.get('price'))
     order = Order.objects.filter(user=request.user, is_completed=False).first()
 
     if not order:
@@ -30,8 +24,8 @@ def add_to_cart(request, product_id):
     order_item, created = OrderItem.objects.get_or_create(
                                     order = order,      
                                     product = product,
-                                    price = price[0],
-                                    name = name,
+                                    price = price,
+                                    name = product.name,
                                     )
 
     if not created:
@@ -83,6 +77,7 @@ def update_order_status(request, pk):
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
+
 
 def product_search_api(request):
     q = request.GET.get('q', '').lower().strip()
