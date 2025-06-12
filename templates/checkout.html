@@ -270,7 +270,7 @@
 
     <div class="checkout-grid">
         <div class="checkout-form-section">
-            <h2 class="section-title">Итого</h2>
+            <h2 class="section-title">Укажите данные</h2>
             <form method="post" class="checkout-form" action="{% url 'checkout' %}">
                 {% csrf_token %}
                 
@@ -290,7 +290,7 @@
                 <div class="form-group">
                     <label for="id_filial">Филиал <span class="required">*</span></label>
                     <select id="id_filial" name="filial" class="form-control" required>
-                        <option value="">Выберите Филиал</option>
+                        <option value="">Выберите филиал</option>
                         {% if filials %}
                             {% for filial in filials %}
                                 <option value="{{ filial.id }}">{{ filial.name }}</option>
@@ -312,7 +312,7 @@
                     </label>
                     <label class="address-option">
                         <input type="radio" name="address_type" value="maps">
-                       Я сам заберу 
+                       Быстрая доставка (временно недоступна) 
                     </label>
                 </div>
 
@@ -326,11 +326,11 @@
                 <input type="hidden" name="payment_method" value="click">
 
                 <div class="payment-info">
-                    <p><strong>Способ оплаты:</strong>Click:</p>
-                    <p>После оформления заказа Вы будете перенаправлены на сайт платёжной системы Click для проведения оплаты.После успешной оплаты с вами свяжутся специалисты колл-центра.</p>
+                    <p><strong>Способ оплаты:</strong> Click</p>
+                    <p>После оформления заказа Вы будете перенаправлены на сайт платёжной системы Click для проведения оплаты. После успешной оплаты с вами свяжутся специалисты колл-центра.</p>
                 </div>
 
-                <button type="submit" class="btn-checkout">Оформление заказа</button>
+                <button type="submit" class="btn-checkout">Перейти к оплате </button>
             </form>
         </div>
 
@@ -350,7 +350,7 @@
             {% endfor %}
 
             <div class="summary-row">
-                <span>Товар(ов):</span>
+                <span>Сумма заказа:</span>
                 <span>{{ order.total_price }} сум</span>
             </div>
 
