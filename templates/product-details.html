@@ -362,11 +362,17 @@
     </div>
     <div class="product-info">
         <h1>{{ product.name }}</h1>
-        <p class="category">{{ product.class }}</p>
+        <p class="category">{{ product.category.name }}</p>
         <p class="country">{{ product.country }}</p>
-        <p class="composition">ком.лек ({{ product.MNN }})</p>
+        <p class="composition">ком.лек {{ product.mnn }}</p>
+        <p class="manufacturer">{{ product.release_form }}</p>
+        <p class="manufacturer">{{ product.exp_date |slice:":10"}}</p>
         <p class="manufacturer">{{ product.producer }}</p>
-        <p class="">{{ product.ProductType}}</p>
+        {% if product.product_type == "Рецепт билан" %}
+            <div class="text-bg-dark p-1 rounded">{{ product.product_type}}</div>
+        {% else %}
+        <p class="" >{{ product.product_type}}</p>
+        {% endif %}
         {% for i in prices %}
         <hr>
             <p class="manufacturer">{{ i.amount }} , штук  {{i.price }} , сум </p>

@@ -140,6 +140,7 @@ def DeleteProduct(request, item_id):
 
 def product_detail(request,pk):
     product = Product.objects.get(id=int(pk))
+    print(product)
     prices = product.product_prise.filter(amount__gt=0).order_by('price')
     context = {
         "prices" :prices,
