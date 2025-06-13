@@ -890,7 +890,10 @@
                     headers: {
                         'X-CSRFToken': getCookie('csrftoken'),
                         'Content-Type': 'application/json'
-                    }
+                    } ,
+                        body: JSON.stringify({
+                            price: 0
+                        })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -904,16 +907,13 @@
                         showNotification('Товар добавлен в корзину');
                         
                         if (successCallback) successCallback();
-                    } else {
-                        throw new Error(data.message || 'Failed to add to cart');
+                    } else if (data.status === 300){
+                        showNotification('Рецептурный');
+                        if (errorCallback) errorCallback();
                     }
+                    
                 })
-                .catch(error => {
-                    console.error('Add to cart error:', error);
-                    showNotification('Ошибка при добавлении в корзину');
-                    window.location.href = '{% url "send_otp" %}';
-                    if (errorCallback) errorCallback();
-                });
+                
             }
             
         });

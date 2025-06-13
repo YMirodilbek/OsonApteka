@@ -1008,7 +1008,7 @@
     <div class="product-list">
 
         {% for product in c.filtered_products %}
-        <div class="product-item-card" data-product-id="{{ product.id }}" data-product-price="{{ product.product_prise.all.0.price }}">
+        <div class="product-item-card" data-product-id="{{ product.id }}" data-product-price="{{ product.prices.0.price }}">
             <div class="product-item-card__image">
                <a href="{% url 'product_detail' product.id %}">
                    <img src="{{ product.image1.url }}" alt="" loading="lazy">
@@ -1902,8 +1902,7 @@
                 buttonElement.style.backgroundColor = '';
             }, 1500);
         } else {
-            showNotification('Ошибка при добавлении в корзину');
-            window.location.href = '{% url 'send_otp' %}';
+           showNotification(`${productName} Рецептурный`);
         }
     })
     .catch(error => {

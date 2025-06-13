@@ -167,7 +167,9 @@ def add_to_cart_detail(request,pk):
     quantity = int(request.GET.get('quantity',1))
     price = int(request.GET.get('price',0))
     product = get_object_or_404(Product, id=pk)
-
+    if product.product_type == "Рецепт билан":
+        messages.error(request, F"{product.name} Рецептурный")
+        return redirect(f'/product/detail/{pk}')
 
     order = Order.objects.filter(user=request.user, is_completed=False).first()
 

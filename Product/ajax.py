@@ -14,9 +14,20 @@ import json
 def add_to_cart(request, product_id):
     
     product = get_object_or_404(Product, id=product_id)
-
+    if product.product_type == "Рецепт билан":
+        return JsonResponse({"status":300})
     data = json.loads(request.body)
-    price = int(data.get('price'))
+    price = int(data.get('price') or 0)
+
+    if price <= 0:
+        price_obj = product.product_prise.filter(price__gt=0).order_by('price').first()
+        if price_obj:
+            price = price_obj.price
+        else:
+            price = 0  
+    
+    
+    
     order = Order.objects.filter(user=request.user, is_completed=False).first()
 
     if not order:
@@ -35,13 +46,12 @@ def add_to_cart(request, product_id):
     cart =  cart_context(request)
     cart_count = len(cart['cart_items'])
     cart_total = cart['cart_total']
-    # messages.success(request, " mahsulot Savatchaga qo'shildi ")
     return JsonResponse({"status":200,'cart_count':cart_count, 'cart_total':cart_total})
 
 
 def search_products(request):
     query = latin_to_cyrillic(request.GET.get('q', ''))
-    if len(query)>3:
+    if len(query)>=3:
         result = Product.objects.filter(Q(name__icontains=query))
         matched_items = []
 
@@ -49,9 +59,7 @@ def search_products(request):
             price = 1
             if item.product_prise.exists():
 
-                price = item.product_prise.first().price
-
-
+                price = item.product_prise.filter(price__gt=0)[0]
 
             image_url = item.image1.url if item.image1 else None
 
@@ -60,7 +68,7 @@ def search_products(request):
                 "name": item.name,
                 "producer": item.producer,
                 "image1": image_url,
-                "price": price,
+                "price": price.price,
             })
     return JsonResponse(matched_items, safe=False)
 
