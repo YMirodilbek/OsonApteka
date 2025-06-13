@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from click_up.views import ClickWebhook
 from django.http import JsonResponse
 from django.shortcuts import render
+from collections import OrderedDict
 from django.contrib import messages
 from .lotin_krill import compress
 from django.conf import settings
@@ -70,7 +71,7 @@ def Index(request):
         page = 1
 
     # Faqat product'lari bor bo‘lgan kategoriyalarni olish
-    product_price_qs = ProductPrice.objects.filter(amount__gt=0)
+    product_price_qs = ProductPrice.objects.filter(amount__gt=0,price__gt=0)
 
     products_qs = Product.objects.filter(
         name__isnull=False
@@ -140,15 +141,25 @@ def DeleteProduct(request, item_id):
     return cart_view_json(request)
 
 
-def product_detail(request,pk):
+
+
+def product_detail(request, pk):
     product = Product.objects.get(id=int(pk))
-    print(product)
-    prices = product.product_prise.filter(amount__gt=0).order_by('price')
+
+    raw_prices = product.product_prise.filter(amount__gt=0, price__gt=0).order_by('price')
+
+    seen_prices = OrderedDict()
+    for p in raw_prices:
+        if p.price not in seen_prices:
+            seen_prices[p.price] = p
+
+    unique_prices = list(seen_prices.values())
+
     context = {
-        "prices" :prices,
-        "product":product
+        "prices": unique_prices,
+        "product": product
     }
-    return render(request, 'product-details.html',  context )
+    return render(request, 'product-details.html', context)
 
 
 @login_required(login_url='/auth/send-otp/')

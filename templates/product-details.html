@@ -368,15 +368,21 @@
         <p class="manufacturer">{{ product.release_form }}</p>
         <p class="manufacturer">{{ product.exp_date |slice:":10"}}</p>
         <p class="manufacturer">{{ product.producer }}</p>
+        <br>
         {% if product.product_type == "Рецепт билан" %}
         <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px; display: inline-block;">
-            {{ product.product_type }}
+           Рецептурный
         </div>
 
         {% else %}
-        <p class="" >{{ product.product_type}}</p>
+        <div style="background-color:rgb(25, 225, 48); color: white; padding: 0.25rem; border-radius: 10px; display: inline-block;">
+           Без рецепта
+        </div>
+
         {% endif %}
-         <p class="manufacturer">{{ prices.0.amount }} , штук  {{ prices.0.price }} , сум </p>
+         <br>
+         <br>
+         
         <form method="GET" action="/product/add/{{ product.id }}/">
             <div class="price-select">
                 <select name="price">

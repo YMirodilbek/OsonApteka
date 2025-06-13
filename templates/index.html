@@ -1020,13 +1020,20 @@
                     <p>{{ product.producer }}</p>
                     <span class="price">
                         
-                          {{ product.product_prise.all.0.price }}
+                         {% if product.prices %}
+                          
+                            {{ product.prices.0.price }}
+                        {% endif %}
                     
                     </span>
                 </a>
                 {% if product.product_type == "Рецепт билан" %}
                 <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px;">
-                    {{ product.product_type }}
+                   Рецептурный
+                </div>
+                {% else %}
+                 <div style="background-color:rgb(25, 225, 48); color: white; padding: 0.25rem; border-radius: 10px;">
+                   Без рецепта
                 </div>
                 {% endif %}
             </div>
@@ -1875,10 +1882,7 @@
                 if (contentType && contentType.includes("application/json")) {
                     return response.json();
         } 
-        else {
-            window.location.href = '{% url 'send_otp' %}';
-            throw new Error("Server returned non-JSON data (probably a login page).");
-        }
+        
     })
     .then(data => {
         if (data.status === 200) {
