@@ -70,10 +70,10 @@ def Index(request):
     except (TypeError, ValueError):
         page = 1
 
-    product_price_qs = ProductPrice.objects.filter(amount__gt=0, price__gt=0)
+    product_price_qs = ProductPrice.objects.filter(price__gt=0)
 
     products_qs = Product.objects.filter(
-        product_prise__in=product_price_qs,  # faqat kerakli narxlar bilan bog‘langanlar
+        product_prise__in=product_price_qs,  
         name__isnull=False
     ).exclude(name='').order_by('id').distinct().select_related('category').prefetch_related(
         Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
@@ -145,7 +145,7 @@ def DeleteProduct(request, item_id):
 def product_detail(request, pk):
     product = Product.objects.get(id=int(pk))
 
-    raw_prices = product.product_prise.filter(amount__gt=0, price__gt=0).order_by('price')
+    raw_prices = product.product_prise.filter(price__gt=0).order_by('price')
 
     seen_prices = OrderedDict()
     for p in raw_prices:
