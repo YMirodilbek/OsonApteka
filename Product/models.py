@@ -57,7 +57,7 @@ class ProductPrice(models.Model):
     unique_identifier = models.CharField(max_length=255, unique=True, null=True, blank=True) # bor 
 
     def __str__(self):
-        return f"{self.product.uid}"
+        return f"{self.product.name}"
     
     
     class Meta:
