@@ -417,8 +417,7 @@
         <p class="country">{{ product.country }}</p>
         <p class="composition">ком.лек {{ product.mnn }}</p>
         <p class="manufacturer">{{ product.release_form }}</p>
-        <p class="manufacturer">{{ product.exp_date |slice:":10"}}</p>
-        <p class="manufacturer">{{ product.producer }}</p>
+        
         <br>
         {% if product.product_type == "Рецепт билан" %}
         <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px; display: inline-block;">
