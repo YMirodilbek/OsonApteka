@@ -49,13 +49,58 @@
 
             <!-- Pagination -->
             <nav>
-                <ul class="pagination justify-content-end mt-3">
-                    {% for page_num in page_obj.paginator.page_range %}
-                    <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
-                        <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-                    </li>
-                    {% endfor %}
+                {% if page_obj.paginator.num_pages > 1 %}
+                <ul class="pagination justify-content-center mt-3">
+
+                    {# Previous button #}
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% with current=page_obj.number total=page_obj.paginator.num_pages %}
+                        
+                        {# First page #}
+                        {% if current > 3 %}
+                            <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                            {% if current > 4 %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endif %}
+
+                        {# Middle pages (current -2 to current +2) #}
+                        {% for p in page_obj.paginator.page_range %}
+                            {% if p >= current|add:"-2" and p <= current|add:"2" %}
+                                <li class="page-item {% if p == current %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {# Last page #}
+                        {% if current < total|add:"-2" %}
+                            {% if current < total|add:"-3" %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                            <li class="page-item"><a class="page-link" href="?page={{ total }}">{{ total }}</a></li>
+                        {% endif %}
+
+                    {% endwith %}
+
+                    {# Next button #}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
                 </ul>
+                {% endif %}
             </nav>
 
         </div>
