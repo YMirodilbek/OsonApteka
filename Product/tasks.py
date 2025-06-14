@@ -142,7 +142,7 @@ def refresh_products_cache():
         if product_prices_to_create:
             ProductPrice.objects.bulk_create(product_prices_to_create)
 
-    logger.info(f"Successfully updated {len(products_to_update)}, products and {len(product_prices_to_update) + len(product_prices_to_create)}, prices   data={len(data)}")
+    logger.info(f"Successfully updated {len(products_to_update)}, products and {len(product_prices_to_update) + len(product_prices_to_create)}, prices price={product_prices_to_update}  data={len(data)}")
 
 
 @shared_task
