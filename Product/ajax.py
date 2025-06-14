@@ -51,16 +51,21 @@ def add_to_cart(request, product_id):
 
 def search_products(request):
     query = latin_to_cyrillic(request.GET.get('q', ''))
-    if len(query)>=3:
-        result = Product.objects.filter(Q(name__icontains=query))
-        matched_items = []
 
+    matched_items = []
+
+    if len(query) >= 3:
+        product_prices_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
+
+        result = Product.objects.filter(name__icontains=query).prefetch_related(
+            Prefetch('product_prise', queryset=product_prices_qs, to_attr='valid_prices')
+        )
+        
         for item in result:
-            price = 1
-            if item.product_prise.exists():
+            if not item.valid_prices:
+                continue
 
-                price = item.product_prise.filter(price__gt=0)[0]
-
+            price_obj = item.valid_prices[0]
             image_url = item.image1.url if item.image1 else None
 
             matched_items.append({
@@ -68,7 +73,7 @@ def search_products(request):
                 "name": item.name,
                 "producer": item.producer,
                 "image1": image_url,
-                "price": price.price,
+                "price": price_obj.price,
             })
     return JsonResponse(matched_items, safe=False)
 

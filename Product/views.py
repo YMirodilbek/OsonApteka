@@ -70,16 +70,15 @@ def Index(request):
     except (TypeError, ValueError):
         page = 1
 
-    # Faqat product'lari bor bo‘lgan kategoriyalarni olish
-    product_price_qs = ProductPrice.objects.filter(amount__gt=0,price__gt=0)
+    product_price_qs = ProductPrice.objects.filter(amount__gt=0, price__gt=0)
 
     products_qs = Product.objects.filter(
+        product_prise__in=product_price_qs,  # faqat kerakli narxlar bilan bog‘langanlar
         name__isnull=False
-    ).exclude(name='').order_by('id').select_related('category').prefetch_related(
+    ).exclude(name='').order_by('id').distinct().select_related('category').prefetch_related(
         Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
     )
 
-    # Annotate bilan bog'langan productlar sonini hisoblab, faqat borlarini filter qilamiz
     categories_qs = Category.objects.annotate(
         product_count=Count('products', filter=Q(products__in=products_qs))
     ).filter(product_count__gt=0)
