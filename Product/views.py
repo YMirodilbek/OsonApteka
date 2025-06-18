@@ -70,7 +70,7 @@ def Index(request):
     except (TypeError, ValueError):
         page = 1
 
-    product_price_qs = ProductPrice.objects.filter(price__gt=0)
+    product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
 
     products_qs = Product.objects.filter(
         product_prise__in=product_price_qs,  
