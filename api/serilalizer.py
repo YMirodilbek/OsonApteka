@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from Product.models import Product , ProductPrice
+from rest_framework import serializers
 from html import unescape
 from tmp.models import *
 import re
@@ -24,7 +24,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ['id', 'name','info','prices','product_type_display']
+        fields = ['id', 'name','info','producer','country','prices','product_type_display']
     
     def get_info(self, obj):
         clean_text = re.sub(r'<[^>]+>', '', obj.info)  

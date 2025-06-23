@@ -1,9 +1,11 @@
+from Product.lotin_krill import  latin_to_cyrillic
 from rest_framework.response import Response
 from rest_framework import viewsets
 from tmp.models import OurPharmacie
 from rest_framework import filters
 from .serilalizer import * 
-from Product.lotin_krill import  latin_to_cyrillic
+
+
 class OurPharmacieViewSet(viewsets.ModelViewSet):
     queryset = OurPharmacie.objects.all()
     serializer_class = OurPharmacieSerializer

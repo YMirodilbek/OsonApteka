@@ -1,15 +1,15 @@
 from .models import Product , Category, Order , ProductPrice
 from requests.auth import HTTPBasicAuth
 from datetime import timedelta ,datetime
+from collections import defaultdict
 from django.db import transaction
 from django.utils import timezone
+from django.db.models import Q
 from celery import shared_task
 import requests
 import datetime
 import logging
-
 logger = logging.getLogger('celery_tasks')
-
 @shared_task
 def refresh_products_cache():
 
@@ -164,3 +164,17 @@ def delete_unpaid_completed_orders():
     except Exception as e:
         logger.error(f"Failed to delete unpaid completed orders: {e},")
 
+
+@shared_task
+def delete_ProductPrice():
+    product_price = ProductPrice.objects.filter(Q(amount=0) | Q(price=0))
+    product_price.delete()
+    for product in Product.objects.all():
+        price_map = defaultdict(list)
+        for pp in product.product_prise.all():    
+            price_map[pp.price].append(pp)
+        for same_price_list in price_map.values():
+            if len(same_price_list) > 1:  
+                to_delete = same_price_list[1:]
+                for item in to_delete:
+                    item.delete()
