@@ -192,20 +192,17 @@
         }, 100); // 100ms kechikish
     });
 
-  function showMap(lat, lon, title, address, shift, phone) {
+ function showMap(lat, lon, title, address, shift, phone) {
     lat = lat.replaceAll(',', '.');
     lon = lon.replaceAll(',', '.');
 
     const coords = [parseFloat(lat), parseFloat(lon)];
-    console.log("Koordinatalar:", coords);
 
     if (myMap) {
         myMap.setCenter(coords, 16);
 
-
         placemarks.forEach(p => myMap.geoObjects.remove(p));
         placemarks = [];
-
 
         const placemark = new ymaps.Placemark(coords, {
             balloonContent: `
@@ -219,12 +216,15 @@
         myMap.geoObjects.add(placemark);
         placemarks.push(placemark);
 
-        document.getElementById('map').scrollIntoView({
-            behavior: 'smooth', 
-            block: 'start'    
-        });
+        // 🔽 Scroll to map + offset due to fixed navbar
+        const mapElement = document.getElementById('map');
+        const navbarHeight = 80; // yoki sizning haqiqiy navbarringiz balandligi
+        const y = mapElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
     }
 }
+
 
 
 </script>
