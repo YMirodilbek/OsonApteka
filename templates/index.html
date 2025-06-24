@@ -1028,11 +1028,11 @@
                     </span>
                 </a>
                 {% if product.product_type == "Рецепт билан" %}
-                <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px;">
+                <div style="background-color: #e50e3d !important; "class="add-to-cart">
                    Рецептурный
                 </div>
                 {% else %}
-                 <div style="background-color:rgb(25, 225, 48); color: white; padding: 0.25rem; border-radius: 10px;">
+                 <div style="background-color:rgb(25, 225, 48) !important;" class="add-to-cart">
                    Без рецепта
                 </div>
                 {% endif %}
@@ -1040,9 +1040,6 @@
             <div class="product-item-card__actions">
                 <button class="add-to-cart"><span>Добавить в корзину</span><i class="fas fa-shopping-cart"></i></button>
                 <div class="product-item-card__buttons">
-                    <a href="{% url 'product_detail' product.id %}" class="product-item-card__button about">
-                        <i class="fas fa-eye"></i>
-                    </a>
                     <button class="product-item-card__button wishlist">
                         <i class="fas fa-heart"></i>
                     </button>
@@ -1870,6 +1867,7 @@
                             'X-CSRFToken': getCookie('csrftoken'),
                             'Content-Type': 'application/json'
                         },
+                         credentials: 'include', // 🔥 Session cookie yuboriladi
                         body: JSON.stringify({
                             price: productPrice
                         })
@@ -1885,26 +1883,14 @@
         
     })
     .then(data => {
-        if (data.status === 200) {
-            const cartBadge = document.querySelector('.cart-badge');
-            if (cartBadge) {
-                cartBadge.setAttribute('data-count', data.cart_count);
-            }
-
-            const originalText = buttonElement.textContent;
-            buttonElement.textContent = 'Добавлено ✓';
-            buttonElement.style.backgroundColor = '#4CAF50';
-
-            showNotification(`${productName} добавлен в корзину`);
-
-            setTimeout(() => {
-                buttonElement.textContent = originalText;
-                buttonElement.style.backgroundColor = '';
-            }, 1500);
-        } else {
-           showNotification(`${productName} Рецептурный`);
-        }
-    })
+    if (data.status === 200) {
+        // success
+    } else if (data.status === 300) {
+        showNotification(`${productName} Рецептурный`);
+    } else if (data.status === 401) {
+        window.location.href = '/auth/send-otp/';
+    }
+})
     .catch(error => {
         console.error('Xatolik:', error);
         showNotification('Ошибка при добавлении в корзину');

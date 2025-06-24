@@ -8,9 +8,9 @@ from django.db.models import Q
 from rapidfuzz import fuzz
 from .views import *
 import json
+from .decorator import login_required_ajax
 
-
-@login_required(login_url='/auth/send-otp/')
+@login_required_ajax
 def add_to_cart(request, product_id):
     
     product = get_object_or_404(Product, id=product_id)

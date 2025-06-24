@@ -890,28 +890,20 @@
                     headers: {
                         'X-CSRFToken': getCookie('csrftoken'),
                         'Content-Type': 'application/json'
-                    } ,
+                    } , credentials: 'include', 
                         body: JSON.stringify({
                             price: 0
                         })
                 })
                 .then(response => response.json())
-                .then(data => {
+                 .then(data => {
                     if (data.status === 200) {
-                        // Update cart badges
-                        const cartBadges = document.querySelectorAll('.cart-badge');
-                        cartBadges.forEach(badge => {
-                            badge.setAttribute('data-count', data.cart_count);
-                        });
-                        
-                        showNotification('Товар добавлен в корзину');
-                        
-                        if (successCallback) successCallback();
-                    } else if (data.status === 300){
-                        showNotification('Рецептурный');
-                        if (errorCallback) errorCallback();
+                        // success
+                    } else if (data.status === 300) {
+                        showNotification(`${productName} Рецептурный`);
+                    } else if (data.status === 401) {
+                        window.location.href = '/auth/send-otp/';
                     }
-                    
                 })
                 
             }

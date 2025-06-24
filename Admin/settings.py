@@ -23,7 +23,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -265,7 +265,7 @@ CKEDITOR_CONFIGS = {
         'language': 'ru',  # Til sozlamasi
     }
 }
-
+LOGIN_URL = '/auth/send-otp/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
