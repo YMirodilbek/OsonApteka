@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
 
 {% block css %}
 
@@ -954,10 +953,93 @@
 </style>
 
 
+<style>
+
+.owl-carousel-container {
+    position: relative;
+    padding: 0 40px; /* Navigatsiya tugmalari uchun joy */
+}
+
+.owl-nav button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background-color: #f5f5f5 !important;
+    border: 1px solid #eee !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.owl-nav button:hover {
+    background-color: #4285F4 !important;
+    color: white !important;
+    transform: translateY(-50%) scale(1.1) !important;
+}
+
+.owl-nav button.owl-prev {
+    left: 0;
+}
+
+.owl-nav button.owl-next {
+    right: 0;
+}
+
+.owl-nav button span {
+    font-size: 24px;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.owl-dots {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.owl-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ccc !important;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+}
+
+.owl-dot.active {
+    background-color: #4285F4 !important;
+}
+
+/* Kichik ekranlar uchun moslashuv */
+@media (max-width: 768px) {
+    .owl-carousel-container {
+        padding: 0;
+    }
+    .owl-nav button {
+        /* Kichik ekranlarda tugmalarni yashirish yoki kichraytirish mumkin */
+        display: none !important; 
+    }
+}
+
+</style>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+<!-- Owl Carousel JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
 {% endblock %}
 
 
+{% block content %}
 
 <div class="main-content__container">
     <div class="main_picture_slider">
@@ -991,6 +1073,7 @@
         </div>
     </div>
 </div>
+
 <div class="main-content__container">
    {% for c in paginator %}
     <h3 class="product-list__title">
@@ -1106,77 +1189,88 @@
         Наши партнеры
     </h3>
     <hr>
-    <div class="brand-list">
-
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/Abbott.png' %}" alt="">
+    <div class="owl-carousel-container">
+        <div id="brand-carousel" class="owl-carousel owl-theme">
+            <!-- Items -->
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/Abbott.png' %}" alt="Abbott">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/Bayer.png' %}" alt="Bayer">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/Dr.reddys.png' %}" alt="Dr. Reddys">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/Farmak.png' %}" alt="Farmak">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/KRKA.png' %}" alt="KRKA">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/Sandoz.png' %}" alt="Sandoz">
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="brand-card">
+                    <div class="brand-card__image">
+                        <img src="{% static 'assets/rasm/SANOFI.png' %}" alt="SANOFI">
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/Bayer.png' %}" alt="">
-            </div>
-        </div>
-
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/Dr.reddys.png' %}" alt="">
-            </div>
-        </div>
-
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/Farmak.png' %}" alt="">
-            </div>
-        </div>
-
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/KRKA.png' %}" alt="">
-            </div>
-        </div>
-
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/Sandoz.png' %}" alt="">
-            </div>
-        </div>
-        
-        <div class="brand-card">
-            <div class="brand-card__image">
-                <img src="{% static 'assets/rasm/SANOFI.png' %}" alt="">
-            </div>
-        </div>
-        
-       
-
     </div>
 
+
+    <!-- === OWL CAROUSEL FOR BLOGS === -->
     <h3 class="product-list__title">
         Последние новости
     </h3>
     <hr>
-    <div class="blog-list">
-        {% for blog in blogs %}
-        <div class="blog-card">
-            <div class="blog-card__image">
-                <img src="{{ blog.image.url }}" alt="Product 1">
+    <div class="owl-carousel-container">
+        <div id="blog-carousel" class="owl-carousel owl-theme">
+            {% for blog in blogs %}
+            <div class="item">
+                <div class="blog-card">
+                    <div class="blog-card__image">
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                    </div>
+                    <div class="blog-card__content">
+                        <h4>{{ blog.title }}</h4>
+                        <p>{{ blog.created_at }}</p>
+                        <p>{{ blog.text|truncatechars:100 }}</p>
+                    </div>
+                    <div class="blog-card__actions">
+                        <a href="{% url 'blog_details' blog.id %}" class="add-to-cart"> Читать далее <i class="fas fa-eye"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="blog-card__content">
-                <h4>{{ blog.title }}</h4>
-                <p>{{ blog.created_at }}</p>
-                <p>{{ blog.text|truncatechars:100 }}</p>
-            </div>
-            <div class="blog-card__actions">
-                <a href="{% url 'blog_details' blog.id %}" class="add-to-cart"> Читать далее <i class="fas fa-eye"></i></a>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-
     </div>
-
 
     <div class="help-text">
         <h4>Интернет-аптека "Akmal Farm Medical"</h4><br>
@@ -2045,5 +2139,49 @@
             console.log('Notification:', message);
         }
     }
+</script>
+
+
+<script>
+$(document).ready(function(){
+    // Initialize Brand Carousel
+    $("#brand-carousel").owlCarousel({
+        loop: true,
+        margin: 20,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        responsive:{
+            0:{
+                items: 3 // Mobile
+            },
+            600:{
+                items: 5 // Tablet
+            },
+            1000:{
+                items: 7 // Desktop
+            }
+        }
+    });
+
+    // Initialize Blog Carousel
+    $("#blog-carousel").owlCarousel({
+        loop: true,
+        margin: 20,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        responsive:{
+            0:{
+                items: 1 // Mobile
+            },
+            768:{
+                items: 2 // Tablet
+            },
+            1100:{
+                items: 3 // Desktop
+            }
+        }
+    });
+});
 </script>
 {% endblock %}
