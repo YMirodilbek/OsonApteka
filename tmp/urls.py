@@ -18,6 +18,8 @@ urlpatterns=[
     path('dashboard/pharmacy/', dashboard_pharmacy, name='dashboard_pharmacy_url'),
     path('dashboard/landlords/', dashboard_landlords, name='dashboard_landlords_url'),
     path('dashboard/about/', dashboard_about, name='dashboard_about_url'),
+    path('dashboard/about/<int:id>/', dashboard_about_detail, name='dashboard_about_detail_url'),
+    
     path('dashboard/public/', dashboard_public, name='dashboard_public_url'),
     path('dashboard/blog/', dashboard_blog, name='dashboard_blog'),
 
@@ -34,7 +36,10 @@ urlpatterns=[
     path('landlords/update/<int:id>/', landlordUpdate, name='landlordUpdate'),
     path('landlords/delete/<int:id>/', landlordDelete, name='landlordDelete'),
     
-    path('about/update/', aboutUpdate, name='aboutUpdate'),
+    path('about/update/<int:id>/', aboutUpdate, name='aboutUpdate'),
+    path('about/create/', aboutCreate, name='aboutCreate'),
+    path('about/delete/<int:id>/', aboutDelete, name='aboutDelete'),
+
     path('public/update/', publicUpdate, name='publicUpdate'),
     
     path('blog/create/', blog_create, name='blog_create'),

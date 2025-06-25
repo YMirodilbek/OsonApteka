@@ -1,4 +1,6 @@
 from django.db import models
+from ckeditor.fields import RichTextField 
+
 
 
 class OurPharmacie(models.Model):
@@ -36,8 +38,16 @@ class Vacancy(models.Model):
     
 
 class AboutUs(models.Model):
-    body = models.TextField()
-
+    title = models.CharField(max_length=255, null=True, blank=True)
+    body = RichTextField(
+        config_name='default',
+        default='',
+        blank=True,
+        verbose_name='About Us'
+    )
+    image = models.ImageField(upload_to='about_us/', null=True, blank=True)
+    order = models.IntegerField(default=0)
+    
     def __str__(self):
         return "About Us"
     

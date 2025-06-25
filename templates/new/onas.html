@@ -1,181 +1,352 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
 
+{% block css %}
 <style>
-    .about-container {
+    .about-us-heading {
+        text-align: center;
+        margin: 50px 0 30px;
+        font-size: 36px;
+        font-weight: bold;
+        color: #333;
+        position: relative;
+    }
+    
+    .about-us-heading::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background-color: #D91F3D;
+        margin: 15px auto 0;
+    }
+    
+    .about-us-timeline {
         max-width: 1200px;
         margin: 40px auto;
-        padding: 20px;
-    }
-
-    .about-header {
-        text-align: center;
-        margin-bottom: 50px;
-    }
-
-    .about-header h1 {
-        font-size: 36px;
-        color: #2C3E50;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
-
-    .about-header p {
-        font-size: 18px;
-        color: #666;
-        max-width: 800px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
-
-    .about-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-        margin-bottom: 50px;
-    }
-
-    .about-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease;
-    }
-
-    .about-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .about-card__icon {
-        font-size: 40px;
-        color: #E31E24;
-        margin-bottom: 20px;
-    }
-
-    .about-card__title {
-        font-size: 22px;
-        color: #2C3E50;
-        margin-bottom: 15px;
-        font-weight: 500;
-    }
-
-    .about-card__text {
-        font-size: 16px;
-        color: #666;
-        line-height: 1.6;
-    }
-
-    .about-content {
-        background: #fff;
-        border-radius: 16px;
-        padding: 40px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin-bottom: 50px;
-    }
-
-    .about-content p {
-        font-size: 16px;
-        color: #444;
-        line-height: 1.8;
-        margin-bottom: 20px;
-    }
-
-    .about-content ul {
-        list-style: none;
-        padding: 0;
-        margin: 20px 0;
-    }
-
-    .about-content li {
-        padding-left: 25px;
+        padding: 0 20px;
         position: relative;
-        margin-bottom: 15px;
-        font-size: 16px;
-        color: #444;
     }
-
-    .about-content li:before {
-        content: "⚪️";
+    
+    /* Center timeline line */
+    .about-us-timeline::before {
+        content: '';
         position: absolute;
-        left: 0;
-        color: #E31E24;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        background-color: #D91F3D;
+        transform: translateX(-50%);
+        z-index: 1;
     }
-
-    .contact-section {
-        background: #f8f9fa;
-        border-radius: 16px;
+    
+    .timeline-entry {
+        display: flex;
+        margin-bottom: 80px;
+        align-items: center;
+        position: relative;
+        justify-content: space-between;
+    }
+    
+    .timeline-entry:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+    
+    /* Circle connector for timeline */
+    .timeline-entry::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: #D91F3D;
+        border-radius: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+    
+    .timeline-image {
+        width: 42%;
+        aspect-ratio: 1/1;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 5px;
+        margin-right: 5%;
+    }
+    
+    .timeline-entry:nth-child(even) .timeline-image {
+        margin-right: 0;
+        margin-left: 5%;
+    }
+    
+    .timeline-image img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+    
+    .timeline-content {
+        width: 42%;
+        padding: 0 20px;
+    }
+    
+    .timeline-year {
+        font-size: 30px;
+        font-weight: bold;
+        color: #D91F3D;
+        margin-bottom: 20px;
+        display: block;
+    }
+    
+    .timeline-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+    }
+    
+    .timeline-text {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #555;
+    }
+    
+    /* End text styling */
+    .end-text {
+        max-width: 800px;
+        margin: 40px auto;
         padding: 30px;
         text-align: center;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-
-    .contact-section h2 {
+    
+    .end-text h1 {
         font-size: 24px;
-        color: #2C3E50;
+        color: #D91F3D;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+    
+    .end-text p {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #555;
         margin-bottom: 20px;
     }
-
-    .contact-info {
-        font-size: 18px;
-        color: #E31E24;
-        font-weight: 500;
+    
+    .end-text p:last-child {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        color: #666;
+        line-height: 1.7;
     }
-
-    @media (max-width: 768px) {
-        .about-header h1 {
+    
+    /* Large screens */
+    @media (min-width: 1200px) {
+        .about-us-timeline {
+            max-width: 1140px;
+        }
+    }
+    
+    /* Medium screens */
+    @media (max-width: 992px) {
+        .about-us-heading {
+            font-size: 32px;
+        }
+        
+        .timeline-image {
+            width: 44%;
+        }
+        
+        .timeline-content {
+            width: 44%;
+        }
+        
+        .timeline-year {
             font-size: 28px;
         }
-
-        .about-header p {
-            font-size: 16px;
+        
+        .end-text {
+            padding: 30px;
+            margin: 50px auto;
         }
-
-        .about-card {
-            padding: 20px;
+        
+        .end-text h1 {
+            font-size: 26px;
         }
-
-        .about-content {
-            padding: 25px;
+    }
+    
+    /* Small tablets */
+    @media (max-width: 768px) {
+        .about-us-heading {
+            font-size: 28px;
+            margin: 40px 0 25px;
+        }
+        
+        .about-us-heading::after {
+            width: 60px;
+            margin: 12px auto 0;
+        }
+        
+        .about-us-timeline::before {
+            display: none;
+        }
+        
+        .timeline-entry::after {
+            display: none;
+        }
+        
+        .timeline-entry, .timeline-entry:nth-child(even) {
+            flex-direction: column;
+            margin-left: 0;
+        }
+        
+        .timeline-image, .timeline-content,
+        .timeline-entry:nth-child(even) .timeline-image {
+            width: 100%;
+            margin: 0 0 30px 0;
+        }
+        
+        .timeline-content {
+            padding: 0;
+        }
+        
+        .timeline-year {
+            font-size: 36px;
+        }
+        
+        .end-text {
+            padding: 25px 20px;
+            margin: 40px auto;
+        }
+        
+        .end-text h1 {
+            font-size: 24px;
+        }
+        
+        .end-text p {
+            font-size: 15px;
+        }
+    }
+    
+    /* Mobile phones */
+    @media (max-width: 576px) {
+        .about-us-heading {
+            font-size: 24px;
+            margin: 30px 0 20px;
+        }
+        
+        .about-us-heading::after {
+            width: 50px;
+            height: 3px;
+            margin: 10px auto 0;
+        }
+        
+        .about-us-timeline {
+            padding: 0 10px;
+            margin: 30px auto;
+        }
+        
+        .about-us-timeline::before {
+            display: none;
+        }
+        
+        .timeline-entry {
+            margin-bottom: 50px;
+            margin-left: 0;
+        }
+        
+        .timeline-entry::after {
+            display: none;
+        }
+        
+        .timeline-image {
+            aspect-ratio: 4/3;
+        }
+        
+        .timeline-year {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-text {
+            font-size: 14px;
+        }
+        
+        .end-text {
+            padding: 20px 15px;
+            margin: 30px auto 20px;
+        }
+        
+        .end-text h1 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .end-text p {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .end-text p:last-child {
+            margin-top: 20px;
+            padding-top: 15px;
+            font-size: 13px;
+        }
+    }
+    
+    /* Extra small devices */
+    @media (max-width: 375px) {
+        .timeline-entry {
+            margin-left: 0;
+        }
+        
+        .timeline-year {
+            font-size: 22px;
+        }
+        
+        .end-text h1 {
+            font-size: 18px;
         }
     }
 </style>
+{% endblock %}
 
-<div class="about-container">
-    <div class="about-header">
-        <h1>Akmal Farm Medical haqida</h1>
-        <p>Sog'ligingiz uchun ishonchli hamkor</p>
-    </div>
-
-    <div class="about-grid">
-        <div class="about-card">
-            <i class="fas fa-star about-card__icon"></i>
-            <h3 class="about-card__title">Sifat kafolati</h3>
-            <p class="about-card__text">Barcha dori vositalari sertifikatlangan va qat'iy tekshiruvdan o'tkaziladi.</p>
+{% block content %}
+<h2 class="about-us-heading">О нас</h2>
+<div class="about-us-timeline">
+    {% for item in about %}
+    <div class="timeline-entry">
+        <div class="timeline-image">
+            {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+            {% else %}
+            <img src="{% static 'assets/img/ship/about1.jpg' %}" alt="Default image" loading="lazy">
+            {% endif %}
         </div>
-
-        <div class="about-card">
-            <i class="fas fa-truck about-card__icon"></i>
-            <h3 class="about-card__title">To'g'ridan-to'g'ri yetkazib berish</h3>
-            <p class="about-card__text">Ishlab chiqaruvchilardan to'g'ridan-to'g'ri yetkazib berish tizimi orqali eng yaxshi narxlarni taklif qilamiz.</p>
-        </div>
-
-        <div class="about-card">
-            <i class="fas fa-users about-card__icon"></i>
-            <h3 class="about-card__title">Professional xizmat</h3>
-            <p class="about-card__text">Malakali mutaxassislarimiz sizga eng yaxshi maslahatlar va xizmatlarni taqdim etadi.</p>
+        <div class="timeline-content">
+            <span class="timeline-year">{{ item.title }}</span>
+            <div class="timeline-text">{{ item.body|safe }}</div>
         </div>
     </div>
-
-    <div class="about-content">
-        {{about.body|safe}}
-    </div>
-
-    <div class="contact-section">
-        <h2>Bizning mutaxassislar doimo yordam berishga tayyor!</h2>
-        <p class="contact-info">Maslahat uchun qo'ng'iroq qiling:</p>
-        <p class="contact-info">+998 (78) 298-00-88 yoki 1080</p>
-    </div>
+    {% endfor %}
 </div>
-
-{% endblock content %}
+<div class="end-text">
+    <h1>Мы благодарны за доверие наших клиентов и партнёров.</h1>
+    <p>Нас упоминают в СМИ, рекомендуют друзья и семьи, выбирают снова и снова.</p>
+    <p>
+        Контакты: <br>
+        Горячая линия: 1080 <br>
+        Телефон: +998 78 298‑00‑88 <br>
+        Работаем круглосуточно - 24/7, без перерывов и выходных <br>
+        Наши аптеки: Ташкент, Андижан <br>
+        Сайт: akmalfarm.uz <br>
+        Мы рядом — и в онлайне, и в офлайне <br>
+    </p>
+</div>
+{% endblock %}

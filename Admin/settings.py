@@ -244,7 +244,7 @@ CKEDITOR_CONFIGS = {
             ['Bold', 'Italic', 'Underline'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
             ['Link', 'Unlink'],
-            ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar'],
+            ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar'],
             ['Styles', 'Format', 'Font', 'FontSize'],
             ['TextColor', 'BGColor'],
             ['Maximize', 'ShowBlocks'],

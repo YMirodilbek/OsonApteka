@@ -1,7 +1,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from .models import *
-
+from tmp.models import AboutUs
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -68,3 +68,25 @@ class Product_editForm(forms.ModelForm):
             'uid': 'uid',
             'info': 'info',
         }
+
+
+class AboutUsForm(forms.ModelForm):
+    body = forms.CharField(widget=CKEditorWidget(config_name='default'))
+    
+    class Meta:
+        model = AboutUs
+        fields = ['title', 'body', 'image', 'order']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Masalan: 1995'}),
+            'order': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'title': 'Yil',
+            'body': 'Matn',
+            'image': 'Rasm',
+            'order': 'Tartib raqami'
+        }
+        help_texts = {
+            'order': 'Kichikroq raqam yuqoriroq ko\'rsatiladi'
+        } 

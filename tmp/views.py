@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from Product.decorator import is_staff
 from django.contrib import messages
 from . import models
+from .forms import AboutUsForm
 import logging
 
 # Get logger for tmp app
@@ -123,7 +124,7 @@ def pharmDelete(request,id):
 
 
 def About(request):
-    about = models.AboutUs.objects.last()
+    about = models.AboutUs.objects.all().order_by('order')
     context = {
         'about':about
     }
@@ -132,18 +133,58 @@ def About(request):
 
 @login_required(login_url='/auth/send-otp/')
 @is_staff
-def aboutUpdate(request):
-    about = models.AboutUs.objects.last()
-    body = request.POST.get('body')
-
-    if about:
-        about.body = body if body else about.body
-        about.save()
-        messages.success(request,'About updated successfully')
+def aboutUpdate(request, id):
+    about = models.AboutUs.objects.get(id=id)
+    
+    if request.method == 'POST':
+        form = AboutUsForm(request.POST, request.FILES, instance=about)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'About updated successfully')
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
-        models.AboutUs.objects.create(body=body)
-        messages.success(request,'About created successfully')
+        form = AboutUsForm(instance=about)
+    
+    context = {
+        'about': about,
+        'form': form
+    }
+    return render(request, 'website_dashboard/about_detail.html', context)
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
+def aboutCreate(request):
+    if request.method == 'POST':
+        form = AboutUsForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'About created successfully')
+            return redirect('dashboard_about_url')
+    else:
+        form = AboutUsForm()
+    
+    return redirect('dashboard_about_url')
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
+def aboutDelete(request,id):
+    about = models.AboutUs.objects.get(id=id)
+    about.delete()
+    messages.success(request,'About deleted successfully')
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
+def dashboard_about_detail(request,id):
+    about = models.AboutUs.objects.get(id=id)
+    form = AboutUsForm(instance=about)
+    context = {
+        'about': about,
+        'form': form
+    }
+    return render(request,'website_dashboard/about_detail.html',context)
+
 
 
 def Public(request):
@@ -316,9 +357,11 @@ def dashboard_landlords(request):
 @login_required(login_url='/auth/send-otp/')
 @is_staff
 def dashboard_about(request):
-    about = models.AboutUs.objects.last()
+    about = models.AboutUs.objects.all().order_by('order')
+    form = AboutUsForm()
     context = {
-        'about': about
+        'about': about,
+        'form': form
     }
     return render(request, 'website_dashboard/about.html', context)
 
