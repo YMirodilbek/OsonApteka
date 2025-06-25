@@ -1,0 +1,70 @@
+{% extends 'website_dashboard/web_base.html' %}
+
+{% block title %}Biz haqimizda Video{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Biz haqimizda Video</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                    <div class="alert alert-success">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <form action="{% url 'dashboard_about_video_update_url' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="video">YouTube Video URL manzili</label>
+                            <input type="url" class="form-control" id="video" name="video" value="{{ video.video }}" placeholder="https://www.youtube.com/embed/VIDEO_ID" required>
+                            <small class="form-text text-muted">Embed qilingan YouTube URL manzilini kiriting (format: https://www.youtube.com/embed/VIDEO_ID)</small>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary mt-3">O'zgarishlarni saqlash</button>
+                    </form>
+                    
+                    {% if video %}
+                    <div class="mt-4">
+                        <h5>Joriy Video Ko'rinishi</h5>
+                        <div class="ratio ratio-16x9">
+                            <iframe src="{{ video.video }}" title="YouTube video" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="mt-4">
+                        <div class="alert alert-info">
+                            Hali video o'rnatilmagan. Yuqoridagi YouTube URL manzilini qo'shing.
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Validation to ensure proper YouTube embed URL format
+        const videoInput = document.getElementById('video');
+        const form = videoInput.closest('form');
+        
+        form.addEventListener('submit', function(e) {
+            const value = videoInput.value.trim();
+            if (value && !value.includes('youtube.com/embed/')) {
+                e.preventDefault();
+                alert('Iltimos, YouTube embed URL formatidan foydalaning (https://www.youtube.com/embed/VIDEO_ID)');
+            }
+        });
+    });
+</script>
+{% endblock %}

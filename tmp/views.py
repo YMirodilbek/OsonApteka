@@ -125,11 +125,36 @@ def pharmDelete(request,id):
 
 def About(request):
     about = models.AboutUs.objects.all().order_by('order')
+    video = models.AboutUsVideo.objects.last()
     context = {
-        'about':about
+        'about':about,
+        'video':video
     }
     return render(request,'new/onas.html',context)
 
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
+def dashboard_about_video(request):
+    video = models.AboutUsVideo.objects.last()
+    context = {
+        'video':video
+    }
+    return render(request,'website_dashboard/about_video.html',context)
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
+def dashboard_about_video_update(request):
+    video = models.AboutUsVideo.objects.last()
+    if video:
+        video.video = request.POST.get('video')
+        video.save()
+        messages.success(request,'Video updated successfully')
+    else:
+        models.AboutUsVideo.objects.create(video=request.POST.get('video'))
+        messages.success(request,'Video created successfully')
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/auth/send-otp/')
 @is_staff
@@ -211,24 +236,19 @@ def publicUpdate(request):
 
 
 def Landlords(request):
-    landlords = models.Landlord.objects.all()
-    context = {
-        'landlords':landlords
-    }
-    return render(request,'new/arendatelim.html',context)
-
-
-@login_required(login_url='/auth/send-otp/')
-@is_staff
-def landlordCreate(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
+        city = request.POST.get('city')
         address = request.POST.get('address')
         phone_number_1 = request.POST.get('phone_number_1')
-        phone_number_2 = request.POST.get('phone_number_2')
-        models.Landlord.objects.create(title=title,address=address,phone_number_1=phone_number_1,phone_number_2=phone_number_2)
-        messages.success(request,'Landlord created successfully')
-    return redirect(request.META.get('HTTP_REFERER'))
+        email = request.POST.get('email')
+        contact_person = request.POST.get('contact_person')
+        area = request.POST.get('area')
+        comment = request.POST.get('comment')
+        models.Landlord.objects.create(city=city,address=address,phone_number_1=phone_number_1,email=email,contact_person=contact_person,area=area,comment=comment)
+        messages.success(request,'Sorov qabul qilindi !')
+   
+    return render(request,'new/arendatelim.html')
+
 
 @login_required(login_url='/auth/send-otp/')
 @is_staff

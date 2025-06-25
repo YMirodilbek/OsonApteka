@@ -1260,7 +1260,7 @@
                     </div>
                     <div class="blog-card__content">
                         <h4>{{ blog.title }}</h4>
-                        <p>{{ blog.created_at }}</p>
+                        <p>{{ blog.created_at|date:'d.m.Y' }}</p>
                         <p>{{ blog.text|truncatechars:100 }}</p>
                     </div>
                     <div class="blog-card__actions">

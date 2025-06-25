@@ -16,10 +16,14 @@ class OurPharmacie(models.Model):
 
 
 class Landlord(models.Model):
-    title = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    phone_number_1 = models.CharField(max_length=255)
-    phone_number_2 = models.CharField(max_length=255)
+    city = models.CharField(max_length=255, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    area = models.CharField(max_length=255, null=True, blank=True)
+    phone_number_1 = models.CharField(max_length=255, null=True, blank=True)
+    email = models.CharField(max_length=255, null=True, blank=True)
+    contact_person = models.CharField(max_length=255, null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
+
 
     def __str__(self):
         return self.title
@@ -51,6 +55,13 @@ class AboutUs(models.Model):
     def __str__(self):
         return "About Us"
     
+
+class AboutUsVideo(models.Model):
+    video = models.URLField(max_length=255)
+
+    def __str__(self):
+        return "About Us Video"
+
 
 class Public(models.Model):
     body = models.TextField()

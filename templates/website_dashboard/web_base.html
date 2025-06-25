@@ -95,6 +95,12 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_about_url' %}active{% endif %}" href="{% url 'dashboard_about_url' %}">
                             <i class="bi bi-info-circle me-2"></i>Biz haqimizda
                         </a>
+
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_about_video_url' %}active{% endif %}" href="{% url 'dashboard_about_video_url' %}">
+                            <i class="bi bi-info-circle me-2"></i>Biz haqimizda video
+                        </a>
+                        
+
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_public_url' %}active{% endif %}" href="{% url 'dashboard_public_url' %}">
                             <i class="bi bi-file-text me-2"></i>Ommaviy taklif
                         </a>

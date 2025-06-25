@@ -19,7 +19,9 @@ urlpatterns=[
     path('dashboard/landlords/', dashboard_landlords, name='dashboard_landlords_url'),
     path('dashboard/about/', dashboard_about, name='dashboard_about_url'),
     path('dashboard/about/<int:id>/', dashboard_about_detail, name='dashboard_about_detail_url'),
-    
+    path('dashboard/about/video/', dashboard_about_video, name='dashboard_about_video_url'),
+    path('dashboard/about/video/update/', dashboard_about_video_update, name='dashboard_about_video_update_url'),
+
     path('dashboard/public/', dashboard_public, name='dashboard_public_url'),
     path('dashboard/blog/', dashboard_blog, name='dashboard_blog'),
 
@@ -32,7 +34,6 @@ urlpatterns=[
     path('pharmacy/update/<int:id>/', pharmUpdate, name='pharmUpdate'),
     path('pharmacy/delete/<int:id>/', pharmDelete, name='pharmDelete'),
     
-    path('landlords/create/', landlordCreate, name='landlordCreate'),
     path('landlords/update/<int:id>/', landlordUpdate, name='landlordUpdate'),
     path('landlords/delete/<int:id>/', landlordDelete, name='landlordDelete'),
     

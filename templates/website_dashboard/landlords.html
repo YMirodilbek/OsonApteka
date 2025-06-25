@@ -18,20 +18,22 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Nomi</th>
+                            <th>Shahar</th>
                             <th>Manzil</th>
-                            <th>Telefon 1</th>
-                            <th>Telefon 2</th>
+                            <th>Maydon</th>
+                            <th>Telefon</th>
+                            <th>Kontakt shaxs</th>
                             <th>Amallar</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for l in landlords %}
                         <tr>
-                            <td>{{ l.title }}</td>
+                            <td>{{ l.city }}</td>
                             <td>{{ l.address }}</td>
+                            <td>{{ l.area }}</td>
                             <td>{{ l.phone_number_1 }}</td>
-                            <td>{{ l.phone_number_2 }}</td>
+                            <td>{{ l.contact_person }}</td>
                             <td>
                                 <button class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editLandlordModal{{ l.id }}">
                                     <i class="bi bi-pencil"></i>
@@ -44,7 +46,7 @@
 
                         <!-- Edit Modal -->
                         <div class="modal fade" id="editLandlordModal{{ l.id }}" tabindex="-1">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Ijarachi o'zgartirish</h5>
@@ -53,21 +55,40 @@
                                     <form action="{% url 'landlordUpdate' l.id %}" method="POST">
                                         {% csrf_token %}
                                         <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label class="form-label">Nomi</label>
-                                                <input type="text" class="form-control" name="title" value="{{ l.title }}" required>
+                                            <div class="row">
+                                    
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Shahar</label>
+                                                    <input type="text" class="form-control" name="city" value="{{ l.city }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Manzil</label>
+                                                    <input type="text" class="form-control" name="address" value="{{ l.address }}" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Maydon (kv.m)</label>
+                                                    <input type="text" class="form-control" name="area" value="{{ l.area }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Telefon</label>
+                                                    <input type="text" class="form-control" name="phone_number_1" value="{{ l.phone_number_1 }}" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="form-control" name="email" value="{{ l.email }}" required>
+                                                </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Manzil</label>
-                                                <input type="text" class="form-control" name="address" value="{{ l.address }}" required>
+                                                <label class="form-label">Kontakt shaxs</label>
+                                                <input type="text" class="form-control" name="contact_person" value="{{ l.contact_person }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Telefon 1</label>
-                                                <input type="text" class="form-control" name="phone_number_1" value="{{ l.phone_number_1 }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Telefon 2</label>
-                                                <input type="text" class="form-control" name="phone_number_2" value="{{ l.phone_number_2 }}" required>
+                                                <label class="form-label">Izoh</label>
+                                                <textarea class="form-control" name="comment" rows="3">{{ l.comment }}</textarea>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -102,7 +123,7 @@
                         </div>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center">Ijarachi topilmadi</td>
+                            <td colspan="7" class="text-center">Ijarachi topilmadi</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -114,30 +135,48 @@
 
 <!-- Create Landlord Modal -->
 <div class="modal fade" id="createLandlordModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Yangi ijarachi qo'shish</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{% url 'landlordCreate' %}" method="POST">
+            <form action="{% url 'landlords_url' %}" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Nomi</label>
-                        <input type="text" class="form-control" name="title" required>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Shahar</label>
+                            <input type="text" class="form-control" name="city" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Manzil</label>
+                            <input type="text" class="form-control" name="address" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Maydon (kv.m)</label>
+                            <input type="text" class="form-control" name="area" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Telefon</label>
+                            <input type="text" class="form-control" name="phone_number_1" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Manzil</label>
-                        <input type="text" class="form-control" name="address" required>
+                        <label class="form-label">Kontakt shaxs</label>
+                        <input type="text" class="form-control" name="contact_person" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Telefon 1</label>
-                        <input type="text" class="form-control" name="phone_number_1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Telefon 2</label>
-                        <input type="text" class="form-control" name="phone_number_2" required>
+                        <label class="form-label">Izoh</label>
+                        <textarea class="form-control" name="comment" rows="3"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
