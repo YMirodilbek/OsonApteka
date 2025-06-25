@@ -757,6 +757,7 @@
     width: 300px;
     max-width: 100%;
     min-height: 420px;
+    height: 470px; /* Fixed height */
 }
 
 .blog-card:hover {
@@ -778,6 +779,7 @@
     align-items: center;
     justify-content: center;
     background: #f8f8f8;
+    flex: 0 0 auto; /* Don't allow image to flex */
 }
 
 .blog-card__image img {
@@ -794,14 +796,38 @@
     font-size: 16px;
     color: #333;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide overflow content */
+}
+
+.blog-card__content h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2.8em; /* Approx 2 lines */
+    line-height: 1.4;
+}
+
+.blog-card__content p:last-of-type {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .blog-card__actions {
     padding: 0 18px 18px 18px;
     display: flex;
     justify-content: flex-end;
+    margin-top: auto; /* Push to bottom */
 }
-
 
 .help-text {
     margin-top: 20px;
@@ -813,7 +839,6 @@
     transition: box-shadow 0.3s, transform 0.3s;
     
 }
-
 
 .features-index {
     display: flex;
@@ -949,6 +974,45 @@
     }
 }
 
+/* Hide owl carousel dots globally */
+.owl-dots {
+    display: none;
+}
+
+/* Blog carousel specific styles */
+#blog-carousel .item {
+    display: flex;
+    justify-content: center;
+}
+
+#blog-carousel .blog-card {
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    #blog-carousel .owl-stage {
+        display: flex;
+        align-items: center;
+    }
+    
+    #blog-carousel .owl-item {
+        display: flex;
+        justify-content: center;
+    }
+    
+    #blog-carousel .item {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    #blog-carousel .blog-card {
+        width: 95%;
+        max-width: 300px;
+        margin: 0 auto;
+        height: 470px; /* Keep consistent height on mobile */
+    }
+}
 
 </style>
 
@@ -1264,7 +1328,7 @@
                         <p>{{ blog.text|truncatechars:100 }}</p>
                     </div>
                     <div class="blog-card__actions">
-                        <a href="{% url 'blog_details' blog.id %}" class="add-to-cart"> Читать далее <i class="fas fa-eye"></i></a>
+                        <a href="{% url 'blog_details' blog.id %}" class="add-to-cart"> Читать далее </a>
                     </div>
                 </div>
             </div>
@@ -2151,6 +2215,7 @@ $(document).ready(function(){
         autoplay: true,
         autoplayTimeout: 3000,
         autoplayHoverPause: true,
+        dots: false,
         responsive:{
             0:{
                 items: 3 // Mobile
@@ -2170,9 +2235,11 @@ $(document).ready(function(){
         margin: 20,
         autoplay: true,
         autoplayTimeout: 3000,
+        dots: false,
         responsive:{
             0:{
-                items: 1 // Mobile
+                items: 1, // Mobile
+                center: true
             },
             768:{
                 items: 2 // Tablet
