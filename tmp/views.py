@@ -209,7 +209,7 @@ def aboutDelete(request,id):
     about = models.AboutUs.objects.get(id=id)
     about.delete()
     messages.success(request,'About deleted successfully')
-    return redirect(request.META.get('HTTP_REFERER'))
+    return redirect('dashboard_about_url')
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -221,7 +221,7 @@ def dashboard_about_detail(request,id):
         'about': about,
         'form': form
     }
-    return redirect('dashboard_about_url')
+    return return(request,'website_dashboar/about_detail.html',context)
 
 
 
