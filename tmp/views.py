@@ -221,7 +221,7 @@ def dashboard_about_detail(request,id):
         'about': about,
         'form': form
     }
-    return redirect('dashboar_about_url')
+    return redirect('dashboard_about_url')
 
 
 
