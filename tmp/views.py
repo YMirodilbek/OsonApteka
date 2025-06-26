@@ -381,6 +381,15 @@ def dashboard_vacany_application(request):
 
 @login_required(login_url='/auth/send-otp/')
 @is_staff
+def dashboard_vacancy_application_delete(request,id):
+    vacancy_application = models.VacancyApplication.objects.get(id=id)
+    vacancy_application.delete()
+    messages.success(request,'Vacancy application deleted successfully')
+    return redirect(request.META.get('HTTP_REFERER'))
+    
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
 def dashboard_pharmacy(request):
     pharm = models.OurPharmacie.objects.all()
     context = {

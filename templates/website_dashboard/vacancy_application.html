@@ -38,7 +38,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex">
-                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete-application" data-id="{{ application.id }}">
+                                            <a href="{% url 'dashboard_vacancy_application_delete_url' application.id %}" class="btn btn-danger shadow btn-xs sharp delete-application" data-id="{{ application.id }}">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

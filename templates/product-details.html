@@ -10,19 +10,21 @@
         max-width: 1200px;
         margin: 0 auto;
         gap: 30px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
-    /* Product Gallery - Fixed Size */
-    .product-gallery {
+    /* Product Gallery */
+    .gallery-container {
         flex: 1;
         min-width: 300px;
         max-width: 500px;
-        width: 500px; /* Fixed width */
-        height: 500px; /* Fixed height - square aspect ratio */
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        background: #fff;
+    }
+
+    .product-gallery {
+        width: 100%;
+        height: auto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -32,57 +34,16 @@
 
     .product-gallery img {
         width: 100%;
-        height: 100%;
-        object-fit: contain; /* This ensures image maintains aspect ratio */
+        height: auto;
+        object-fit: contain;
         display: block;
-        transition: transform 0.3s ease;
-    }
-
-    .product-gallery img:hover {
-        transform: scale(1.05);
-    }
-
-    /* Container for gallery */
-    .gallery-container {
-        flex: 1;
-        min-width: 300px;
-        max-width: 500px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    /* Thumbnail navigation - Optional */
-    .thumbnail-nav {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-    }
-
-    .thumbnail {
-        width: 60px;
-        height: 60px;
-        border-radius: 4px;
-        overflow: hidden;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: border-color 0.2s ease;
-    }
-
-    .thumbnail img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .thumbnail:hover {
-        border-color: #2971f5;
     }
 
     /* Product Information */
     .product-info {
         flex: 1;
         min-width: 300px;
+        padding: 20px 0;
     }
 
     .product-info h1 {
@@ -98,44 +59,39 @@
         font-size: 16px;
     }
 
-    .product-info .category {
-        color: #666;
-        margin-bottom: 5px;
-        font-size: 15px;
-    }
-
-    .product-info .country {
-        color: #666;
-        margin-bottom: 15px;
-        font-size: 15px;
-    }
-
-    .product-info .composition {
-        margin: 10px 0;
-        color: #666;
-        font-size: 15px;
-    }
-
-    .product-info .expiry {
-        color: #666;
-        font-size: 15px;
-    }
-
-    .product-info .manufacturer {
-        margin: 10px 0;
-        color: #666;
-        font-size: 15px;
-    }
-
+    .product-info .category,
+    .product-info .country,
+    .product-info .composition,
+    .product-info .expiry,
+    .product-info .manufacturer,
     .product-info .class {
-        margin-bottom: 20px;
         color: #666;
         font-size: 15px;
+        margin-bottom: 5px;
+    }
+    
+    .prescription-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 4px;
+        color: white;
+        font-weight: 500;
+        margin: 10px 0;
+    }
+    
+    .prescription-yes {
+        background-color: #e50e3d;
+    }
+    
+    .prescription-no {
+        background-color: #00c853;
     }
 
     /* Price Select Styling */
     .price-select {
-        margin-bottom: 25px;
+        margin: 20px 0;
+        position: relative;
+        width: 100%;
     }
 
     .price-select select {
@@ -147,8 +103,6 @@
         color: #333;
         background-color: #fff;
         appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
         cursor: pointer;
         background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
         background-repeat: no-repeat;
@@ -157,35 +111,13 @@
         padding-right: 30px;
     }
 
-    /* Remove the custom select wrapper and arrow */
-    .select-wrapper {
-        width: 100%;
-    }
-
-    .select-wrapper::after {
-        content: none;
-    }
-
-    /* Description */
-    .description {
-        margin: 15px 0;
-        padding: 15px;
-        color: #333;
-        font-size: 15px;
-        line-height: 1.5;
-    }
-
-    .description:before {
-        content: none;
-    }
-
     /* Add to Cart Button */
     .add-to-cart {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 14px 20px;
-        background-color: #2971f5;
+        background-color: #003366;
         color: white;
         border: none;
         border-radius: 4px;
@@ -199,39 +131,18 @@
     }
 
     .add-to-cart:hover {
-        background-color: #0059ff;
+        opacity: 0.9;
     }
 
     /* Product Details */
-    .product-details h3 {
-        width: 100%;
-        margin-top: 50px;
-        font-size: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-        color: #333;
-    }
-
     .dosage-info {
         width: 100%;
         font-size: 14px;
         color: #666;
-        margin-top: 10px;
+        margin-top: 30px;
         line-height: 1.5;
-    }
-
-    p.a2 {
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        color: #333;
-        line-height: 1.5;
-        margin: 10px 0;
-        text-align: left;
-        width: 100%;
-    }
-
-    p.a2:before {
-        content: none;
+        padding: 20px 0;
+        border-top: 1px solid #eee;
     }
 
     /* Reviews Section */
@@ -244,23 +155,6 @@
         flex-wrap: wrap;
         max-width: 1200px;
         margin: 0 auto;
-    }
-
-    .review1, .review2 {
-        border: 1px solid #ddd;
-        padding: 15px 20px;
-        border-radius: 10px;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        flex: 1;
-        min-width: 250px;
-        max-width: 400px;
-    }
-
-    .review1 p, .review2 p {
-        margin: 8px 0;
-        font-size: 14px;
-        color: #555;
     }
 
     /* Shop Card */
@@ -280,10 +174,15 @@
         margin-bottom: 15px;
     }
 
-    .bg--color { background-color: #003366; color: white;}
-        .dropdown-item {
+    .bg--color { 
+        background-color: #003366; 
+        color: white;
+    }
+    
+    .dropdown-item {
         color: white !important;
     }
+    
     .shop-logo {
         width: 50px;
         height: 50px;
@@ -327,69 +226,63 @@
         border-color: #ccc;
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 1200px) {
-        .product-gallery {
-            width: 400px;
-            height: 400px;
-        }
+    /* Messages */
+    .messages {
+        margin: 20px auto;
+        max-width: 600px;
     }
 
+    .message {
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        position: relative;
+        color: white;
+        font-weight: bold;
+    }
+
+    .message.success {
+        background-color: #28a745;
+    }
+
+    .message.error {
+        background-color: #dc3545;
+    }
+
+    .message.warning {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .message.info {
+        background-color: #17a2b8;
+    }
+
+    .message .close {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
+        .product-details {
+            flex-direction: column;
+        }
+        
+        .gallery-container {
+            max-width: 100%;
+        }
+        
         .product-gallery {
             width: 100%;
-            height: 350px;
-            max-width: none;
+            height: auto;
         }
     }
-
-    @media (max-width: 480px) {
-        .product-gallery {
-            height: 300px;
-        }
-    }
-
-.messages {
-  margin: 20px auto;
-  max-width: 600px;
-}
-
-.message {
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  position: relative;
-  color: white;
-  font-weight: bold;
-}
-
-.message.success {
-  background-color: #28a745; /* Yashil */
-}
-
-.message.error {
-  background-color: #dc3545; /* Qizil */
-}
-
-.message.warning {
-  background-color: #ffc107; /* Sariq */
-  color: #000;
-}
-
-.message.info {
-  background-color: #17a2b8; /* Moviy */
-}
-
-.message .close {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-
 </style>
+
 {% if messages %}
   <div class="messages">
     {% for message in messages %}
@@ -400,7 +293,6 @@
     {% endfor %}
   </div>
 {% endif %}
-
 
 <!-- Product Details Section -->
 <div class="product-details">
@@ -416,68 +308,37 @@
         <p class="composition">ком.лек {{ product.mnn }}</p>
         <p class="manufacturer">{{ product.release_form }}</p>
         
-        <br>
         {% if product.product_type == "Рецепт билан" %}
-        <div style="background-color: #e50e3d; color: white; padding: 0.25rem; border-radius: 10px; display: inline-block;">
+        <div class="prescription-badge prescription-yes">
            Рецептурный
         </div>
-
         {% else %}
-        <div style="background-color:rgb(25, 225, 48); color: white; padding: 0.25rem; border-radius: 10px; display: inline-block;">
+        <div class="prescription-badge prescription-no">
            Без рецепта
         </div>
-
         {% endif %}
-         <br>
-         <br>
          
         <form method="GET" action="/product/add/{{ product.id }}/">
             <div class="price-select">
                 <select name="price">
-                   
-                        {% for i in prices %}
-                            <option value="{{i.price}}">{{i.price}} sum</option>
-                             {% empty %}
-                            <option value="0">Не доступно</option>
-                        {% endfor %}
-
+                    {% for i in prices %}
+                        <option value="{{i.price}}">{{i.price}} sum</option>
+                    {% empty %}
+                        <option value="0">Не доступно</option>
+                    {% endfor %}
                 </select>
             </div>
             
-            <button type="submit" class="add-to-cart bg--color">Добавить в корзину</button>
+            <button type="submit" class="add-to-cart">ДОБАВИТЬ В КОРЗИНУ</button>
         </form>
     </div>
 
-
-
     <div class="dosage-info">
         {{ product.name }} <br> {{product.info|safe }}
-        
-
-
     </div>
 </div>
 
 <div class="m2">
-    <a href="cament.html">
-        <!-- <div class="review1">
-            <p><strong>10-fevral</strong></p>
-            <p><strong>Rangi:</strong> Qora</p>
-            <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
-            <p><strong>Kamchiliklari:</strong> Yo'q</p>
-            <p><strong>Izoh:</strong> 4 xil rangidan oldim, juda yoqdi. Kiyish juda qulay va yoqimli.</p>
-        </div> -->
-    </a>
-
-    <a href="cament.html">
-        <!-- <div class="review2">
-            <p><strong>11-fevral</strong></p>
-            <p><strong>Rangi:</strong> Qora</p>
-            <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
-            <p><strong>Kamchiliklari:</strong> Yo'q</p>
-            <p><strong>Izoh:</strong> 2 xil rangidan oldim, juda yoqdi. Kiyish juda qulay va yoqimli.</p>
-        </div> -->
-    </a>
     <div class="shop-card">
         <div class="shop-header">
             <img src="{% static 'assets/img2/AFM MEDICAL — копия.png'%}" alt="Akmal Farm Medical Logo" class="shop-logo">

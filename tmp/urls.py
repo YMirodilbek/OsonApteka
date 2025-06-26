@@ -18,6 +18,7 @@ urlpatterns=[
     path('dashboard/', dashboard, name='dashboard_url'),
     path('dashboard/vacancy/', dashboard_vacancy, name='dashboard_vacancy_url'),
     path('dashboard/vacancy/application/', dashboard_vacany_application, name='dashboard_vacany_application_url'),
+    path('dashboard/vacancy/application/delete/<int:id>/', dashboard_vacancy_application_delete, name='dashboard_vacancy_application_delete_url'),
     path('dashboard/pharmacy/', dashboard_pharmacy, name='dashboard_pharmacy_url'),
     path('dashboard/landlords/', dashboard_landlords, name='dashboard_landlords_url'),
     path('dashboard/about/', dashboard_about, name='dashboard_about_url'),
