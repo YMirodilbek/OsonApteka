@@ -3,6 +3,8 @@ from .views import *
 urlpatterns=[
     # Old URLs
     path('vacancy/', Vacancy, name='vacancy_url'),
+    path('vacancy/application/', VacancyApplication, name='vacancy_application_url'),
+    
     path('pharm/', Pharm, name='pharm_url'),
     path('about/', About, name='about_url'),
     path('public/', Public, name='public_url'),
@@ -15,6 +17,7 @@ urlpatterns=[
     # Dashboard URLs
     path('dashboard/', dashboard, name='dashboard_url'),
     path('dashboard/vacancy/', dashboard_vacancy, name='dashboard_vacancy_url'),
+    path('dashboard/vacancy/application/', dashboard_vacany_application, name='dashboard_vacany_application_url'),
     path('dashboard/pharmacy/', dashboard_pharmacy, name='dashboard_pharmacy_url'),
     path('dashboard/landlords/', dashboard_landlords, name='dashboard_landlords_url'),
     path('dashboard/about/', dashboard_about, name='dashboard_about_url'),

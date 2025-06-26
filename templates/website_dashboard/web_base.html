@@ -83,6 +83,9 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_vacancy_url' %}active{% endif %}" href="{% url 'dashboard_vacancy_url' %}">
                             <i class="bi bi-briefcase me-2"></i>Vakansiyalar
                         </a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_vacany_application_url' %}active{% endif %}" href="{% url 'dashboard_vacany_application_url' %}">
+                            <i class="bi bi-person-lines-fill me-2"></i>Vakantlar
+                        </a>
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_pharmacy_url' %}active{% endif %}" href="{% url 'dashboard_pharmacy_url' %}">
                             <i class="bi bi-shop me-2"></i>Aptekalar
                         </a>

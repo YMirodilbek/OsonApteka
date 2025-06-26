@@ -1,0 +1,77 @@
+{% extends 'website_dashboard/web_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Vakansiya uchun arizalar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">F.I.SH</th>
+                                    <th scope="col">Yosh</th>
+                                    <th scope="col">Hujjat</th>
+                                    <th scope="col">Harakatlar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in vacancy_application %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ application.fullname }}</td>
+                                    <td>{{ application.age }}</td>
+                                    <td>
+                                        {% if application.doc %}
+                                            <a href="{{ application.doc.url }}" target="_blank" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-download"></i> Hujjatni ko'rish
+                                            </a>
+                                        {% else %}
+                                            Hujjat mavjud emas
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <a href="{{ application.doc.url }}" download class="btn btn-info shadow btn-xs sharp mr-1">
+                                                <i class="fa fa-download"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete-application" data-id="{{ application.id }}">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Vakansiya uchun arizalar mavjud emas</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $('.delete-application').click(function(e) {
+            e.preventDefault();
+            if(confirm('Ushbu arizani o\'chirishni istaysizmi?')) {
+                // Add delete functionality here if needed
+                // For now this is just a placeholder
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -39,7 +39,16 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
+class VacancyApplication(models.Model):
+    fullname = models.CharField(max_length = 255)
+    age = models.CharField(max_length=255)
+    doc = models.FileField(upload_to='vacancy_docs/')
+
+    def __str__(self):
+        return self.fullname
+
 
 class AboutUs(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)

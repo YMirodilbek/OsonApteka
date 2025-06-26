@@ -20,6 +20,19 @@ def Vacancy(request):
     return render(request,'new/vacancy.html',context)
 
 
+def VacancyApplication(request):
+    if request.method == 'POST':
+        fullname = request.POST.get('fullname')
+        age = request.POST.get('age')
+        doc = request.FILES.get('doc')
+        models.VacancyApplication.objects.create(fullname=fullname,age=age,doc=doc)
+        messages.success(request,'Application submitted successfully')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+
+
 @login_required(login_url='/auth/send-otp/')
 @is_staff
 def vacancyCreate(request):
@@ -355,6 +368,16 @@ def dashboard_vacancy(request):
         'vacancy': vacancy
     }
     return render(request, 'website_dashboard/vacancy.html', context)
+
+@login_required(login_url='/auth/send-otp/')
+@is_staff
+def dashboard_vacany_application(request):
+    vacancy_application = models.VacancyApplication.objects.all()
+    context = {
+        'vacancy_application': vacancy_application
+    }
+    return render(request, 'website_dashboard/vacancy_application.html', context)
+
 
 @login_required(login_url='/auth/send-otp/')
 @is_staff
