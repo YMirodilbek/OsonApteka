@@ -9,7 +9,7 @@ class AboutUsForm(forms.ModelForm):
         model = AboutUs
         fields = ['title', 'body', 'image', 'order']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Masalan: 1995'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sarlavhani kriitng: '}),
             'order': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
