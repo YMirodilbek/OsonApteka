@@ -221,7 +221,7 @@ def dashboard_about_detail(request,id):
         'about': about,
         'form': form
     }
-    return render(request,'website_dashboard/about_detail.html',context)
+    return redirect('dashboar_about_url')
 
 
 
