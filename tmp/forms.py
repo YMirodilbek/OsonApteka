@@ -9,9 +9,9 @@ class AboutUsForm(forms.ModelForm):
         model = AboutUs
         fields = ['title', 'body', 'image', 'order']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sarlavhani kriitng: '}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sarlavhani kiriting: '}),
             'order': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
-            'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control','placeholder': 'rasm hajmi 1 mbdan  oshmasin va 500x500 razmerda bo'lsin: '}),
         }
         labels = {
             'title': 'Yil',
