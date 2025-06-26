@@ -11,7 +11,7 @@ class AboutUsForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sarlavhani kiriting: '}),
             'order': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
-            'image': forms.FileInput(attrs={'class': 'form-control','placeholder': 'rasm hajmi 1 mbdan  oshmasin va 500x500 razmerda bo'lsin: '}),
+            'image': forms.FileInput(attrs={'class': 'form-control',}),
         }
         labels = {
             'title': 'Yil',
