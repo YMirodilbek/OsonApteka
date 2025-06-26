@@ -20,5 +20,6 @@ class AboutUsForm(forms.ModelForm):
             'order': 'Tartib raqami'
         }
         help_texts = {
-            'order': 'Kichikroq raqam yuqoriroq ko\'rsatiladi'
+            'order': 'Kichikroq raqam yuqoriroq ko\'rsatiladi',
+            'image': 'Rasm hajmi 1 mbdan oshmasin va 500x500 o\'lchamda bo\'lsin'
         } 
