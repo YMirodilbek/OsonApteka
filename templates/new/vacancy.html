@@ -285,34 +285,34 @@
 
     <!-- Application Form -->
     <div class="afm-application-container">
-        <h2 class="afm-application-title">Ariza Topshirish</h2>
+        <h2 class="afm-application-title">Подать заявление</h2>
         
         <form action="{% url 'vacancy_application_url' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             
             <div class="afm-form-group">
-                <label for="fullname" class="afm-form-label">To'liq ismingiz</label>
+                <label for="fullname" class="afm-form-label">Ф.И.О.</label>
                 <input type="text" name="fullname" id="fullname" class="afm-form-control" required>
             </div>
             
             <div class="afm-form-group">
-                <label for="age" class="afm-form-label">Yoshingiz</label>
+                <label for="age" class="afm-form-label">Ваш возраст</label>
                 <input type="text" name="age" id="age" class="afm-form-control" required>
             </div>
             
             <div class="afm-form-group">
-                <label for="doc" class="afm-form-label">Rezumeni yuklang</label>
+                <label for="doc" class="afm-form-label">Загрузить резюме</label>
                 <div class="custom-file-upload">
                     <label for="doc" class="file-upload-btn">
-                        <i class="fas fa-upload"></i> Faylni tanlang
+                        <i class="fas fa-upload"></i> Выберите файл
                     </label>
-                    <span class="file-name-display">Fayl tanlanmagan</span>
+                    <span class="file-name-display">Файл не выбран</span>
                     <input type="file" name="doc" id="doc" class="afm-form-control afm-form-file" required>
                 </div>
             </div>
             
             <button type="submit" class="afm-form-submit">
-                <i class="fas fa-paper-plane"></i> Arizani Yuborish
+                <i class="fas fa-paper-plane"></i>Отправить заявление
             </button>
         </form>
     </div>
