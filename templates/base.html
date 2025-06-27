@@ -603,10 +603,10 @@
                     
                     showMobileLoading();
                     performSearch(query, showMobileResults);
-                    return;
+                    return; // Stop further execution
                 }
                 
-                // Handle add to cart
+                // Handle add to cart button click
                 const addButton = e.target.closest('.mobile-search-add');
                 if (addButton) {
                     const productId = addButton.dataset.id;
@@ -628,9 +628,22 @@
                             addButton.disabled = false;
                         }, 1500);
                     });
+                    return; // Stop further execution
+                }
+
+                // =============================================================
+                // YANGI QO'SHILGAN QISM: Mahsulot kartochkasi bosilishini boshqarish
+                // =============================================================
+                const item = e.target.closest('.mobile-search-item');
+                if (item) {
+                    const productId = item.dataset.id;
+                    if (productId) {
+                        // Produkt detail sahifasiga yo'naltirish
+                        window.location.href = `/product/detail/${productId}/`;
+                    }
                 }
             }
-            
+
             function handleDropdownInteraction(e) {
                 // Add to cart button clicked
                 if (e.target.classList.contains('real-time-search-add') || e.target.closest('.real-time-search-add')) {
