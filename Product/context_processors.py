@@ -1,8 +1,6 @@
 from .models import OrderItem , Category
 import json
 
-import json
-from .models import OrderItem  # kerakli modelni chaqiring
 
 def cart_context(request):
     cart_items = []
@@ -32,7 +30,6 @@ def cart_context(request):
         "cart_total": cart_total,
         "cart_count": cart_count,
     }
-
 
 
 def category_contex(request):

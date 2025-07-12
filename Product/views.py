@@ -140,8 +140,6 @@ def DeleteProduct(request, item_id):
     return cart_view_json(request)
 
 
-
-
 def product_detail(request, pk):
     product = Product.objects.get(id=int(pk))
 

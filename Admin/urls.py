@@ -5,12 +5,21 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
 
+
+
 urlpatterns = [
+    
+    # path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls), 
     path('',include('Product.urls')),
     path('auth/',include('main.urls')),
     path('front/',include('tmp.urls')),
     path('api/',include('api.urls')),
+    
+    # path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
