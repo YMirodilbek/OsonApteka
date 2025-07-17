@@ -10,12 +10,12 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import status
 from main.views import send_sms
+from . serilalizer import *
 from main.models import *
 import random
 import redis
 import re
 
-from . serilalizer import *
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -80,15 +80,17 @@ def login_api( request):
         }
     })
 
+
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def get_category(request):
     category = Category.objects.all()
     serializer = CategorySerializer(category, many=True )
     return Response(serializer.data)
 
+
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def category(request, pk):
     category = Category.objects.get(id=pk)
     serializer = CategorySerializer(category, many=False )

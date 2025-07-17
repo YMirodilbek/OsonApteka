@@ -112,6 +112,35 @@ def product_search_api(request):
     return JsonResponse({'results': results})
 
 
+def add_product_member(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        
+        member_id = request.POST.get('member_id')
+        try:
+            product = Product.objects.get(id=product_id)
+            if not member_id or member_id == "0":
+                product.member = None
+            else:
+                product.member_id = member_id
+            product.save()
+            return JsonResponse({'success': True})
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Product topilmadi'})
+    return JsonResponse({'success': False, 'error': 'Noto‘g‘ri metod'})
+
+
+def member_create(request):
+    name = request.POST.get("name")
+    Member.objects.create(name=name)
+    return redirect('member')
+
+
+def member_delete(request, pk):
+    member =  get_object_or_404(Member, id=pk)
+    member.delete()
+    return redirect('member')
+
 
 
 @require_http_methods(["DELETE"])
@@ -137,6 +166,7 @@ def uslugi(request):
 
 def document(request):
     return render(request,'oferta/document.html')
+
 
 def dastafca(request):
     amount = request.POST.get('amount')

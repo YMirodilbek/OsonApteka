@@ -21,7 +21,7 @@ import logging
 import redis
 import json
 import os
-# Get logger for Product app
+
 logger = logging.getLogger('Product')
 
 
@@ -60,7 +60,6 @@ def cart_view_json(request):
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
 
 
-
 def Index(request):
     category_name = request.GET.get('category')
     page = request.GET.get("page", 1)
@@ -75,7 +74,7 @@ def Index(request):
     products_qs = Product.objects.filter(
         product_prise__in=product_price_qs,  
         name__isnull=False
-    ).exclude(name='').order_by('id').distinct().select_related('category').prefetch_related(
+    ).exclude(name='').order_by('id').distinct().select_related('category', 'member').prefetch_related(
         Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
     )
 
@@ -105,7 +104,6 @@ def Index(request):
         "blogs": Blog.objects.all().order_by('-id')[:4]
     }
     return render(request, 'index.html', context)
-
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -544,7 +542,8 @@ def products(request):
     product = Product.objects.all().order_by('id')
     paginator = Paginator(product, 50 )
     page_obj = paginator.get_page(page_number)
-    return render (request, 'filial/product.html', {"page_obj":page_obj})
+    member = Member.objects.all()
+    return render (request, 'filial/product.html', {"page_obj":page_obj,'member':member})
 
 
 @is_staff
@@ -717,6 +716,10 @@ def filial_users(request):
                 )
     return render(request, 'filial/users.html', {'users':users})
 
+
+def member_view(request):
+    members  = Member.objects.all().order_by('-id')
+    return render (request,'filial/member.html', {"members":members})
 
 def filial_order_client(request):
     client_id = request.GET.get('client-id')

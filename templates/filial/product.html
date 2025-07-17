@@ -20,6 +20,7 @@
                         <th scope="col">UID</th>
                         <th scope="col">IMG</th>
                         <th scope="col">NAME</th>
+                        <th scope="col">MEMBER</th>
                         <th scope="col">EDIT</th>
                         <th scope="col">DELETE</th>
                     </tr>
@@ -37,12 +38,49 @@
                             {% endif %}
                         </td>
                         <td>{{i.name}}</td>
+
+                        <td>
+                             <a  href="#" data-bs-toggle="modal" style="color: rgb(7, 224, 224);" data-bs-target="#memberModalmember{{ i.id }}">
+                            {{ i.member }}
+                        </a>
+                                         
+                    </td>
                         <td><a href="/filial/product-edit/{{ i.id }}" class="btn btn-success">Edit</a></td>
                         <td>
                         <button class="btn btn-danger delete-btn" data-id="{{i.id }}">Delete</button>
                         </td>
 
                     </tr>
+
+                    <div class="modal fade" id="memberModalmember{{ i.id }}" tabindex="-1" aria-labelledby="memberModalLabel{{ i.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="memberModalLabel{{ i.id }}">{{i.name}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="memberForm{{ i.id }}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden"  style="display: none;" name="product_id" value="{{ i.id }}">
+                                    <select name="member_id" class="form-control">
+                                        <option value="0">None</option>
+                                        {% for m in member %}
+                                        <option value="{{m.id}}">{{m.name}}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success"  onclick="submitMemberForm({{ i.id }})">Saqlash</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
                     {% endfor %}
                 </tbody>
             </table>
@@ -107,6 +145,47 @@
     </div>
 </div>
 <script>
+
+    function submitMemberForm(productId) {
+        const form = document.getElementById('memberForm' + productId);
+        const formData = new FormData(form);
+
+        fetch('/filial-add-member/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Xatolik yuz berdi');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // alert('Muvaffaqiyatli saqlandi!');
+                // Agar kerak bo‘lsa sahifani yangilash:
+                location.reload();
+            } else {
+                // alert('Xatolik: ' + data.error);
+            }
+        })
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("searchInput");
     const tableBody = document.getElementById("productTableBody");
@@ -135,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         }
                                     </td>
                                     <td>${item.name}</td>
+                                    <td>${item.mamber}</td>
                                     <td><a href="/filial/product-edit/${item.id}/" class="btn btn-success">Edit</a></td>
                                     <td><button class="btn btn-danger delete-btn" data-id="${item.id}">Delete</button></td>
                                 </tr>

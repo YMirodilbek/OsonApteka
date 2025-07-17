@@ -13,6 +13,7 @@ router.register(r'apteka', OurPharmacieViewSet, basename='apteka')
 router.register(r'search', SearchProductViewSet, basename='search')
 router.register(r'products', CategoryProductsViewSet, basename='product')
 router.register(r'wishlist', WishlistViewSet, basename='wishlist')
+router.register(r'member', MemberViewset, basename='member')
 router.register(r'order', OrderViewset, basename='order')
 router.register(r'blog', BlogViewset, basename='blog')
 

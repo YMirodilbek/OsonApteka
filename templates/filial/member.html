@@ -1,0 +1,71 @@
+{% extends 'base_filial.html' %}
+
+{% block title %}Member{% endblock %}
+
+{% block content %}
+<!-- Trigger Button -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="memberModal" tabindex="-1" aria-labelledby="memberModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg--color text-white">
+        <h5 class="modal-title" id="memberModalLabel">A'zo qo‘shish</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Yopish"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/member/create/">
+          {% csrf_token %}
+          
+          <div class="mb-3">
+            <label for="nameInput" class="form-label">Ism</label>
+            <input type="text" class="form-control" id="nameInput" name="name" placeholder="Ism kiriting">
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Saqlash</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#memberModal">
+    + A'zo qo‘shish
+</button>
+<div class="col-md-12 col-xl-10 mx-auto">
+    <div class="card tbl-card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered  mb-0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name </th>
+                <th>Delete</th>
+            
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in members %}
+              <tr>
+                <td>{{i.id}}</td>
+                <td> {{i.name}}</td>
+                <td><a href="/member/delete/{{i.id}}/">delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock content %}

@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from Product.models import *
-
 from tmp.models import *
 from . utls import * 
 
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = "__all__"
 
 
 class OurPharmacieSerializer(serializers.ModelSerializer):
@@ -13,9 +16,15 @@ class OurPharmacieSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    svg = serializers.SerializerMethodField()
     class Meta:
         model = Category
         fields = '__all__'
+    
+    def get_svg(self, obj):
+        if obj.svg and hasattr(obj.svg, 'url'):
+            return f"https://akmalfarm.uz{obj.svg.url}"
+        return None
 
 
 class ProductPriceSerializer(serializers.ModelSerializer):
@@ -33,7 +42,9 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ['id', 'name','producer','country','prices','image1','product_type_display','info']
+        fields = ['id', 'name','producer','country','member','prices','image1','product_type_display','info']
+        depth = True
+    
     
     def get_info(self, obj):
         raw_text = getattr(obj, 'info', '')
@@ -109,13 +120,27 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class WishlistSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(many=False)
     class Meta:
         model = Wishlist
         fields = ['id', 'product', 'added_at']
         depth = True
 
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+    
+    def get_total_price(self, obj):
+        return obj.price * obj.quantity
+
+
+
 class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
     class Meta:
         model =  Order
         fields ='__all__'
@@ -131,7 +156,8 @@ class FilialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Filial
         fields = ['id','name', 'address']
-        
+
+     
 class BlogSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     class Meta:
@@ -142,3 +168,5 @@ class BlogSerializer(serializers.ModelSerializer):
         if obj.image and hasattr(obj.image, 'url'):
             return f"https://akmalfarm.uz{obj.image.url}"
         return None
+    
+    

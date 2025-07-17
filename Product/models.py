@@ -11,14 +11,21 @@ User = get_user_model()
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
+    svg = models.ImageField(upload_to="svg/",null=True, blank=True )
     def __str__(self):
         return self.name
 
+class Member(models.Model):
+    name = models.CharField(max_length=155)
+    def __str__(self):
+        return self.name
 
+ 
 class Product(models.Model):
     uid = models.BigIntegerField(db_index=True) #bor 
     name = models.CharField(max_length=255, null=True, blank=True) # bor 
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,related_name='products') # bor 
+    member  = models.ForeignKey(Member, on_delete= models.SET_NULL, null=True, blank=True)
     
     producer = models.CharField(max_length=255, blank=True, null=True) # bor 
     country = models.CharField(max_length=255, blank=True, null=True) # bor 

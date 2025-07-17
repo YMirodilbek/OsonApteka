@@ -5,7 +5,7 @@ from django import forms
 from .models import *
 
 
-admin.site.register([Category,Order,OrderItem,Filial,Dostafca, ProductPrice])
+admin.site.register([Member,Category,Order,OrderItem,Filial,Dostafca, ProductPrice])
 
 class ProductAdminForm(forms.ModelForm):
     info = forms.CharField(widget=CKEditorWidget())

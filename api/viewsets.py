@@ -17,6 +17,7 @@ class OurPharmacieViewSet(viewsets.ModelViewSet):
     queryset = OurPharmacie.objects.all()
     serializer_class = OurPharmacieSerializer
     http_method_names = ['get'] 
+    
     def retrieve(self, request, *args, **kwargs):
         id = kwargs['pk']
         Our = OurPharmacie.objects.get(id=id)
@@ -42,13 +43,22 @@ class SearchProductViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(name__icontains=search)
         return queryset
 
+
 class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WishlistSerializer
+    
     def list(self, request):
         return Response(WishlistSerializer(
             Wishlist.objects.filter(user=request.user) ,many=True
         ).data)
+    
+    def retrieve(self, request, pk ):
+        return Response(
+            WishlistSerializer(
+                Wishlist.objects.get(id=pk)
+            ).data
+        )
     
     @action(methods=['post'], detail=False, serializer_class=WishlistSerializer)
     def wishlist_create(self, request):
@@ -69,8 +79,7 @@ class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
             return Response({'error': 'Mahsulot topilmadi'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-            
+      
     @action(methods=['delete'], detail=True, serializer_class=WishlistSerializer)
     def wishlist_delete(self,request, pk ):
         try:
@@ -84,9 +93,11 @@ class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
                 'success': False
                 })
 
+
 class CategoryProductsViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     http_method_names = ['get']
+    
     def list(self, request):
         category_name = request.query_params.get('category')
         page = request.query_params.get("page", 1)
@@ -135,20 +146,83 @@ class CategoryProductsViewSet(viewsets.ViewSet):
             return Response({
                 'success': False
                 })
-            
+    
+    @action(detail= False, methods=['get'])     
+    def member(self, request):
+        member = request.query_params.get('member')
+        product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
 
+        products_qs = Product.objects.filter(
+            product_prise__in=product_price_qs,
+            name__isnull=False, member__name=member
+        ).exclude(name='').order_by('id').distinct().select_related('category','member').prefetch_related(
+            Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
+        )
+        return Response(
+            ProductSerializer(products_qs, many=True).data
+        )
+    
 class OrderViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = OrderSerializer
-    def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+    
+    def list(self, request):
+        order = Order.objects.filter(user= request.user)
+        return Response(
+            OrderSerializer(
+                order, many=True
+            ).data
+        )
+    
+    @action(detail=False, methods=['get'])
+    def cart(self, request):
+        user = request.user
 
+        cart_items = OrderItem.objects.filter(
+            order__user=user,
+            order__is_completed=False
+        ).select_related('product', 'order')
+
+        serializer = OrderItemSerializer(cart_items, many=True)
+
+        cart_total = sum([item['total_price'] for item in serializer.data])
+        cart_count = len(serializer.data)
+
+        return Response({
+            "cart_items": serializer.data,
+            "cart_total": cart_total,
+            "cart_count": cart_count
+        })
+
+
+    def retrieve(self, request, *args, **kwargs):
+        order = Order.objects.get(id=kwargs['pk'])
+        
+        return Response(
+            OrderSerializer(
+                order, many=False
+            ).data
+        )
+
+    def destroy(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def create(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def partial_update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    
     @action(detail=True, methods=['post'])
     def add_to_cart(self, request, pk):
         product = get_object_or_404(Product, id=pk)
 
         if product.product_type == "Рецепт билан":
-            return Response({"status": 300}, status=status.HTTP_200_OK)
+            return Response({"status": 300 , 'Рецепт билан':'Рецепт билан'}, status=status.HTTP_200_OK)
 
         try:
             price = int(request.data.get('price') or 0)
@@ -233,10 +307,14 @@ class BlogViewset(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
     http_method_names = ['get']  
     
-    
     def retrieve(self, request, *args, **kwargs):
         id = kwargs['pk']
         return Response(BlogSerializer(
             Blog.objects.get(id=id),many=False
         ).data)
-        
+
+
+class MemberViewset(viewsets.ModelViewSet):
+    serializer_class =  MemberSerializer
+    queryset = Member.objects.all()
+    http_method_names = ['get']  
