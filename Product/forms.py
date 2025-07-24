@@ -57,6 +57,8 @@ class ProductForm(forms.ModelForm):
             'info': 'info',
             'image1': 'image',
         }
+        
+
 class Product_editForm(forms.ModelForm):
     class Meta:
         model = Product

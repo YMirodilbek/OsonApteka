@@ -48,9 +48,14 @@ class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WishlistSerializer
     
+    def get_queryset(self):
+        querset =  Wishlist.objects.filter(user=self.request.user)
+        return querset
+        
+    
     def list(self, request):
         return Response(WishlistSerializer(
-            Wishlist.objects.filter(user=request.user) ,many=True
+            self.get_queryset() ,many=True
         ).data)
     
     def retrieve(self, request, pk ):
@@ -161,6 +166,7 @@ class CategoryProductsViewSet(viewsets.ViewSet):
         return Response(
             ProductSerializer(products_qs, many=True).data
         )
+
     
 class OrderViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]

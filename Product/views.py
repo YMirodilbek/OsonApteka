@@ -721,6 +721,7 @@ def member_view(request):
     members  = Member.objects.all().order_by('-id')
     return render (request,'filial/member.html', {"members":members})
 
+
 def filial_order_client(request):
     client_id = request.GET.get('client-id')
     # filial_id = request.GET.get('filial-id')
