@@ -1,12 +1,13 @@
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.routers import DefaultRouter
+from django.views.generic import TemplateView
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 from django.urls import path
+from drf_yasg import openapi
 from .viewsets import *
 from .views import *
-from django.views.generic import TemplateView
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 
 router = DefaultRouter()
 router.register(r'apteka', OurPharmacieViewSet, basename='apteka')
@@ -34,21 +35,26 @@ schema_view = get_schema_view(
     
 
 urlpatterns = [
-    path('swagger.json/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('swagger-ui/', TemplateView.as_view(template_name='swagger_ui.html'), name='swagger-ui'),
-    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+   path('swagger.json/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+   path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+   path('swagger-ui/', TemplateView.as_view(template_name='swagger_ui.html'), name='swagger-ui'),
+   path('schema/', SpectacularAPIView.as_view(), name='schema'),
 
+   path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+   path('checkout/',CheckoutAPIView.as_view(), name='checkout_api'),
 
-
-    path('user-update/', user_update),
-    path('get-user/', get_user),
-    path('phone-number/', phone_number_api),
-    path('login/', login_api),
-    path('category/', get_category),
-    path('category/<int:pk>', category),
-    path('dastafca/', get_dastafca),
-    path('filial/', get_filial),
+  
+   path('user-update/', user_update),
+   path('get-user/', get_user),
+   path("get-person/", get_person_status),
+   path("person/", person),
+   path('phone-number/', phone_number_api),
+   path('login/', LoginAPIView.as_view(), name='jwt_login'),
+   path('category/', get_category),
+   path('category/<int:pk>', category),
+   path('dastafca/', get_dastafca),
+   path('product-order/', product_order),
+   path('filial/', get_filial),
 ]
 
 urlpatterns += router.urls

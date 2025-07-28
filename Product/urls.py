@@ -24,6 +24,7 @@ urlpatterns = [
     path('filial/product-delete/<int:pk>/',delete_product),
     path('filial/product-edit/<int:product_id>/', edit_product),
     path('filial/edit_product_image/<int:product_id>/', edit_product_image),
+    path('filial-product-person-edit/', update_person),
     path("filial-order-status/<int:pk>/",update_order_status, name="update_order_status"),
     path("filial-member/",member_view, name="member"),
     path("filial-add-member/",add_product_member, name="add_product_member"),

@@ -6,14 +6,13 @@ from django.db import models
 from main.models import *
 
 User = get_user_model()
-# Create your models here.
-
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
     svg = models.ImageField(upload_to="svg/",null=True, blank=True )
     def __str__(self):
         return self.name
+
 
 class Member(models.Model):
     name = models.CharField(max_length=155)
@@ -22,11 +21,17 @@ class Member(models.Model):
 
  
 class Product(models.Model):
+    
+    PERSON_CHOICES  = (
+        ('bolalar','bolalar'),
+        ('ayollar','ayollar'),
+        ('erkaklar','erkaklar')
+    )
     uid = models.BigIntegerField(db_index=True) #bor 
     name = models.CharField(max_length=255, null=True, blank=True) # bor 
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True,related_name='products') # bor 
     member  = models.ForeignKey(Member, on_delete= models.SET_NULL, null=True, blank=True)
-    
+    category_person = models.CharField(max_length=55, null=True, blank=True , choices=PERSON_CHOICES, default=None)
     producer = models.CharField(max_length=255, blank=True, null=True) # bor 
     country = models.CharField(max_length=255, blank=True, null=True) # bor 
     mnn = models.CharField(max_length=255, blank=True, null=True) # mor
@@ -55,6 +60,11 @@ class Product(models.Model):
         ]
     def __str__(self):
         return str(self.uid)
+    @property
+    def image1_url(self):
+        if self.image1:
+            return f"https://akmalfarm.uz{self.image1.url}"
+        return None
 
 
 class ProductPrice(models.Model):

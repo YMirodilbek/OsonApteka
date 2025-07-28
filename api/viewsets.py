@@ -1,17 +1,20 @@
-from  rest_framework.permissions import  AllowAny, IsAuthenticated
-from django.db.models import Sum, F, Prefetch , Count , Q
+from django.db.models import Case, When, BooleanField, Value, Count, Q, Prefetch, Sum, F
+from rest_framework.permissions import  AllowAny, IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from main.bot_messages import send_telegram_message
 from Product.lotin_krill import  latin_to_cyrillic
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.utils.timezone import now
 from rest_framework import viewsets
 from tmp.models import OurPharmacie
 from rest_framework import filters
 from rest_framework import status
+from datetime import datetime
 from Product.models import *
 from . serilalizer import * 
-
+import logging
 
 class OurPharmacieViewSet(viewsets.ModelViewSet):
     queryset = OurPharmacie.objects.all()
@@ -54,9 +57,14 @@ class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
         
     
     def list(self, request):
-        return Response(WishlistSerializer(
-            self.get_queryset() ,many=True
-        ).data)
+        wishlist_product_ids = set(
+            Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True)
+        )
+        serializer = self.get_serializer(
+            self.get_queryset(), many=True,
+            context={'request': request, 'wishlist_product_ids': wishlist_product_ids}
+        ) 
+        return Response(serializer.data)
     
     def retrieve(self, request, pk ):
         return Response(
@@ -100,9 +108,8 @@ class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CategoryProductsViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated]
     http_method_names = ['get']
-    
+
     def list(self, request):
         category_name = request.query_params.get('category')
         page = request.query_params.get("page", 1)
@@ -112,8 +119,10 @@ class CategoryProductsViewSet(viewsets.ViewSet):
         except (TypeError, ValueError):
             page = 1
 
+        # 1. Faqat narxi va mavjudligi bor product price queryset
         product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
 
+        # 2. Asosiy products queryset (narxlar bilan) - hali annotate qilmaymiz
         products_qs = Product.objects.filter(
             product_prise__in=product_price_qs,
             name__isnull=False
@@ -121,6 +130,26 @@ class CategoryProductsViewSet(viewsets.ViewSet):
             Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
         )
 
+        # 3. Wishlist bilan annotate qilish faqat user auth bo‘lsa
+        wishlist_product_ids = set()
+        if request.user.is_authenticated:
+            wishlist_product_ids = set(
+                Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True)
+            )
+            products_qs = products_qs.annotate(
+                is_wishlist=Case(
+                    When(id__in=wishlist_product_ids, then=Value(True)),
+                    default=Value(False),
+                    output_field=BooleanField()
+                )
+            )
+        else:
+            # User authentifikatsiyadan o'tmagan bo'lsa, barcha uchun False
+            products_qs = products_qs.annotate(
+                is_wishlist=Value(False, output_field=BooleanField())
+            )
+
+        # 4. Categories queryset, product_count bilan filter
         categories_qs = Category.objects.annotate(
             product_count=Count('products', filter=Q(products__in=products_qs))
         ).filter(product_count__gt=0)
@@ -128,29 +157,50 @@ class CategoryProductsViewSet(viewsets.ViewSet):
         if category_name:
             categories_qs = categories_qs.filter(name=category_name)
 
+        # 5. Cheklangan miqdorda productlarni Prefetch qilish
         categories_qs = categories_qs.prefetch_related(
-            Prefetch('products', queryset=products_qs, to_attr='filtered_products_all')
+            Prefetch('products', queryset=products_qs[:50], to_attr='filtered_products')
         )
 
+        # 6. Pagination
         paginator = PageNumberPagination()
         paginator.page_size = 5
         result_page = paginator.paginate_queryset(categories_qs, request)
 
-        for category in result_page:
-            category.filtered_products = category.filtered_products_all[:50]
-
-        serializer = CategoryallSerializer(result_page, many=True, context={'request': request})
+       
+        serializer = CategoryallSerializer(result_page, many=True,
+                                           context={
+                                               'request': request,
+                                               'wishlist_product_ids': wishlist_product_ids
+                                           }
+                                           )
         return paginator.get_paginated_response(serializer.data)
+
     
     def retrieve(self, request, pk):
         try:
             product = Product.objects.get(id=int(pk))
-            seralizer = ProductSerializer(product, many=False)
-            return Response(seralizer.data)
-        except:
-            return Response({
-                'success': False
-                })
+
+            # Default bo'sh set
+            wishlist_product_ids = set()
+
+            # Faqat login qilingan foydalanuvchi uchun wishlistni olish
+            if request.user.is_authenticated:
+                wishlist_product_ids = set(
+                    Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True)
+                )
+
+            serializer = ProductSerializer(
+                product,
+                many=False,
+                context={'request': request, 'wishlist_product_ids': wishlist_product_ids}
+            )
+            return Response(serializer.data)
+
+        except Product.DoesNotExist:
+            return Response({'success': False}, status=404)
+
+
     
     @action(detail= False, methods=['get'])     
     def member(self, request):
@@ -197,7 +247,8 @@ class OrderViewset(viewsets.ModelViewSet):
         return Response({
             "cart_items": serializer.data,
             "cart_total": cart_total,
-            "cart_count": cart_count
+            "cart_count": cart_count,
+        
         })
 
 
@@ -252,16 +303,41 @@ class OrderViewset(viewsets.ModelViewSet):
             order_item.quantity += 1
             order_item.save()
 
-        cart = cart_context(request)
-        cart_count = len(cart['cart_items'])
-        cart_total = cart['cart_total']
+        # cart = cart_context(request)
+        # cart_count = len(cart['cart_items'])
+        # cart_total = cart['cart_total']
 
         return Response({
             "status": 200,
-            "cart_count": cart_count,
-            "cart_total": cart_total
+            # "cart_count": cart_count,
+            # "cart_total": cart_total
         }, status=status.HTTP_200_OK)
     
+    @action(detail=True, methods=['post'])
+    def minus_from_cart(self, request, pk):
+        product = get_object_or_404(Product, id=pk)
+
+        try:
+            order = Order.objects.get(user=request.user, is_completed=False)
+        except Order.DoesNotExist:
+            return Response({"status": 404, "message": "Buyurtma topilmadi."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            order_item = OrderItem.objects.get(order=order, product=product)
+        except OrderItem.DoesNotExist:
+            return Response({"status": 404, "message": "Mahsulot savatchada yo'q."}, status=status.HTTP_404_NOT_FOUND)
+
+        if order_item.quantity > 1:
+            order_item.quantity -= 1
+            order_item.save()
+        else:
+            order_item.delete()
+
+        return Response({
+            "status": 200,
+            "message": "Mahsulot soni yangilandi yoki o'chirildi."
+        }, status=status.HTTP_200_OK)
+        
     @action(detail=True, methods=['post'])
     def remove_from_cart(self, request, pk):
         product = get_object_or_404(Product, id=pk)
@@ -277,35 +353,35 @@ class OrderViewset(viewsets.ModelViewSet):
 
         order_item.delete()
 
-        cart = cart_context(request)
-        cart_count = len(cart['cart_items'])
-        cart_total = cart['cart_total']
+        # cart = cart_context(request)
+        # cart_count = len(cart['cart_items'])
+        # cart_total = cart['cart_total']
 
         return Response({
             "status": 200,
-            "cart_count": cart_count,
-            "cart_total": cart_total
+            # "cart_count": cart_count,
+            # "cart_total": cart_total
         }, status=status.HTTP_200_OK)
     
-    
-    @action(detail=False, methods=['post'])
-    def delete_order_item(self, request, item_id):
-        try:
-            order_item = OrderItem.objects.get(id=item_id, order__user=request.user, order__is_completed=False)
-        except OrderItem.DoesNotExist:
-            return Response({"detail": "Bunday buyurtma elementi topilmadi."}, status=status.HTTP_404_NOT_FOUND)
+    #https://akmalfarm.uz/api/order/
+    # @action(detail=False, methods=['post'])
+    # def delete_order_item(self, request, item_id):
+    #     try:
+    #         order_item = OrderItem.objects.get(id=item_id, order__user=request.user, order__is_completed=False)
+    #     except OrderItem.DoesNotExist:
+    #         return Response({"detail": "Bunday buyurtma elementi topilmadi."}, status=status.HTTP_404_NOT_FOUND)
         
-        order_item.delete()
+    #     order_item.delete()
 
-        cart = cart_context(request)
-        cart_count = len(cart['cart_items'])
-        cart_total = cart['cart_total']
+        # cart = cart_context(request)
+        # cart_count = len(cart['cart_items'])
+        # cart_total = cart['cart_total']
 
-        return Response({
-            "status": 200,
-            "cart_count": cart_count,
-            "cart_total": cart_total
-        }, status=status.HTTP_200_OK)
+        # return Response({
+        #     "status": 200,
+        #     # "cart_count": cart_count,
+        #     # "cart_total": cart_total
+        # }, status=status.HTTP_200_OK)
         
     
 class BlogViewset(viewsets.ModelViewSet):
@@ -324,3 +400,5 @@ class MemberViewset(viewsets.ModelViewSet):
     serializer_class =  MemberSerializer
     queryset = Member.objects.all()
     http_method_names = ['get']  
+
+

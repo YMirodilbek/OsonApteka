@@ -252,6 +252,7 @@ class ClickWebhookAPIView(ClickWebhook):
             try:
                 order = Order.objects.get(id=int(order_id))
                 order.is_paid = True
+                order.is_completed = True
                 order.save()
                 from main.bot_messages import send_telegram_message
                 telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
@@ -355,7 +356,7 @@ def checkout_view(request):
 
             filial = Filial.objects.get(id=filial_id)
             order.filial = filial
-            order.is_completed = True
+            # order.is_completed = True
             order.save()
 
             logger.info(f"Order {order.id} completed successfully for user: {request.user.phone_number}")
@@ -543,7 +544,8 @@ def products(request):
     paginator = Paginator(product, 50 )
     page_obj = paginator.get_page(page_number)
     member = Member.objects.all()
-    return render (request, 'filial/product.html', {"page_obj":page_obj,'member':member})
+    person = Product()
+    return render (request, 'filial/product.html', {"page_obj":page_obj,'member':member, 'person':person})
 
 
 @is_staff

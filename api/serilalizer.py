@@ -38,14 +38,20 @@ class ProductSerializer(serializers.ModelSerializer):
     prices = serializers.SerializerMethodField() 
     product_type_display = serializers.SerializerMethodField()
     image1 = serializers.SerializerMethodField()
+    is_wishlist = serializers.SerializerMethodField()
     
     
     class Meta:
         model = Product
-        fields = ['id', 'name','producer','country','member','prices','image1','product_type_display','info']
+        fields = ['id', 'name','producer','country','member','prices',
+                  'image1','is_wishlist','product_type_display','info']
         depth = True
     
-    
+    def get_is_wishlist(self, obj):
+        request = self.context.get('request')
+        if request and request.user and request.user.is_authenticated:
+            return Wishlist.objects.filter(user=request.user, product=obj).select_related('product').exists()
+        return False
     def get_info(self, obj):
         raw_text = getattr(obj, 'info', '')
         cleaned_text = sanitize_text(raw_text)
@@ -80,30 +86,24 @@ class ProductSerializer(serializers.ModelSerializer):
 
    
 class ProductpageSerializer(serializers.ModelSerializer):
-    prices = ProductPriceSerializer(many=True) 
-    image1 = serializers.SerializerMethodField()
+    prices = ProductPriceSerializer(many=True)
+    # image1 = serializers.SerializerMethodField()
     product_type_display = serializers.SerializerMethodField()
+    is_wishlist = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
-        fields = ['id', 'name', 'prices', 'image1',  'product_type_display']
-    
+        fields = ['id', 'name', 'prices', 'image1_url', 'is_wishlist', 'product_type_display']
+
+    def get_is_wishlist(self, obj):
+        return getattr(obj, 'is_wishlist', False)
     
     def get_product_type_display(self, obj):
         if obj.product_type == "Рецепт билан":
-            return {
-                'text': 'Рецептурный',
-               
-            }
-        return {
-                'text': 'Без рецепта',
-                
-            }
-    
-    def get_image1(self, obj):
-        if obj.image1 and hasattr(obj.image1, 'url'):
-            return f"https://akmalfarm.uz{obj.image1.url}"
-        return None
- 
+            return {'text': 'Рецептурный'}
+        return {'text': 'Без рецепта'}
+
+
     
 class CategoryallSerializer(serializers.ModelSerializer):
     filtered_products = ProductpageSerializer(many=True)
@@ -124,19 +124,25 @@ class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
         fields = ['id', 'product', 'added_at']
-        depth = True
+        def get_product(self, obj):
+            context = self.context
+            return ProductSerializer(obj.product, context=context).data
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
+    product = serializers.SerializerMethodField()
     
     class Meta:
         model = OrderItem
         fields = '__all__'
+        depth = True
     
     def get_total_price(self, obj):
         return obj.price * obj.quantity
 
+    def get_product(self,obj):
+         return ProductSerializer(obj.product).data
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -170,3 +176,13 @@ class BlogSerializer(serializers.ModelSerializer):
         return None
     
     
+class CheckoutSerializer(serializers.ModelSerializer):
+    filial = serializers.PrimaryKeyRelatedField(queryset=Filial.objects.all())
+    payment_method = serializers.ChoiceField(choices=Order.PAYMENT_METHODS)
+    address_text = serializers.CharField(required=False, allow_blank=True)
+    phone_number1 = serializers.CharField()
+    phone_number2 = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = Order
+        fields = ['filial', 'payment_method', 'address_text', 'phone_number1', 'phone_number2']

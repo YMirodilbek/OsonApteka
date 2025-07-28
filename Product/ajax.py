@@ -157,6 +157,20 @@ def delete_product(request, pk):
         return JsonResponse({'error': 'Product not found'}, status=404)
 
 
+def update_person(request):
+    if request.method == "POST":
+        person = request.POST.get("person")
+        product_id = request.POST.get("product_id")
+        try:
+            product = Product.objects.get(id=product_id)
+            product.category_person = person
+            product.save()
+            return JsonResponse({"success": True, 'person':product.category_person})
+        except Product.DoesNotExist:
+            return JsonResponse({"error": "Product not found"}, status=404)
+    return JsonResponse({"error": "Invalid method"}, status=400)
+
+
 def dogovor(request):
     return render(request,'oferta/dogovor.html')
 

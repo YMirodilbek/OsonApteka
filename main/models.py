@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.utils import timezone
+from random import randint
 import uuid
-
 class UserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
         """Oddiy foydalanuvchi yaratish"""
@@ -48,6 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         from Product.models import OrderItem  
         return OrderItem.objects.filter(order__user=self, order__is_completed=False).count()
 
+
 class PDFDocument(models.Model):
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='pdfs/')
@@ -62,3 +64,61 @@ class EskizToken(models.Model):
 
     def __str__(self):
         return self.token
+
+
+class Chat(models.Model):
+    room_id = models.PositiveIntegerField()# client user id 
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True,
+    blank=True, related_name='chats')
+    image = models.ImageField(upload_to='chat_images/', blank=True, null=True)
+    voice = models.FileField(upload_to='chat_voices/', blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+    is_read = models.BooleanField(default=False)
+    
+    
+class VirtualCard(models.Model):
+
+    
+    CARD_STATUS = (
+        ('ACTIVE', 'Faol'),
+        ('BLOCKED', 'Bloklangan'),
+        ('EXPIRED', 'Muddati o\'tgan'),
+    )
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='virtual_cards')
+    card_number = models.CharField(max_length=16, unique=True, editable=False)
+    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    cvv = models.CharField(max_length=3, editable=False)
+    status = models.CharField(max_length=10, choices=CARD_STATUS, default='ACTIVE')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Virtual Karta'
+        verbose_name_plural = 'Virtual Kartalar'
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f"{self.card_type} - {self.masked_card_number}"
+
+    @property
+    def masked_card_number(self):
+        return f"**** **** **** {self.card_number[-4:]}" if self.card_number else ""
+    
+    @staticmethod
+    def generate_card_number():
+        """Karta raqamini generatsiya qilish"""
+
+        return ''.join([str(randint(0, 9)) for _ in range(16)])
+
+    @staticmethod
+    def generate_cvv():   
+        return ''.join([str(randint(0, 9)) for _ in range(3)])
+    
+    def save(self, *args, **kwargs):
+        # Yangi karta yaratilayotganda
+        if not self.card_number:
+            self.card_number = self.generate_card_number()
+            self.cvv = self.generate_cvv()
+        super().save(*args, **kwargs)

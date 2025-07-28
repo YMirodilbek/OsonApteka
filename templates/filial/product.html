@@ -21,6 +21,7 @@
                         <th scope="col">IMG</th>
                         <th scope="col">NAME</th>
                         <th scope="col">MEMBER</th>
+                        <th scope="col">PERSON</th>
                         <th scope="col">EDIT</th>
                         <th scope="col">DELETE</th>
                     </tr>
@@ -42,6 +43,10 @@
                         <td>
                              <a  href="#" data-bs-toggle="modal" style="color: rgb(7, 224, 224);" data-bs-target="#memberModalmember{{ i.id }}">
                             {{ i.member }}
+                        </a>
+                        <td>
+                             <a  href="#" data-bs-toggle="modal" style="color: rgb(7, 224, 224);" data-bs-target="#Modalperson{{ i.id }}">
+                            {{ i.category_person }}
                         </a>
                                          
                     </td>
@@ -72,6 +77,35 @@
                                     </select>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-success"  onclick="submitMemberForm({{ i.id }})">Saqlash</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+
+                        <div class="modal fade" id="Modalperson{{ i.id }}" tabindex="-1" aria-labelledby="personModalLabel{{ i.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="personModalLabel{{ i.id }}">{{i.name}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="personForm{{ i.id }}">
+                                    {% csrf_token %}
+                                    <input type="hidden"  style="display: none;" name="product_id" value="{{ i.id }}">
+                                    <select name="person" id="personSelect{{ i.id }}" class="form-control">
+                                        <option value="0">None</option>
+                                        {% for p in person.PERSON_CHOICES %}
+                                            <option value="{{ p.0 }}" {% if p.0 == product.person %}selected{% endif %}>{{ p.1 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success"  onclick="submitPersonForm({{ i.id }})">Saqlash</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
                                     </div>
                                 </form>
@@ -145,167 +179,194 @@
     </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('form[id^="memberFormajax"]').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const productId = this.querySelector('input[name="product_id"]').value;
-            submitMemberForm(productId);
-        });
-    });
-});
 
-function submitMemberForm(productId) {
-    const form = document.getElementById('memberForm' + productId);
-    if (!form) {
-        // console.error('Form topilmadi:', productId);
-        return;
-    }
+function submitPersonForm(productId) {
+    const select = document.getElementById(`personSelect${productId}`);
+    const person = select.value;
 
-    const formData = new FormData(form);
-    console.log('FormData:', [...formData.entries()]);
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    fetch('/filial-add-member/', {
+    const formData = new FormData();
+    formData.append('person', person);
+    formData.append('product_id', productId);
+
+    fetch('/filial-product-person-edit/', {
         method: 'POST',
-        body: formData,
         headers: {
-            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Xatolik: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // alert('Muvaffaqiyatli saqlandi');
-        location.reload();
-    })
-    .catch(error => {
-        // console.error('Xatolik:', error);
-    });
+            'X-CSRFToken': csrfToken,
+        },
+        body: formData
+    }).then(response => response.json())
+      .then(data => {
+          console.log('Success:', data);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
 }
 
 
+// document.addEventListener('DOMContentLoaded', () => {
+//     document.querySelectorAll('form[id^="memberFormajax"]').forEach(form => {
+//         form.addEventListener('submit', function(e) {
+//             e.preventDefault();
+//             const productId = this.querySelector('input[name="product_id"]').value;
+//             submitMemberForm(productId);
+//         });
+//     });
+// });
+
+// function submitMemberForm(productId) {
+//     const form = document.getElementById('memberForm' + productId);
+//     if (!form) {
+//         // console.error('Form topilmadi:', productId);
+//         return;
+//     }
+
+//     const formData = new FormData(form);
+//     console.log('FormData:', [...formData.entries()]);
+
+//     fetch('/filial-add-member/', {
+//         method: 'POST',
+//         body: formData,
+//         headers: {
+//             'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+//         }
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Xatolik: ' + response.status);
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         // alert('Muvaffaqiyatli saqlandi');
+//         location.reload();
+//     })
+//     .catch(error => {
+//         // console.error('Xatolik:', error);
+//     });
+// }
 
 
-const csrfToken = '{{ csrf_token }}';
-const memberOptionsHtml = `{% for m in member %}
-    <option value="{{ m.id }}">{{ m.name }}</option>
-{% endfor %}`.trim();
 
-document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("searchInput");
-    const tableBody = document.getElementById("productTableBody");
 
-    // 🔍 Qidiruv funksiyasi
-    input.addEventListener("input", function () {
-        const query = this.value;
+// const csrfToken = '{{ csrf_token }}';
+// const memberOptionsHtml = `{% for m in member %}
+//     <option value="{{ m.id }}">{{ m.name }}</option>
+// {% endfor %}`.trim();
 
-        if (query.length >= 3) {
-            fetch(`/filial/api/product-search/?q=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    tableBody.innerHTML = ""; // Eski natijalarni tozalash
+// document.addEventListener("DOMContentLoaded", function () {
+//     const input = document.getElementById("searchInput");
+//     const tableBody = document.getElementById("productTableBody");
 
-                    if (data.results.length > 0) {
-                        data.results.forEach(item => {
-                            tableBody.innerHTML += `
-                                <tr>
-                                    <td>${item.id}</td>
-                                    <td>${item.uid}</td>
-                                    <td>
-                                        ${item.image1 ? 
-                                            `<a href="/filial/edit_product_image/${item.id}/">
-                                                <img width="45px" src="${item.image1}" alt="">
-                                            </a>` : '<span>No Image</span>'
-                                        }
-                                    </td>
-                                    <td>${item.name}</td>
-                                    <td>
-                                        <a href="#" style="color: rgb(7, 224, 224);" data-bs-toggle="modal" data-bs-target="#memberModalmemberajax${item.id}">
-                                        ${item.member}
-                                    </a></td>
-                                    <td><a href="/filial/product-edit/${item.id}/" class="btn btn-success">Edit</a></td>
-                                    <td><button class="btn btn-danger delete-btn" data-id="${item.id}">Delete</button></td>
-                                </tr>
+//     // 🔍 Qidiruv funksiyasi
+//     input.addEventListener("input", function () {
+//         const query = this.value;
 
-                                <div class="modal fade" id="memberModalmemberajax${item.id}" tabindex="-1" aria-labelledby="memberModalLabel${item.id}" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="memberModalLabel${item.id}">${item.name}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="memberFormajax${item.id}" method="post">
-                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
-                        <input type="hidden" name="product_id" value="${item.id}">
-                        <select name="member_id" class="form-control">
-                            <option value="0">None</option>
-                            ${memberOptionsHtml}
-                        </select>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" onclick="submitMemberForm(${item.id})">Saqlash</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
-                        </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-        </div>
+//         if (query.length >= 3) {
+//             fetch(`/filial/api/product-search/?q=${query}`)
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     tableBody.innerHTML = ""; // Eski natijalarni tozalash
 
-                            `;
-                        });
-                    } else {
-                        tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Hech narsa topilmadi</td></tr>`;
-                    }
-                });
-        }
-    });
+//                     if (data.results.length > 0) {
+//                         data.results.forEach(item => {
+//                             tableBody.innerHTML += `
+//                                 <tr>
+//                                     <td>${item.id}</td>
+//                                     <td>${item.uid}</td>
+//                                     <td>
+//                                         ${item.image1 ? 
+//                                             `<a href="/filial/edit_product_image/${item.id}/">
+//                                                 <img width="45px" src="${item.image1}" alt="">
+//                                             </a>` : '<span>No Image</span>'
+//                                         }
+//                                     </td>
+//                                     <td>${item.name}</td>
+//                                     <td>
+//                                         <a href="#" style="color: rgb(7, 224, 224);" data-bs-toggle="modal" data-bs-target="#memberModalmemberajax${item.id}">
+//                                         ${item.member}
+//                                     </a></td>
+//                                     <td><a href="/filial/product-edit/${item.id}/" class="btn btn-success">Edit</a></td>
+//                                     <td><button class="btn btn-danger delete-btn" data-id="${item.id}">Delete</button></td>
+//                                 </tr>
 
-    // ✅ DELETE button uchun delegated event listener
-    tableBody.addEventListener("click", function (e) {
-        if (e.target.classList.contains("delete-btn")) {
-            const btn = e.target;
-            const productId = btn.getAttribute("data-id");
-            const row = btn.closest("tr");
+//                                 <div class="modal fade" id="memberModalmemberajax${item.id}" tabindex="-1" aria-labelledby="memberModalLabel${item.id}" aria-hidden="true">
+//             <div class="modal-dialog">
+//                 <div class="modal-content">
+//                 <div class="modal-header bg-primary text-white">
+//                     <h5 class="modal-title" id="memberModalLabel${item.id}">${item.name}</h5>
+//                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
+//                 </div>
+//                 <div class="modal-body">
+//                     <form id="memberFormajax${item.id}" method="post">
+//                         <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+//                         <input type="hidden" name="product_id" value="${item.id}">
+//                         <select name="member_id" class="form-control">
+//                             <option value="0">None</option>
+//                             ${memberOptionsHtml}
+//                         </select>
+//                         <div class="modal-footer">
+//                             <button type="submit" class="btn btn-success" onclick="submitMemberForm(${item.id})">Saqlash</button>
+//                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+//                         </div>
+//                     </form>
+//                 </div>
+//                 </div>
+//             </div>
+//         </div>
 
-            if (confirm("Mahsulotni o'chirmoqchimisiz?")) {
-                fetch(`/filial/product-delete/${productId}/`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRFToken': getCookie('csrftoken'),
-                    },
-                })
-                .then(response => {
-                    if (response.ok) {
-                        row.remove();
-                    } else {
-                        alert("O'chirishda xatolik yuz berdi!");
-                    }
-                });
-            }
-        }
-    });
+//                             `;
+//                         });
+//                     } else {
+//                         tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Hech narsa topilmadi</td></tr>`;
+//                     }
+//                 });
+//         }
+//     });
 
-    // 🔐 CSRF token olish funksiyasi
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-});
+//     // ✅ DELETE button uchun delegated event listener
+//     tableBody.addEventListener("click", function (e) {
+//         if (e.target.classList.contains("delete-btn")) {
+//             const btn = e.target;
+//             const productId = btn.getAttribute("data-id");
+//             const row = btn.closest("tr");
+
+//             if (confirm("Mahsulotni o'chirmoqchimisiz?")) {
+//                 fetch(`/filial/product-delete/${productId}/`, {
+//                     method: 'DELETE',
+//                     headers: {
+//                         'X-CSRFToken': getCookie('csrftoken'),
+//                     },
+//                 })
+//                 .then(response => {
+//                     if (response.ok) {
+//                         row.remove();
+//                     } else {
+//                         alert("O'chirishda xatolik yuz berdi!");
+//                     }
+//                 });
+//             }
+//         }
+//     });
+
+//     // 🔐 CSRF token olish funksiyasi
+//     function getCookie(name) {
+//         let cookieValue = null;
+//         if (document.cookie && document.cookie !== '') {
+//             const cookies = document.cookie.split(';');
+//             for (let i = 0; i < cookies.length; i++) {
+//                 const cookie = cookies[i].trim();
+//                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                     break;
+//                 }
+//             }
+//         }
+//         return cookieValue;
+//     }
+// });
 </script>
 
 
