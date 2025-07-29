@@ -78,7 +78,6 @@ class Chat(models.Model):
     
     
 class VirtualCard(models.Model):
-
     
     CARD_STATUS = (
         ('ACTIVE', 'Faol'),

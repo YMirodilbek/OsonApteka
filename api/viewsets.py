@@ -402,3 +402,26 @@ class MemberViewset(viewsets.ModelViewSet):
     http_method_names = ['get']  
 
 
+class VirtualCardViewset(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = VirtualCardSerializer
+    def get_queryset(self):
+        return VirtualCard.objects.filter(user=self.request.user)
+    
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        # Agar userda allaqachon karta mavjud bo‘lsa, uni qaytaramiz
+        if VirtualCard.objects.filter(user=user).exists():
+            card = VirtualCard.objects.get(user=user)
+            serializer = self.get_serializer(card)
+            return Response(
+                {"detail": "Sizda allaqachon karta mavjud", "card": serializer.data},
+                status=status.HTTP_200_OK
+            )
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    

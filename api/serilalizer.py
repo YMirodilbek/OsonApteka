@@ -40,10 +40,9 @@ class ProductSerializer(serializers.ModelSerializer):
     image1 = serializers.SerializerMethodField()
     is_wishlist = serializers.SerializerMethodField()
     
-    
     class Meta:
-        model = Product
-        fields = ['id', 'name','producer','country','member','prices',
+        model = Product  
+        fields = ['id', 'name','producer','country','member','prices','category_person',
                   'image1','is_wishlist','product_type_display','info']
         depth = True
     
@@ -93,7 +92,8 @@ class ProductpageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'prices', 'image1_url', 'is_wishlist', 'product_type_display']
+        fields = ['id', 'name', 'prices', 'image1_url', 'is_wishlist', 'product_type_display',
+                  'category_person']
 
     def get_is_wishlist(self, obj):
         return getattr(obj, 'is_wishlist', False)
@@ -103,8 +103,7 @@ class ProductpageSerializer(serializers.ModelSerializer):
             return {'text': 'Рецептурный'}
         return {'text': 'Без рецепта'}
 
-
-    
+   
 class CategoryallSerializer(serializers.ModelSerializer):
     filtered_products = ProductpageSerializer(many=True)
 
@@ -186,3 +185,10 @@ class CheckoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['filial', 'payment_method', 'address_text', 'phone_number1', 'phone_number2']
+
+
+class VirtualCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VirtualCard
+        fields = '__all__'
+        read_only_fields = ['user', 'card_number', 'cvv', 'created_at', 'updated_at']

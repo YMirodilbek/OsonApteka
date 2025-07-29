@@ -17,6 +17,7 @@ router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 router.register(r'member', MemberViewset, basename='member')
 router.register(r'order', OrderViewset, basename='order')
 router.register(r'blog', BlogViewset, basename='blog')
+router.register(r'card', VirtualCardViewset, basename='card')
 
 
 
