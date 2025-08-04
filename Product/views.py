@@ -11,8 +11,10 @@ from django.shortcuts import render
 from collections import OrderedDict
 from django.contrib import messages
 from .lotin_krill import compress
+from django.utils import timezone
 from django.conf import settings
 from click_up import ClickUp
+from decimal import Decimal
 from tmp.models import *
 from .decorator import *
 from .models import *
@@ -254,6 +256,14 @@ class ClickWebhookAPIView(ClickWebhook):
                 order.is_paid = True
                 order.is_completed = True
                 order.save()
+                user = order.user
+                try:
+                    balance = VirtualCard.objects.get(user=user)
+                    balance.balance += Decimal(order.total_price) * Decimal('0.01')
+                    balance.save()
+                except:
+                    pass
+                
                 from main.bot_messages import send_telegram_message
                 telegram_ids = (order.filial.users.values_list('telegram_id', flat=True))
                 for i in telegram_ids:
@@ -733,3 +743,14 @@ def filial_order_client(request):
             'filial'
         ).prefetch_related(Prefetch('items', queryset=OrderItem.objects.select_related('product')))
     return render(request, 'filial/user-order.html',{'orders':orders})
+
+
+
+def chat_web(request):
+    # chat = Chat.objects.create(room_id=user.id, content="Salom")
+    # send_chat_notification_if_needed(chat)
+    
+    five_days_ago = timezone.now() - timedelta(days=5)
+    recent_chats = Chat.objects.filter(timestamp__gte=five_days_ago, user__isnull=False)
+    users = User.objects.filter(id__in=recent_chats.values_list('user_id', flat=True).distinct())
+    return render(request, 'chat/chat.html', {'users':users})

@@ -25,9 +25,37 @@ def VacancyApplication(request):
         fullname = request.POST.get('fullname')
         age = request.POST.get('age')
         doc = request.FILES.get('doc')
-        models.VacancyApplication.objects.create(fullname=fullname,age=age,doc=doc)
+        vacan = models.VacancyApplication.objects.create(fullname=fullname,age=age,doc=doc)
+        vacan.type='vacancy'
+        vacan.save()
         messages.success(request,'Application submitted successfully')
     return redirect(request.META.get('HTTP_REFERER'))
+
+def ApplicantViwe(request):
+    if request.method == 'POST':
+        fio = request.POST.get('fio')
+        date_of_birth = request.POST.get('date_of_birth')
+        address = request.POST.get('address')
+        education = request.POST.get('education')
+        last_job = request.POST.get('last_job')
+        desired_salary = request.POST.get('desired_salary')
+        phone_number = request.POST.get('phone_number')
+        # document = request.FILES.get('document')  # agar fayl yuborilsa
+
+        models.Applicant.objects.create(
+            fio=fio,
+            date_of_birth=date_of_birth,
+            address=address,
+            education=education,
+            last_job=last_job,
+            desired_salary=desired_salary,
+            phone_number=phone_number,
+            # document=document
+        )
+        messages.success(request,'Application submitted successfully')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
 
 
 
@@ -372,7 +400,7 @@ def dashboard_vacancy(request):
 @login_required(login_url='/auth/send-otp/')
 @is_staff
 def dashboard_vacany_application(request):
-    vacancy_application = models.VacancyApplication.objects.all()
+    vacancy_application = models.VacancyApplication.objects.filter(type='vacancy')
     context = {
         'vacancy_application': vacancy_application
     }

@@ -15,7 +15,6 @@ class ContactForm(forms.ModelForm):
         }
 
 
-
 class CheckoutForm(forms.ModelForm):
     filial = forms.ModelChoiceField(
         queryset=Filial.objects.all(), 
@@ -43,6 +42,7 @@ class CheckoutForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['filial', 'payment_method', 'address_text','phone_number1','phone_number2']
+
 
 class ProductForm(forms.ModelForm):
     class Meta:

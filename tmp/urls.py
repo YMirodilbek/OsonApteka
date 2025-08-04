@@ -4,6 +4,7 @@ urlpatterns=[
     # Old URLs
     path('vacancy/', Vacancy, name='vacancy_url'),
     path('vacancy/application/', VacancyApplication, name='vacancy_application_url'),
+    path('vacancy/application/apteka/', ApplicantViwe, name='VacancyApplication_apteka_url'),
     
     path('pharm/', Pharm, name='pharm_url'),
     path('about/', About, name='about_url'),

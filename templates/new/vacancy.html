@@ -283,8 +283,7 @@
         {% endfor %}
     </div>
 
-    <!-- Application Form -->
-    <div class="afm-application-container">
+    <!-- <div class="afm-application-container">
         <h2 class="afm-application-title">Подать заявление</h2>
         
         <form action="{% url 'vacancy_application_url' %}" method="POST" enctype="multipart/form-data">
@@ -294,20 +293,19 @@
                 <label for="fullname" class="afm-form-label">Ф.И.О.</label>
                 <input type="text" name="fullname" id="fullname" class="afm-form-control" required>
             </div>
-            
             <div class="afm-form-group">
                 <label for="age" class="afm-form-label">Ваш возраст</label>
                 <input type="text" name="age" id="age" class="afm-form-control" required>
             </div>
             
             <div class="afm-form-group">
-                <label for="doc" class="afm-form-label">Загрузить резюме</label>
+                <label for="doc1" class="afm-form-label">Загрузить резюме</label>
                 <div class="custom-file-upload">
-                    <label for="doc" class="file-upload-btn">
+                    <label for="doc1" class="file-upload-btn">
                         <i class="fas fa-upload"></i> Выберите файл
                     </label>
-                    <span class="file-name-display">Файл не выбран</span>
-                    <input type="file" name="doc" id="doc" class="afm-form-control afm-form-file" required>
+                    <span class="file-name-display" id="fileName1">Файл не выбран</span>
+                    <input type="file" name="doc" id="doc1" class="afm-form-control afm-form-file" required>
                 </div>
             </div>
             
@@ -315,15 +313,65 @@
                 <i class="fas fa-paper-plane"></i>Отправить заявление
             </button>
         </form>
+    </div> -->
+
+    <div class="afm-application-container">
+        <h2 class="afm-application-title">Заполните анкету</h2>
+        
+        <form action="{% url 'VacancyApplication_apteka_url' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="afm-form-group">
+        <label for="fio" class="afm-form-label">Ф.И.О.</label>
+        <input type="text" name="fio" id="fio" class="afm-form-control" required>
+    </div>
+    
+    <div class="afm-form-group">
+        <label for="date_of_birth" class="afm-form-label">Дата рождения</label>
+        <input type="date" name="date_of_birth" id="date_of_birth" class="afm-form-control" required>
+    </div> 
+    
+    <div class="afm-form-group">
+        <label for="address" class="afm-form-label">Адрес проживания</label>
+        <input type="text" name="address" id="address" class="afm-form-control" required>
+    </div>
+    
+    <div class="afm-form-group">
+        <label for="education" class="afm-form-label">Образование</label>
+        <input type="text" name="education" id="education" class="afm-form-control" required>
+    </div>
+    
+    <div class="afm-form-group">
+        <label for="last_job" class="afm-form-label">Последнее место работы</label>
+        <input type="text" name="last_job" id="last_job" class="afm-form-control">
+    </div>
+    
+    <div class="afm-form-group">
+        <label for="desired_salary" class="afm-form-label">Желаемая зарплата</label>
+        <input type="number" step="0.01" name="desired_salary" id="desired_salary" class="afm-form-control" required>
+    </div>
+    
+    <div class="afm-form-group">
+        <label for="phone_number" class="afm-form-label">Номер телефона для связи</label>
+        <input type="text" name="phone_number" id="phone_number" class="afm-form-control" required>
     </div>
 
-    <script>
-        // Update file name display when a file is selected
-        document.getElementById('doc').addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'Fayl tanlanmagan';
-            document.querySelector('.file-name-display').textContent = fileName;
-        });
-    </script>
+    <button type="submit" class="afm-form-submit">
+        <i class="fas fa-paper-plane"></i> Отправить анкету
+    </button>
+</form>
+
+    </div>
+
+   <script>
+    document.getElementById('doc1').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : 'Файл не выбран';
+        document.getElementById('fileName1').textContent = fileName;
+    });
+
+
+</script>
+
 
     <!-- footer start berdik -->
    

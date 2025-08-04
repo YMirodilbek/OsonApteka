@@ -1,5 +1,11 @@
+from django.db.models.signals import post_save
+from main.models import Chat, CustomUser
+from django.dispatch import receiver
 from bs4 import BeautifulSoup
+
 import re
+
+
 
 def sanitize_text(text):
     """Matndan HTML teglarni olib tashlab, tozalaydi"""
@@ -28,3 +34,15 @@ def split_text(text, max_length=3000):
         parts.append(part)
         text = text[split_pos:].lstrip()
     return parts
+
+
+
+# @receiver(post_save, sender=Chat)
+# def notify_chat_new_message(sender, instance, created, **kwargs):
+#     if created and instance.is_read == False:
+#         user = CustomUser.objects.filter(id=instance.room_id).first()
+#         if user and user.onesignal_player_id:
+#             unread_count = Chat.objects.filter(room_id=user.id, is_read=False).count()
+#             title = "📩 Yangi xabar"
+#             body = f"Sizda {unread_count} ta yangi xabar bor"
+#             send_onesignal_notification(user.onesignal_player_id, title, body)

@@ -192,3 +192,14 @@ class VirtualCardSerializer(serializers.ModelSerializer):
         model = VirtualCard
         fields = '__all__'
         read_only_fields = ['user', 'card_number', 'cvv', 'created_at', 'updated_at']
+    
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = ['id','room_id','user','image','content','timestamp','is_read']
+        # depth = 1
+        extra_kwargs = {
+            'content': {'required': False},
+            'image': {'required': False},
+        }

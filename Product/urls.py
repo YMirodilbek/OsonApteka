@@ -31,6 +31,15 @@ urlpatterns = [
     path("member/create/",member_create, name="member_create"),
     path("member/delete/<int:pk>/",member_delete, name="member_delete"),
 
+    path("chat_web/",chat_web, name="create_chat_web"),
+    path("get-messages/<int:user_id>/",get_messages, name="get_messages"),
+    # urls.py
+
+    path('chta/image/create/', send_image, name='send_image'),
+    path('chat/message/create/', send_text, name='send_text'),
+
+
+    
     path('',Index, name='index'),
     path('contact/',Contact),
     path('myaccount/',Myaccount, name='myaccount'),

@@ -18,6 +18,7 @@ router.register(r'member', MemberViewset, basename='member')
 router.register(r'order', OrderViewset, basename='order')
 router.register(r'blog', BlogViewset, basename='blog')
 router.register(r'card', VirtualCardViewset, basename='card')
+router.register(r'chat', ChatViewset, basename='chat')
 
 
 
@@ -42,8 +43,8 @@ urlpatterns = [
    path('schema/', SpectacularAPIView.as_view(), name='schema'),
 
    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-   path('checkout/',CheckoutAPIView.as_view(), name='checkout_api'),
 
+   path('checkout/',CheckoutAPIView.as_view(), name='checkout_api'),
   
    path('user-update/', user_update),
    path('get-user/', get_user),
@@ -51,6 +52,7 @@ urlpatterns = [
    path("person/", person),
    path('phone-number/', phone_number_api),
    path('login/', LoginAPIView.as_view(), name='jwt_login'),
+   path('save-onesignal-id/',save_onesignal_id, name='save_onesignal_id'),
    path('category/', get_category),
    path('category/<int:pk>', category),
    path('dastafca/', get_dastafca),
@@ -59,4 +61,3 @@ urlpatterns = [
 ]
 
 urlpatterns += router.urls
-

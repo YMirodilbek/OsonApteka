@@ -15,12 +15,12 @@ from rest_framework import status
 from django.conf import settings
 from main.views import send_sms
 from click_up import ClickUp
+from decimal import Decimal
 from . serilalizer import *
 from main.models import *
 import random
 import redis
 import re
-
 import logging
 r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -177,51 +177,69 @@ def person(request,*args,**kwargs):
         return Response({
             "product":"None"
         })        
-    
 
-logger = logging.getLogger(__name__)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def save_onesignal_id(request):
+    player_id = request.data.get('player_id')
+    if player_id:
+        request.user.onesignal_player_id = player_id
+        request.user.save()
+        return Response({'success': True})
+    return Response({'success': False, 'message': 'player_id required'})
+   
+logger = logging.getLogger('Product')
 
 class CheckoutAPIView(APIView):
     permission_classes = [IsAuthenticated] 
-
     def post(self, request):
         user = request.user
-        logger.info(f"Checkout API started for user: {user.phone_number}")
+        payment_method = request.data.get('payment_method')
         order = Order.objects.filter(user=user, is_completed=False).first()
         if not order or not order.items.exists():
-            logger.warning(f"Empty cart for user: {user.phone_number}")
             return Response({"detail": "Sizning savatingiz bo'sh!"}, status=status.HTTP_400_BAD_REQUEST)
 
-    
+        
         serializer = CheckoutSerializer(instance=order, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save(user=user) 
             # address_type = request.data.get('address_type')
-            # if address_type == 'maps':
-            #     lat = request.data.get('address_lat')
-            #     lng = request.data.get('address_lng')
-            #     if lat and lng:
-            #         order.address_text = f"Latitude: {lat}, Longitude: {lng}"
 
-            # order.is_completed = True
-            # order.save()
+            if payment_method == 'card':
+                card = VirtualCard.objects.get(user=user)
+                order.payment_method = payment_method
+                if  card.balance >= Decimal(order.total_price):
+                    card.balance -= Decimal(order.total_price)
+                    card.save()
+                    order.is_paid = True
+                    order.is_completed = True
+                    order.save()
+                    # 📩 Telegramga yuborish
+                    telegram_ids = order.filial.users.values_list('telegram_id', flat=True)
+                    for tg_id in telegram_ids:
+                        send_telegram_message(
+                            telegram_id=tg_id,
+                            message=f"🆔 ид: {order.id}\n"
+                                    f"⏰ соат : {now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                                    f"🏢 филиал : {order.filial}\n"
+                                    f"💰 сумма: {order.total_price} сум\n"
+                                    f"📞 тел: {order.phone_number1}\n"
+                                    f"💊 дорилар сони: {order.items.count()} та\n"
+                                    f"📍 Адрес: {order.address_text} \n"
+                                    f"💳 тўлов : {'бажарилди' if order.is_paid else 'кутиламоқда'}"
+                                    "test: bu test tel qilmang "
+                                    )
+                    # logger.info(f"Order {order_id} marked as paid successfully")
 
-            logger.info(f"Order {order.id} completed for user: {user.phone_number}")
-            # 📩 Telegramga yuborish
-            telegram_ids = order.filial.users.values_list('telegram_id', flat=True)
-            for tg_id in telegram_ids:
-                send_telegram_message(
-                    telegram_id=tg_id,
-                    message=f"🆔 ид: {order.id}\n"
-                            f"⏰ соат : {now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-                            f"🏢 филиал : {order.filial}\n"
-                            f"💰 сумма: {order.total_price} сум\n"
-                            f"📞 тел: {order.phone_number1}\n"
-                            f"💊 дорилар сони: {order.items.count()} та\n"
-                            f"📍 Адрес: {order.address_text} \n"
-                            f"💳 тўлов : {'бажарилди' if order.is_paid else 'кутиламоқда'}"
-                )
-            if order.payment_method == 'click':
+                    return Response({"success": True, "message": "Buyurtma rasmiylashtirildi", "order_id": order.id}, status=status.HTTP_200_OK)
+                
+                return Response({"success": False})
+                    
+            if payment_method == 'click':
+                order.payment_method = payment_method
+                order.save()
                 click = ClickUp(
                     service_id=settings.CLICK_SERVICE_ID,
                     merchant_id=settings.CLICK_MERCHANT_ID

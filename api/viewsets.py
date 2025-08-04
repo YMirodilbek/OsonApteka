@@ -15,6 +15,7 @@ from datetime import datetime
 from Product.models import *
 from . serilalizer import * 
 import logging
+import os
 
 class OurPharmacieViewSet(viewsets.ModelViewSet):
     queryset = OurPharmacie.objects.all()
@@ -237,7 +238,7 @@ class OrderViewset(viewsets.ModelViewSet):
         cart_items = OrderItem.objects.filter(
             order__user=user,
             order__is_completed=False
-        ).select_related('product', 'order')
+        ).select_related('product', 'order').order_by('price')
 
         serializer = OrderItemSerializer(cart_items, many=True)
 
@@ -359,8 +360,7 @@ class OrderViewset(viewsets.ModelViewSet):
 
         return Response({
             "status": 200,
-            # "cart_count": cart_count,
-            # "cart_total": cart_total
+
         }, status=status.HTTP_200_OK)
     
     #https://akmalfarm.uz/api/order/
@@ -424,4 +424,69 @@ class VirtualCardViewset(viewsets.ModelViewSet):
         serializer.save(user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
+
+class ChatViewset(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ChatSerializer
+    def get_queryset(self):
+        return Chat.objects.filter(room_id=self.request.user.id)
     
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.update(is_read=True)  # barcha xabarlarni o‘qildi deb belgilaydi
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        content = request.data.get('content')
+        image = request.data.get('image')
+
+        chat = Chat.objects.create(
+            room_id=user.id,
+            user=user,
+            content=content,
+            image=image,
+            is_read = True
+        )
+
+        serializer = self.get_serializer(chat)
+
+        return Response({
+            'success': True,
+            'data': serializer.data
+        }, status=status.HTTP_201_CREATED)
+    
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            chat = Chat.objects.get(id =kwargs['pk'])
+            if chat.image and os.path.isfile(chat.image.path):
+                os.remove(chat.image.path)
+            chat.delete()
+            return Response({'success': True, } )
+        except:
+            return Response({ 'success': False,} )
+    
+    def update(self, request, *args, **kwargs):
+        try:
+            data = request.data
+            content = data.get('content')
+            id = kwargs.get('pk')
+            chat = Chat.objects.get(id=id)
+            chat.content = content
+            chat.save()
+            
+
+            response = {
+                'success': True,
+                'data': ChatSerializer(chat, many=False).data
+            }
+        except Exception as err:
+            response = {
+                'success': False,
+                'error': str(err)
+            }
+            return Response(response, status=400)
+        return Response(response)

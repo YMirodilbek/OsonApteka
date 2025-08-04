@@ -35,6 +35,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)  
     is_agree = models.BooleanField(default=False) 
     date_joined = models.DateTimeField(auto_now_add=True)
+    onesignal_player_id = models.CharField(max_length=200, null=True, blank=True)
     telegram_id = models.BigIntegerField(null=True, blank=True)
     telegram_token = models.CharField(max_length=100, unique=True, null=True, blank=True, default=uuid.uuid4)
     objects = UserManager()
@@ -99,7 +100,7 @@ class VirtualCard(models.Model):
         ordering = ['-created_at']
         
     def __str__(self):
-        return f"{self.card_type} - {self.masked_card_number}"
+        return f" {self.masked_card_number}"
 
     @property
     def masked_card_number(self):

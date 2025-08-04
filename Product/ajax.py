@@ -3,12 +3,13 @@ from django.views.decorators.csrf import csrf_exempt
 from .context_processors import cart_context
 from Product.models import Dostafca ,Product
 from .lotin_krill import latin_to_cyrillic
+from .decorator import login_required_ajax
 from django.http import JsonResponse
+from django.utils import timezone
 from django.db.models import Q
 from rapidfuzz import fuzz
 from .views import *
 import json
-from .decorator import login_required_ajax
 
 @login_required_ajax
 def add_to_cart(request, product_id):
@@ -191,3 +192,45 @@ def dastafca(request):
     dostafca.save()
     return  redirect('/filial/')
 
+
+def get_messages(request, user_id):
+    chats = Chat.objects.filter(room_id=user_id).order_by('timestamp')
+    messages = []
+
+    for chat in chats:
+        messages.append({
+            'room_id':chat.room_id,
+            'content': chat.content,
+            'image': chat.image.url if chat.image else None,
+            'time': chat.timestamp.strftime('%H:%M'),
+            'is_sent_by_me': chat.room_id  == chat.user.id  # siz yuborgansizmi yoki yo'q
+        })
+
+    return JsonResponse({'messages': messages})
+
+@csrf_exempt
+def send_image(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        image = request.FILES['image']
+        room_id = request.POST.get('room_id')
+        chat = Chat.objects.create(
+            user_id=room_id,
+            room_id=room_id,
+            image=image
+        )
+        return JsonResponse({'success': True, 'image_url': chat.image.url})
+    return JsonResponse({'success': False}, status=400)
+
+@csrf_exempt
+def send_text(request):
+    data = json.loads(request.body)
+    content = data.get('content')
+    room_id = request.data.get('room_id')
+    if content:
+        Chat.objects.create(
+            user_id=room_id,
+            room_id=room_id,
+            content=content
+        )
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)

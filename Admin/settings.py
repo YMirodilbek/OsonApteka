@@ -2,17 +2,15 @@ from pathlib import Path
 import environ
 import os
 
-
 env = environ.Env()
 environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
-
+ONSIGNAL_KEY = env.str('ONSIGNAL_KEY')
 
 DEBUG = True
-
 
 ALLOWED_HOSTS = ['*']
 
@@ -72,8 +70,6 @@ SPECTACULAR_SETTINGS = {
     }
 }
 
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,13 +102,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Admin.wsgi.application'
 DJANGO_ALLOW_ASYNC_UNSAFE = True
 
-
-
-
 from .set_database import *
 
 DATABASES = LOCAL_DATABASE
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -129,8 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 LANGUAGE_CODE = 'uz-uz'
 
 TIME_ZONE = 'Asia/Tashkent'
@@ -139,13 +129,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tashkent'
 CELERY_ENABLE_UTC = False
-
 
 LOGGING = {
     'version': 1,
@@ -253,11 +241,6 @@ LOGGING = {
     },
 }
 
-
-
-
-
-
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
@@ -286,10 +269,8 @@ CKEDITOR_CONFIGS = {
         'language': 'ru',  # Til sozlamasi
     }
 }
+
 LOGIN_URL = '/auth/send-otp/'
-
-
-
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 

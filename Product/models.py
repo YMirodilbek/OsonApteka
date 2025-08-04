@@ -25,7 +25,8 @@ class Product(models.Model):
     PERSON_CHOICES  = (
         ('bolalar','bolalar'),
         ('ayollar','ayollar'),
-        ('erkaklar','erkaklar')
+        ('erkaklar','erkaklar'),
+        ('kattalar','kattalar')
     )
     uid = models.BigIntegerField(db_index=True) #bor 
     name = models.CharField(max_length=255, null=True, blank=True) # bor 
