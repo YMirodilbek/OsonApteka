@@ -13,36 +13,32 @@
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
                             <thead>
-                                <tr>
+                               <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">F.I.SH</th>
-                                    <th scope="col">Yosh</th>
-                                    <th scope="col">Hujjat</th>
-                                    <th scope="col">Harakatlar</th>
+                                    <th scope="col" title="Фамилия Имя Отчество">ФИО</th>
+                                    <th scope="col" title="Дата рождения">Дата</th>
+                                    <th scope="col" title="Адрес проживания">Адрес</th>
+                                    <th scope="col" title="Образование">Образ.</th>
+                                    <th scope="col" title="Последнее место работы">Работа</th>
+                                    <th scope="col" title="Желаемая зарплата">Зарплата</th>
+                                    <th scope="col" title="Номер телефона для связи">Телефон</th>
                                 </tr>
+
                             </thead>
                             <tbody>
                                 {% for application in vacancy_application %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ application.fullname }}</td>
-                                    <td>{{ application.age }}</td>
-                                    <td>
-                                        {% if application.doc %}
-                                            <a href="{{ application.doc.url }}" target="_blank" class="btn btn-primary btn-sm">
-                                                <i class="fa fa-download"></i> Hujjatni ko'rish
-                                            </a>
-                                        {% else %}
-                                            Hujjat mavjud emas
-                                        {% endif %}
+                                    <td>{{ application.fio }}</td>
+                                    <td>{{ application.date_of_birth }}</td>
+                                    <td style="max-width: 150px; word-break: break-word; white-space: normal;">
+                                        {{ application.address }}
                                     </td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="{% url 'dashboard_vacancy_application_delete_url' application.id %}" class="btn btn-danger shadow btn-xs sharp delete-application" data-id="{{ application.id }}">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
+
+                                    <td>{{ application.education }}</td>
+                                    <td>{{ application.last_job }}</td>
+                                    <td>{{ application.desired_salary }}</td>
+                                    <td>{{ application.phone_number }}</td>
                                 </tr>
                                 {% empty %}
                                 <tr>

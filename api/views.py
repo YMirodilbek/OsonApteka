@@ -7,6 +7,7 @@ from main.bot_messages import send_telegram_message
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
+from tmp.models import Landlord, Applicant
 from rest_framework.views import APIView
 from django.utils.timezone import now
 from django.shortcuts import render 
@@ -23,6 +24,27 @@ import redis
 import re
 import logging
 r = redis.Redis(host='localhost', port=6379, db=0)
+
+class ApplicantApiView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        data = request.data
+        serializer = ApplicantSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success':True})
+        return Response({'success':False, 'errors': serializer.errors})
+
+class LandlordApiView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        data = request.data
+        serializer = LandlordSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success':True})
+        return Response({'success':False, 'errors': serializer.errors})  
+        
 
 @api_view(['POST'])
 def phone_number_api(request):
@@ -179,7 +201,6 @@ def person(request,*args,**kwargs):
         })        
 
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def save_onesignal_id(request):
@@ -258,3 +279,5 @@ class CheckoutAPIView(APIView):
         else:
             logger.warning(f"Checkout validation error: {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

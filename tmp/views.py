@@ -40,7 +40,6 @@ def ApplicantViwe(request):
         last_job = request.POST.get('last_job')
         desired_salary = request.POST.get('desired_salary')
         phone_number = request.POST.get('phone_number')
-        # document = request.FILES.get('document')  # agar fayl yuborilsa
 
         models.Applicant.objects.create(
             fio=fio,
@@ -50,15 +49,9 @@ def ApplicantViwe(request):
             last_job=last_job,
             desired_salary=desired_salary,
             phone_number=phone_number,
-            # document=document
         )
         messages.success(request,'Application submitted successfully')
     return redirect(request.META.get('HTTP_REFERER'))
-
-
-
-
-
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -400,7 +393,7 @@ def dashboard_vacancy(request):
 @login_required(login_url='/auth/send-otp/')
 @is_staff
 def dashboard_vacany_application(request):
-    vacancy_application = models.VacancyApplication.objects.filter(type='vacancy')
+    vacancy_application = models.Applicant.objects.all().order_by('-id')
     context = {
         'vacancy_application': vacancy_application
     }

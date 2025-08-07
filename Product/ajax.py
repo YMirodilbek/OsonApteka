@@ -5,11 +5,15 @@ from Product.models import Dostafca ,Product
 from .lotin_krill import latin_to_cyrillic
 from .decorator import login_required_ajax
 from django.http import JsonResponse
+from django.db.models import Q, Max
 from django.utils import timezone
-from django.db.models import Q
+from datetime import timedelta
 from rapidfuzz import fuzz
 from .views import *
 import json
+
+
+
 
 @login_required_ajax
 def add_to_cart(request, product_id):
@@ -195,18 +199,21 @@ def dastafca(request):
 
 def get_messages(request, user_id):
     chats = Chat.objects.filter(room_id=user_id).order_by('timestamp')
+    chats.filter(is_read_admin=False).update(is_read_admin=True)
+    user = CustomUser.objects.get(id=user_id)
     messages = []
 
     for chat in chats:
         messages.append({
+            'admin':chat.user_admin.first_name if chat.user_admin else "",
             'room_id':chat.room_id,
             'content': chat.content,
             'image': chat.image.url if chat.image else None,
             'time': chat.timestamp.strftime('%H:%M'),
-            'is_sent_by_me': chat.room_id  == chat.user.id  # siz yuborgansizmi yoki yo'q
+            'is_sent_by_me':  chat.room_id == chat.user.id if hasattr(chat, 'user') and chat.user is not None else False
         })
 
-    return JsonResponse({'messages': messages})
+    return JsonResponse({'messages': messages, 'user':user.phone_number})
 
 @csrf_exempt
 def send_image(request):
@@ -214,23 +221,54 @@ def send_image(request):
         image = request.FILES['image']
         room_id = request.POST.get('room_id')
         chat = Chat.objects.create(
-            user_id=room_id,
+            user_admin=request.user,
+            # user_id=room_id,
             room_id=room_id,
-            image=image
+            image=image,
+            is_read_admin=True,
         )
         return JsonResponse({'success': True, 'image_url': chat.image.url})
     return JsonResponse({'success': False}, status=400)
+
 
 @csrf_exempt
 def send_text(request):
     data = json.loads(request.body)
     content = data.get('content')
-    room_id = request.data.get('room_id')
+    room_id = data.get('room_id')
     if content:
         Chat.objects.create(
-            user_id=room_id,
+            user_admin=request.user,
+            # user_id=room_id,
             room_id=room_id,
-            content=content
+            content=content,
+            is_read_admin=True,
         )
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
+
+
+
+def get_recent_users(request):
+    five_days_ago = timezone.now() - timedelta(days=5)
+    recent_chats = Chat.objects.filter(
+        timestamp__gte=five_days_ago,
+        user__isnull=False
+    )
+
+    users = User.objects.filter(
+        chats__in=recent_chats
+    ).annotate(
+        last_message_time=Max('chats__timestamp')
+    ).order_by('-last_message_time').distinct()
+
+    user_data = []
+    for user in users:
+        user_data.append({
+            'id': user.id,
+            'first_name': user.first_name if user.first_name else 'N',
+            'last_time': user.last_message_time.strftime('%H:%M') if user.last_message_time else '',
+            'count': user.cha_count
+        })
+
+    return JsonResponse({'users': user_data})

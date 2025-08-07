@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Sum, F, Prefetch , Count , Q
+from django.db.models import Sum, F, Prefetch , Count , Q, Max
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator ,EmptyPage
 from django.db.models.functions import TruncDay
@@ -747,10 +747,15 @@ def filial_order_client(request):
 
 
 def chat_web(request):
-    # chat = Chat.objects.create(room_id=user.id, content="Salom")
-    # send_chat_notification_if_needed(chat)
     
     five_days_ago = timezone.now() - timedelta(days=5)
-    recent_chats = Chat.objects.filter(timestamp__gte=five_days_ago, user__isnull=False)
-    users = User.objects.filter(id__in=recent_chats.values_list('user_id', flat=True).distinct())
+    recent_chats = Chat.objects.filter(
+    timestamp__gte=five_days_ago,
+    user__isnull=False
+        )
+    users = User.objects.filter(
+            chats__in=recent_chats
+        ).annotate(
+            last_message_time=Max('chats__timestamp')
+        ).order_by('-last_message_time').distinct()
     return render(request, 'chat/chat.html', {'users':users})

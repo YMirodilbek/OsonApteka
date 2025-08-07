@@ -1,3 +1,4 @@
+from tmp.models import Landlord, Applicant
 from rest_framework import serializers
 from Product.models import *
 from tmp.models import *
@@ -203,3 +204,16 @@ class ChatSerializer(serializers.ModelSerializer):
             'content': {'required': False},
             'image': {'required': False},
         }
+        
+
+class LandlordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Landlord
+        fields = "__all__"
+
+
+class ApplicantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Applicant
+        fields = "__all__"
+        

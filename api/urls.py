@@ -58,6 +58,11 @@ urlpatterns = [
    path('dastafca/', get_dastafca),
    path('product-order/', product_order),
    path('filial/', get_filial),
+   
+   
+   path('landlord/', LandlordApiView.as_view()),
+   path('applicant/', ApplicantApiView.as_view()),
+   
 ]
 
 urlpatterns += router.urls

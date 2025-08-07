@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Chat</title>
+    <title> Chat</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
@@ -110,7 +110,6 @@
             overflow-y: auto;
             padding: 15px;
             background-color: #e5ddd6;
-            background-image: url('https://web.telegram.org/img/pattern.png');
             background-attachment: fixed;
         }
         .message {
@@ -154,7 +153,7 @@
 <body>
     <div class="app-container">
         <!-- Users list -->
-        <div class="users-list">
+        <div class="users-list" id="user-list">
             <!-- User items -->
             {% for u in users %}
             <div class="user-item d-flex mb-2" onclick="loadMessages({{ u.id }})" style="cursor: pointer;">
@@ -163,66 +162,46 @@
                 </div>
                 <div class="user-info w-100">
                     <div class="d-flex justify-content-between">
-                        <div class="user-name">{{ u.first_name }}</div>
-                        <div class="message-time">{{ u.chats.last.timestamp|date:"H:i" }}</div>
+                        <div class="user-name">{{ u.first_name }} <span style="color: red;">{% if  u.cha_count  > 0 %} {{ u.cha_count }} {% endif %}</span></div>
+                        <div class="message-time">{{ u.chats.last.timestamp|date:"H:i" }}</div>  
                     </div>
-                    <div class="last-message">
-                        {% with u.chats.last as chat %}
-                            {% if chat.content %}
-                                {{ chat.content|truncatechars:40 }}
-                            {% elif chat.image %}
-                                🖼️ Rasm yuborilgan
-                            {% endif %}
-                        {% endwith %}
-                    </div>
+                    
                 </div>
             </div>
             {% endfor %}
         </div>
         
         <!-- Chat area -->
-    <div class="chat-container" data-room-id="{{ room_id }}" >
+    <div class="chat-container" >
     <!-- Header -->
             <div class="chat-header d-flex align-items-center">
                 <div class="me-2 rounded-circle bg-primary" style="width:40px; height:40px;"></div>
                 <div>
-                    <div class="fw-bold">Ism Familya {{ room_id }} </div>
-                    <div class="text-muted" style="font-size: 12px;">online</div>
+                    <div id="user-username" class="fw-bold"></div>
+        
                 </div>
             </div>
             <div id="chat-messages" class="chat-messages d-flex flex-column p-3" style="height: 300px; overflow-y: auto;">
-    <!-- fetch orqali xabarlar shu joyga keladi -->
 
-            <!-- Messages -->
-            <!-- <div class="chat-messages d-flex flex-column"> -->
-                <!-- Received -->
-                <!-- <div class="message received">
-                    <div class="message-text">Salom, ishlar qalay?</div>
-                    <div class="message-time">12:20</div>
-                </div> -->
-
-                <!-- Sent -->
-                <!-- <div class="message sent">
-                    <div class="message-text">Yaxshi, rahmat. O‘zingchi?</div>
-                    <div class="message-time">12:21</div>
-                </div> -->
-
-                <!-- Received -->
-                <!-- <div class="message received">
-                    <div class="message-text">Yaxshi, endi uydaman.</div>
-                    <div class="message-time">12:22</div>
-                </div> -->
             </div>
-
-            <!-- Input -->
-                        <div class="chat-input">
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <img id="modalImage" src="" alt="Kattalashtirilgan rasm" class="img-fluid rounded">
+                    </div>
+                    </div>
+                </div>
+            </div>
+                            <!-- Input -->
+             <div class="chat-input">
                 <div class="input-group">
-                    <input type="text" class="form-control" style="width: 60% !important;" placeholder="Xabar yozing...">
-                    <div id="paste-area" contenteditable="true" class="form-control" style="width: 20% !important; min-height: 30px;">
+                    <input id="text-input" type="text" class="form-control" style="width: 60% !important;" placeholder="Xabar yozing...">
+                   <div id="paste-area" contenteditable="true" class="form-control" style="width: 20% !important;">
                         Ctrl + V
                     </div>
 
-                    <button class="btn btn-primary" style="width: 20% !important;" type="button">
+                    <button id="send-button" class="btn btn-primary" type="button">
                         <i class="bi bi-send"></i> Yuborish
                     </button>
                 </div>
@@ -235,10 +214,67 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        const pasteArea = document.getElementById('paste-area');
+
+
+function loadUsers() {
+    fetch('/chat/get-users/')
+
+        .then(res => res.json())
+        .then(data => {
+            const usersList = document.getElementById('user-list');
+            usersList.innerHTML = ''; // Eski userlarni tozalash
+            console.log(data.users)
+            data.users.forEach(u => {
+                const html = `
+                    <div class="user-item d-flex mb-2" onclick="loadMessages(${u.id})" style="cursor: pointer;">
+                        <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2">
+                            ${u.first_name[0]}
+                        </div>
+                        <div class="user-info w-100">
+                            <div class="d-flex justify-content-between">
+                                <div class="user-name">${u.first_name}
+                                    <span style="color: red;">${u.count > 0 ? u.count : ''}</span>
+                                </div>
+                                <div class="message-time">${u.last_time}
+                        
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                `;
+                usersList.innerHTML += html;
+            });
+        });
+}
+
+// Har 60 sekundda qayta yuklash
+setInterval(loadUsers, 30000);
+
+
+
+
+    const pasteArea = document.getElementById('paste-area');
+
+    pasteArea.addEventListener('paste', (e) => {
+    e.preventDefault();  // Brauzerning default paste funksiyasini to‘xtatamiz
+
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+            const file = items[i].getAsFile();
+            pastedImageFile = file;
+            selectedFile = null;
+
+            // Rasm qo‘shilmasligi uchun tozalaymiz
+            pasteArea.innerHTML = "<b>Yuborng</b>";
+            break;
+        }
+    }
+});
         const sendButton = document.getElementById('send-button');
         const textInput = document.getElementById('text-message');
-        const roomId = chatContainer.dataset.roomId; 
+        // const roomId = chatContainer.dataset.roomId; 
         // ENTER bilan rasm yuborish
         pasteArea.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
@@ -256,7 +292,8 @@
                 const file = item.getAsFile();
                 const formData = new FormData();
                 formData.append('image', file);
-                formData.append('room_id', roomId);  // room_id ni qo‘shish
+                formData.append("room_id", currentUserId );
+                 // room_id ni qo‘shish
 
                 fetch('/chta/image/create/', {
                     method: 'POST',
@@ -268,6 +305,7 @@
                 .then(data => {
                     console.log('Rasm yuborildi:', data);
                     pasteArea.innerHTML = "Ctrl + V";
+                    loadMessages(currentUserId);
                 });
             }
         }
@@ -275,44 +313,54 @@
 
 
         // Text yoki rasmni yuborish
-        sendButton.addEventListener('click', function () {
-            const text = textInput.value.trim();
-            if (text) {
-                fetch('/chat/message/create/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                         message: text,
-                        "room_id":roomId
-                     })
-                }).then(res => res.json())
-                .then(data => {
-                    textInput.value = '';
-                    console.log('Text yuborildi', data);
-                });
-            }
-        });
+document.addEventListener('DOMContentLoaded', function () {
+    const sendButton = document.getElementById('send-button');
+    const textInput = document.getElementById('text-input');
 
-        // ENTER bilan text yuborish
-        textInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                sendButton.click();
-            }
-        });
+    sendButton.addEventListener('click', function () {
+        const text = textInput.value.trim();
+        if (text) {
+            fetch('/chat/message/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ content: text,room_id: currentUserId  })
+            })
+            .then(res => res.json())
+            .then(data => {
+                textInput.value = '';
+                console.log('Text yuborildi', data);
+                 
+                loadMessages(currentUserId);
+            });
+        }
+    });
+});
 
-
-
-
-
+document.addEventListener('click', function (e) {
+    if (e.target.tagName === 'IMG' && e.target.closest('.message-text')) {
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = e.target.src;
+        const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        imageModal.show();
+    }
+});
+let currentUserId = null;
     function loadMessages(userId) {
+        currentUserId = userId; 
         fetch(`/get-messages/${userId}/`)
         .then(response => response.json())
         .then(data => {
         const chatBox = document.getElementById('chat-messages');
+        const user = document.getElementById('user-username')
+        user.innerHTML= '';
+        const username = document.createElement('div')
+        username.classList.add('fw-bold',data.user )
+        username.textContent = data.user;
+        user.appendChild(username)
+    
         chatBox.innerHTML = '';  // eski xabarlarni tozalash
         data.messages.forEach(msg => {
             const messageDiv = document.createElement('div');
@@ -321,14 +369,18 @@
             let messageHTML = '';
 
             if (msg.content) {
-                messageHTML += `<div class="message-text">${msg.content}</div>`;
+                messageHTML += `<div class="message-text">${msg.content}
+                   
+                    </div>`;
             } else if (msg.image) {
                 messageHTML += `<div class="message-text">
                     <img src="${msg.image}" alt="rasm" class="img-fluid rounded" style="max-width: 200px;">
+
+                    
                 </div>`;
             }
 
-            messageHTML += `<div class="message-time">${msg.time}</div>`;
+            messageHTML += `<div class="message-time">  <span>${msg.admin}</span> ${msg.time}</div>`;
 
             messageDiv.innerHTML = messageHTML;
             chatBox.appendChild(messageDiv);

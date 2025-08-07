@@ -50,6 +50,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         from Product.models import OrderItem  
         return OrderItem.objects.filter(order__user=self, order__is_completed=False).count()
 
+    @property
+    def cha_count(self):
+       return self.chats.filter(is_read_admin=False).count()
+        
 
 class PDFDocument(models.Model):
     title = models.CharField(max_length=255)
@@ -71,11 +75,14 @@ class Chat(models.Model):
     room_id = models.PositiveIntegerField()# client user id 
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True,
     blank=True, related_name='chats')
+    user_admin = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True,
+    blank=True, related_name='admin_chats')
     image = models.ImageField(upload_to='chat_images/', blank=True, null=True)
     voice = models.FileField(upload_to='chat_voices/', blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
     is_read = models.BooleanField(default=False)
+    is_read_admin = models.BooleanField(default=False)
     
     
 class VirtualCard(models.Model):

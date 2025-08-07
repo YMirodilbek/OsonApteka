@@ -2,7 +2,6 @@ from django.db import models
 from ckeditor.fields import RichTextField 
 
 
-
 class OurPharmacie(models.Model):
     title = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
@@ -40,9 +39,10 @@ class Vacancy(models.Model):
     def __str__(self):
         return self.title
 
+
 class Applicant(models.Model):
     fio = models.CharField("ФИО", max_length=255)
-    date_of_birth = models.DateField("Дата рождения")
+    date_of_birth = models.CharField("Дата рождения",max_length=55)
     address = models.CharField("Адрес проживания", max_length=255)
     education = models.CharField("Образование", max_length=255)
     last_job = models.CharField("Последнее место работы", max_length=255, blank=True, null=True)

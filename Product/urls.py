@@ -37,7 +37,7 @@ urlpatterns = [
 
     path('chta/image/create/', send_image, name='send_image'),
     path('chat/message/create/', send_text, name='send_text'),
-
+    path('chat/get-users/', get_recent_users, name='get_recent_users'),
 
     
     path('',Index, name='index'),
