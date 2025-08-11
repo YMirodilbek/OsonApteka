@@ -19,8 +19,7 @@ router.register(r'order', OrderViewset, basename='order')
 router.register(r'blog', BlogViewset, basename='blog')
 router.register(r'card', VirtualCardViewset, basename='card')
 router.register(r'chat', ChatViewset, basename='chat')
-
-
+router.register(r'vacancy', VacancyVievSet, basename='vacancy')
 
 
 schema_view = get_schema_view(

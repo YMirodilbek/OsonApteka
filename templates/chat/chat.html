@@ -216,40 +216,17 @@
     <script>
 
 
-function loadUsers() {
-    fetch('/chat/get-users/')
+// function loadUsers() {
+//     fetch('/chat/get-users/')
 
-        .then(res => res.json())
-        .then(data => {
-            const usersList = document.getElementById('user-list');
-            usersList.innerHTML = ''; // Eski userlarni tozalash
-            console.log(data.users)
-            data.users.forEach(u => {
-                const html = `
-                    <div class="user-item d-flex mb-2" onclick="loadMessages(${u.id})" style="cursor: pointer;">
-                        <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2">
-                            ${u.first_name[0]}
-                        </div>
-                        <div class="user-info w-100">
-                            <div class="d-flex justify-content-between">
-                                <div class="user-name">${u.first_name}
-                                    <span style="color: red;">${u.count > 0 ? u.count : ''}</span>
-                                </div>
-                                <div class="message-time">${u.last_time}
-                        
-                                </div>
-                
-                            </div>
-                        </div>
-                    </div>
-                `;
-                usersList.innerHTML += html;
-            });
-        });
-}
+//         .then(res => res.json())
+//         .then(data => {
+            
+        // });
+// }
 
 // Har 60 sekundda qayta yuklash
-setInterval(loadUsers, 30000);
+
 
 
 
@@ -339,6 +316,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+
+let currentUserId = null;
+
+// Modal rasmni kattalashtirish
 document.addEventListener('click', function (e) {
     if (e.target.tagName === 'IMG' && e.target.closest('.message-text')) {
         const modalImage = document.getElementById('modalImage');
@@ -347,49 +329,82 @@ document.addEventListener('click', function (e) {
         imageModal.show();
     }
 });
-let currentUserId = null;
-    function loadMessages(userId) {
-        currentUserId = userId; 
-        fetch(`/get-messages/${userId}/`)
+
+function loadMessages(userId) {
+    currentUserId = userId;
+    fetch(`/get-messages/${userId}/`)
         .then(response => response.json())
         .then(data => {
-        const chatBox = document.getElementById('chat-messages');
-        const user = document.getElementById('user-username')
-        user.innerHTML= '';
-        const username = document.createElement('div')
-        username.classList.add('fw-bold',data.user )
-        username.textContent = data.user;
-        user.appendChild(username)
-    
-        chatBox.innerHTML = '';  // eski xabarlarni tozalash
-        data.messages.forEach(msg => {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', msg.is_sent_by_me ? 'received': 'sent');
+            const chatBox = document.getElementById('chat-messages');
+            const user = document.getElementById('user-username');
+            user.innerHTML = '';
 
-            let messageHTML = '';
+            const username = document.createElement('div');
+            username.classList.add('fw-bold');
+            username.textContent = data.user;
+            user.appendChild(username);
 
-            if (msg.content) {
-                messageHTML += `<div class="message-text">${msg.content}
-                   
+            // Xabarlar bo‘limini tozalash
+            chatBox.innerHTML = '';
+            data.messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', msg.is_sent_by_me ? 'received' : 'sent');
+
+                let messageHTML = '';
+                if (msg.content) {
+                    messageHTML += `<div class="message-text">${msg.content}</div>`;
+                } else if (msg.image) {
+                    messageHTML += `<div class="message-text">
+                        <img src="${msg.image}" alt="rasm" class="img-fluid rounded" style="max-width: 200px;">
                     </div>`;
-            } else if (msg.image) {
-                messageHTML += `<div class="message-text">
-                    <img src="${msg.image}" alt="rasm" class="img-fluid rounded" style="max-width: 200px;">
+                }
 
-                    
-                </div>`;
-            }
+                messageHTML += `<div class="message-time"><span>${msg.admin}</span> ${msg.time}</div>`;
+                messageDiv.innerHTML = messageHTML;
+                chatBox.appendChild(messageDiv);
+            });
 
-            messageHTML += `<div class="message-time">  <span>${msg.admin}</span> ${msg.time}</div>`;
+            // Foydalanuvchilar ro‘yxatini yangilash
+            const usersList = document.getElementById('user-list');
+            usersList.innerHTML = ''; // eski userlarni tozalash
 
-            messageDiv.innerHTML = messageHTML;
-            chatBox.appendChild(messageDiv);
+            data.users.forEach(u => {
+                const html = `
+                    <div class="user-item d-flex mb-2" onclick="loadMessages(${u.id})" style="cursor: pointer;">
+                        <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2">
+                            ${u.first_name[0]}
+                        </div>
+                        <div class="user-info w-100">
+                            <div class="d-flex justify-content-between">
+                                <div class="user-name">
+                                    ${u.first_name}
+                                    <span style="color: red;">${u.count > 0 ? u.count : ''}</span>
+                                </div>
+                                <div class="message-time">${u.last_time}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                usersList.innerHTML += html;
+            });
+
+            // Skrollni pastga tushirish
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => {
+            console.error("Xabarlarni yuklashda xatolik:", error);
         });
-            
-        // Skrollni pastga tushirish
-        chatBox.scrollTop = chatBox.scrollHeight;
-        });
-        }
+}
+
+// ⏱ Har 30 soniyada avtomatik yangilash
+setInterval(() => {
+    if (currentUserId !== null) {
+        loadMessages(currentUserId);
+    }
+}, 30000);
+
+
+
 
 
     </script>

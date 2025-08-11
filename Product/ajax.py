@@ -198,6 +198,28 @@ def dastafca(request):
 
 
 def get_messages(request, user_id):
+    five_days_ago = timezone.now() - timedelta(days=5)
+    recent_chats = Chat.objects.filter(
+        timestamp__gte=five_days_ago,
+        user__isnull=False
+    )
+
+    users = User.objects.filter(
+        chats__in=recent_chats
+    ).annotate(
+        last_message_time=Max('chats__timestamp')
+    ).order_by('-last_message_time').distinct()
+
+    user_data = []
+    for user in users:
+        user_data.append({
+            'id': user.id,
+            'first_name': user.first_name if user.first_name else 'N',
+            'last_time': user.last_message_time.strftime('%H:%M') if user.last_message_time else '',
+            'count': user.cha_count
+        })
+    
+    
     chats = Chat.objects.filter(room_id=user_id).order_by('timestamp')
     chats.filter(is_read_admin=False).update(is_read_admin=True)
     user = CustomUser.objects.get(id=user_id)
@@ -213,7 +235,7 @@ def get_messages(request, user_id):
             'is_sent_by_me':  chat.room_id == chat.user.id if hasattr(chat, 'user') and chat.user is not None else False
         })
 
-    return JsonResponse({'messages': messages, 'user':user.phone_number})
+    return JsonResponse({'messages': messages, 'user':user.phone_number, 'users':user_data})
 
 @csrf_exempt
 def send_image(request):
@@ -247,28 +269,3 @@ def send_text(request):
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
 
-
-
-def get_recent_users(request):
-    five_days_ago = timezone.now() - timedelta(days=5)
-    recent_chats = Chat.objects.filter(
-        timestamp__gte=five_days_ago,
-        user__isnull=False
-    )
-
-    users = User.objects.filter(
-        chats__in=recent_chats
-    ).annotate(
-        last_message_time=Max('chats__timestamp')
-    ).order_by('-last_message_time').distinct()
-
-    user_data = []
-    for user in users:
-        user_data.append({
-            'id': user.id,
-            'first_name': user.first_name if user.first_name else 'N',
-            'last_time': user.last_message_time.strftime('%H:%M') if user.last_message_time else '',
-            'count': user.cha_count
-        })
-
-    return JsonResponse({'users': user_data})

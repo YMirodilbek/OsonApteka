@@ -490,3 +490,9 @@ class ChatViewset(viewsets.ModelViewSet):
             }
             return Response(response, status=400)
         return Response(response)
+
+
+class VacancyVievSet(viewsets.ModelViewSet):
+    queryset = Vacancy.objects.all().order_by('-id')
+    serializer_class = VacancySerializer
+    http_method_names = ['get']  
