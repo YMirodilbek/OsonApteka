@@ -1,8 +1,8 @@
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from .lotin_krill import latin_to_cyrillic, compress
 from .context_processors import cart_context
 from Product.models import Dostafca ,Product
-from .lotin_krill import latin_to_cyrillic
 from .decorator import login_required_ajax
 from django.http import JsonResponse
 from django.db.models import Q, Max
@@ -11,8 +11,6 @@ from datetime import timedelta
 from rapidfuzz import fuzz
 from .views import *
 import json
-
-
 
 
 @login_required_ajax
@@ -269,3 +267,28 @@ def send_text(request):
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
 
+
+
+def category_img_edit(request):
+    if request.method == "POST":
+        cat_id = request.POST.get('id')
+        img = request.FILES.get('img')
+
+        if not cat_id or not img:
+            return JsonResponse({"success": False, "error": "ID yoki rasm yuborilmadi"})
+
+        try:
+            category = Category.objects.get(id=cat_id)
+        except Category.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Kategoriya topilmadi"})
+
+        category.svg = compress(img)
+        category.save()
+
+        return JsonResponse({
+            "success": True,
+            "new_image_url": category.svg.url
+        })
+
+    categorys = Category.objects.all()
+    return render(request, 'filial/category-edit.html', {'categorys': categorys})

@@ -1,14 +1,17 @@
-from django.db.models import Case, When, BooleanField, Value, Count, Q, Prefetch, Sum, F
+from django.db.models import Case, When, BooleanField, Value, Count, Q, Prefetch, Sum, F, OuterRef, Subquery
 from rest_framework.permissions import  AllowAny, IsAuthenticated
+from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework.pagination import PageNumberPagination
 from main.bot_messages import send_telegram_message
 from Product.lotin_krill import  latin_to_cyrillic
+from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils.timezone import now
 from rest_framework import viewsets
 from tmp.models import OurPharmacie
+from difflib import SequenceMatcher
 from rest_framework import filters
 from rest_framework import status
 from datetime import datetime
@@ -16,11 +19,39 @@ from Product.models import *
 from . serilalizer import * 
 import logging
 import os
+from difflib import SequenceMatcher
 
 class OurPharmacieViewSet(viewsets.ModelViewSet):
-    queryset = OurPharmacie.objects.all()
     serializer_class = OurPharmacieSerializer
+    queryset = OurPharmacie.objects.all()
     http_method_names = ['get'] 
+
+    def similar(self, a, b):
+        return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+
+    def get_queryset(self):
+        queryset = self.queryset
+        search = self.request.query_params.get('search')
+        if search:
+            search_cyr = latin_to_cyrillic(search).lower()
+            words = search_cyr.split()
+            ids = set()
+
+            for obj in queryset:
+                title = obj.title.lower()
+                address = obj.address.lower()
+
+                for word in words:
+                    if word in title or word in address:
+                        ids.add(obj.id)
+                        break
+                    elif self.similar(word, title) >= 0.3 or self.similar(word, address) >= 0.3:
+                        ids.add(obj.id)
+                        break
+
+            queryset = queryset.filter(id__in=ids)
+
+        return queryset
     
     def retrieve(self, request, *args, **kwargs):
         id = kwargs['pk']
@@ -160,9 +191,12 @@ class CategoryProductsViewSet(viewsets.ViewSet):
 
         # 5. Cheklangan miqdorda productlarni Prefetch qilish
         categories_qs = categories_qs.prefetch_related(
-            Prefetch('products', queryset=products_qs[:50], to_attr='filtered_products')
-        )
-
+                Prefetch(
+                    'products',
+                    queryset=products_qs.order_by('id').distinct()[:50],  # duplication yo‘q
+                    to_attr='filtered_products'
+                )
+            )
         # 6. Pagination
         paginator = PageNumberPagination()
         paginator.page_size = 5
@@ -177,6 +211,41 @@ class CategoryProductsViewSet(viewsets.ViewSet):
                                            )
         return paginator.get_paginated_response(serializer.data)
 
+    
+        page = request.query_params.get("page", 1)
+
+        try:
+            page = int(page)
+        except (TypeError, ValueError):
+            page = 1
+
+        # 1. Faqat narxi va mavjudligi bor product price queryset
+        product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
+
+        # 2. Asosiy products queryset (narxlar bilan) - hali annotate qilmaymiz
+        products_qs = Product.objects.filter(
+            product_prise__in=product_price_qs,
+            name__isnull=False
+        ).exclude(name='').order_by('id').distinct().select_related('category').prefetch_related(
+            Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
+        )
+        wishlist_ids = set()
+        if request.user.is_authenticated:
+            wishlist_ids = set(
+                Wishlist.objects.filter(user=request.user).values_list("product_id", flat=True)
+            )
+        paginator = PageNumberPagination()
+        paginator.page_size = 50
+        result_page = paginator.paginate_queryset(products_qs, request)
+
+       
+        serializer = ProductSerializer(result_page, many=True,
+                                           context={
+                                               'request': request,
+                                                "wishlist_ids": wishlist_ids
+                                           }
+                                           )
+        return paginator.get_paginated_response(serializer.data)
     
     def retrieve(self, request, pk):
         try:
@@ -201,8 +270,49 @@ class CategoryProductsViewSet(viewsets.ViewSet):
         except Product.DoesNotExist:
             return Response({'success': False}, status=404)
 
-
     
+    @action(detail=False, methods=['get'])
+    def product(self, request):
+        page = request.query_params.get("page", 1)
+
+        try:
+            page = int(page)
+        except (TypeError, ValueError):
+            page = 1
+
+        # faqat narxi va mavjudligi bor product price lar
+        product_price_qs = ProductPrice.objects.filter(
+            product_id=OuterRef("pk"),
+            amount__gt=0,
+            price__gt=0
+        ).order_by("-id")
+
+        # annotate bilan oxirgi price ni query darajasida olib kelamiz
+        products_qs = (
+            Product.objects.filter(name__isnull=False)
+            .exclude(name="")
+            .annotate(latest_price=Subquery(product_price_qs.values("price")[:1]))
+            .select_related("category")
+        )
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 50
+        result_page = paginator.paginate_queryset(products_qs, request)
+
+        # wishlist optimizatsiya
+        wishlist_ids = set()
+        if request.user.is_authenticated:
+            wishlist_ids = set(
+                Wishlist.objects.filter(user=request.user).values_list("product_id", flat=True)
+            )
+
+        serializer = ProductASerializer(
+            result_page,
+            many=True,
+            context={"request": request, "wishlist_ids": wishlist_ids},
+        )
+        return paginator.get_paginated_response(serializer.data)
+  
     @action(detail= False, methods=['get'])     
     def member(self, request):
         member = request.query_params.get('member')
@@ -429,7 +539,7 @@ class ChatViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = ChatSerializer
     def get_queryset(self):
-        return Chat.objects.filter(room_id=self.request.user.id)
+        return Chat.objects.filter(room_id=self.request.user.id).order_by('id')
     
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -496,3 +606,15 @@ class VacancyVievSet(viewsets.ModelViewSet):
     queryset = Vacancy.objects.all().order_by('-id')
     serializer_class = VacancySerializer
     http_method_names = ['get']  
+
+@api_view(['POST'])
+def catalog(request):
+    id = request.data.get("id")
+
+    products = Product.objects.filter(member__id=id)\
+        .distinct()\
+        .select_related('category', 'member')\
+        .prefetch_related('product_prise')
+    
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)

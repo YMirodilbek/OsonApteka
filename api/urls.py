@@ -57,6 +57,11 @@ urlpatterns = [
    path('dastafca/', get_dastafca),
    path('product-order/', product_order),
    path('filial/', get_filial),
+   path('childrens-catalog', childrens_catalog),
+   path('adults-catalog', adults_catalog),
+   path('women-catalog', women_catalog),
+   path('male-catalog', male_catalog),
+   path('catalog/', catalog),
    
    
    path('landlord/', LandlordApiView.as_view()),

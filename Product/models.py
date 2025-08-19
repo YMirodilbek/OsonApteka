@@ -67,7 +67,7 @@ class Product(models.Model):
             return f"https://akmalfarm.uz{self.image1.url}"
         return None
 
-
+    
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_prise')
     price = models.PositiveIntegerField(default=0) # bor 

@@ -2,9 +2,7 @@ from django.db.models.signals import post_save
 from main.models import Chat, CustomUser
 from django.dispatch import receiver
 from bs4 import BeautifulSoup
-
 import re
-
 
 
 def sanitize_text(text):

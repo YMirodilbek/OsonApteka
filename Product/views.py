@@ -540,7 +540,8 @@ def edit_product_image(request, product_id):
                     os.remove(product.image1.path)
                 except:
                     pass
-            product.image1 = new_image
+            product.image1 =  compress(new_image)
+           
             product.save()
             return redirect('/filial/products/')
     
@@ -718,6 +719,7 @@ def filial_login(request):
 
 
 @is_staff
+
 def filial_users(request):
     users = CustomUser.objects.filter(is_staff = False).order_by('-id').prefetch_related(
                     Prefetch(

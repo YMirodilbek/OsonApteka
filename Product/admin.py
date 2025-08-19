@@ -6,6 +6,7 @@ from .models import *
 
 
 admin.site.register([Member,Category,Order,OrderItem,Filial,Dostafca, ProductPrice])
+# admin.site.register(Category)
 
 class ProductAdminForm(forms.ModelForm):
     info = forms.CharField(widget=CKEditorWidget())

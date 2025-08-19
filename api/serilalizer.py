@@ -32,36 +32,71 @@ class ProductPriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductPrice
         fields = ['price', 'amount', 'unique_identifier']
+        
+        
+class ProductASerializer(serializers.ModelSerializer):
+    prices = serializers.SerializerMethodField() 
+    product_type_display = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Product  
+        fields = ['id', 'name','producer','country','member','prices','category_person',
+                  'image1_url','product_type_display']
+        depth = True
+  
+ 
+
+    def get_prices(self, obj):
+        latest_price = obj.product_prise.filter(amount__gt=0, price__gt=0).order_by('-id').first()
+        if latest_price:
+            return {
+                'price': latest_price.price,
+            }
+        return None
+    
+    
+    def get_product_type_display(self, obj):
+        if obj.product_type == "Рецепт билан":
+            return {
+                'text': 'Рецептурный',
+               
+            }
+        return {
+                'text': 'Без рецепта',
+                
+            }
 
 
 class ProductSerializer(serializers.ModelSerializer):
     info = serializers.SerializerMethodField()
     prices = serializers.SerializerMethodField() 
     product_type_display = serializers.SerializerMethodField()
-    image1 = serializers.SerializerMethodField()
     is_wishlist = serializers.SerializerMethodField()
-    
+    image1 = serializers.ReadOnlyField(source="image1_url")
+
     class Meta:
         model = Product  
         fields = ['id', 'name','producer','country','member','prices','category_person',
                   'image1','is_wishlist','product_type_display','info']
         depth = True
     
+
     def get_is_wishlist(self, obj):
-        request = self.context.get('request')
-        if request and request.user and request.user.is_authenticated:
-            return Wishlist.objects.filter(user=request.user, product=obj).select_related('product').exists()
-        return False
+        wishlist_ids = self.context.get("wishlist_ids", set())
+        return obj.id in wishlist_ids
+
     def get_info(self, obj):
         raw_text = getattr(obj, 'info', '')
         cleaned_text = sanitize_text(raw_text)
         parts = split_text(cleaned_text)
         return parts 
 
-    
-    def get_image1(self, obj):
-        if obj.image1 and hasattr(obj.image1, 'url'):
-            return f"https://akmalfarm.uz{obj.image1.url}"
+    def get_prices(self, obj):
+        if hasattr(obj, 'prices') and obj.prices:
+            latest_price = max(obj.prices, key=lambda p: p.id)
+            return {
+                'price': latest_price.price,
+            }
         return None
     
     def get_prices(self, obj):
@@ -106,12 +141,22 @@ class ProductpageSerializer(serializers.ModelSerializer):
 
    
 class CategoryallSerializer(serializers.ModelSerializer):
-    filtered_products = ProductpageSerializer(many=True)
+    filtered_products = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
         fields = ['id', 'name', 'filtered_products']
-        
+
+    def get_filtered_products(self, obj):
+        products = getattr(obj, 'filtered_products', [])
+        seen = set()
+        unique_products = []
+        for p in products:
+            if p.id not in seen:
+                seen.add(p.id)
+                unique_products.append(p)
+        return ProductpageSerializer(unique_products, many=True, context=self.context).data
+
         
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -216,6 +261,7 @@ class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Applicant
         fields = "__all__"
+
 
 class VacancySerializer(serializers.ModelSerializer):
     class Meta:

@@ -11,7 +11,6 @@ SECRET_KEY = env.str('SECRET_KEY')
 ONSIGNAL_KEY = env.str('ONSIGNAL_KEY')
 
 DEBUG = False
-
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [

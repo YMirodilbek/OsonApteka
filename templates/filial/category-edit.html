@@ -1,0 +1,98 @@
+{% extends 'base_filial.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            
+
+           <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Kategoriya nomi</th>
+            <th>Joriy rasm</th>
+            <th>Yangi rasm yuklash</th>
+            <th>Amal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in categorys %}
+        <tr id="row-{{ i.id }}">
+            <td>{{ i.name }}</td>
+            <td>
+                {% if i.svg %}
+                    <img src="{{ i.svg.url }}" width="100" alt="">
+                {% else %}
+                    <span>None</span>
+                {% endif %}
+            </td>
+            <td>
+                <input type="file" class="form-control" name="img" id="file-{{ i.id }}">
+            </td>
+            <td>
+                <button  id="btn-{{ i.id }}" class="btn btn-success" onclick="uploadImage({{ i.id }})">Yangilash</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+        </div>
+    </div>
+</div>
+        
+<script>
+function uploadImage(catId) {
+    let fileInput = document.getElementById(`file-${catId}`);
+    let button = document.getElementById(`btn-${catId}`);
+
+    if (fileInput.files.length === 0) {
+        alert("Iltimos, rasm tanlang!");
+        return;
+    }
+
+    // ❌ Tugmani vaqtinchalik o‘chirib qo‘yamiz
+    button.disabled = true;
+    button.innerText = "Yuklanmoqda...";
+
+    let formData = new FormData();
+    formData.append("id", catId);
+    formData.append("img", fileInput.files[0]);
+
+    fetch("{% url 'category_img_edit' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // alert("✅ Rasm muvaffaqiyatli yangilandi!");
+            if (data.new_image_url) {
+                document.querySelector(`#row-${catId} img`).src = data.new_image_url;
+            }
+        } else {
+            // alert("❌ Xatolik: " + data.error);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        // alert("Server bilan bog‘lanishda xatolik!");
+    })
+    .finally(() => {
+        // ✅ Jarayon tugagach tugmani qayta yoqamiz
+        button.disabled = false;
+        button.innerText = "Yangilash";
+    });
+}
+
+</script>
+{% endblock content %}

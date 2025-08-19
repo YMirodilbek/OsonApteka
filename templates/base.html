@@ -111,6 +111,7 @@
                 {% if request.user.is_staff %}
                 <a href="{% url 'filial_index' %}" class="top-bar__link">Филиал</a>
                 <a href="{% url 'dashboard_url' %}" class="top-bar__link">Дашбоард</a>
+                <a href="/chat_web/" class="top-bar__link">Чат</a>
                 {% endif%}
             </nav>
             <div class="language-selector">
