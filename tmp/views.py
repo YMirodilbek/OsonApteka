@@ -460,3 +460,4 @@ def dashboard_blog(request):
     }
     return render(request, 'website_dashboard/blog.html', context)
 
+

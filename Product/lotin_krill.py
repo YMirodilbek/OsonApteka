@@ -51,3 +51,15 @@ def compress(image):
     new_img = File(img_io, name=image.name)
     
     return new_img
+
+def compress_2(image):
+    img = Image.open(image)
+    img_io = BytesIO()
+    
+    # PNG formatida saqlaymiz (transparent fon saqlanadi)
+    img.save(img_io, format='PNG', optimize=True)
+
+    img_io.seek(0)
+    new_img = File(img_io, name=image.name)
+    
+    return new_img

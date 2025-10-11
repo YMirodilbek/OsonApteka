@@ -82,8 +82,10 @@ class ProductSerializer(serializers.ModelSerializer):
     
 
     def get_is_wishlist(self, obj):
-        wishlist_ids = self.context.get("wishlist_ids", set())
-        return obj.id in wishlist_ids
+        request = self.context.get('request')
+        if request and request.user and request.user.is_authenticated:
+            return Wishlist.objects.filter(user=request.user, product=obj).select_related('product').exists()
+        return False
 
     def get_info(self, obj):
         raw_text = getattr(obj, 'info', '')
@@ -187,11 +189,19 @@ class OrderItemSerializer(serializers.ModelSerializer):
         return obj.price * obj.quantity
 
     def get_product(self,obj):
-         return ProductSerializer(obj.product).data
+        context = self.context
+        return ProductSerializer(obj.product, context=context).data
 
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
+    class Meta:
+        model =  Order
+        fields ='__all__'
+ 
+        
+class OrderASerializer(serializers.ModelSerializer):
+    # items = OrderItemSerializer(many=True, read_only=True)
     class Meta:
         model =  Order
         fields ='__all__'
@@ -211,10 +221,14 @@ class FilialSerializer(serializers.ModelSerializer):
      
 class BlogSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    created_at = serializers.SerializerMethodField()
     class Meta:
         model = Blog
         fields = ['id', 'image', 'title', 'text', 'created_at']
-        
+    
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%d-%m-%Y") 
+    
     def get_image(self, obj):
         if obj.image and hasattr(obj.image, 'url'):
             return f"https://akmalfarm.uz{obj.image.url}"
@@ -267,4 +281,16 @@ class VacancySerializer(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
         fields = "__all__"
-        
+
+
+class GlavniImageSerializer(serializers.ModelSerializer):
+    img = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GlavniImage
+        fields = ['id', 'img']
+
+    def get_img(self, obj):
+        if obj.img and hasattr(obj.img, 'url'):
+            return f"https://akmalfarm.uz{obj.img.url}"
+        return None

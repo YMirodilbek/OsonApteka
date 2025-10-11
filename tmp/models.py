@@ -118,3 +118,5 @@ class Blog(models.Model):
         super().save(*args, **kwargs)
     
 
+class GlavniImage(models.Model):
+    img = models.ImageField(upload_to='glavni/')

@@ -12,6 +12,7 @@ urlpatterns=[
     path('landlords/', Landlords, name='landlords_url'),
     path('blog/',blog_view, name='blog'),
     path('blog/<int:pk>/', BlogDetail, name='blog_details'),
+     
 
     
     

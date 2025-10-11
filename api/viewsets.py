@@ -62,21 +62,33 @@ class OurPharmacieViewSet(viewsets.ModelViewSet):
    
 class SearchProductViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProductSerializer
-    
+    permission_classes = [AllowAny]
+
     def get_queryset(self):
+        search = self.request.query_params.get('search')
+        if not search:
+            return Product.objects.none()
+
+        # Latin -> Cyrillic
+        search = latin_to_cyrillic(search)
+
+        # asosiy queryset (faqat narxi > 0 bo‘lgan mahsulotlar)
         product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
         queryset = Product.objects.filter(
-        product_prise__in=product_price_qs,  
-        name__isnull=False
-    ).distinct().select_related('category').prefetch_related(
-        Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
-    )
+            product_prise__in=product_price_qs,
+            name__isnull=False
+        ).select_related('category').prefetch_related(
+            Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
+        ).distinct()
 
-        search = self.request.query_params.get('search')
-        if search:
-            search = latin_to_cyrillic(search)
-            queryset = queryset.filter(name__icontains=search)
-        return queryset
+        # TrigramSimilarity bilan annotatsiya
+        trigram_qs = queryset.annotate(
+            similarity=TrigramSimilarity('name', search)
+        ).filter(similarity__gt=0.1).order_by('-similarity')  # threshold pastroq qilindi
+
+        if trigram_qs.exists():
+            return trigram_qs[:6]
+        return queryset.filter(name__icontains=search)[:6]
 
 
 class WishlistViewSet(viewsets.ReadOnlyModelViewSet):
@@ -205,45 +217,9 @@ class CategoryProductsViewSet(viewsets.ViewSet):
        
         serializer = CategoryallSerializer(result_page, many=True,
                                            context={
-                                               'request': request,
-                                               'wishlist_product_ids': wishlist_product_ids
-                                           }
-                                           )
-        return paginator.get_paginated_response(serializer.data)
-
-    
-        page = request.query_params.get("page", 1)
-
-        try:
-            page = int(page)
-        except (TypeError, ValueError):
-            page = 1
-
-        # 1. Faqat narxi va mavjudligi bor product price queryset
-        product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
-
-        # 2. Asosiy products queryset (narxlar bilan) - hali annotate qilmaymiz
-        products_qs = Product.objects.filter(
-            product_prise__in=product_price_qs,
-            name__isnull=False
-        ).exclude(name='').order_by('id').distinct().select_related('category').prefetch_related(
-            Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
-        )
-        wishlist_ids = set()
-        if request.user.is_authenticated:
-            wishlist_ids = set(
-                Wishlist.objects.filter(user=request.user).values_list("product_id", flat=True)
-            )
-        paginator = PageNumberPagination()
-        paginator.page_size = 50
-        result_page = paginator.paginate_queryset(products_qs, request)
-
-       
-        serializer = ProductSerializer(result_page, many=True,
-                                           context={
-                                               'request': request,
-                                                "wishlist_ids": wishlist_ids
-                                           }
+                                    'request': request,
+                                    'wishlist_product_ids': wishlist_product_ids
+                                }
                                            )
         return paginator.get_paginated_response(serializer.data)
     
@@ -334,9 +310,9 @@ class OrderViewset(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     
     def list(self, request):
-        order = Order.objects.filter(user= request.user)
+        order = Order.objects.filter(user= request.user, is_paid=True).order_by('-id')
         return Response(
-            OrderSerializer(
+            OrderASerializer(
                 order, many=True
             ).data
         )
@@ -349,8 +325,13 @@ class OrderViewset(viewsets.ModelViewSet):
             order__user=user,
             order__is_completed=False
         ).select_related('product', 'order').order_by('price')
-
-        serializer = OrderItemSerializer(cart_items, many=True)
+        
+        wishlist_ids = set(
+        Wishlist.objects.filter(user=user).values_list('product_id', flat=True)
+         )
+        serializer = OrderItemSerializer(cart_items, many=True,
+                                           context={'request': request, 'wishlist_ids': wishlist_ids}
+                                           )
 
         cart_total = sum([item['total_price'] for item in serializer.data])
         cart_count = len(serializer.data)
@@ -472,32 +453,18 @@ class OrderViewset(viewsets.ModelViewSet):
             "status": 200,
 
         }, status=status.HTTP_200_OK)
-    
-    #https://akmalfarm.uz/api/order/
-    # @action(detail=False, methods=['post'])
-    # def delete_order_item(self, request, item_id):
-    #     try:
-    #         order_item = OrderItem.objects.get(id=item_id, order__user=request.user, order__is_completed=False)
-    #     except OrderItem.DoesNotExist:
-    #         return Response({"detail": "Bunday buyurtma elementi topilmadi."}, status=status.HTTP_404_NOT_FOUND)
-        
-    #     order_item.delete()
 
-        # cart = cart_context(request)
-        # cart_count = len(cart['cart_items'])
-        # cart_total = cart['cart_total']
-
-        # return Response({
-        #     "status": 200,
-        #     # "cart_count": cart_count,
-        #     # "cart_total": cart_total
-        # }, status=status.HTTP_200_OK)
         
-    
 class BlogViewset(viewsets.ModelViewSet):
     queryset = Blog.objects.all().order_by('-id')[:4]
     serializer_class = BlogSerializer
     http_method_names = ['get']  
+    
+    @action(detail=False, methods=['get'])
+    def all(self, request):
+        blogs = Blog.objects.all().order_by('-id')
+        serializer = BlogSerializer(blogs, many=True)
+        return Response(serializer.data)
     
     def retrieve(self, request, *args, **kwargs):
         id = kwargs['pk']

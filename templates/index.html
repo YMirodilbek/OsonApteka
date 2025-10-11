@@ -1107,14 +1107,12 @@
 
 <div class="main-content__container">
     <div class="main_picture_slider">
-        <!-- Slider Items -->
+        {% for i in glavni %}
         <div class="main_picture_slider__item active">
-            <img src="{% static 'media/КЦ.png' %}" alt="Medical supplies" loading="lazy">
+            <img src="{{ i.img.url }}" alt="Medical supplies" loading="lazy">
         </div>
-        <div class="main_picture_slider__item active">
-            <img src="{% static 'media/img-137.jpg' %}" alt="Medical supplies" loading="lazy">
-        </div>
- 
+
+        {% endfor %}
         <!-- Navigation Arrows -->
         <div class="slider-nav prev">
             <i class="fas fa-chevron-left"></i>

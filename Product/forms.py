@@ -1,7 +1,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from .models import *
-from tmp.models import AboutUs
+from tmp.models import AboutUs ,GlavniImage
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -92,3 +92,8 @@ class AboutUsForm(forms.ModelForm):
         help_texts = {
             'order': 'Kichikroq raqam yuqoriroq ko\'rsatiladi'
         } 
+        
+class GlavniImageForm(forms.ModelForm):
+    class Meta:
+        model = GlavniImage
+        fields = ['img']

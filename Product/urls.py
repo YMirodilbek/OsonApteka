@@ -27,6 +27,11 @@ urlpatterns = [
     path('filial-product-person-edit/', update_person),
     path("filial-order-status/<int:pk>/",update_order_status, name="update_order_status"),
     path("filial-member/",member_view, name="member"),
+    
+    path('glavni/', glavniimg, name='glavni_list'),
+    path('glavni/delete/<int:pk>/',delete_glavni, name='delete_glavni'),
+    path('add/',glavni_add, name='glavni_add'),
+    
     # path("filial-category/",category_img_edit, name="category_img"),
     path("filial-category/",category_img_edit, name="category_img_edit"),
     path("filial-add-member/",add_product_member, name="add_product_member"),

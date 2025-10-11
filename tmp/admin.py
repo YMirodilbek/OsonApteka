@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(OurPharmacie)
 admin.site.register(VacancyApplication)
 admin.site.register(Applicant)
+admin.site.register(GlavniImage)

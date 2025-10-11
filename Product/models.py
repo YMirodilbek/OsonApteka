@@ -1,3 +1,4 @@
+from django.contrib.postgres.indexes import GinIndex
 from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField 
 from django.utils.timezone import now
@@ -10,6 +11,14 @@ User = get_user_model()
 class Category(models.Model):
     name = models.CharField(max_length=255)
     svg = models.ImageField(upload_to="svg/",null=True, blank=True )
+    class Meta:
+        indexes = [
+            GinIndex(
+                name='category_name_trgm_gin',
+                fields=['name'],
+                opclasses=['gin_trgm_ops'],
+            ),
+        ]
     def __str__(self):
         return self.name
 
@@ -56,8 +65,12 @@ class Product(models.Model):
     
     class Meta:
         indexes = [
-            models.Index(fields=['name']),
-            models.Index(fields=['category']),
+            GinIndex(
+                name='product_name_trgm_gin',
+                fields=['name'],
+                opclasses=['gin_trgm_ops'],
+                
+            ),
         ]
     def __str__(self):
         return str(self.uid)

@@ -1,6 +1,6 @@
+from .lotin_krill import latin_to_cyrillic, compress, compress_2
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from .lotin_krill import latin_to_cyrillic, compress
 from .context_processors import cart_context
 from Product.models import Dostafca ,Product
 from .decorator import login_required_ajax
@@ -8,11 +8,13 @@ from django.http import JsonResponse
 from django.db.models import Q, Max
 from django.utils import timezone
 from datetime import timedelta
+from decimal import Decimal
 from rapidfuzz import fuzz
 from .views import *
+import redis
 import json
 
-
+r = redis.Redis(host='localhost', port=6379, db=0)
 @login_required_ajax
 def add_to_cart(request, product_id):
     
@@ -86,13 +88,42 @@ def update_order_status(request, pk):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            status = data.get('status')
+            status = data.get('status', '').strip()
             order = Order.objects.get(pk=pk)
-            order.status = status
+            original_status = order.status.strip()  # yozishda xato bo‘lmasin
+            
+            # Normalize qilish (kichik harf va bo‘sh joylarni olib tashlash)
+            normalized_status = status.replace(' ', '').lower()
+            normalized_original_status = original_status.replace(' ', '').lower()
+
+            order.status = status  # original qiymatni yozamiz
             order.save()
+            
+            try:
+                user = order.user
+                balance = VirtualCard.objects.get(user=user)
+                bonus_key = f"bonus:{order.id}"
+
+                if normalized_status == 'radetilgan' and normalized_original_status != 'radetilgan' and order.payment_method != "card":
+                    bonus_amount = r.get(bonus_key)
+                    if bonus_amount:
+                        bonus_amount = Decimal(bonus_amount.decode('utf-8'))
+                        balance.balance -= bonus_amount
+                        balance.save()
+                        r.delete(bonus_key)
+
+                elif normalized_original_status == 'radetilgan' and normalized_status != 'radetilgan' and order.payment_method != "card":
+                    bonus_amount = Decimal(order.total_price) * Decimal('0.01')
+                    balance.balance += bonus_amount
+                    balance.save()
+                    r.setex(bonus_key, 60 * 60 * 72, str(bonus_amount))
+
+            except:pass
+            
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 
 def product_search_api(request):
@@ -282,7 +313,7 @@ def category_img_edit(request):
         except Category.DoesNotExist:
             return JsonResponse({"success": False, "error": "Kategoriya topilmadi"})
 
-        category.svg = compress(img)
+        category.svg = compress_2(img)
         category.save()
 
         return JsonResponse({

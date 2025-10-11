@@ -24,6 +24,7 @@ import redis
 import json
 import os
 
+r = redis.Redis(host='localhost', port=6379, db=0)
 logger = logging.getLogger('Product')
 
 
@@ -101,6 +102,7 @@ def Index(request):
         category.filtered_products = category.filtered_products_all[:50]
 
     context = {
+        'glavni':GlavniImage.objects.all(),
         "page": page,
         "paginator": page_obj,
         "blogs": Blog.objects.all().order_by('-id')[:4]
@@ -259,8 +261,11 @@ class ClickWebhookAPIView(ClickWebhook):
                 user = order.user
                 try:
                     balance = VirtualCard.objects.get(user=user)
-                    balance.balance += Decimal(order.total_price) * Decimal('0.01')
+                    bonus = Decimal(order.total_price) * Decimal('0.01')
+                    balance.balance += bonus
                     balance.save()
+                    
+                    r.setex(f"bonus{str(order.id)}" ,60 * 60 * 72 , str(bonus)) 
                 except:
                     pass
                 
@@ -747,7 +752,6 @@ def filial_order_client(request):
     return render(request, 'filial/user-order.html',{'orders':orders})
 
 
-
 def chat_web(request):
     
     five_days_ago = timezone.now() - timedelta(days=5)
@@ -761,3 +765,26 @@ def chat_web(request):
             last_message_time=Max('chats__timestamp')
         ).order_by('-last_message_time').distinct()
     return render(request, 'chat/chat.html', {'users':users})
+
+
+
+@is_staff
+def glavniimg(request):
+    glavni = GlavniImage.objects.all()
+    form = GlavniImageForm()
+    return render(request,'filial/glavni.html',{'glavni':glavni,'form':form})
+
+@is_staff
+def delete_glavni(request, pk):
+    image = get_object_or_404(GlavniImage, pk=pk)
+    image.img.delete()  # Faylni media papkadan o‘chirish
+    image.delete()      # Modeldan yozuvni o‘chirish
+    return redirect('glavni_list')
+
+@is_staff
+def glavni_add(request):
+    if request.method == 'POST':
+        form = GlavniImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    return redirect('glavni_list')

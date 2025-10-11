@@ -32,9 +32,6 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-
-    
-
 urlpatterns = [
    path('swagger.json/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
@@ -58,11 +55,11 @@ urlpatterns = [
    path('product-order/', product_order),
    path('filial/', get_filial),
    path('childrens-catalog', childrens_catalog),
-   path('adults-catalog', adults_catalog),
+
    path('women-catalog', women_catalog),
    path('male-catalog', male_catalog),
    path('catalog/', catalog),
-   
+   path('glavni/', glavni),
    
    path('landlord/', LandlordApiView.as_view()),
    path('applicant/', ApplicantApiView.as_view()),
