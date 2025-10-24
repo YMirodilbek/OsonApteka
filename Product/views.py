@@ -98,7 +98,7 @@ def Index(request):
 
     # 5️⃣ har bir kategoriya uchun 15 tadan mahsulot
     for category in page_obj:
-        category.filtered_products = category.products.filter(id__in=product_ids)[:15]
+        category.filtered_products = category.products.filter(id__in=product_ids)[:20]
 
     context = {
         'glavni': GlavniImage.objects.all(),
