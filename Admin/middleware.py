@@ -45,3 +45,25 @@ class IPBlockMiddleware:
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
+
+
+import time
+import logging
+from django.utils.deprecation import MiddlewareMixin
+
+logger = logging.getLogger('perf')
+
+class RequestTimingMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        request._start_time = time.time()
+
+    def process_response(self, request, response):
+        start = getattr(request, '_start_time', None)
+        if start:
+            duration = (time.time() - start) * 1000.0  # ms
+            view_name = getattr(request.resolver_match, 'view_name', None)
+            logger.info(
+                "REQ %s %s view=%s status=%s time_ms=%.2f",
+                request.method, request.path, view_name, getattr(response, 'status_code', None), duration
+            )
+        return response

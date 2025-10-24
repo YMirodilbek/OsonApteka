@@ -150,6 +150,7 @@
                     </div>
                     <div class="options-container">
                         {% for category in category_context %}
+                       
                         <div class="option" data-value="{{ category.name }}">{{ category.name }}</div>
                         {% endfor %}
                     </div>
@@ -314,6 +315,7 @@
             </div>
             <ul class="mobile-catalog-filter__list">
                 {% for category in category_context %}
+
                 <li class="mobile-catalog-filter__item">
                     <a href="#" class="mobile-catalog-filter__link" data-value="{{ category.name }}">
                         <i class="fas fa-tag mobile-catalog-filter__icon"></i>
@@ -640,7 +642,7 @@
                     const productId = item.dataset.id;
                     if (productId) {
                         // Produkt detail sahifasiga yo'naltirish
-                        window.location.href = `/product/detail/${productId}/`;
+                       window.location.href = `/product/detail/${productId}/`;
                     }
                 }
             }
@@ -671,7 +673,10 @@
                     const name = item.querySelector('.real-time-search-name').textContent;
                     const productId = item.querySelector('.real-time-search-add').dataset.productId;
                     searchInput.value = name;
-                    window.location.href = `/product/detail/${productId}/`;
+                    if (productId){
+
+                        window.location.href = `/product/detail/${productId}/`;
+                    }
                     hideDropdown();
                 }
             }

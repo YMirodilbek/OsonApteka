@@ -1,5 +1,5 @@
 from .models import OrderItem , Category
-import json
+import json ,redis
 
 
 def cart_context(request):
@@ -31,7 +31,27 @@ def cart_context(request):
         "cart_count": cart_count,
     }
 
+import redis
+import json
 
-def category_contex(request):
-    category = Category.objects.prefetch_related('products').all()   
-    return {"category_context":category}
+
+r = redis.Redis(host='127.0.0.1', port=6379, db=0)
+
+def category_contex(request=None):
+    cache_key = 'category_context_data'
+    
+    # Redisdan ma'lumotlarni olish
+    cached_data = r.get(cache_key)
+    
+    if cached_data:
+        redis_data = True
+        # Redisda ma'lumot bor bo'lsa
+        categories = json.loads(cached_data)
+    else:
+        redis_data = False
+        # Redisda yo'q bo'lsa, databasedan olish
+        categories = list(Category.objects.prefetch_related('products').all().values('id', 'name'))
+        # Redisga JSON formatida saqlash (1 soat = 3600 sekund)
+        r.setex(cache_key, 3600*48, json.dumps(categories))
+    
+    return {"category_context": categories, "redis_data": redis_data}

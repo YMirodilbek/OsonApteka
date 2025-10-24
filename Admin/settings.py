@@ -10,7 +10,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 ONSIGNAL_KEY = env.str('ONSIGNAL_KEY')
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -80,6 +80,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MIDDLEWARE.insert(0, 'Admin.middleware.RequestTimingMiddleware')  # yoki MIDDLEWARE ro'yxatiga qo'shing
+
 
 ROOT_URLCONF = 'Admin.urls'
 
@@ -136,111 +138,136 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tashkent'
 CELERY_ENABLE_UTC = False
 
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+#             'style': '{',
+#         },
+#         'simple': {
+#             'format': '{levelname} {asctime} {message}',
+#             'style': '{',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple',
+#         },
+#         'celery_task_file': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'celery_tasks.log'),
+#             'formatter': 'simple',
+#         },
+#         'main_app_file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'logs', 'main_app.log'),
+#             'formatter': 'verbose',
+#         },
+#         'product_app_file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'logs', 'product_app.log'),
+#             'formatter': 'verbose',
+#         },
+#         'click_up_file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'logs', 'click_up.log'),
+#             'formatter': 'verbose',
+#         },
+#         'tmp_app_file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'logs', 'tmp_app.log'),
+#             'formatter': 'verbose',
+#         },
+#         'django_file': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
+#             'formatter': 'verbose',
+#         },
+#         'error_file': {
+#             'level': 'ERROR',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'logs', 'errors.log'),
+#             'formatter': 'verbose',
+#         },
+#     },
+#     'loggers': {
+#         'celery_tasks': {
+#             'handlers': ['celery_task_file'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#         'main': {
+#             'handlers': ['main_app_file', 'console'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'Product': {
+#             'handlers': ['product_app_file', 'console'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'click_up': {
+#             'handlers': ['click_up_file', 'console'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'tmp': {
+#             'handlers': ['tmp_app_file', 'console'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#         'django': {
+#             'handlers': ['django_file', 'console'],
+#             'level': 'INFO',
+#             'propagate': False,
+#         },
+#         'django.request': {
+#             'handlers': ['error_file', 'console'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'django.db.backends': {
+#             'handlers': ['django_file'],
+#             'level': 'DEBUG' if DEBUG else 'INFO',
+#             'propagate': False,
+#         },
+#     },
+# }
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {asctime} {message}',
-            'style': '{',
-        },
+        'simple': {'format': '%(asctime)s %(levelname)s %(name)s: %(message)s'},
     },
     'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
-        'celery_task_file': {
+        'file_perf': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'celery_tasks.log'),
+            'filename': '/var/www/oson_apteka/perf.log',
             'formatter': 'simple',
-        },
-        'main_app_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'main_app.log'),
-            'formatter': 'verbose',
-        },
-        'product_app_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'product_app.log'),
-            'formatter': 'verbose',
-        },
-        'click_up_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'click_up.log'),
-            'formatter': 'verbose',
-        },
-        'tmp_app_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'tmp_app.log'),
-            'formatter': 'verbose',
-        },
-        'django_file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
-            'formatter': 'verbose',
-        },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'errors.log'),
-            'formatter': 'verbose',
         },
     },
     'loggers': {
-        'celery_tasks': {
-            'handlers': ['celery_task_file'],
+        'perf': {
+            'handlers': ['file_perf'],
             'level': 'INFO',
-            'propagate': True,
-        },
-        'main': {
-            'handlers': ['main_app_file', 'console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'Product': {
-            'handlers': ['product_app_file', 'console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'click_up': {
-            'handlers': ['click_up_file', 'console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'tmp': {
-            'handlers': ['tmp_app_file', 'console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'django': {
-            'handlers': ['django_file', 'console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'django.request': {
-            'handlers': ['error_file', 'console'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django.db.backends': {
-            'handlers': ['django_file'],
-            'level': 'DEBUG' if DEBUG else 'INFO',
             'propagate': False,
         },
     },
 }
+
+
 
 CKEDITOR_CONFIGS = {
     'default': {

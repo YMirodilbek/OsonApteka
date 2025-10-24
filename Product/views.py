@@ -62,52 +62,52 @@ def cart_view_json(request):
 
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
 
+import pickle
+import redis
+from django.db.models import Count, Prefetch, Subquery
+r = redis.Redis(host='localhost', port=6379, db=0)
+
 
 def Index(request):
     category_name = request.GET.get('category')
-    page = request.GET.get("page", 1)
+    page = int(request.GET.get("page", 1) or 1)
 
-    try:
-        page = int(page)
-    except (TypeError, ValueError):
-        page = 1
+    # 1️⃣ tezroq product id larni olish
+    product_ids = list(ProductPrice.objects.filter(price__gt=0, amount__gt=0).values_list('product_id', flat=True))
 
-    product_price_qs = ProductPrice.objects.filter(price__gt=0, amount__gt=0)
+    # 2️⃣ kerakli productlar
+    products_qs = Product.objects.filter(id__in=product_ids, name__isnull=False).exclude(name='').select_related('category', 'member')
 
-    products_qs = Product.objects.filter(
-        product_prise__in=product_price_qs,  
-        name__isnull=False
-    ).exclude(name='').order_by('id').distinct().select_related('category', 'member').prefetch_related(
-        Prefetch('product_prise', queryset=product_price_qs, to_attr='prices')
+    # 3️⃣ kategoriya filtr
+    # categories_qs = Category.objects.filter(products__in=products_qs).annotate(product_count=Count('products')).distinct()
+    categories_qs = (
+        Category.objects
+        .filter(products__in=products_qs)
+        .annotate(product_count=Count('products'))
+        .distinct()
     )
-
-    categories_qs = Category.objects.annotate(
-        product_count=Count('products', filter=Q(products__in=products_qs))
-    ).filter(product_count__gt=0)
-
     if category_name:
         categories_qs = categories_qs.filter(name=category_name)
 
-    categories_qs = categories_qs.prefetch_related(
-        Prefetch('products', queryset=products_qs, to_attr='filtered_products_all')
-    )
-
+    # 4️⃣ paginate
     paginator = Paginator(categories_qs, 5)
     try:
         page_obj = paginator.get_page(page)
     except EmptyPage:
         page_obj = paginator.get_page(1)
 
+    # 5️⃣ har bir kategoriya uchun 15 tadan mahsulot
     for category in page_obj:
-        category.filtered_products = category.filtered_products_all[:50]
+        category.filtered_products = category.products.filter(id__in=product_ids)[:15]
 
     context = {
-        'glavni':GlavniImage.objects.all(),
-        "page": page,
-        "paginator": page_obj,
-        "blogs": Blog.objects.all().order_by('-id')[:4]
+        'glavni': GlavniImage.objects.all(),
+        'page': page,
+        'paginator': page_obj,
+        'blogs': Blog.objects.order_by('-id')[:4],
     }
     return render(request, 'index.html', context)
+
 
 
 @login_required(login_url='/auth/send-otp/')
@@ -329,7 +329,7 @@ def payment_success(request, order_id):
 
 
 def checkout_view(request):
-    logger.info(f"Checkout process started for user: {request.user.phone_number}")
+    logger.info(f"Checkout process started for user: {request.user}")
 
     dostaff = 0
     dostafca = Dostafca.objects.last()
