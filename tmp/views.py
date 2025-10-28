@@ -412,7 +412,7 @@ def dashboard_vacancy_application_delete(request,id):
 @login_required(login_url='/auth/send-otp/')
 @is_staff
 def dashboard_pharmacy(request):
-    pharm = models.OurPharmacie.objects.all()
+    pharm = models.OurPharmacie.objects.all().order_by('id')
     context = {
         'pharm': pharm
     }
