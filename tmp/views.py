@@ -105,7 +105,7 @@ def vacancyDelete(request,id):
 
 
 def Pharm(request):
-    pharm = models.OurPharmacie.objects.all()
+    pharm = models.OurPharmacie.objects.all().order_by('id')
     
     context = {
         'pharm':pharm
