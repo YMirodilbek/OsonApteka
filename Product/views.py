@@ -1,5 +1,5 @@
+from django.db.models import Sum, F, Prefetch , Count , Q, Max,Subquery
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Sum, F, Prefetch , Count , Q, Max
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator ,EmptyPage
 from django.db.models.functions import TruncDay
@@ -20,9 +20,63 @@ from .decorator import *
 from .models import *
 from .forms import  *
 import logging
+import pickle
 import redis
 import json
 import os
+
+
+from django.http import HttpResponse
+import openpyxl
+
+def download_products_excel(request):
+    # 🧾 Excel workbook yaratish
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Mahsulotlar"
+
+    # 🔹 Ustun sarlavhalarini yozamiz
+    headers = [
+        "ID", "UID", "Nomi", "Kategoriya", "Member", "Shaxs turi",
+        "Ishlab chiqaruvchi", "Davlat", "MNN", "Chiqarilish shakli",
+        "Mahsulot turi", "Amal qilish muddati", "IKPU", "Paket kodi",
+        "QQS (%)", "INN", "Tavsif"
+    ]
+    ws.append(headers)
+
+    # 🔹 Ma’lumotlarni yozish
+    products = Product.objects.all().order_by('uid')
+    for p in products:
+        ws.append([
+            p.id,
+            p.uid,
+            p.name,
+            p.category.name if p.category else "",
+            p.member.name if p.member else "",
+            p.category_person,
+            p.producer,
+            p.country,
+            p.mnn,
+            p.release_form,
+            p.product_type,
+            p.exp_date,
+            p.ikpu,
+            p.package_code,
+            p.vat_percent,
+            p.inn,
+            # p.info,
+        ])
+
+    # 📥 Foydalanuvchiga faylni yuklab beramiz
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = 'attachment; filename="products.xlsx"'
+
+    wb.save(response)
+    return response
+
+
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 logger = logging.getLogger('Product')
@@ -62,9 +116,7 @@ def cart_view_json(request):
 
     return JsonResponse({"cart_items": result, "cart_total": cart_total, "cart_count": cart_count, "status":200})
 
-import pickle
-import redis
-from django.db.models import Count, Prefetch, Subquery
+
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 
