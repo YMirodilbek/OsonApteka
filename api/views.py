@@ -1843,3 +1843,10 @@ def male_catalog(request):
 def glavni (request):
     glavni = GlavniImage.objects.all().order_by('id')
     return Response(GlavniImageSerializer(glavni, many=True).data)
+
+@api_view(['GET'])
+def google_api(request):
+    data = {
+        "success": True,
+    }
+    return JsonResponse(data)

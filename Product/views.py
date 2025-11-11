@@ -6,6 +6,7 @@ from django.db.models.functions import TruncDay
 from django.contrib.auth import  login ,logout
 from datetime import datetime, timedelta
 from click_up.views import ClickWebhook
+from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render
 from collections import OrderedDict
@@ -19,6 +20,7 @@ from tmp.models import *
 from .decorator import *
 from .models import *
 from .forms import  *
+import openpyxl
 import logging
 import pickle
 import redis
@@ -26,8 +28,6 @@ import json
 import os
 
 
-from django.http import HttpResponse
-import openpyxl
 
 def download_products_excel(request):
     # 🧾 Excel workbook yaratish

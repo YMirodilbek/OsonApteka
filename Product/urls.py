@@ -3,6 +3,7 @@ from .views import *
 from .ajax import *
 
 
+
 urlpatterns = [
     path('download-excel/', download_products_excel, name='download_products_excel'),
     path('uslugi', uslugi, ),

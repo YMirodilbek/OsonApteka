@@ -63,6 +63,7 @@ urlpatterns = [
    
    path('landlord/', LandlordApiView.as_view()),
    path('applicant/', ApplicantApiView.as_view()),
+   path('google-api/', google_api),
    
 ]
 
