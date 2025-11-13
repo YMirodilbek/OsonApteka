@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Title</title>
-</head>
-<body>
-<h2>Uploaded PDFs</h2>
-<ul>
-    {% for pdf in pdfs %}
-        <li>
-            <a href="{{ pdf.file.url }}" target="_blank">{{ pdf.title }}</a>
-        </li>
-    {% empty %}
-        <p>No PDFs uploaded yet.</p>
-    {% endfor %}
-</ul>
-
-</body>
+  </head>
+  <body>
+    <h2>Uploaded PDFs</h2>
+    <ul>
+      {% for pdf in pdfs %}
+      <li>
+        <a href="{{ pdf.file.url }}" target="_blank">{{ pdf.title }}</a>
+      </li>
+      {% empty %}
+      <p>No PDFs uploaded yet.</p>
+      {% endfor %}
+    </ul>
+  </body>
 </html>

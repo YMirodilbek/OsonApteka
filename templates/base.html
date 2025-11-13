@@ -1,494 +1,644 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Онлайн аптека в Андижане — Заказ лекарств с доставкой | AkmalFarm.uz
+    </title>
 
-<head>
-   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Онлайн аптека в Андижане — Заказ лекарств с доставкой | AkmalFarm.uz</title>
-
-    <meta name="description" content="AkmalFarm.uz — интернет-аптека в Узбекистане. Удобный заказ лекарств онлайн с быстрой доставкой. Широкий ассортимент и доступные цены.">
-    <meta name="keywords" content="онлайн аптека Андижан, купить лекарства онлайн, доставка лекарств Андижан, интернет аптека Узбекистан, AkmalFarm, Akmal Farm, Акмал Фарм">
-    <meta name="author" content="Akmal Farm ">
+    <meta
+      name="description"
+      content="AkmalFarm.uz — интернет-аптека в Узбекистане. Удобный заказ лекарств онлайн с быстрой доставкой. Широкий ассортимент и доступные цены."
+    />
+    <meta
+      name="keywords"
+      content="онлайн аптека Андижан, купить лекарства онлайн, доставка лекарств Андижан, интернет аптека Узбекистан, AkmalFarm, Akmal Farm, Акмал Фарм"
+    />
+    <meta name="author" content="Akmal Farm " />
     <link rel="shortcut icon" href="/static/r.png" />
     <!-- Rasmga alohida link qo'shing -->
-    <link rel="preload" href="https://akmalfarm.uz/static/r.png" as="image">
+    <link rel="preload" href="https://akmalfarm.uz/static/r.png" as="image" />
     <!-- <link rel="icon" href="/static/rm.png" type="image/x-icon"> -->
-    <meta property="og:title" content="Онлайн аптека в Андижане — Заказ лекарств с доставкой | AkmalFarm.uz" />
-    <meta property="og:description" content="AkmalFarm.uz — интернет-аптека в Узбекистане. Удобный заказ лекарств онлайн с быстрой доставкой. Широкий ассортимент и доступные цены" />
+    <meta
+      property="og:title"
+      content="Онлайн аптека в Андижане — Заказ лекарств с доставкой | AkmalFarm.uz"
+    />
+    <meta
+      property="og:description"
+      content="AkmalFarm.uz — интернет-аптека в Узбекистане. Удобный заказ лекарств онлайн с быстрой доставкой. Широкий ассортимент и доступные цены"
+    />
 
-    <meta property="og:image:alt"content="/static/r.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="/static/r.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://akmalfarm.uz/static/r.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://akmalfarm.uz/static/r.png" />
 
-    <meta property="og:url" content="https://akmalfarm.uz" /> <!-- Sayt URL manzili -->
+    <meta property="og:url" content="https://akmalfarm.uz" />
+    <!-- Sayt URL manzili -->
     <link rel="canonical" href="https://akmalfarm.uz/" />
+    <script src="{% static 'lang/lang.js' %}" defer></script>
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": ["Pharmacy", "Organization", "LocalBusiness"]
-        "name": "Akmal Farm",
-        "url": "https://akmalfarm.uz",
-        "logo": "https://akmalfarm.uz/static/r.png",
-        "image": "https://akmalfarm.uz/static/r.png",
-        "description": "Oʻzbekistondagi onlayn apteka. Dori-darmonlarni tez va qulay tarzda buyurtma qiling.",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Andijon",
-            "addressRegion": "Andijon viloyati",
-            "addressCountry": "UZ"
-        },
-        "openingHours": "Mo-Su 08:00-20:00",
-        "telephone": "+998 XX XXX XX XX",
-        "priceRange": "$$"
-    }
+      {
+          "@context": "https://schema.org",
+          "@type": ["Pharmacy", "Organization", "LocalBusiness"]
+          "name": "Akmal Farm",
+          "url": "https://akmalfarm.uz",
+          "logo": "https://akmalfarm.uz/static/r.png",
+          "image": "https://akmalfarm.uz/static/r.png",
+          "description": "Oʻzbekistondagi onlayn apteka. Dori-darmonlarni tez va qulay tarzda buyurtma qiling.",
+          "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Andijon",
+              "addressRegion": "Andijon viloyati",
+              "addressCountry": "UZ"
+          },
+          "openingHours": "Mo-Su 08:00-20:00",
+          "telephone": "+998 XX XXX XX XX",
+          "priceRange": "$$"
+      }
     </script>
     <!-- Mobil qurilmalarga moslashtirish -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'own-styles/navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'own-styles/mini-cart.css' %}">
-    <link rel="stylesheet" href="{% static 'own-styles/real_time_search.css' %}">
-    <link rel="stylesheet" href="{% static 'own-styles/mobile_navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'own-styles/footer.css' %}">
-  
+    <link rel="stylesheet" href="{% static 'own-styles/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'own-styles/mini-cart.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'own-styles/real_time_search.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'own-styles/mobile_navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'own-styles/footer.css' %}" />
 
-    {% block css %}
-    
-    {% endblock %}
+    {% block css %} {% endblock %}
 
     <style>
-
-        /* Faqat mobil qurilmalar uchun */
-        @media (max-width: 768px) {
-            .mobile-category-btn {
-                
-                background-color: var(--primary-blue);
-                color: var(--text-light);
-                padding: 12px 15px;
-                border-radius: 4px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 14px;
-                font-weight: 500;
-                transition: all 0.2s ease;
-                border: none;
-                outline: none;
-                position: relative;
-                text-align: left;
-            }
+      /* Faqat mobil qurilmalar uchun */
+      @media (max-width: 768px) {
+        .mobile-category-btn {
+          background-color: var(--primary-blue);
+          color: var(--text-light);
+          padding: 12px 15px;
+          border-radius: 4px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          border: none;
+          outline: none;
+          position: relative;
+          text-align: left;
         }
+      }
 
-        /* Kattaroq ekranlarda tugma ko'rinmasin */
-        @media (min-width: 769px) {
-            .mobile-category-btn {
-                display: none;
-            }
+      /* Kattaroq ekranlarda tugma ko'rinmasin */
+      @media (min-width: 769px) {
+        .mobile-category-btn {
+          display: none;
         }
+      }
     </style>
+  </head>
 
-
-</head>
-
-<body>
+  <body>
     <!-- Top Bar -->
     <div class="top-bar">
-        <div class="top-bar__container">
-            <nav class="top-bar__nav">
-                <a href="{% url 'about_url' %}" class="top-bar__link">О Нас</a>
-                <a href="{% url 'landlords_url' %}" class="top-bar__link">Арендодателям</a>
-                <a href="{% url 'vacancy_url' %}" class="top-bar__link">Вакансии</a>
-                <a href="{% url 'pharm_url' %}" class="top-bar__link">Наши аптеки</a>
-                <a href="{% url 'blog' %}" class="top-bar__link">Новости и статьи</a>
-                {% if request.user.is_staff %}
-                <a href="{% url 'filial_index' %}" class="top-bar__link">Филиал</a>
-                <a href="{% url 'dashboard_url' %}" class="top-bar__link">Дашбоард</a>
-                <a href="/chat_web/" class="top-bar__link">Чат</a>
-                {% endif%}
-            </nav>
-            <div class="language-selector">
-                <select name="" id="" class="language-select">
-                    <option value="ru">Рус</option>
-                </select>
-            </div>
+      <div class="top-bar__container">
+        <nav class="top-bar__nav">
+          <a
+            href="{% url 'about_url' %}"
+            class="top-bar__link"
+            data-i18n="about"
+            >О Нас</a
+          >
+          <a
+            href="{% url 'landlords_url' %}"
+            class="top-bar__link"
+            data-i18n="landlords"
+            >Арендодателям</a
+          >
+          <a
+            href="{% url 'vacancy_url' %}"
+            class="top-bar__link"
+            data-i18n="vacancy"
+            >Вакансии</a
+          >
+          <a
+            href="{% url 'pharm_url' %}"
+            class="top-bar__link"
+            data-i18n="pharm"
+            >Наши аптеки</a
+          >
+          <a href="{% url 'blog' %}" class="top-bar__link" data-i18n="blog"
+            >Новости и статьи</a
+          >
+          {% if request.user.is_staff %}
+          <a
+            href="{% url 'filial_index' %}"
+            class="top-bar__link"
+            data-i18n="filial"
+            >Филиал</a
+          >
+          <a
+            href="{% url 'dashboard_url' %}"
+            class="top-bar__link"
+            data-i18n="dashboard"
+            >Дашбоард</a
+          >
+          <a href="/chat_web/" class="top-bar__link" data-i18n="chat">Чат</a>
+          {% endif %}
+        </nav>
+        <div class="language-selector">
+          <select id="lang-select" class="language-select">
+            <option value="ru">Рус</option>
+            <option value="uz">Uz</option>
+          </select>
         </div>
+      </div>
     </div>
 
     <!-- Main Header -->
     <header class="main-header">
-        <div class="main-header__container">
-            <div class="main-header__top">
-                <a href="/" class="logo">
-                    <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Akmal Farm Medical Logo" loading="lazy">
-                </a>
-                <button type="button" class="mobile-category-btn js-catalog-toggle" aria-label="Открыть каталог">
-                    <i class="fas fa-th-large"></i>
-                    <span>Каталог</span>
-                </button>
-
-            </div>
-
-
-            <div class="custom-select">
-                <button type="button" class="select-header">
-                    <i class="fas fa-bars"></i>
-                    <span title="Каталог">Каталог</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="select-dropdown">
-                    <div class="search-box">
-                        <input type="text" placeholder="Поиск категории...">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="options-container">
-                        {% for category in category_context %}
-                       
-                        <div class="option" data-value="{{ category.name }}">{{ category.name }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <form class="search-form">
-                <input type="text" class="search-input" placeholder="Поиск лекарств и товаров..." autocomplete="off">
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-
-
-            <div class="header-actions">
-                <a href="{% url 'myaccount' %}" class="action-item">
-                    <div class="action-item__text-wrapper">
-                        <span class="action-item__text">
-                            {% if request.user.is_authenticated %}
-                            Профиль
-                            {% else %}
-                            Войти
-                            {% endif %}
-                        </span>
-                    </div>
-                    <i class="fas fa-user action-item__icon"></i>
-                </a>
-
-
-
-                <a href="#" class="action-item">
-                    <div class="action-item__text-wrapper">
-                        <span class="action-item__text">Callcenter</span>
-                        <span class="action-item__subtext">1080</span>
-                    </div>
-                    <i class="fas fa-headset action-item__icon"></i>
-                </a>
-
-                <a href="#" class="action-item" id="cart-action">
-                    <div class="action-item__text-wrapper">
-                        <span class="action-item__text">Корзина</span>
-                        <span class="action-item__subtext">{{request.user.user_cart_items}}</span>
-                        
-                    </div>
-                    <i class="fas fa-shopping-cart action-item__icon"></i>
-                </a>
-            </div>
+      <div class="main-header__container">
+        <div class="main-header__top">
+          <a href="/" class="logo">
+            <img
+              src="{% static 'media/AFM MEDICAL.png' %}"
+              alt="Akmal Farm Medical Logo"
+              loading="lazy"
+            />
+          </a>
+          <button
+            type="button"
+            class="mobile-category-btn js-catalog-toggle"
+            aria-label="Открыть каталог"
+          >
+            <i class="fas fa-th-large"></i>
+            <span data-i18n="catalog">Каталог</span>
+          </button>
         </div>
+
+        <div class="custom-select">
+          <button type="button" class="select-header">
+            <i class="fas fa-bars"></i>
+            <span title="Каталог" data-i18n="catalog">Каталог</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="select-dropdown">
+            <div class="search-box">
+              <input
+                type="text"
+                placeholder=""
+                data-i18n-placeholder="search_category"
+              />
+              <i class="fas fa-search"></i>
+            </div>
+            <div class="options-container">
+              {% for category in category_context %}
+              <div class="option" data-value="{{ category.name }}">
+                {{ category.name }}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <form class="search-form">
+          <input
+            type="text"
+            class="search-input"
+            placeholder=""
+            data-i18n-placeholder="search_product"
+            autocomplete="off"
+          />
+          <button type="submit" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+
+        <div class="header-actions">
+          <a href="{% url 'myaccount' %}" class="action-item">
+            <div class="action-item__text-wrapper">
+              <span
+                class="action-item__text"
+                data-i18n-authenticated="profile"
+                data-i18n-unauthenticated="login"
+              >
+                {% if request.user.is_authenticated %} Профиль {% else %} Войти
+                {% endif %}
+              </span>
+            </div>
+            <i class="fas fa-user action-item__icon"></i>
+          </a>
+
+          <a href="#" class="action-item">
+            <div class="action-item__text-wrapper">
+              <span class="action-item__text" data-i18n="callcenter"
+                >Callcenter</span
+              >
+              <span class="action-item__subtext">1080</span>
+            </div>
+            <i class="fas fa-headset action-item__icon"></i>
+          </a>
+
+          <a href="#" class="action-item" id="cart-action">
+            <div class="action-item__text-wrapper">
+              <span class="action-item__text" data-i18n="cart">Корзина</span>
+              <span class="action-item__subtext"
+                >{{request.user.user_cart_items}}</span
+              >
+            </div>
+            <i class="fas fa-shopping-cart action-item__icon"></i>
+          </a>
+        </div>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main>
-        <div class="main-content">
-            {% block content %}
-
-            {% endblock %}
-        </div>
+      <div class="main-content">{% block content %} {% endblock %}</div>
     </main>
-
 
     <!-- Core JavaScript -->
     {% block js %}{% endblock %}
 
     <!-- Mobile Navigation -->
-    <nav class="mobile-nav" >
-        <a href="/" class="mobile-nav-item" >
-            <i class="fas fa-home"></i>
-            <span>Главная</span>
-        </a>
-        <a href="#" class="mobile-nav-item js-menu-toggle" >
-            <i class="fas fa-bars"></i>
-            <span>Меню</span>
-        </a>
-        <a href="#" class="mobile-nav-item" id="mobile-cart-button" >
-            <i class="fas fa-shopping-cart"></i>
-           
-           <span class="action-item__text">Корзина  <span class="action-item__subtext" > {{request.user.user_cart_items}} </span></span>
-        </a>
-        <a href="{% url 'myaccount' %}" class="mobile-nav-item" >
-            <i class="fas fa-user"></i>
-            <span>Профиль</span>
-        </a>
+    <nav class="mobile-nav">
+      <a href="/" class="mobile-nav-item">
+        <i class="fas fa-home"></i>
+        <span data-i18n="home">Главная</span>
+      </a>
+      <a href="#" class="mobile-nav-item js-menu-toggle">
+        <i class="fas fa-bars"></i>
+        <span data-i18n="menu">Меню</span>
+      </a>
+      <a href="#" class="mobile-nav-item" id="mobile-cart-button">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="action-item__text" data-i18n="cart">
+          Корзина
+          <span class="action-item__subtext">
+            <!-- {{request.user.user_cart_items}} -->
+          </span>
+        </span>
+      </a>
+      <a href="{% url 'myaccount' %}" class="mobile-nav-item">
+        <i class="fas fa-user"></i>
+        <span
+          data-i18n-authenticated="profile"
+          data-i18n-unauthenticated="login"
+        >
+        </span>
+      </a>
     </nav>
 
     <!-- Mobile Menu -->
     <div class="mobile-menu">
-        <div class="mobile-menu__header">
-            <img src="{% static 'media/AFM MEDICAL.png' %}" alt="Logo" style="height: 40px;" loading="lazy">
-            <button class="mobile-menu__close js-menu-close">&times;</button>
-        </div>
+      <div class="mobile-menu__header">
+        <img
+          src="{% static 'media/AFM MEDICAL.png' %}"
+          alt="Logo"
+          style="height: 40px"
+          loading="lazy"
+        />
+        <button class="mobile-menu__close js-menu-close">&times;</button>
+      </div>
 
-        <div class="mobile-menu__language">
-            <select name="language" id="mobile-language">
-                <option value="ru">Русский</option>
-      
-            </select>
-        </div>
+      <div class="mobile-menu__language">
+        <select name="language" id="mobile-language">
+          <option value="ru">Русский</option>
+          <option value="uz">O‘zbek</option>
+        </select>
+      </div>
 
-        <nav class="mobile-menu__nav">
-            <div class="mobile-menu__item">
-                <a href="{% url 'about_url' %}" class="mobile-menu__link">
-                    <i class="fas fa-info-circle mobile-menu__icon"></i>
-                    О Нас
-                </a>
-            </div>
-            <div class="mobile-menu__item">
-                <a href="{% url 'landlords_url' %}" class="mobile-menu__link">
-                    <i class="fas fa-building mobile-menu__icon"></i>
-                    Арендодателям
-                </a>
-            </div>
-            <div class="mobile-menu__item">
-                <a href="{% url 'vacancy_url' %}" class="mobile-menu__link">
-                    <i class="fas fa-briefcase mobile-menu__icon"></i>
-                    Вакансии
-                </a>
-            </div>
-            <div class="mobile-menu__item">
-                <a href="{% url 'pharm_url' %}" class="mobile-menu__link">
-                    <i class="fas fa-clinic-medical mobile-menu__icon"></i>
-                    Наши аптеки
-                </a>
-            </div>
-            <div class="mobile-menu__item">
-                <a href="{% url 'blog' %}" class="mobile-menu__link">
-                    <i class="fas fa-newspaper mobile-menu__icon"></i>
-                    Новости и статьи
-                </a>
-            </div>
-            <div class="mobile-menu__item">
-                <a href="#" class="mobile-menu__link">
-                    <i class="fas fa-headset mobile-menu__icon"></i>
-                    Callcenter: 1080
-                </a>
-            </div>
-        </nav>
-
-        <div class="mobile-menu__social">
-            <a href="#" class="mobile-menu__social-link">
-                <i class="fab fa-telegram"></i>
-            </a>
-            <a href="#" class="mobile-menu__social-link">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="mobile-menu__social-link">
-                <i class="fab fa-youtube"></i>
-            </a>
+      <nav class="mobile-menu__nav">
+        <div class="mobile-menu__item">
+          <a href="{% url 'about_url' %}" class="mobile-menu__link">
+            <i class="fas fa-info-circle mobile-menu__icon"></i>
+            <span data-i18n="about">О Нас</span>
+          </a>
         </div>
+        <div class="mobile-menu__item">
+          <a href="{% url 'landlords_url' %}" class="mobile-menu__link">
+            <i class="fas fa-building mobile-menu__icon"></i>
+            <span data-i18n="landlords">Арендодателям</span>
+          </a>
+        </div>
+        <div class="mobile-menu__item">
+          <a href="{% url 'vacancy_url' %}" class="mobile-menu__link">
+            <i class="fas fa-briefcase mobile-menu__icon"></i>
+            <span data-i18n="vacancy">Вакансии</span>
+          </a>
+        </div>
+        <div class="mobile-menu__item">
+          <a href="{% url 'pharm_url' %}" class="mobile-menu__link">
+            <i class="fas fa-clinic-medical mobile-menu__icon"></i>
+            <span data-i18n="pharm">Наши аптеки</span>
+          </a>
+        </div>
+        <div class="mobile-menu__item">
+          <a href="{% url 'blog' %}" class="mobile-menu__link">
+            <i class="fas fa-newspaper mobile-menu__icon"></i>
+            <span data-i18n="blog">Новости и статьи</span>
+          </a>
+        </div>
+        <div class="mobile-menu__item">
+          <a href="#" class="mobile-menu__link">
+            <i class="fas fa-headset mobile-menu__icon"></i>
+            <span data-i18n="callcenter">Callcenter: 1080</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="mobile-menu__social">
+        <a href="#" class="mobile-menu__social-link">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="#" class="mobile-menu__social-link">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="mobile-menu__social-link">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
     </div>
+
     <div class="mobile-menu__backdrop"></div>
 
     <!-- Mobile Catalog Filter -->
     <div class="mobile-catalog-filter">
-        <div class="mobile-catalog-filter__header">
-            <h3 class="mobile-catalog-filter__title">Категории</h3>
-            <button class="mobile-catalog-filter__close js-catalog-close">&times;</button>
+      <div class="mobile-catalog-filter__header">
+        <h3 class="mobile-catalog-filter__title" data-i18n="categories">
+          Категории
+        </h3>
+        <button class="mobile-catalog-filter__close js-catalog-close">
+          &times;
+        </button>
+      </div>
+      <div class="mobile-catalog-filter__content">
+        <div class="mobile-catalog-filter__search">
+          <input
+            type="text"
+            placeholder=""
+            data-i18n-placeholder="search_category"
+          />
+          <i class="fas fa-search"></i>
         </div>
-        <div class="mobile-catalog-filter__content">
-            <div class="mobile-catalog-filter__search">
-                <input type="text" placeholder="Поиск категории...">
-                <i class="fas fa-search"></i>
-            </div>
-            <ul class="mobile-catalog-filter__list">
-                {% for category in category_context %}
-
-                <li class="mobile-catalog-filter__item">
-                    <a href="#" class="mobile-catalog-filter__link" data-value="{{ category.name }}">
-                        <i class="fas fa-tag mobile-catalog-filter__icon"></i>
-                        {{ category.name }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+        <ul class="mobile-catalog-filter__list">
+          {% for category in category_context %}
+          <li class="mobile-catalog-filter__item">
+            <a
+              href="#"
+              class="mobile-catalog-filter__link"
+              data-value="{{ category.name }}"
+            >
+              <i class="fas fa-tag mobile-catalog-filter__icon"></i>
+              {{ category.name }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
+
     <div class="mobile-catalog-filter__backdrop"></div>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer__container">
-            <div class="footer__column">
-                <a href="/" class="footer__logo">
-                    <img src="{% static 'media/AFM MEDICAL oq.png' %}" alt="Akmal Farm Medical Logo" loading="lazy">
-                </a>
-                <div class="footer__contact">
-                    <div class="footer__contact-item">
-                        <span class="footer__contact-text">Контакты: (78) 298-00-88</span>
-                    </div>
-                    <div class="footer__contact-item">
-                        <span class="footer__contact-text">Эл. почта: info.akmalfarmmed@gmail.com</span>
-                    </div>
-                </div>
-                <div class="footer__social">
-                    <a href="https://t.me/akmalfarmofficial" class="footer__social-link">
-                        <i class="fab fa-telegram footer__social-icon"></i>
-                    </a>
-                    <a href=" https://www.instagram.com/akmalfarmofficial" class="footer__social-link">
-                        <i class="fab fa-instagram footer__social-icon"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@akmalfarmmedical8370" class="footer__social-link">
-                        <i class="fab fa-youtube footer__social-icon"></i>
-                    </a>
-                </div>
+      <div class="footer__container">
+        <div class="footer__column">
+          <a href="/" class="footer__logo">
+            <img
+              src="{% static 'media/AFM MEDICAL oq.png' %}"
+              alt="Akmal Farm Medical Logo"
+              loading="lazy"
+            />
+          </a>
+          <div class="footer__contact">
+            <div class="footer__contact-item">
+              <span class="footer__contact-text" data-i18n="contact_phone"
+                >Контакты: (78) 298-00-88</span
+              >
             </div>
-
-            <div class="footer__column">
-                <h3 class="footer__title">Информация</h3>
-                <nav class="footer__nav">
-                    <a href="{% url 'about_url' %}" class="footer__link">О нас</a>
-                    <a href="{% url 'blog' %}" class="footer__link">Новости и статьи</a>
-                    <a href="{% url 'vacancy_url' %}" class="footer__link">Вакансии</a>
-                    <a href="/front/pharm/" class="footer__link">Карта аптек</a>
-                </nav>
+            <div class="footer__contact-item">
+              <span class="footer__contact-text" data-i18n="contact_email"
+                >Эл. почта: info.akmalfarmmed@gmail.com</span
+              >
             </div>
-
-            <div class="footer__column">
-                <h3 class="footer__title">Покупателю</h3>
-                <nav class="footer__nav">
-                    <a href="#" class="footer__link">Как сделать заказ</a>
-                    <a href="#" class="footer__link">Доставка и оплата</a>
-                    <a href="/uslugi" class="footer__link">Условия возврата товара</a>
-                </nav>
-            </div>
-
-            <div class="footer__column">
-                <h3 class="footer__title">Документы</h3>
-                <nav class="footer__nav">
-                    <a href="/document" class="footer__link">Политика Конфиденциальности</a>
-                    <a href="/dogovor" class="footer__link">Договор публичной оферты</a>
-                    <a href="#" class="footer__link">Лицензии и сертификаты</a>
-                </nav>
-            </div>
+          </div>
+          <div class="footer__social">
+            <a
+              href="https://t.me/akmalfarmofficial"
+              class="footer__social-link"
+            >
+              <i class="fab fa-telegram footer__social-icon"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/akmalfarmofficial"
+              class="footer__social-link"
+            >
+              <i class="fab fa-instagram footer__social-icon"></i>
+            </a>
+            <a
+              href="https://www.youtube.com/@akmalfarmmedical8370"
+              class="footer__social-link"
+            >
+              <i class="fab fa-youtube footer__social-icon"></i>
+            </a>
+          </div>
         </div>
+
+        <div class="footer__column">
+          <h3 class="footer__title" data-i18n="info_title">Информация</h3>
+          <nav class="footer__nav">
+            <a
+              href="{% url 'about_url' %}"
+              class="footer__link"
+              data-i18n="about"
+              >О нас</a
+            >
+            <a href="{% url 'blog' %}" class="footer__link" data-i18n="blog"
+              >Новости и статьи</a
+            >
+            <a
+              href="{% url 'vacancy_url' %}"
+              class="footer__link"
+              data-i18n="vacancy"
+              >Вакансии</a
+            >
+            <a href="/front/pharm/" class="footer__link" data-i18n="pharm_map"
+              >Карта аптек</a
+            >
+          </nav>
+        </div>
+
+        <div class="footer__column">
+          <h3 class="footer__title" data-i18n="customer_title">Покупателю</h3>
+          <nav class="footer__nav">
+            <a href="#" class="footer__link" data-i18n="how_to_order"
+              >Как сделать заказ</a
+            >
+            <a href="#" class="footer__link" data-i18n="delivery_payment"
+              >Доставка и оплата</a
+            >
+            <a href="/uslugi" class="footer__link" data-i18n="return_policy"
+              >Условия возврата товара</a
+            >
+          </nav>
+        </div>
+
+        <div class="footer__column">
+          <h3 class="footer__title" data-i18n="documents_title">Документы</h3>
+          <nav class="footer__nav">
+            <a href="/document" class="footer__link" data-i18n="privacy_policy"
+              >Политика Конфиденциальности</a
+            >
+            <a href="/dogovor" class="footer__link" data-i18n="public_offer"
+              >Договор публичной оферты</a
+            >
+            <a href="#" class="footer__link" data-i18n="licenses_certificates"
+              >Лицензии и сертификаты</a
+            >
+          </nav>
+        </div>
+      </div>
     </footer>
 
     <!-- Scroll to top button -->
     <a href="#" class="scroll-top" id="scroll-top">
-        <i class="fas fa-chevron-up"></i>
+      <i class="fas fa-chevron-up"></i>
     </a>
-    
 
     <script src="{% static 'own-js/navbar.js' %}"></script>
     <script src="{% static 'own-js/mobile_navbar.js' %}"></script>
-    
 
     <!-- real time search -->
     <script>
-        // Real-time Search Module
-        document.addEventListener('DOMContentLoaded', function() {
-            // ======================================
-            // INITIALIZATION & CONSTANTS
-            // ======================================
-            const SEARCH_DELAY = 1000; // ms to wait before triggering search
-            const MAX_HISTORY_ITEMS = 5; // maximum number of search history items
-            const MOBILE_BREAKPOINT = 991; // mobile breakpoint in px
-            
-            // ======================================
-            // ELEMENT REFERENCES
-            // ======================================
-            const searchInput = document.querySelector('.search-input');
-            const searchForm = document.querySelector('.search-form');
-            if (!searchInput) return;
-            
-            // ======================================
-            // STATE VARIABLES
-            // ======================================
-            let searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-            let searchTimeout;
-            let isSearchActive = false;
-            
-            // ======================================
-            // INITIALIZATION
-            // ======================================
-            // Clean up any stray elements and create containers
-            initializeSearchElements();
-            
-            // DOM references for containers
-            const mobileSearchContainer = document.querySelector('.mobile-search-container');
-            const mobileSearchInput = mobileSearchContainer.querySelector('.mobile-search-input');
-            const mobileSearchBack = mobileSearchContainer.querySelector('.mobile-search-back');
-            const mobileSearchClear = mobileSearchContainer.querySelector('.mobile-search-clear');
-            const mobileSearchBody = mobileSearchContainer.querySelector('.mobile-search-body');
-            const mobileSearchHistoryItems = mobileSearchContainer.querySelector('.mobile-search-history-items');
-            const mobileSearchHistoryClear = mobileSearchContainer.querySelector('.mobile-search-history-clear');
+      // Real-time Search Module
+      document.addEventListener("DOMContentLoaded", function () {
+        // ======================================
+        // INITIALIZATION & CONSTANTS
+        // ======================================
+        const SEARCH_DELAY = 1000; // ms to wait before triggering search
+        const MAX_HISTORY_ITEMS = 5; // maximum number of search history items
+        const MOBILE_BREAKPOINT = 991; // mobile breakpoint in px
 
-            // Create desktop dropdown if it doesn't exist
-            let dropdown = document.querySelector('.real-time-search-dropdown');
-            if (!dropdown) {
-                dropdown = document.createElement('div');
-                dropdown.className = 'real-time-search-dropdown';
-                searchForm.appendChild(dropdown);
-            }
-            
-            // Initial rendering
-            renderSearchHistory();
-            
-            // ======================================
-            // EVENT LISTENERS
-            // ======================================
-            // Desktop search input
-            searchInput.addEventListener('input', handleSearchInput);
-            searchInput.addEventListener('focus', handleSearchFocus);
-            searchInput.addEventListener('blur', handleSearchBlur);
-            
-            // Mobile search back button
-            mobileSearchBack.addEventListener('click', hideSearchContainer);
-            
-            // Mobile search input and clear button
-            mobileSearchInput.addEventListener('input', handleMobileSearchInput);
-            mobileSearchClear.addEventListener('click', clearMobileSearchInput);
-            
-            // Mobile history clear button
-            mobileSearchHistoryClear.addEventListener('click', clearSearchHistory);
-            
-            // Mobile history item click and "Add to cart" functionality using event delegation
-            mobileSearchBody.addEventListener('click', handleMobileSearchClick);
-            
-            // Desktop dropdown interaction (item click and "Add to cart") using event delegation
-            dropdown.addEventListener('mousedown', handleDropdownInteraction);
-            
-            // Prevent search form submission
-            searchForm?.addEventListener('submit', handleSearchFormSubmit);
-            
-            // ======================================
-            // SETUP FUNCTIONS
-            // ======================================
-            // Initialize and clean up search elements
-            function initializeSearchElements() {
-                // Clean up any stray search elements
-                document.querySelectorAll('.mobile-search-history:not(.mobile-search-container .mobile-search-history)').forEach(el => {
-                    el.parentNode?.removeChild(el);
-                });
-                
-                // Create mobile search container if it doesn't exist
-                if (!document.querySelector('.mobile-search-container')) {
-                    const container = document.createElement('div');
-                    container.className = 'mobile-search-container';
-                    container.innerHTML = `
+        // ======================================
+        // ELEMENT REFERENCES
+        // ======================================
+        const searchInput = document.querySelector(".search-input");
+        const searchForm = document.querySelector(".search-form");
+        if (!searchInput) return;
+
+        // ======================================
+        // STATE VARIABLES
+        // ======================================
+        let searchHistory = JSON.parse(
+          localStorage.getItem("searchHistory") || "[]"
+        );
+        let searchTimeout;
+        let isSearchActive = false;
+
+        // ======================================
+        // INITIALIZATION
+        // ======================================
+        // Clean up any stray elements and create containers
+        initializeSearchElements();
+
+        // DOM references for containers
+        const mobileSearchContainer = document.querySelector(
+          ".mobile-search-container"
+        );
+        const mobileSearchInput = mobileSearchContainer.querySelector(
+          ".mobile-search-input"
+        );
+        const mobileSearchBack = mobileSearchContainer.querySelector(
+          ".mobile-search-back"
+        );
+        const mobileSearchClear = mobileSearchContainer.querySelector(
+          ".mobile-search-clear"
+        );
+        const mobileSearchBody = mobileSearchContainer.querySelector(
+          ".mobile-search-body"
+        );
+        const mobileSearchHistoryItems = mobileSearchContainer.querySelector(
+          ".mobile-search-history-items"
+        );
+        const mobileSearchHistoryClear = mobileSearchContainer.querySelector(
+          ".mobile-search-history-clear"
+        );
+
+        // Create desktop dropdown if it doesn't exist
+        let dropdown = document.querySelector(".real-time-search-dropdown");
+        if (!dropdown) {
+          dropdown = document.createElement("div");
+          dropdown.className = "real-time-search-dropdown";
+          searchForm.appendChild(dropdown);
+        }
+
+        // Initial rendering
+        renderSearchHistory();
+
+        // ======================================
+        // EVENT LISTENERS
+        // ======================================
+        // Desktop search input
+        searchInput.addEventListener("input", handleSearchInput);
+        searchInput.addEventListener("focus", handleSearchFocus);
+        searchInput.addEventListener("blur", handleSearchBlur);
+
+        // Mobile search back button
+        mobileSearchBack.addEventListener("click", hideSearchContainer);
+
+        // Mobile search input and clear button
+        mobileSearchInput.addEventListener("input", handleMobileSearchInput);
+        mobileSearchClear.addEventListener("click", clearMobileSearchInput);
+
+        // Mobile history clear button
+        mobileSearchHistoryClear.addEventListener("click", clearSearchHistory);
+
+        // Mobile history item click and "Add to cart" functionality using event delegation
+        mobileSearchBody.addEventListener("click", handleMobileSearchClick);
+
+        // Desktop dropdown interaction (item click and "Add to cart") using event delegation
+        dropdown.addEventListener("mousedown", handleDropdownInteraction);
+
+        // Prevent search form submission
+        searchForm?.addEventListener("submit", handleSearchFormSubmit);
+
+        // ======================================
+        // SETUP FUNCTIONS
+        // ======================================
+        // Initialize and clean up search elements
+        function initializeSearchElements() {
+          // Clean up any stray search elements
+          document
+            .querySelectorAll(
+              ".mobile-search-history:not(.mobile-search-container .mobile-search-history)"
+            )
+            .forEach((el) => {
+              el.parentNode?.removeChild(el);
+            });
+
+          // Create mobile search container if it doesn't exist
+          if (!document.querySelector(".mobile-search-container")) {
+            const container = document.createElement("div");
+            container.className = "mobile-search-container";
+            container.innerHTML = `
                         <div class="mobile-search-header">
                             <button class="mobile-search-back">
                                 <i class="fas fa-arrow-left"></i>
@@ -510,219 +660,256 @@
                             </div>
                         </div>
                     `;
-                    document.body.appendChild(container);
-                } else {
-                    // Clean up any duplicate containers
-                    const containers = document.querySelectorAll('.mobile-search-container');
-                    if (containers.length > 1) {
-                        for (let i = 1; i < containers.length; i++) {
-                            containers[i].parentNode?.removeChild(containers[i]);
-                        }
-                    }
-                }
+            document.body.appendChild(container);
+          } else {
+            // Clean up any duplicate containers
+            const containers = document.querySelectorAll(
+              ".mobile-search-container"
+            );
+            if (containers.length > 1) {
+              for (let i = 1; i < containers.length; i++) {
+                containers[i].parentNode?.removeChild(containers[i]);
+              }
             }
-            
-            // ======================================
-            // EVENT HANDLERS
-            // ======================================
-            function handleSearchInput() {
-                const value = this.value.trim();
-                
-                if (!value) {
-                    hideDropdown();
-                    return;
-                }
+          }
+        }
 
-                // Clear previous timeout
-                if (searchTimeout) {
-                    clearTimeout(searchTimeout);
-                }
+        // ======================================
+        // EVENT HANDLERS
+        // ======================================
+        function handleSearchInput() {
+          const value = this.value.trim();
 
-                // Set new timeout for search
-                searchTimeout = setTimeout(() => {
-                    if (window.innerWidth <= MOBILE_BREAKPOINT) {
-                        // Mobile search
-                        showSearchContainer();
-                        mobileSearchInput.value = value;
-                        showMobileLoading();
-                        
-                        performSearch(value, showMobileResults);
-                    } else {
-                        // Desktop search
-                        performSearch(value, showDropdown);
-                    }
-                }, SEARCH_DELAY);
-            }
-            
-            function handleSearchFocus() {
-                if (window.innerWidth <= MOBILE_BREAKPOINT) {
-                    showSearchContainer();
-                    // Reset any search history that might be visible
-                    document.querySelectorAll('.mobile-search-history:not(.mobile-search-container .mobile-search-history)').forEach(el => {
-                        el.style.display = 'none';
-                    });
-                } else if (this.value.trim()) {
-                    dropdown.style.display = 'block';
-                }
-            }
-            
-            function handleSearchBlur() {
-                if (window.innerWidth > MOBILE_BREAKPOINT) {
-                    setTimeout(hideDropdown, 120);
-                }
-            }
-            
-            function handleMobileSearchInput() {
-                const value = this.value.trim();
-                
-                // Show/hide clear button
-                if (value) {
-                    mobileSearchClear.classList.add('active');
-                } else {
-                    mobileSearchClear.classList.remove('active');
-                    renderSearchHistory();
-                    return;
-                }
-                
-                // Clear previous timeout
-                if (searchTimeout) {
-                    clearTimeout(searchTimeout);
-                }
-                
-                // Set new timeout for search
-                searchTimeout = setTimeout(() => {
-                    showMobileLoading();
-                    performSearch(value, showMobileResults);
-                }, SEARCH_DELAY);
-            }
-            
-            function handleMobileSearchClick(e) {
-                // Handle history item click
-                const historyItem = e.target.closest('.mobile-search-history-item');
-                if (historyItem) {
-                    const query = historyItem.dataset.query;
-                    mobileSearchInput.value = query;
-                    mobileSearchClear.classList.add('active');
-                    
-                    showMobileLoading();
-                    performSearch(query, showMobileResults);
-                    return; // Stop further execution
-                }
-                
-                // Handle add to cart button click
-                const addButton = e.target.closest('.mobile-search-add');
-                if (addButton) {
-                    const productId = addButton.dataset.id;
-                    const originalHtml = addButton.innerHTML;
-                    
-                    addButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    addButton.disabled = true;
-                    
-                    addToCart(productId, () => {
-                        addButton.innerHTML = '<i class="fas fa-check"></i>';
-                        setTimeout(() => {
-                            addButton.innerHTML = originalHtml;
-                            addButton.disabled = false;
-                        }, 1500);
-                    }, () => {
-                        addButton.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                        setTimeout(() => {
-                            addButton.innerHTML = originalHtml;
-                            addButton.disabled = false;
-                        }, 1500);
-                    });
-                    return; // Stop further execution
-                }
+          if (!value) {
+            hideDropdown();
+            return;
+          }
 
-                // =============================================================
-                // YANGI QO'SHILGAN QISM: Mahsulot kartochkasi bosilishini boshqarish
-                // =============================================================
-                const item = e.target.closest('.mobile-search-item');
-                if (item) {
-                    const productId = item.dataset.id;
-                    if (productId) {
-                        // Produkt detail sahifasiga yo'naltirish
-                       window.location.href = `/product/detail/${productId}/`;
-                    }
-                }
-            }
+          // Clear previous timeout
+          if (searchTimeout) {
+            clearTimeout(searchTimeout);
+          }
 
-            function handleDropdownInteraction(e) {
-                // Add to cart button clicked
-                if (e.target.classList.contains('real-time-search-add') || e.target.closest('.real-time-search-add')) {
-                    e.preventDefault();
-                    
-                    const button = e.target.closest('.real-time-search-add');
-                    const productId = button.dataset.productId;
-                    const item = button.closest('.real-time-search-item');
-                    const name = item.querySelector('.real-time-search-name').textContent;
-                    
-                    addToCart(productId, () => {
-                        showNotification(`${name} добавлен в корзину`);
-                    }, () => {
-                        window.location.href('')
-                        showNotification('Ошибка при добавлении в корзину');
-                    });
-                    
-                    return;
-                }
-                
-                // Item clicked (not the add button)
-                if (e.target.classList.contains('real-time-search-item') || e.target.closest('.real-time-search-item')) {
-                    const item = e.target.closest('.real-time-search-item');
-                    const name = item.querySelector('.real-time-search-name').textContent;
-                    const productId = item.querySelector('.real-time-search-add').dataset.productId;
-                    searchInput.value = name;
-                    if (productId){
+          // Set new timeout for search
+          searchTimeout = setTimeout(() => {
+            if (window.innerWidth <= MOBILE_BREAKPOINT) {
+              // Mobile search
+              showSearchContainer();
+              mobileSearchInput.value = value;
+              showMobileLoading();
 
-                        window.location.href = `/product/detail/${productId}/`;
-                    }
-                    hideDropdown();
-                }
+              performSearch(value, showMobileResults);
+            } else {
+              // Desktop search
+              performSearch(value, showDropdown);
             }
-            
-            function handleSearchFormSubmit(e) {
-                e.preventDefault();
-                if (window.innerWidth <= MOBILE_BREAKPOINT) {
-                    showSearchContainer();
-                }
+          }, SEARCH_DELAY);
+        }
+
+        function handleSearchFocus() {
+          if (window.innerWidth <= MOBILE_BREAKPOINT) {
+            showSearchContainer();
+            // Reset any search history that might be visible
+            document
+              .querySelectorAll(
+                ".mobile-search-history:not(.mobile-search-container .mobile-search-history)"
+              )
+              .forEach((el) => {
+                el.style.display = "none";
+              });
+          } else if (this.value.trim()) {
+            dropdown.style.display = "block";
+          }
+        }
+
+        function handleSearchBlur() {
+          if (window.innerWidth > MOBILE_BREAKPOINT) {
+            setTimeout(hideDropdown, 120);
+          }
+        }
+
+        function handleMobileSearchInput() {
+          const value = this.value.trim();
+
+          // Show/hide clear button
+          if (value) {
+            mobileSearchClear.classList.add("active");
+          } else {
+            mobileSearchClear.classList.remove("active");
+            renderSearchHistory();
+            return;
+          }
+
+          // Clear previous timeout
+          if (searchTimeout) {
+            clearTimeout(searchTimeout);
+          }
+
+          // Set new timeout for search
+          searchTimeout = setTimeout(() => {
+            showMobileLoading();
+            performSearch(value, showMobileResults);
+          }, SEARCH_DELAY);
+        }
+
+        function handleMobileSearchClick(e) {
+          // Handle history item click
+          const historyItem = e.target.closest(".mobile-search-history-item");
+          if (historyItem) {
+            const query = historyItem.dataset.query;
+            mobileSearchInput.value = query;
+            mobileSearchClear.classList.add("active");
+
+            showMobileLoading();
+            performSearch(query, showMobileResults);
+            return; // Stop further execution
+          }
+
+          // Handle add to cart button click
+          const addButton = e.target.closest(".mobile-search-add");
+          if (addButton) {
+            const productId = addButton.dataset.id;
+            const originalHtml = addButton.innerHTML;
+
+            addButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            addButton.disabled = true;
+
+            addToCart(
+              productId,
+              () => {
+                addButton.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                  addButton.innerHTML = originalHtml;
+                  addButton.disabled = false;
+                }, 1500);
+              },
+              () => {
+                addButton.innerHTML =
+                  '<i class="fas fa-exclamation-circle"></i>';
+                setTimeout(() => {
+                  addButton.innerHTML = originalHtml;
+                  addButton.disabled = false;
+                }, 1500);
+              }
+            );
+            return; // Stop further execution
+          }
+
+          // =============================================================
+          // YANGI QO'SHILGAN QISM: Mahsulot kartochkasi bosilishini boshqarish
+          // =============================================================
+          const item = e.target.closest(".mobile-search-item");
+          if (item) {
+            const productId = item.dataset.id;
+            if (productId) {
+              // Produkt detail sahifasiga yo'naltirish
+              window.location.href = `/product/detail/${productId}/`;
             }
-            
-            // ======================================
-            // UI HELPERS
-            // ======================================
-            function showDropdown(results, query) {
-                if (!results || !results.length) {
-                    dropdown.innerHTML = '<div class="real-time-search-noresult">Ничего не найдено</div>';
-                } else {
-                    let html = '';
-                    for (const product of results) {
-                        html += `
+          }
+        }
+
+        function handleDropdownInteraction(e) {
+          // Add to cart button clicked
+          if (
+            e.target.classList.contains("real-time-search-add") ||
+            e.target.closest(".real-time-search-add")
+          ) {
+            e.preventDefault();
+
+            const button = e.target.closest(".real-time-search-add");
+            const productId = button.dataset.productId;
+            const item = button.closest(".real-time-search-item");
+            const name = item.querySelector(
+              ".real-time-search-name"
+            ).textContent;
+
+            addToCart(
+              productId,
+              () => {
+                showNotification(`${name} добавлен в корзину`);
+              },
+              () => {
+                window.location.href("");
+                showNotification("Ошибка при добавлении в корзину");
+              }
+            );
+
+            return;
+          }
+
+          // Item clicked (not the add button)
+          if (
+            e.target.classList.contains("real-time-search-item") ||
+            e.target.closest(".real-time-search-item")
+          ) {
+            const item = e.target.closest(".real-time-search-item");
+            const name = item.querySelector(
+              ".real-time-search-name"
+            ).textContent;
+            const productId = item.querySelector(".real-time-search-add")
+              .dataset.productId;
+            searchInput.value = name;
+            if (productId) {
+              window.location.href = `/product/detail/${productId}/`;
+            }
+            hideDropdown();
+          }
+        }
+
+        function handleSearchFormSubmit(e) {
+          e.preventDefault();
+          if (window.innerWidth <= MOBILE_BREAKPOINT) {
+            showSearchContainer();
+          }
+        }
+
+        // ======================================
+        // UI HELPERS
+        // ======================================
+        function showDropdown(results, query) {
+          if (!results || !results.length) {
+            dropdown.innerHTML =
+              '<div class="real-time-search-noresult">Ничего не найдено</div>';
+          } else {
+            let html = "";
+            for (const product of results) {
+              html += `
                             <div class="real-time-search-item" tabindex="0">
-                                <img class="real-time-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}" loading="lazy">
+                                <img class="real-time-search-img" src="${
+                                  product.image1 || "/media/default.jpg"
+                                }" alt="${product.name || ""}" loading="lazy">
                                 <div class="real-time-search-info">
-                                    <div class="real-time-search-name">${highlightMatch(product.name, query)}</div>
-                                    <div class="real-time-search-price">${formatPrice(product.price)} сум</div>
-                                    <div class="real-time-search-producer">${product.producer || ''}</div>
+                                    <div class="real-time-search-name">${highlightMatch(
+                                      product.name,
+                                      query
+                                    )}</div>
+                                    <div class="real-time-search-price">${formatPrice(
+                                      product.price
+                                    )} сум</div>
+                                    <div class="real-time-search-producer">${
+                                      product.producer || ""
+                                    }</div>
                                 </div>
-                                <button class="real-time-search-add" data-product-id="${product.id}">
+                                <button class="real-time-search-add" data-product-id="${
+                                  product.id
+                                }">
                                     <i class="fas fa-cart-plus"></i> В корзину
                                 </button>
                             </div>
                         `;
-                    }
-                    dropdown.innerHTML = html;
-                }
-                dropdown.style.display = 'block';
             }
+            dropdown.innerHTML = html;
+          }
+          dropdown.style.display = "block";
+        }
 
-            function hideDropdown() {
-                dropdown.style.display = 'none';
-            }
-            
-            function showMobileResults(results, query) {
-                if (!results || !results.length) {
-                    mobileSearchBody.innerHTML = `
+        function hideDropdown() {
+          dropdown.style.display = "none";
+        }
+
+        function showMobileResults(results, query) {
+          if (!results || !results.length) {
+            mobileSearchBody.innerHTML = `
                         <div class="mobile-search-empty">
                             <div class="mobile-search-empty-icon">
                                 <i class="fas fa-search"></i>
@@ -733,159 +920,184 @@
                             </div>
                         </div>
                     `;
-                    return;
-                }
-                
-                let resultsHtml = '';
-                for (const product of results) {
+            return;
+          }
 
-                    resultsHtml += `
+          let resultsHtml = "";
+          for (const product of results) {
+            resultsHtml += `
                         <div class="mobile-search-item" data-id="${product.id}">
-                            <img class="mobile-search-img" src="${product.image1 || '/media/default.jpg'}" alt="${product.name || ''}" loading="lazy">
+                            <img class="mobile-search-img" src="${
+                              product.image1 || "/media/default.jpg"
+                            }" alt="${product.name || ""}" loading="lazy">
                             <div class="mobile-search-info">
-                                <div class="mobile-search-name">${highlightMatch(product.name, query)}</div>
-                                <div class="mobile-search-price">${product.price} сум</div>
-                                ${product.producer ? `<div class="mobile-search-producer">${product.producer}</div>` : ''}
+                                <div class="mobile-search-name">${highlightMatch(
+                                  product.name,
+                                  query
+                                )}</div>
+                                <div class="mobile-search-price">${
+                                  product.price
+                                } сум</div>
+                                ${
+                                  product.producer
+                                    ? `<div class="mobile-search-producer">${product.producer}</div>`
+                                    : ""
+                                }
                             </div>
-                            <button class="mobile-search-add" data-id="${product.id}">
+                            <button class="mobile-search-add" data-id="${
+                              product.id
+                            }">
                                 <i class="fas fa-cart-plus"></i>
                             </button>
                         </div>
                     `;
-                }
-                
-                mobileSearchBody.innerHTML = `
+          }
+
+          mobileSearchBody.innerHTML = `
                     <div class="mobile-search-results">
                         ${resultsHtml}
                     </div>
                 `;
-                
-                // Save to history if results found
-                if (results.length > 0) {
-                    saveToHistory(query);
-                }
-            }
-            
-            function showMobileLoading() {
-                mobileSearchBody.innerHTML = `
+
+          // Save to history if results found
+          if (results.length > 0) {
+            saveToHistory(query);
+          }
+        }
+
+        function showMobileLoading() {
+          mobileSearchBody.innerHTML = `
                     <div class="mobile-search-loading">
                         <div class="mobile-search-loading-spinner"></div>
                         <div>Поиск...</div>
                     </div>
                 `;
-            }
-            
-            function showSearchContainer() {
-                // Hide any stray elements
-                document.querySelectorAll('.mobile-search-history:not(.mobile-search-container .mobile-search-history)').forEach(el => {
-                    el.style.display = 'none';
-                });
-                
-                mobileSearchContainer.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                isSearchActive = true;
-                
-                // Focus input and render history
-                setTimeout(() => {
-                    mobileSearchInput.focus();
-                    renderSearchHistory();
-                }, 100);
-            }
-            
-            function hideSearchContainer() {
-                mobileSearchContainer.classList.remove('active');
-                document.body.style.overflow = '';
-                isSearchActive = false;
-                
-                // Clear input
-                mobileSearchInput.value = '';
-                mobileSearchClear.classList.remove('active');
-            }
-            
-            // ======================================
-            // SEARCH HISTORY HELPERS
-            // ======================================
-            function saveToHistory(query) {
-                query = query.trim();
-                if (!query || query.length < 3) return;
-                
-                // Remove if already exists
-                searchHistory = searchHistory.filter(item => item.toLowerCase() !== query.toLowerCase());
-                
-                // Add to beginning of array
-                searchHistory.unshift(query);
-                
-                // Limit to max items
-                if (searchHistory.length > MAX_HISTORY_ITEMS) {
-                    searchHistory = searchHistory.slice(0, MAX_HISTORY_ITEMS);
-                }
-                
-                // Save to localStorage
-                localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-                
-                // Render search history
-                renderSearchHistory();
-            }
-            
-            function renderSearchHistory() {
-                if (!mobileSearchContainer.classList.contains('active')) {
-                    return; // Don't render history if container is not active
-                }
-                
-                if (searchHistory.length === 0) {
-                    mobileSearchHistoryItems.innerHTML = `
+        }
+
+        function showSearchContainer() {
+          // Hide any stray elements
+          document
+            .querySelectorAll(
+              ".mobile-search-history:not(.mobile-search-container .mobile-search-history)"
+            )
+            .forEach((el) => {
+              el.style.display = "none";
+            });
+
+          mobileSearchContainer.classList.add("active");
+          document.body.style.overflow = "hidden";
+          isSearchActive = true;
+
+          // Focus input and render history
+          setTimeout(() => {
+            mobileSearchInput.focus();
+            renderSearchHistory();
+          }, 100);
+        }
+
+        function hideSearchContainer() {
+          mobileSearchContainer.classList.remove("active");
+          document.body.style.overflow = "";
+          isSearchActive = false;
+
+          // Clear input
+          mobileSearchInput.value = "";
+          mobileSearchClear.classList.remove("active");
+        }
+
+        // ======================================
+        // SEARCH HISTORY HELPERS
+        // ======================================
+        function saveToHistory(query) {
+          query = query.trim();
+          if (!query || query.length < 3) return;
+
+          // Remove if already exists
+          searchHistory = searchHistory.filter(
+            (item) => item.toLowerCase() !== query.toLowerCase()
+          );
+
+          // Add to beginning of array
+          searchHistory.unshift(query);
+
+          // Limit to max items
+          if (searchHistory.length > MAX_HISTORY_ITEMS) {
+            searchHistory = searchHistory.slice(0, MAX_HISTORY_ITEMS);
+          }
+
+          // Save to localStorage
+          localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
+          // Render search history
+          renderSearchHistory();
+        }
+
+        function renderSearchHistory() {
+          if (!mobileSearchContainer.classList.contains("active")) {
+            return; // Don't render history if container is not active
+          }
+
+          if (searchHistory.length === 0) {
+            mobileSearchHistoryItems.innerHTML = `
                         <div style="color: #888; font-size: 13px;">История поиска пуста</div>
                     `;
-                    return;
-                }
-                
-                mobileSearchHistoryItems.innerHTML = searchHistory.map(query => `
+            return;
+          }
+
+          mobileSearchHistoryItems.innerHTML = searchHistory
+            .map(
+              (query) => `
                     <div class="mobile-search-history-item" data-query="${query}">
                         <i class="fas fa-history"></i>${query}
                     </div>
-                `).join('');
-            }
-            
-            function clearSearchHistory() {
-                searchHistory = [];
-                localStorage.removeItem('searchHistory');
-                renderSearchHistory();
-            }
-            
-            function clearMobileSearchInput() {
-                mobileSearchInput.value = '';
-                mobileSearchClear.classList.remove('active');
-                renderSearchHistory();
-                mobileSearchInput.focus();
-            }
-            
-            // ======================================
-            // FORMAT HELPERS
-            // ======================================
-            function highlightMatch(text, query) {
-                if (!query || !text) return text || '';
-                const re = new RegExp('('+query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')+')', 'ig');
-                return text.replace(re, '<mark>$1</mark>');
-            }
-            
-            function formatPrice(price) {
-                if (!price) return "0";
-                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-            }
-            
-            // ======================================
-            // API FUNCTIONS
-            // ======================================
-            function performSearch(query, callback) {
-                fetch(`/search/?q=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        callback(data, query);
-                    })
-                    .catch(error => {
-                        console.error('Search error:', error);
-                        if (callback === showMobileResults) {
-                            mobileSearchBody.innerHTML = `
+                `
+            )
+            .join("");
+        }
+
+        function clearSearchHistory() {
+          searchHistory = [];
+          localStorage.removeItem("searchHistory");
+          renderSearchHistory();
+        }
+
+        function clearMobileSearchInput() {
+          mobileSearchInput.value = "";
+          mobileSearchClear.classList.remove("active");
+          renderSearchHistory();
+          mobileSearchInput.focus();
+        }
+
+        // ======================================
+        // FORMAT HELPERS
+        // ======================================
+        function highlightMatch(text, query) {
+          if (!query || !text) return text || "";
+          const re = new RegExp(
+            "(" + query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")",
+            "ig"
+          );
+          return text.replace(re, "<mark>$1</mark>");
+        }
+
+        function formatPrice(price) {
+          if (!price) return "0";
+          return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        // ======================================
+        // API FUNCTIONS
+        // ======================================
+        function performSearch(query, callback) {
+          fetch(`/search/?q=${encodeURIComponent(query)}`)
+            .then((response) => response.json())
+            .then((data) => {
+              callback(data, query);
+            })
+            .catch((error) => {
+              console.error("Search error:", error);
+              if (callback === showMobileResults) {
+                mobileSearchBody.innerHTML = `
                                 <div class="mobile-search-empty">
                                     <div class="mobile-search-empty-icon">
                                         <i class="fas fa-exclamation-circle"></i>
@@ -896,412 +1108,405 @@
                                     </div>
                                 </div>
                             `;
-                        } else {
-                            dropdown.innerHTML = '<div class="real-time-search-noresult">Ошибка поиска</div>';
-                            dropdown.style.display = 'block';
-                        }
-                    });
-            }
-            
-            function addToCart(productId, successCallback, errorCallback) {
-                fetch(`/add_to_cart/${productId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': getCookie('csrftoken'),
-                        'Content-Type': 'application/json'
-                    } ,
-                     credentials: 'include',
-                        body: JSON.stringify({
-                            price: 0
-                        })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 200) {
-                        // Update cart badges
-                        const cartBadges = document.querySelectorAll('.cart-badge');
-                        cartBadges.forEach(badge => {
-                            badge.setAttribute('data-count', data.cart_count);
-                        });
-                        
-                        showNotification('Товар добавлен в корзину');
-                        
-                     } else if (data.status === 300){
-                        showNotification(`${productName} Рецептурный`);
-                        }else if (data.status === 401) {
-                        window.location.href = '/auth/send-otp/';
-                    }
-                    
-                })
-                
-            }
-            
-        });
+              } else {
+                dropdown.innerHTML =
+                  '<div class="real-time-search-noresult">Ошибка поиска</div>';
+                dropdown.style.display = "block";
+              }
+            });
+        }
 
-        // Helper function to get CSRF token
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
+        function addToCart(productId, successCallback, errorCallback) {
+          fetch(`/add_to_cart/${productId}/`, {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": getCookie("csrftoken"),
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              price: 0,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === 200) {
+                // Update cart badges
+                const cartBadges = document.querySelectorAll(".cart-badge");
+                cartBadges.forEach((badge) => {
+                  badge.setAttribute("data-count", data.cart_count);
+                });
+
+                showNotification("Товар добавлен в корзину");
+              } else if (data.status === 300) {
+                showNotification(`${productName} Рецептурный`);
+              } else if (data.status === 401) {
+                window.location.href = "/auth/send-otp/";
+              }
+            });
+        }
+      });
+
+      // Helper function to get CSRF token
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
             }
-            return cookieValue;
-        } 
+          }
+        }
+        return cookieValue;
+      }
     </script>
 
     <!-- Mini Cart -->
     <script>
-    // Mini Cart Module
-    document.addEventListener('DOMContentLoaded', function() {
-        // ======================================
-        // ELEMENT REFERENCES AND INITIALIZATION
-        // ======================================
-        const cartAction = document.querySelector('#cart-action');
-        const mobileCartButton = document.querySelector('#mobile-cart-button');
-        
-        if (!cartAction && !mobileCartButton) return;
+            // Mini Cart Module
+            document.addEventListener('DOMContentLoaded', function() {
+                // ======================================
+                // ELEMENT REFERENCES AND INITIALIZATION
+                // ======================================
+                const cartAction = document.querySelector('#cart-action');
+                const mobileCartButton = document.querySelector('#mobile-cart-button');
 
-        // ======================================
-        // STATE VARIABLES
-        // ======================================
-        let cartItems = [];
-        let cartTotal = 0;
-        let cartCount = 0;
-        
-        // Initialize mini cart element if not exists
-        let miniCart = document.getElementById('mini-cart-modal');
-        if (!miniCart) {
-            miniCart = document.createElement('div');
-            miniCart.id = 'mini-cart-modal';
-            document.body.appendChild(miniCart);
-        }
-        
-        // ======================================
-        // CORE FUNCTIONALITY
-        // ======================================
-        
-        // Initial cart data fetch
-        fetchCartData();
-        
-        // Open mini cart from desktop and mobile buttons
-        cartAction?.addEventListener('click', openMiniCart);
-        mobileCartButton?.addEventListener('click', openMiniCart);
-        
-        // Event delegation for cart actions (close, remove, quantity changes)
-        document.body.addEventListener('click', handleCartEvents);
-        
-        // ======================================
-        // EVENT HANDLERS
-        // ======================================
-        
-        // Open mini cart
-        function openMiniCart(e) {
-            e.preventDefault();
-            fetchCartData(); // Refresh cart data before showing
-            renderMiniCart();
-            miniCart.classList.add('open');
-        }
-        
-        // Handle all cart-related click events with event delegation
-        function handleCartEvents(e) {
-            // Close mini cart
-            if (e.target.classList.contains('mini-cart-backdrop') || 
-                e.target.classList.contains('mini-cart-close')) {
-                miniCart.classList.remove('open');
-                return;
-            }
-            
-            // Remove item
-            if (e.target.closest && e.target.closest('.mini-cart-item__remove')) {
-                const btn = e.target.closest('.mini-cart-item__remove');
-                const id = btn.getAttribute('data-id');
-                
-                removeFromCart(id);
-                return;
-            }
-            
-            // Increase quantity
-            if (e.target.closest && e.target.closest('.quantity-btn.increase')) {
-                const btn = e.target.closest('.quantity-btn.increase');
-                const id = btn.getAttribute('data-id');
-                
-                changeQuantity(id, 'increase');
-                return;
-            }
-            
-            // Decrease quantity
-            if (e.target.closest && e.target.closest('.quantity-btn.decrease')) {
-                const btn = e.target.closest('.quantity-btn.decrease');
-                const id = btn.getAttribute('data-id');
-                
-                changeQuantity(id, 'decrease');
-                return;
-            }
-            
-            // Checkout button
-            if (e.target.classList.contains('mini-cart-checkout')) {
-                if (cartItems.length === 0) {
-                    showNotification('Корзина пуста');
-                    return;
+                if (!cartAction && !mobileCartButton) return;
+
+                // ======================================
+                // STATE VARIABLES
+                // ======================================
+                let cartItems = [];
+                let cartTotal = 0;
+                let cartCount = 0;
+
+                // Initialize mini cart element if not exists
+                let miniCart = document.getElementById('mini-cart-modal');
+                if (!miniCart) {
+                    miniCart = document.createElement('div');
+                    miniCart.id = 'mini-cart-modal';
+                    document.body.appendChild(miniCart);
                 }
-                window.location.href = '{% url 'checkout' %}';
-                return;
-            }
-        }
-        
-        // ======================================
-        // CART API FUNCTIONS
-        // ======================================
-        
-        // Fetch cart data from server
-        function fetchCartData() {
-            fetch('/cart-json/')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 200) {
-                        // Update state
-                        cartItems = data.cart_items;
-                        cartTotal = data.cart_total;
-                        cartCount = data.cart_count;
-                        
-                        // Update UI
-                        updateCartBadges();
-                        
-                        // Re-render if cart is open
-                        if (miniCart && miniCart.classList.contains('open')) {
-                            renderMiniCart();
+
+                // ======================================
+                // CORE FUNCTIONALITY
+                // ======================================
+
+                // Initial cart data fetch
+                fetchCartData();
+
+                // Open mini cart from desktop and mobile buttons
+                cartAction?.addEventListener('click', openMiniCart);
+                mobileCartButton?.addEventListener('click', openMiniCart);
+
+                // Event delegation for cart actions (close, remove, quantity changes)
+                document.body.addEventListener('click', handleCartEvents);
+
+                // ======================================
+                // EVENT HANDLERS
+                // ======================================
+
+                // Open mini cart
+                function openMiniCart(e) {
+                    e.preventDefault();
+                    fetchCartData(); // Refresh cart data before showing
+                    renderMiniCart();
+                    miniCart.classList.add('open');
+                }
+
+                // Handle all cart-related click events with event delegation
+                function handleCartEvents(e) {
+                    // Close mini cart
+                    if (e.target.classList.contains('mini-cart-backdrop') ||
+                        e.target.classList.contains('mini-cart-close')) {
+                        miniCart.classList.remove('open');
+                        return;
+                    }
+
+                    // Remove item
+                    if (e.target.closest && e.target.closest('.mini-cart-item__remove')) {
+                        const btn = e.target.closest('.mini-cart-item__remove');
+                        const id = btn.getAttribute('data-id');
+
+                        removeFromCart(id);
+                        return;
+                    }
+
+                    // Increase quantity
+                    if (e.target.closest && e.target.closest('.quantity-btn.increase')) {
+                        const btn = e.target.closest('.quantity-btn.increase');
+                        const id = btn.getAttribute('data-id');
+
+                        changeQuantity(id, 'increase');
+                        return;
+                    }
+
+                    // Decrease quantity
+                    if (e.target.closest && e.target.closest('.quantity-btn.decrease')) {
+                        const btn = e.target.closest('.quantity-btn.decrease');
+                        const id = btn.getAttribute('data-id');
+
+                        changeQuantity(id, 'decrease');
+                        return;
+                    }
+
+                    // Checkout button
+                    if (e.target.classList.contains('mini-cart-checkout')) {
+                        if (cartItems.length === 0) {
+                            showNotification('Корзина пуста');
+                            return;
+                        }
+                        window.location.href = '{% url 'checkout' %}';
+                        return;
+                    }
+                }
+
+                // ======================================
+                // CART API FUNCTIONS
+                // ======================================
+
+                // Fetch cart data from server
+                function fetchCartData() {
+                    fetch('/cart-json/')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 200) {
+                                // Update state
+                                cartItems = data.cart_items;
+                                cartTotal = data.cart_total;
+                                cartCount = data.cart_count;
+
+                                // Update UI
+                                updateCartBadges();
+
+                                // Re-render if cart is open
+                                if (miniCart && miniCart.classList.contains('open')) {
+                                    renderMiniCart();
+                                }
+                            }
+                        })
+                        .catch(error => console.error('Error fetching cart:', error));
+                }
+
+                // Remove item from cart
+                function removeFromCart(productId) {
+                    fetch(`/remove_from_cart/${productId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 200) {
+                            fetchCartData();
+                            showNotification('Товар удален из корзины');
+                        } else {
+                            showNotification('Ошибка при удалении товара');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Ошибка при удалении товара');
+                    });
+                }
+
+                // Change item quantity
+                function changeQuantity(productId, action) {
+                    const endpoint = action === 'increase' ?
+                        `/increase-quantity/${productId}/` :
+                        `/decrease-quantity/${productId}/`;
+
+                    fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 200) {
+                            fetchCartData();
+
+                            if (action === 'decrease' && data.quantity === 0) {
+                                showNotification('Товар удален из корзины');
+                            } else {
+                                showNotification(action === 'increase' ?
+                                    'Количество увеличено' :
+                                    'Количество уменьшено'
+                                );
+                            }
+                        } else {
+                            showNotification('Ошибка при изменении количества');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Ошибка при изменении количества');
+                    });
+                }
+
+                // ======================================
+                // UI HELPERS
+                // ======================================
+
+                // Update all cart badges with current count
+                function updateCartBadges() {
+                    const cartBadges = document.querySelectorAll('.cart-badge');
+                    cartBadges.forEach(badge => {
+                        badge.setAttribute('data-count', cartCount);
+                    });
+                }
+
+                // Render mini cart with current items
+      function renderMiniCart() {
+          let itemsHtml = '';
+          if (!cartItems || cartItems.length === 0) {
+              itemsHtml = `<p data-i18n="cart_empty">${langData.cart_empty || 'Ваша корзина пуста.'}</p>`;
+          } else {
+              itemsHtml = `<ul class="mini-cart-list">` + cartItems.map(item => `
+                  <li class="mini-cart-item">
+                      <img src="${item.img}" alt="${item.name}" class="mini-cart-item__img" loading="lazy">
+                      <div class="mini-cart-item__info">
+                          <div class="mini-cart-item__name">${item.name}</div>
+                          <div class="mini-cart-item__meta">
+                              <div class="quantity-controls">
+                                  <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                                  <span class="quantity">${item.qty}</span>
+                                  <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                              </div>
+                              <span class="mini-cart-item__price">${formatPrice(item.price)} ${langData.currency || 'сум'}</span>
+                          </div>
+                      </div>
+                      <button class="mini-cart-item__remove" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                  </li>
+              `).join('') + `</ul>
+              <div class="mini-cart-total">
+                  <span data-i18n="cart_total">${langData.cart_total || 'Итого:'}</span>
+                  <span class="mini-cart-total__price">${formatPrice(cartTotal)} ${langData.currency || 'сум'}</span>
+              </div>
+              <button class="mini-cart-checkout" data-i18n="checkout">${langData.checkout || 'Оформить заказ'}</button>
+              `;
+          }
+
+          miniCart.innerHTML = `
+              <div class="mini-cart-backdrop"></div>
+              <div class="mini-cart-content">
+                  <button class="mini-cart-close">&times;</button>
+                  <h4 data-i18n="cart_title">${langData.cart_title || 'Корзина'}</h4>
+                  <div class="mini-cart-items">
+                      ${itemsHtml}
+                  </div>
+              </div>
+          `;
+      }
+
+                // Format price with thousand separators
+                function formatPrice(price) {
+                    return price.toLocaleString();
+                }
+            });
+
+            // Helper function to get CSRF token
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
                         }
                     }
-                })
-                .catch(error => console.error('Error fetching cart:', error));
-        }
-        
-        // Remove item from cart
-        function removeFromCart(productId) {
-            fetch(`/remove_from_cart/${productId}/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Content-Type': 'application/json'
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 200) {
-                    fetchCartData();
-                    showNotification('Товар удален из корзины');
-                } else {
-                    showNotification('Ошибка при удалении товара');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Ошибка при удалении товара');
-            });
-        }
-        
-        // Change item quantity
-        function changeQuantity(productId, action) {
-            const endpoint = action === 'increase' ? 
-                `/increase-quantity/${productId}/` : 
-                `/decrease-quantity/${productId}/`;
-            
-            fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 200) {
-                    fetchCartData();
-                    
-                    if (action === 'decrease' && data.quantity === 0) {
-                        showNotification('Товар удален из корзины');
-                    } else {
-                        showNotification(action === 'increase' ? 
-                            'Количество увеличено' : 
-                            'Количество уменьшено'
-                        );
-                    }
-                } else {
-                    showNotification('Ошибка при изменении количества');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Ошибка при изменении количества');
-            });
-        }
-        
-        // ======================================
-        // UI HELPERS
-        // ======================================
-        
-        // Update all cart badges with current count
-        function updateCartBadges() {
-            const cartBadges = document.querySelectorAll('.cart-badge');
-            cartBadges.forEach(badge => {
-                badge.setAttribute('data-count', cartCount);
-            });
-        }
-        
-        // Render mini cart with current items
-        function renderMiniCart() {
-            let itemsHtml = '';
-            if (!cartItems || cartItems.length === 0) {
-                itemsHtml = '<p>Ваша корзина пуста.</p>';
-            } else {
-                itemsHtml = `<ul class="mini-cart-list">` + cartItems.map(item => `
-                    <li class="mini-cart-item">
-                        <img src="${item.img}" alt="${item.name}" class="mini-cart-item__img" loading="lazy">
-                        <div class="mini-cart-item__info">
-                            <div class="mini-cart-item__name">${item.name}</div>
-                            <div class="mini-cart-item__meta">
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn decrease" data-id="${item.id}">-</button>
-                                    <span class="quantity">${item.qty}</span>
-                                    <button class="quantity-btn increase" data-id="${item.id}">+</button>
-                                </div>
-                                <span class="mini-cart-item__price">${formatPrice(item.price)} сум</span>
-                            </div>
-                        </div>
-                        <button class="mini-cart-item__remove" data-id="${item.id}"><i class="fas fa-trash"></i></button>
-                    </li>
-                `).join('') + `</ul>
-                <div class="mini-cart-total">
-                    <span>Итого:</span>
-                    <span class="mini-cart-total__price">${formatPrice(cartTotal)} сум</span>
-                </div>
-                <button class="mini-cart-checkout">Оформить заказ</button>
-                `;
+                return cookieValue;
             }
-            
-            miniCart.innerHTML = `
-                <div class="mini-cart-backdrop"></div>
-                <div class="mini-cart-content">
-                    <button class="mini-cart-close">&times;</button>
-                    <h4>Корзина</h4>
-                    <div class="mini-cart-items">
-                        ${itemsHtml}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Format price with thousand separators
-        function formatPrice(price) {
-            return price.toLocaleString();
-        }
-    });
-
-    // Helper function to get CSRF token
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-
     </script>
 
     <!-- Scroll to top JavaScript -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const scrollTopButton = document.getElementById('scroll-top');
+      document.addEventListener("DOMContentLoaded", function () {
+        const scrollTopButton = document.getElementById("scroll-top");
 
-            // Show/hide scroll button based on scroll position
-            window.addEventListener('scroll', function () {
-                if (window.pageYOffset > 300) {
-                    scrollTopButton.classList.add('visible');
-                } else {
-                    scrollTopButton.classList.remove('visible');
-                }
-            });
-
-            // Smooth scroll to top when clicked
-            scrollTopButton.addEventListener('click', function (e) {
-                e.preventDefault();
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
+        // Show/hide scroll button based on scroll position
+        window.addEventListener("scroll", function () {
+          if (window.pageYOffset > 300) {
+            scrollTopButton.classList.add("visible");
+          } else {
+            scrollTopButton.classList.remove("visible");
+          }
         });
+
+        // Smooth scroll to top when clicked
+        scrollTopButton.addEventListener("click", function (e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+      });
     </script>
-    
+
     <!-- Category Filter -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", function () {
+        const options = document.querySelectorAll(".option");
 
-            const options = document.querySelectorAll(".option");
-
-            options.forEach(function (option) {
-                option.addEventListener("click", function () {
-                    const categoryName = option.getAttribute("data-value");
-                    // Bo'shliqlar va maxsus belgilarni URLga mos shaklga keltirish
-                    const encodedCategoryName = encodeURIComponent(categoryName);
-                    // URLga yo'naltirish
-                    window.location.href = `{% url 'index' %}?category=${encodedCategoryName}`;
-                });
-            });
+        options.forEach(function (option) {
+          option.addEventListener("click", function () {
+            const categoryName = option.getAttribute("data-value");
+            // Bo'shliqlar va maxsus belgilarni URLga mos shaklga keltirish
+            const encodedCategoryName = encodeURIComponent(categoryName);
+            // URLga yo'naltirish
+            window.location.href = `{% url 'index' %}?category=${encodedCategoryName}`;
+          });
         });
-        document.addEventListener("DOMContentLoaded", function () {
-            const categoryLinks = document.querySelectorAll(".mobile-catalog-filter__link");
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        const categoryLinks = document.querySelectorAll(
+          ".mobile-catalog-filter__link"
+        );
 
-            categoryLinks.forEach(function (link) {
-                link.addEventListener("click", function (event) {
-                    event.preventDefault(); // sahifa yuqoriga sakramasligi uchun
-                    const categoryName = link.getAttribute("data-value");
-                    const encodedCategoryName = encodeURIComponent(categoryName);
-                    window.location.href = `{% url 'index' %}?category=${encodedCategoryName}`;
-                });
-            });
+        categoryLinks.forEach(function (link) {
+          link.addEventListener("click", function (event) {
+            event.preventDefault(); // sahifa yuqoriga sakramasligi uchun
+            const categoryName = link.getAttribute("data-value");
+            const encodedCategoryName = encodeURIComponent(categoryName);
+            window.location.href = `{% url 'index' %}?category=${encodedCategoryName}`;
+          });
         });
-
+      });
     </script>
 
     <!-- Notification helper function -->
     <script>
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'product-notification';
-            notification.textContent = message;
+      function showNotification(message) {
+        const notification = document.createElement("div");
+        notification.className = "product-notification";
+        notification.textContent = message;
 
-            document.body.appendChild(notification);
+        document.body.appendChild(notification);
 
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 10);
+        setTimeout(() => {
+          notification.classList.add("show");
+        }, 10);
 
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
+        setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
     </script>
-
-
-
-</body>
-
+  </body>
 </html>

@@ -1,675 +1,622 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-
+{% extends 'base.html' %} {% load static %} {% block content %}
+<script src="{% static 'lang/lang.js' %}" defer></script>
 
 <!-- banner qismi boshlandi -->
-    <div style="display: flex;justify-content: space-between;
-    align-items: center;">
-        <div class="slider_area owl-carousel" style="width: 800px !important;">
-            <div class="single_slider slider_one" style="background: url(../static/assets/img2/o\'quv\ markaz.jpg);
+<div style="display: flex; justify-content: space-between; align-items: center">
+<div class="slider_area owl-carousel" style="width: 800px !important">
+    <div
+      class="single_slider slider_one"
+      style="
+        background: url('{% static "assets/img2/o\'quv markaz.jpg" %}');
         background-repeat: no-repeat;
         background-attachment: scroll;
         background-position: center center;
         background-size: cover;
         width: 800px;
         height: 300px;
-        border-radius: 10px;">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <div class="slider_content">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single_slider slider_two" style="background: url(../static/assets/img2/labaratoriya.jpg);
-        background-repeat: no-repeat;
-        background-attachment: scroll;
-        background-position: center center;
-        background-size: cover;
-        width: 800px;
-        height: 300px;
-        border-radius: 10px;">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <div class="slider_content">
-                                <!-- <h1><strong>Nx80 Wireless </strong><br> Headphones </h1>
-                            <h3>get up to</h3>
-                            <h2>30% off</h2>
-                            <p>20.3 Megapixels plus 80 Megapixel</p>
-                            <a href="#">shop now</a> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single_slider slider_two" style="background: url(../static/assets/img2/ayollar\ markazi.jpg);
-        background-repeat: no-repeat;
-        background-attachment: scroll;
-        background-position: center center;
-        background-size: cover;
-        height: 300px;
-        width: 800px;
-        border-radius: 10px;">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <div class="slider_content">
-                                <!-- <h1><strong>Nx80 Wireless </strong><br> Headphones </h1>
-                            <h3>get up to</h3>
-                            <h2>30% off</h2>
-                            <p>20.3 Megapixels plus 80 Megapixel</p>
-                            <a href="#">shop now</a> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single_slider slider_two" style="background: url(../static/assets/img2/Akmal\ farm.jpg);
-        background-repeat: no-repeat;
-        background-attachment: scroll;
-        background-position: center center;
-        background-size: cover;
-        height: 300px;
-        width: 800px;
-        border-radius: 10px;">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <div class="slider_content">
-                                <!-- <h1><strong>Nx80 Wireless </strong><br> Headphones </h1>
-                            <h3>get up to</h3>
-                            <h2>30% off</h2>
-                            <p>20.3 Megapixels plus 80 Megapixel</p>
-                            <a href="#">shop now</a> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        border-radius: 10px;
+      "
+    >
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <div class="slider_content"></div>
+          </div>
         </div>
-        <div style="margin-right: 220px; flex-direction: column;">
-            <div>
-                <img src="../static/assets/img2/ayollar markazi.jpg" alt="" width="300" height="140" style="margin-bottom: 1rem;"><br>
-            </div>
-            <div>
-                <img src="../static/assets/img2/o'quv markaz.jpg" alt="" width="300" height="140">
-            </div>
+      </div>
+    </div>
+
+    <div
+      class="single_slider slider_two"
+      style="
+        background: url('{% static "assets/img2/labaratoriya.jpg" %}');
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
+        width: 800px;
+        height: 300px;
+        border-radius: 10px;
+      "
+    >
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <div class="slider_content"></div>
+          </div>
         </div>
-    </div><br><br>
+      </div>
+    </div>
+
+    <div
+      class="single_slider slider_two"
+      style="
+        background: url('{% static "assets/img2/ayollar markazi.jpg" %}');
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
+        width: 800px;
+        height: 300px;
+        border-radius: 10px;
+      "
+    >
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <div class="slider_content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="single_slider slider_two"
+      style="
+        background: url('{% static "assets/img2/Akmal farm.jpg" %}');
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
+        width: 800px;
+        height: 300px;
+        border-radius: 10px;
+      "
+    >
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <div class="slider_content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+  <div style="margin-right: 220px; flex-direction: column">
+    <div>
+      <img
+        src="{% static 'assets/img2/ayollar markazi.jpg' %}"
+        alt="Ayollar markazi"
+        width="300"
+        height="140"
+        style="margin-bottom: 1rem"
+      /><br />
+    </div>
+    <div>
+      <img
+        src="{% static 'assets/img2/o\'quv markaz.jpg' %}"
+        alt="O‘quv markazi"
+        width="300"
+        height="140"
+      />
+    </div>
+  </div>
+</div>
+<br /><br />
 <!-- banner qismi tugatildi -->
 
-    <!-- 1-rinchi card -->
-    <div class="produtc_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="product_tab_button">
-                        <ul class="nav" role="tablist">
-                            <li>
-                                <h4> <a class="active" data-bs-toggle="tab" href="#Products" role="tab"
-                                        aria-controls="Products" aria-selected="true" style="color: black;">{{ category.name}}</a></h4>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            {% if products %}
-                 <div class="tab-content">
-                <div class="tab-pane fade show active" id="Products" role="tabpanel">
-                    <div class="row">
-                        <div class="product_active owl-carousel">
-                            {% for product in products %}
-                            <div class="col-lg-3">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="product-details.html"><img src="{{product.image1.url}}" alt=""></a>
-                                        <div class="btn_quickview">
-                                            <!-- <a href="product-details.html" data-bs-toggle="modal" data-bs-target="#modal_box" -->
-                                                <!-- title="Quick View"><i class="ion-ios-eye"></i></a> -->
-                                        </div>
-                                    </div>
-                                    <div class="product_content">
-                                        <div class="product_ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h3><a href="product-details.html">{{ product.name }}</a></h3>
-                                        {% if product.price > 0 %}
-                                        <div class="product_price">
-                                            <span class="current_price" style="color: grey;font-size: 15px;"><s>{{ product.price}}
-                                                    so'm</s></span><br>
-                                            <span class="current_price">{{ product.price}} so'm</span>
-                                        </div>
-                                        {% else %}
-                                        <div class="product_price">
-                                            <br>
-                                            <span class="current_price">{{ product.price}} so'm</span>
-                                            <br>
-                                        </div>
-                                        {% endif %}
-
-                                        <div class="product_action">
-                                            <ul>
-                                                {% if user.is_authenticated %}
-                                                <li class="product_cart"><a href="/add_to_cart/{{ product.id }}/">корзина</a></li>
-                                                {% else %}
-                                                <li class="product_cart"><a href="/auth/send-otp/">корзина</a></li>
-                                                {% endif %}
-                                                <li class="add_links"><a href="wishlist.html" title="Add to Wishlist"><i
-                                                            class="ion-ios-heart-outline"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% else %}
-                <h1>"{{ query }}" bo'yicha hech narsa topilmadi !</h1>
-            {% endif %}
+<!-- 1-rinchi card -->
+<div class="produtc_area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="product_tab_button">
+          <ul class="nav" role="tablist">
+            <li>
+              <h4>
+                <a
+                  class="active"
+                  data-bs-toggle="tab"
+                  href="#Products"
+                  role="tab"
+                  aria-controls="Products"
+                  aria-selected="true"
+                  style="color: black"
+                  >{{ category.name }}</a
+                >
+              </h4>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
-    <!-- 1-tugadi -->
-
-    <!-- 2-inchi card -->
-    <div class="produtc_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="product_tab_button">
-                        <ul class="nav" role="tablist">
-                            <li>
-                                <h4><a class="active" data-bs-toggle="tab" href="#Products" role="tab"
-                                        aria-controls="Products" aria-selected="true"
-                                        style="color: black;">Акции/Сезонные препараты</a></h4>
-                            </li>
-
-                        </ul>
-                    </div>
+    {% if products %}
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="Products" role="tabpanel">
+        <div class="row">
+          <div class="product_active owl-carousel">
+            {% for product in products %}
+            <div class="col-lg-3">
+              <div class="single_product">
+                <div class="product_thumb">
+                  <a href="{% url 'product_detail' product.id %}">
+                    <img
+                      src="{{ product.image1.url }}"
+                      alt="{{ product.name }}"
+                    />
+                  </a>
+                  <div class="btn_quickview">
+                    <!-- Quick View -->
+                  </div>
                 </div>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="Products" role="tabpanel">
-                    <div class="row">
-                        <div class="product_active owl-carousel">
-                            <div class="col-lg-3">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="product-details.html"><img src="../static/assets/img2/100.jpg" alt=""></a>
-                                        <div class="btn_quickview">
-                                            <!-- <a href="product-details.html" data-bs-toggle="modal" data-bs-target="#modal_box" -->
-                                                <!-- title="Quick View"><i class="ion-ios-eye"></i></a> -->
-                                        </div>
-                                    </div>
-                                    <div class="product_content">
-                                        <div class="product_ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h3><a href="product-details.html">трафлю</a></h3>
-                                        <div class="product_price">
-                                            <span class="current_price" style="color: grey;font-size: 15px;"><s>4 200
-                                                    so'm</s></span><br>
-                                            <span class="current_price">5 000 so'm</span>
-                                        </div>
-                                        <div class="product_action">
-                                            <ul>
-                                                <li class="product_cart"><a href="cart.html">корзина</a></li>
-                                                <li class="add_links"><a href="wishlist.html" title="Add to Wishlist"><i
-                                                            class="ion-ios-heart-outline"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="product-details.html"><img src="../static/assets/img2/200.jpg" alt=""></a>
-                                        <div class="btn_quickview">
-                                            <!-- <a href="product-details.html" data-bs-toggle="modal" data-bs-target="#modal_box" -->
-                                                <!-- title="Quick View"><i class="ion-ios-eye"></i></a> -->
-                                        </div>
-                                    </div>
-                                    <div class="product_content">
-                                        <div class="product_ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h3><a href="product-details.html">нолгрип</a></h3>
-                                        <div class="product_price">
-                                            <span class="current_price" style="color: grey;font-size: 15px;"><s>4 200
-                                                    so'm</s></span><br>
-                                            <span class="current_price">10 000 so'm</span>
-                                        </div>
-                                        <div class="product_action">
-                                            <ul>
-                                                <li class="product_cart"><a href="cart.html">корзина</a></li>
-                                                <li class="add_links"><a href="wishlist.html" title="Add to Wishlist"><i
-                                                            class="ion-ios-heart-outline"></i></a></li>
-                                                <li class="add_links"><a href="#" title="Add to Compare"><i
-                                                            class="ion-loop"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="product-details.html"><img src="../static/assets/img2/300.jpg" alt=""></a>
-                                        <div class="btn_quickview">
-                                            <!-- <a href="product-details.html" data-bs-toggle="modal" data-bs-target="#modal_box" -->
-                                                <!-- title="Quick View"><i class="ion-ios-eye"></i></a> -->
-                                        </div>
-                                    </div>
-                                    <div class="product_content">
-                                        <div class="product_ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h3><a href="product-details.html">аспирин</a></h3>
-                                        <div class="product_price">
-                                            <span class="current_price" style="color: grey;font-size: 15px;"><s>4 200
-                                                    so'm</s></span><br>
-                                            <span class="current_price">15 000 so'm</span>
-                                        </div>
-                                        <div class="product_action">
-                                            <ul>
-                                                <li class="product_cart"><a href="cart.html">корзина</a></li>
-                                                <li class="add_links"><a href="wishlist.html" title="Add to Wishlist"><i
-                                                            class="ion-ios-heart-outline"></i></a></li>
-                                                <li class="add_links"><a href="#" title="Add to Compare"><i
-                                                            class="ion-loop"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="product-details.html"><img src="../static/assets/img2/400.jpg" alt=""></a>
-                                        <div class="btn_quickview">
-                                            <!-- <a href="product-details.html" data-bs-toggle="modal" data-bs-target="#modal_box" -->
-                                                <!-- title="Quick View"><i class="ion-ios-eye"></i></a> -->
-                                        </div>
-                                    </div>
-                                    <div class="product_content">
-                                        <div class="product_ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="ion-star"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                                <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <h3><a href="product-details.html">кюпен</a></h3>
-                                        <div class="product_price">
-                                            <span class="current_price" style="color: grey;font-size: 15px;"><s>4 200
-                                                    so'm</s></span><br>
-                                            <span class="current_price">16 200 so'm</span>
-                                        </div>
-                                        <div class="product_action">
-                                            <ul>
-                                                <li class="product_cart"><a href="cart.html">корзина</a></li>
-                                                <li class="add_links"><a href="wishlist.html" title="Add to Wishlist"><i
-                                                            class="ion-ios-heart-outline"></i></a></li>
-                                                <li class="add_links"><a href="#" title="Add to Compare"><i
-                                                            class="ion-loop"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="product_content">
+                  <div class="product_ratting">
+                    <ul>
+                      <li>
+                        <a href="#"><i class="ion-star"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-star"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-star"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-star"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-star"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <h3>
+                    <a href="{% url 'product_detail' product.id %}"
+                      >{{ product.name }}</a
+                    >
+                  </h3>
+                  {% if product.price > 0 %}
+                  <div class="product_price">
+                    <span
+                      class="current_price"
+                      style="color: grey; font-size: 15px"
+                      ><s
+                        >{{ product.price }}
+                        <span data-i18n="currency">so‘m</span></s
+                      ></span
+                    ><br />
+                    <span class="current_price"
+                      >{{ product.price }}
+                      <span data-i18n="currency">so‘m</span></span
+                    >
+                  </div>
+                  {% else %}
+                  <div class="product_price">
+                    <br />
+                    <span class="current_price"
+                      >{{ product.price }}
+                      <span data-i18n="currency">so‘m</span></span
+                    >
+                    <br />
+                  </div>
+                  {% endif %}
+                  <div class="product_action">
+                    <ul>
+                      {% if user.is_authenticated %}
+                      <li class="product_cart">
+                        <a
+                          href="{% url 'add_to_cart' product.id %}"
+                          data-i18n="add_to_cart"
+                          >Savatga</a
+                        >
+                      </li>
+                      {% else %}
+                      <li class="product_cart">
+                        <a href="{% url 'send_otp' %}" data-i18n="add_to_cart"
+                          >Savatga</a
+                        >
+                      </li>
+                      {% endif %}
+                      <li class="add_links">
+                        <a href="#" title="Tanlanganlarga qo‘shish"
+                          ><i class="ion-ios-heart-outline"></i
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
             </div>
+            {% endfor %}
+          </div>
         </div>
+      </div>
     </div>
-    <!-- 2-tugadi -->
+    {% else %}
+    <h1 data-i18n="no_results">"{{ query }}" bo‘yicha hech narsa topilmadi!</h1>
+    {% endif %}
+  </div>
+</div>
+<!-- 1-tugadi -->
 
-    <!--bizning hamkorlar rasmi boshlandi -->
-    <div class="single_product_wrapper product_slider">
-        <div class="container">
-            <div class="row">
-                <h4 style="color: black;">Популярные бренды (маркетинг)</h4>
-                <div class="product_gallery_active owl-carousel" style="margin: 0px !important;">
-                    <div class="col-lg-3">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/80.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/cs.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/nutrica.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/omron.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/pg.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-3" style="width: 50px !important;">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/logo02-removebg-preview.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="single_product_gallery">
-                            <img src="../static/assets/img3/stada.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- 2-inchi card -->
+<div class="produtc_area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="product_tab_button">
+          <ul class="nav" role="tablist">
+            <li>
+              <h4>
+                <a
+                  class="active"
+                  data-bs-toggle="tab"
+                  href="#Products"
+                  role="tab"
+                  aria-controls="Products"
+                  aria-selected="true"
+                  style="color: black"
+                  data-i18n="promotions"
+                  >Aksiyalar / Mavsumiy dorilar</a
+                >
+              </h4>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
-    <!-- bizning hamkorlar rasmi tugadi -->
-
-
-<!-- haqimizda bohshlandi -->
-    <div class="blog_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="blog_header_title">
-                        <h4 style="color: black;">Новости и статьи</h4>
-                    </div>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="Products" role="tabpanel">
+        <div class="row">
+          <div class="product_active owl-carousel">
+            <!-- Static products (tarjima qilinmaydi, faqat misol) -->
+            <div class="col-lg-3">
+              <div class="single_product">
+                <div class="product_thumb">
+                  <a href="#"
+                    ><img
+                      src="{% static 'assets/img2/100.jpg' %}"
+                      alt="Traflyu"
+                  /></a>
                 </div>
-            </div>
-            <div class="row">
-                <div class="blog_active owl-carousel">
-                    <div class="col-lg-4">
-                        <div class="single_blog">
-                            <div class="blog_thumb">
-                                <a href="#"><img src="../static/assets/img3/yangiliklar 1.jpg" alt=""></a>
-                            </div>
-                            <div class="blog_content"><br>
-                                <h5>13-dekabr</h5>
-                                <a href="#">Lorem, ipsum.</a>
-                                <p>See how Patanjali became the Zara of grocery shopping!
-                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, numquam.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single_blog">
-                            <div class="blog_thumb">
-                                <a href="#"><img src="../static/assets/img3/yangiliklar 2.jpg"></a>
-                            </div>
-                            <div class="blog_content"><br>
-                                <h5>13-dekabr</h5>
-                                <a href="#">Lorem, ipsum.</a>
-                                <p>Excuses we've all made to avoid eating 'green' vegetables.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, quam!
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single_blog">
-                            <div class="blog_thumb">
-                                <a href="#"><img src="../static/assets/img3/yangiliklar 3.jpg" alt=""></a>
-                            </div>
-                            <div class="blog_content"><br>
-                                <h5>13-dekabr</h5>
-                                <a href="#">Lorem, ipsum.</a>
-                                <p>7 types of cooking oils you should consider this World Health Day.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, modi.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single_blog">
-                            <div class="blog_thumb">
-                                <a href="#"><img src="../static/assets/img3/yangiliklar 4.jpg" alt=""></a>
-                            </div>
-                            <div class="blog_content"><br>
-                                <h5>13-dekabr</h5>
-                                <a href="#">Lorem, ipsum.</a>
-                                <p>See how Patanjali became the Zara of grocery shopping!
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, debitis.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single_blog">
-                            <div class="blog_thumb">
-                                <a href="#"><img src="../static/assets/img3/yangiliklar 5.jpg" alt=""></a>
-                            </div>
-                            <div class="blog_content"><br>
-                                <h5>13-dekabr</h5>
-                                <a href="#">Lorem, ipsum.</a>
-                                <p>See how Patanjali became the Zara of grocery shopping!
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, debitis.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="product_content">
+                  <div class="product_ratting">
+                    <ul>
+                      <li>
+                        <a href="#"><i class="ion-star"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-ios-star-outline"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-ios-star-outline"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-ios-star-outline"></i></a>
+                      </li>
+                      <li>
+                        <a href="#"><i class="ion-ios-star-outline"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <h3><a href="#">Traflyu</a></h3>
+                  <div class="product_price">
+                    <span
+                      class="current_price"
+                      style="color: grey; font-size: 15px"
+                      ><s>4 200 <span data-i18n="currency">so‘m</span></s></span
+                    ><br />
+                    <span class="current_price"
+                      >5 000 <span data-i18n="currency">so‘m</span></span
+                    >
+                  </div>
+                  <div class="product_action">
+                    <ul>
+                      <li class="product_cart">
+                        <a href="#" data-i18n="add_to_cart">Savatga</a>
+                      </li>
+                      <li class="add_links">
+                        <a href="#" title="Tanlanganlarga qo‘shish"
+                          ><i class="ion-ios-heart-outline"></i
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
             </div>
+            <!-- Boshqa mahsulotlar ham shu tarzda -->
+          </div>
         </div>
+      </div>
     </div>
-    <br>
-<!-- haqimizda tugatildi -->
-<!-- matinlar boshlandi -->
-    <div class="matin">
-        <h4 class="a2">Онлайин аптека AkmalFarimMedical</h4>
-        <p>Онлайн-аптека (Преимущества, Цель, Миссия, Ценности)
+  </div>
+</div>
+<!-- 2-tugadi -->
 
-            Преимущества:
-            Онлайн-аптека обеспечивает удобство <br> и оперативность для современных <br> клиентов. Основные
-            преимущества:
-            <br>
-            ✅ Удобство: Возможность заказывать лекарства, не выходя из дома.
-            <br>
-            ✅ Быстрая доставка: Заказы доставляются быстро и надежно.
-            <br>
-            ✅ Широкий ассортимент: Различные лекарства и товары для здоровья в одном месте.
-            <br>
-            ✅ Прозрачность цен: Легко сравнивать цены и выбирать лучшие предложения.
-            <br>
-            ✅ Профессиональная консультация: Онлайн-консультации помогают правильно выбрать лекарства.
-            <br>
-            Цель:
-            Основная цель онлайн-аптеки – обеспечить доступность товаров для здоровья по выгодным ценам <br> для каждого
-            человека. Мы стремимся помогать людям заботиться о своем здоровье и повышать качество их жизни.
-            <br>
-            Миссия:
-            Наша миссия – сделать услуги в сфере здравоохранения более удобными и доступными с помощью <br> современных
-            технологий. Мы стремимся предоставить каждому клиенту качественные товары, быструю доставку и надежные
-            консультации.
-
-            Ценности: <br>
-            ✔ Ответственность перед клиентами: Мы ставим здоровье и безопасность наших клиентов на первое место.
-            <br>
-            ✔ Инновации: Постоянно совершенствуем наши услуги и внедряем новые технологии.
-            <br>
-            ✔ Социальная ответственность: Мы стремимся внести вклад в улучшение здоровья общества.
-        </p>
-    </div><br><br><br>
-    <style>
-        .matin {
-            justify-content: center;
-            align-items: center;
-            margin-left: 250px;
-        }
-
-        .a2 {
-            color: black;
-        }
-    </style>
-<!-- matinlar tugatildi -->
-
-<!-- reklama- boshland -->
-
-    <div class="container22">
-        <div class="box1">
-            <h2 style="color: black;">ГАРАНТИЯ КАЧЕСТВА</h2>
-            <button>подоброобнее</button>
-            <img src="../static/assets/img2/00002.jpg" alt="Image 1">
+<!-- Bizning hamkorlar rasmi boshlandi -->
+<div class="single_product_wrapper product_slider">
+  <div class="container">
+    <div class="row">
+      <h4 style="color: black" data-i18n="popular_brands">
+        Mashhur brendlar (marketing)
+      </h4>
+      <div
+        class="product_gallery_active owl-carousel"
+        style="margin: 0px !important"
+      >
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img src="{% static 'assets/img3/80.png' %}" alt="Brend" />
+          </div>
         </div>
-        <div class="box1">
-            <h2 style="color: black;">УСЛОВИЯ ДОСТАВКИ</h2>
-            <button>подоброобнее</button>
-            <img src="../static/assets/img2/00001.jpg" alt="Image 2">
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img src="{% static 'assets/img3/cs.png' %}" alt="Brend" />
+          </div>
         </div>
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img src="{% static 'assets/img3/nutrica.png' %}" alt="Brend" />
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img src="{% static 'assets/img3/omron.png' %}" alt="Brend" />
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img src="{% static 'assets/img3/pg.png' %}" alt="Brend" />
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img
+              src="{% static 'assets/img3/logo02-removebg-preview.png' %}"
+              alt="Brend"
+            />
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="single_product_gallery">
+            <img src="{% static 'assets/img3/stada.png' %}" alt="Brend" />
+          </div>
+        </div>
+      </div>
     </div>
-    <style>
-        .box1>h2 {
-            position: absolute;
-            color: white;
-            padding-left: 20px;
-            padding-top: 10px;
-            font-size: 2rem;
-        }
+  </div>
+</div>
+<!-- Bizning hamkorlar rasmi tugadi -->
 
-        .box1 {
-            width: 550px;
-        }
+<!-- Haqimizda boshlandi -->
+<div class="blog_area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="blog_header_title">
+          <h4 style="color: black" data-i18n="news_articles">
+            Yangiliklar va maqolalar
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="blog_active owl-carousel">
+        <!-- Blog items (tarjima qilinmaydi, faqat misol) -->
+        <div class="col-lg-4">
+          <div class="single_blog">
+            <div class="blog_thumb">
+              <a href="#"
+                ><img
+                  src="{% static 'assets/img3/yangiliklar 1.jpg' %}"
+                  alt="Yangilik"
+              /></a>
+            </div>
+            <div class="blog_content">
+              <br />
+              <h5>13-dekabr</h5>
+              <a href="#">Lorem, ipsum.</a>
+              <p>
+                See how Patanjali became the Zara of grocery shopping! Lorem
+                ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur,
+                numquam.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Boshqalar ham shu tarzda -->
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<!-- Haqimizda tugadi -->
 
-        .box1>p {
-            position: absolute;
-            color: white;
-            padding-left: 20px;
-            padding-top: 70px;
-            font-size: 17px;
-        }
+<!-- Matinlar boshlandi -->
+<div class="matin">
+  <h4 class="a2" data-i18n="online_pharmacy_title">
+    Onlayn dorixona AkmalFarmMedical
+  </h4>
+  <p data-i18n="online_pharmacy_text">
+    Onlayn dorixona (Afzalliklari, Maqsad, Missiya, Qadriyatlar) <br />
+    Afzalliklari: Onlayn dorixona zamonaviy mijozlar uchun qulaylik va
+    tezkorlikni ta'minlaydi. Asosiy afzalliklari: <br />
+    Qulaylik: Dorilarni uydan chiqmasdan buyurtma qilish imkoniyati. <br />
+    Tez yetkazib berish: Buyurtmalar tez va ishonchli yetkaziladi. <br />
+    Keng assortiment: Turli dorilar va sog‘liq mahsulotlari bitta joyda. <br />
+    Narxlar shaffofligi: Narxlarni oson solishtirish va eng yaxshi takliflarni
+    tanlash. <br />
+    Professional maslahat: Onlayn maslahatlar dorilarni to‘g‘ri tanlashda yordam
+    beradi. <br />
+    Maqsad: Onlayn dorixonaning asosiy maqsadi – har bir inson uchun sog‘liq
+    mahsulotlarini foydali narxlarda ta'minlash. <br />
+    Biz odamlarga sog‘lig‘iga e’tibor berish va hayot sifatini oshirishda yordam
+    berishga intilamiz. <br />
+    Missiya: Bizning missiyamiz – zamonaviy texnologiyalar yordamida sog‘liqni
+    saqlash xizmatlarini qulay va hamma uchun ochiq qilish. <br />
+    Biz har bir mijozga sifatli mahsulot, tez yetkazib berish va ishonchli
+    maslahatlar taqdim etishga intilamiz. <br />
+    Qadriyatlar: <br />
+    Mijozlarga mas’uliyat: Biz mijozlarimizning sog‘lig‘i va xavfsizligini
+    birinchi o‘ringa qo‘yamiz. <br />
+    Innovatsiyalar: Xizmatlarimizni doimiy ravishda takomillashtirib, yangi
+    texnologiyalarni joriy etamiz. <br />
+    Ijtimoiy mas’uliyat: Jamiyat salomatligini yaxshilashga hissa qo‘shishga
+    intilamiz.
+  </p>
+</div>
+<br /><br /><br />
 
-        .box1>button {
-            margin-top: 120px;
-            margin-left: 20px;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 30px;
-            background-color: #15315a;
-            color: white;
-            position: absolute;
-        }
+<!-- Reklama boshlandi -->
+<div class="container22">
+  <div class="box1">
+    <h2 style="color: black" data-i18n="quality_guarantee_title">
+      SIFAT KAFOLATI
+    </h2>
+    <button data-i18n="more_details">Batafsil</button>
+    <img src="{% static 'assets/img2/00002.jpg' %}" alt="Sifat kafolati" />
+  </div>
+  <div class="box1">
+    <h2 style="color: black" data-i18n="delivery_conditions">
+      YETKAZIB BERISH SHARTLARI
+    </h2>
+    <button data-i18n="more_details">Batafsil</button>
+    <img src="{% static 'assets/img2/00001.jpg' %}" alt="Yetkazib berish" />
+  </div>
+</div>
 
-        .container22 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 50px;
-        }
+<style>
+  .matin {
+    justify-content: center;
+    align-items: center;
+    margin-left: 250px;
+  }
+  .a2 {
+    color: black;
+  }
+</style>
 
+<style>
+  .box1 > h2 {
+    position: absolute;
+    color: white;
+    padding-left: 20px;
+    padding-top: 10px;
+    font-size: 2rem;
+  }
 
-        .box1 img {
-            width: 1000px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+  .box1 {
+    width: 550px;
+  }
 
-        /* Telefon uchun */
-        @media (max-width: 767px) {
-            .box1>h2 {
-                font-size: 1.5rem;
-                padding-left: 10px;
-                padding-top: 5px;
-            }
+  .box1 > p {
+    position: absolute;
+    color: white;
+    padding-left: 20px;
+    padding-top: 70px;
+    font-size: 17px;
+  }
 
-            .box1>p {
-                font-size: 14px;
-                padding-left: 10px;
-                padding-top: 50px;
-            }
+  .box1 > button {
+    margin-top: 120px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 30px;
+    background-color: #15315a;
+    color: white;
+    position: absolute;
+  }
 
-            .box1>button {
-                margin-top: 120px;
-                margin-left: 10px;
-                padding: 5px 20px;
-                font-size: 14px;
-            }
+  .container22 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+  }
 
-            .container22 {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
+  .box1 img {
+    width: 1000px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
 
-            .box1 img {
-                width: 100%;
-                height: auto;
-            }
-        }
+  /* Telefon uchun */
+  @media (max-width: 767px) {
+    .box1 > h2 {
+      font-size: 1.5rem;
+      padding-left: 10px;
+      padding-top: 5px;
+    }
 
-        /* iPad uchun */
-        @media (max-width: 1024px) {
-            .box1>h2 {
-                font-size: 1.8rem;
-                padding-left: 15px;
-                padding-top: 8px;
-            }
+    .box1 > p {
+      font-size: 14px;
+      padding-left: 10px;
+      padding-top: 50px;
+    }
 
-            .box1>p {
-                font-size: 15px;
-                padding-left: 15px;
-                padding-top: 60px;
-            }
+    .box1 > button {
+      margin-top: 120px;
+      margin-left: 10px;
+      padding: 5px 20px;
+      font-size: 14px;
+    }
 
-            .box1>button {
-                margin-top: 130px;
-                margin-left: 15px;
-                padding: 5px 25px;
-                font-size: 16px;
-            }
+    .container22 {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
 
-            .container22 {
-                flex-direction: row;
-                align-items: center;
-                gap: 40px;
-            }
+    .box1 img {
+      width: 100%;
+      height: auto;
+    }
+  }
 
-            .box1 img {
-                width: 80%;
-                height: auto;
-            }
-        }
-    </style>
+  /* iPad uchun */
+  @media (max-width: 1024px) {
+    .box1 > h2 {
+      font-size: 1.8rem;
+      padding-left: 15px;
+      padding-top: 8px;
+    }
+
+    .box1 > p {
+      font-size: 15px;
+      padding-left: 15px;
+      padding-top: 60px;
+    }
+
+    .box1 > button {
+      margin-top: 130px;
+      margin-left: 15px;
+      padding: 5px 25px;
+      font-size: 16px;
+    }
+
+    .container22 {
+      flex-direction: row;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .box1 img {
+      width: 80%;
+      height: auto;
+    }
+  }
+</style>
 <!-- reklama tugatilid -->
 {% endblock content %}

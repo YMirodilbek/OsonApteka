@@ -1,383 +1,394 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block css %}
+{% extends 'base.html' %} {% load static %} {% block css %}
 <style>
-    /* Video container styling */
-    .video-container {
-        position: relative;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
-        height: 0;
-        overflow: hidden;
-        max-width: 900px;
-        margin: 30px auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .video-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-        border-radius: 8px;
-    }
-    
-    .about-us-heading {
-        text-align: center;
-        margin: 50px 0 30px;
-        font-size: 36px;
-        font-weight: bold;
-        color: #333;
-        position: relative;
-    }
-    
-    .about-us-heading::after {
-        content: '';
-        display: block;
-        width: 80px;
-        height: 4px;
-        background-color: #D91F3D;
-        margin: 15px auto 0;
-    }
-    
-    .about-us-timeline {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-        position: relative;
-    }
-    
-    /* Center timeline line */
-    .about-us-timeline::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 4px;
-        background-color: #D91F3D;
-        transform: translateX(-50%);
-        z-index: 1;
-    }
-    
-    .timeline-entry {
-        display: flex;
-        margin-bottom: 80px;
-        align-items: center;
-        position: relative;
-        justify-content: space-between;
-    }
-    
-    .timeline-entry:nth-child(even) {
-        flex-direction: row-reverse;
-    }
-    
-    /* Circle connector for timeline */
-    .timeline-entry::after {
-        content: '';
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background-color: #D91F3D;
-        border-radius: 50%;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-    }
-    
-    .timeline-image {
-        width: 42%;
-        aspect-ratio: 1/1;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border-radius: 5px;
-        margin-right: 5%;
-    }
-    
-    .timeline-entry:nth-child(even) .timeline-image {
-        margin-right: 0;
-        margin-left: 5%;
-    }
-    
-    .timeline-image img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: cover;
-    }
-    
-    .timeline-content {
-        width: 42%;
-        padding: 0 20px;
-    }
-    
-    .timeline-year {
-        font-size: 30px;
-        font-weight: bold;
-        color: #D91F3D;
-        margin-bottom: 20px;
-        display: block;
-    }
-    
-    .timeline-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 15px;
-        color: #333;
-    }
-    
-    .timeline-text {
-        font-size: 13px;
-        line-height: 1.6;
-        color: #555;
-    }
-    
-    /* End text styling */
-    .end-text {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 30px;
-        text-align: center;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    
-    .end-text h1 {
-        font-size: 24px;
-        color: #D91F3D;
-        margin-bottom: 15px;
-        font-weight: bold;
-    }
-    
-    .end-text p {
-        font-size: 14px;
-        line-height: 1.5;
-        color: #555;
-        margin-bottom: 20px;
-    }
-    
-    .end-text p:last-child {
-        margin-top: 20px;
-        padding-top: 15px;
-        border-top: 1px solid #eee;
-        color: #666;
-        line-height: 1.7;
-    }
-    
-    /* Large screens */
-    @media (min-width: 1200px) {
-        .about-us-timeline {
-            max-width: 1140px;
-        }
-    }
-    
-    /* Medium screens */
-    @media (max-width: 992px) {
-        .about-us-heading {
-            font-size: 32px;
-        }
-        
-        .timeline-image {
-            width: 44%;
-        }
-        
-        .timeline-content {
-            width: 44%;
-        }
-        
-        .timeline-year {
-            font-size: 28px;
-        }
-        
-        .end-text {
-            padding: 30px;
-            margin: 50px auto;
-        }
-        
-        .end-text h1 {
-            font-size: 26px;
-        }
-    }
-    
-    /* Small tablets */
-    @media (max-width: 768px) {
-        .about-us-heading {
-            font-size: 28px;
-            margin: 40px 0 25px;
-        }
-        
-        .about-us-heading::after {
-            width: 60px;
-            margin: 12px auto 0;
-        }
-        
-        .about-us-timeline::before {
-            display: none;
-        }
-        
-        .timeline-entry::after {
-            display: none;
-        }
-        
-        .timeline-entry, .timeline-entry:nth-child(even) {
-            flex-direction: column;
-            margin-left: 0;
-        }
-        
-        .timeline-image, .timeline-content,
-        .timeline-entry:nth-child(even) .timeline-image {
-            width: 100%;
-            margin: 0 0 30px 0;
-        }
-        
-        .timeline-content {
-            padding: 0;
-        }
-        
-        .timeline-year {
-            font-size: 36px;
-        }
-        
-        .end-text {
-            padding: 25px 20px;
-            margin: 40px auto;
-        }
-        
-        .end-text h1 {
-            font-size: 24px;
-        }
-        
-        .end-text p {
-            font-size: 15px;
-        }
-    }
-    
-    /* Mobile phones */
-    @media (max-width: 576px) {
-        .about-us-heading {
-            font-size: 24px;
-            margin: 30px 0 20px;
-        }
-        
-        .about-us-heading::after {
-            width: 50px;
-            height: 3px;
-            margin: 10px auto 0;
-        }
-        
-        .about-us-timeline {
-            padding: 0 10px;
-            margin: 30px auto;
-        }
-        
-        .about-us-timeline::before {
-            display: none;
-        }
-        
-        .timeline-entry {
-            margin-bottom: 50px;
-            margin-left: 0;
-        }
-        
-        .timeline-entry::after {
-            display: none;
-        }
-        
-        .timeline-image {
-            aspect-ratio: 4/3;
-        }
-        
-        .timeline-year {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        
-        .timeline-text {
-            font-size: 14px;
-        }
-        
-        .end-text {
-            padding: 20px 15px;
-            margin: 30px auto 20px;
-        }
-        
-        .end-text h1 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .end-text p {
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        
-        .end-text p:last-child {
-            margin-top: 20px;
-            padding-top: 15px;
-            font-size: 13px;
-        }
-    }
-    
-    /* Extra small devices */
-    @media (max-width: 375px) {
-        .timeline-entry {
-            margin-left: 0;
-        }
-        
-        .timeline-year {
-            font-size: 22px;
-        }
-        
-        .end-text h1 {
-            font-size: 18px;
-        }
-    }
-</style>
-{% endblock %}
+  /* Video container styling */
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 900px;
+    margin: 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
 
-{% block content %}
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+  }
+
+  .about-us-heading {
+    text-align: center;
+    margin: 50px 0 30px;
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    position: relative;
+  }
+
+  .about-us-heading::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #d91f3d;
+    margin: 15px auto 0;
+  }
+
+  .about-us-timeline {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  /* Center timeline line */
+  .about-us-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background-color: #d91f3d;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .timeline-entry {
+    display: flex;
+    margin-bottom: 80px;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+  }
+
+  .timeline-entry:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  /* Circle connector for timeline */
+  .timeline-entry::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #d91f3d;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .timeline-image {
+    width: 42%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-right: 5%;
+  }
+
+  .timeline-entry:nth-child(even) .timeline-image {
+    margin-right: 0;
+    margin-left: 5%;
+  }
+
+  .timeline-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .timeline-content {
+    width: 42%;
+    padding: 0 20px;
+  }
+
+  .timeline-year {
+    font-size: 30px;
+    font-weight: bold;
+    color: #d91f3d;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .timeline-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .timeline-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  /* End text styling */
+  .end-text {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .end-text h1 {
+    font-size: 24px;
+    color: #d91f3d;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .end-text p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .end-text p:last-child {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    color: #666;
+    line-height: 1.7;
+  }
+
+  /* Large screens */
+  @media (min-width: 1200px) {
+    .about-us-timeline {
+      max-width: 1140px;
+    }
+  }
+
+  /* Medium screens */
+  @media (max-width: 992px) {
+    .about-us-heading {
+      font-size: 32px;
+    }
+
+    .timeline-image {
+      width: 44%;
+    }
+
+    .timeline-content {
+      width: 44%;
+    }
+
+    .timeline-year {
+      font-size: 28px;
+    }
+
+    .end-text {
+      padding: 30px;
+      margin: 50px auto;
+    }
+
+    .end-text h1 {
+      font-size: 26px;
+    }
+  }
+
+  /* Small tablets */
+  @media (max-width: 768px) {
+    .about-us-heading {
+      font-size: 28px;
+      margin: 40px 0 25px;
+    }
+
+    .about-us-heading::after {
+      width: 60px;
+      margin: 12px auto 0;
+    }
+
+    .about-us-timeline::before {
+      display: none;
+    }
+
+    .timeline-entry::after {
+      display: none;
+    }
+
+    .timeline-entry,
+    .timeline-entry:nth-child(even) {
+      flex-direction: column;
+      margin-left: 0;
+    }
+
+    .timeline-image,
+    .timeline-content,
+    .timeline-entry:nth-child(even) .timeline-image {
+      width: 100%;
+      margin: 0 0 30px 0;
+    }
+
+    .timeline-content {
+      padding: 0;
+    }
+
+    .timeline-year {
+      font-size: 36px;
+    }
+
+    .end-text {
+      padding: 25px 20px;
+      margin: 40px auto;
+    }
+
+    .end-text h1 {
+      font-size: 24px;
+    }
+
+    .end-text p {
+      font-size: 15px;
+    }
+  }
+
+  /* Mobile phones */
+  @media (max-width: 576px) {
+    .about-us-heading {
+      font-size: 24px;
+      margin: 30px 0 20px;
+    }
+
+    .about-us-heading::after {
+      width: 50px;
+      height: 3px;
+      margin: 10px auto 0;
+    }
+
+    .about-us-timeline {
+      padding: 0 10px;
+      margin: 30px auto;
+    }
+
+    .about-us-timeline::before {
+      display: none;
+    }
+
+    .timeline-entry {
+      margin-bottom: 50px;
+      margin-left: 0;
+    }
+
+    .timeline-entry::after {
+      display: none;
+    }
+
+    .timeline-image {
+      aspect-ratio: 4/3;
+    }
+
+    .timeline-year {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-text {
+      font-size: 14px;
+    }
+
+    .end-text {
+      padding: 20px 15px;
+      margin: 30px auto 20px;
+    }
+
+    .end-text h1 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .end-text p {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .end-text p:last-child {
+      margin-top: 20px;
+      padding-top: 15px;
+      font-size: 13px;
+    }
+  }
+
+  /* Extra small devices */
+  @media (max-width: 375px) {
+    .timeline-entry {
+      margin-left: 0;
+    }
+
+    .timeline-year {
+      font-size: 22px;
+    }
+
+    .end-text h1 {
+      font-size: 18px;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
 <!-- YouTube Video Embed -->
 <div class="video-container">
-    <iframe src="{{ video.video }}" 
-            title="YouTube video" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-    </iframe>
+  <iframe
+    src="{{ video.video }}"
+    title="YouTube video"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  >
+  </iframe>
 </div>
 
-<h2 class="about-us-heading">О нас</h2>
+<h2 class="about-us-heading" data-i18n="about_us">Biz haqimizda</h2>
 <div class="about-us-timeline">
-    {% for item in about %}
-    <div class="timeline-entry">
-        <div class="timeline-image">
-            {% if item.image %}
-            <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
-            {% else %}
-            <img src="{% static 'assets/img/ship/about1.jpg' %}" alt="Default image" loading="lazy">
-            {% endif %}
-        </div>
-        <div class="timeline-content">
-            <span class="timeline-year">{{ item.title }}</span>
-            <div class="timeline-text">{{ item.body|safe }}</div>
-        </div>
+  {% for item in about %}
+  <div class="timeline-entry">
+    <div class="timeline-image">
+      {% if item.image %}
+      <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy" />
+      {% else %}
+      <img
+        src="{% static 'assets/img/ship/about1.jpg' %}"
+        alt="Standart rasm"
+        loading="lazy"
+      />
+      {% endif %}
     </div>
-    {% endfor %}
+    <div class="timeline-content">
+      <span class="timeline-year">{{ item.title }}</span>
+      <div class="timeline-text">{{ item.body|safe }}</div>
+    </div>
+  </div>
+  {% endfor %}
 </div>
+
 <div class="end-text">
-    <h1>Мы благодарны за доверие наших клиентов и партнёров.</h1>
-    <p>Нас упоминают в СМИ, рекомендуют друзья и семьи, выбирают снова и снова.</p>
-    <p>
-        Контакты: <br>
-        Горячая линия: 1080 <br>
-        Телефон: +998 78 298‑00‑88 <br>
-        Работаем круглосуточно - 24/7, без перерывов и выходных <br>
-        Наши аптеки: Ташкент, Андижан <br>
-        Сайт: akmalfarm.uz <br>
-        Мы рядом — и в онлайне, и в офлайне <br>
-    </p>
+  <h1 data-i18n="thanks_clients">
+    Mijozlarimiz va hamkorlarimizning ishonchi uchun minnatdormiz.
+  </h1>
+  <p data-i18n="media_mentions">
+    Bizni ommaviy axborot vositalarida eslatishadi, do‘stlar va oilalar tavsiya
+    qilishadi, yana va yana tanlashadi.
+  </p>
+  <p data-i18n="contact_infoText">
+    Aloqa ma’lumotlari: <br />
+    Ishonch telefoni: 1080 <br />
+    Telefon: +998 78 298‑00‑88 <br />
+    24/7 ishlaymiz – tanaffussiz va dam olish kunlari yo‘q <br />
+    Bizning dorixonalarimiz: Toshkent, Andijon <br />
+    Sayt: akmalfarm.uz <br />
+    Biz yaqinmiz – ham onlaynda, ham oflaynda
+  </p>
 </div>
+
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock %}

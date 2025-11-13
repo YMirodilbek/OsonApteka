@@ -1,148 +1,153 @@
-{% extends 'base.html'%}
-{% load static %}
-{% block content %}
-    <link rel="stylesheet" href="{% static 'assets/css/blog.css' %}">
+{% extends 'base.html'%} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/blog.css' %}" />
+<script src="{% static 'lang/lang.js' %}" defer></script>
 
-    <div class="blog-header-container">
-        <h1>Новости и статьи</h1>
-    </div>
+<div class="blog-header-container">
+  <h1 data-i18n="news_and_articles">Yangiliklar va maqolalar</h1>
+</div>
 
-    <div class="blog-container">
-        {% for blog in page_obj %}
-        <div class="blog-card">
-            <img src="{{ blog.image.url }}" alt="Blog image">
-            <h2><a href="{% url 'blog_details' blog.id %}">{{ blog.title }}</a></h2>
-            <p>{{ blog.created_at|date:"d.m.Y" }}</p>
-            <p>{{ blog.text|truncatechars:100 }}</p>
-            <a href="{% url 'blog_details' blog.id %}" class="read-more">Читать далее</a>
-        </div>
-        {% endfor %}
-    </div>
+<div class="blog-container">
+  {% for blog in page_obj %}
+  <div class="blog-card">
+    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" loading="lazy" />
+    <h2><a href="{% url 'blog_details' blog.id %}">{{ blog.title }}</a></h2>
+    <p data-i18n="published_on">E'lon qilingan: {{ blog.created_at|date:"d.m.Y" }}</p>
+    <p>{{ blog.text|truncatechars:100 }}</p>
+    <a href="{% url 'blog_details' blog.id %}" class="read-more" data-i18n="read_more">
+      Batafsil o‘qish
+    </a>
+  </div>
+  {% endfor %}
+</div>
 
-    <!-- Pagination -->
-    <div class="pagination">
-        <div class="pagination__container">
-            {% if page_obj.has_previous %}
-                <a href="?page=1" class="pagination__link pagination__link--first">
-                    <i class="fas fa-angle-double-left"></i>
-                </a>
-                <a href="?page={{ page_obj.previous_page_number }}" class="pagination__link pagination__link--prev">
-                    <i class="fas fa-angle-left"></i>
-                </a>
-            {% endif %}
+<!-- Pagination -->
+<div class="pagination">
+  <div class="pagination__container">
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="pagination__link pagination__link--first">
+      <i class="fas fa-angle-double-left"></i>
+    </a>
+    <a
+      href="?page={{ page_obj.previous_page_number }}"
+      class="pagination__link pagination__link--prev"
+    >
+      <i class="fas fa-angle-left"></i>
+    </a>
+    {% endif %} {% for num in page_obj.paginator.page_range %} {% if
+    page_obj.number == num %}
+    <span class="pagination__link pagination__link--active">{{ num }}</span>
+    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+    <a href="?page={{ num }}" class="pagination__link">{{ num }}</a>
+    {% endif %} {% endfor %} {% if page_obj.has_next %}
+    <a
+      href="?page={{ page_obj.next_page_number }}"
+      class="pagination__link pagination__link--next"
+    >
+      <i class="fas fa-angle-right"></i>
+    </a>
+    <a
+      href="?page={{ page_obj.paginator.num_pages }}"
+      class="pagination__link pagination__link--last"
+    >
+      <i class="fas fa-angle-double-right"></i>
+    </a>
+    {% endif %}
+  </div>
+</div>
 
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <span class="pagination__link pagination__link--active">{{ num }}</span>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <a href="?page={{ num }}" class="pagination__link">{{ num }}</a>
-                {% endif %}
-            {% endfor %}
+<style>
+  .blog-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1140px;
+    margin: 30px auto 0;
+    padding: 0 20px;
+  }
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="pagination__link pagination__link--next">
-                    <i class="fas fa-angle-right"></i>
-                </a>
-                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination__link pagination__link--last">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-            {% endif %}
-        </div>
-    </div>
+  .blog-header-container h1 {
+    margin: 0;
+    color: #a71a28;
+    font-size: 28px;
+  }
 
-    <style>
-        .blog-header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1140px;
-            margin: 30px auto 0;
-            padding: 0 20px;
-        }
-        
-        .blog-header-container h1 {
-            margin: 0;
-            color: #a71a28;
-            font-size: 28px;
-        }
-        
-        .create-blog-btn {
-            background-color: #c51f30;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        
-        .create-blog-btn:hover {
-            background-color: #a71a28;
-            color: white;
-        }
-        
-        @media (max-width: 768px) {
-            .blog-header-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-                margin-bottom: 20px;
-            }
-        }
+  .create-blog-btn {
+    background-color: #c51f30;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
 
-        .pagination {
-            margin: 40px 0;
-            display: flex;
-            justify-content: center;
-        }
+  .create-blog-btn:hover {
+    background-color: #a71a28;
+    color: white;
+  }
 
-        .pagination__container {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+  @media (max-width: 768px) {
+    .blog-header-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+  }
 
-        .pagination__link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: #fff;
-            color: #333;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border: 1px solid #e0e0e0;
-        }
+  .pagination {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+  }
 
-        .pagination__link:hover {
-            background: #f5f5f5;
-            border-color: #d0d0d0;
-        }
+  .pagination__container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
 
-        .pagination__link--active {
-            background: var(--primary-blue);
-            color: white;
-            border-color: var(--primary-blue);
-        }
+  .pagination__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid #e0e0e0;
+  }
 
-        .pagination__link--active:hover {
-            background: var(--primary-blue);
-            border-color: var(--primary-blue);
-        }
+  .pagination__link:hover {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+  }
 
-        .pagination__link i {
-            font-size: 14px;
-        }
+  .pagination__link--active {
+    background: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+  }
 
-        @media (max-width: 576px) {
-            .pagination__link {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
-            }
-        }
-    </style>
+  .pagination__link--active:hover {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+  }
+
+  .pagination__link i {
+    font-size: 14px;
+  }
+
+  @media (max-width: 576px) {
+    .pagination__link {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+  }
+</style>
 {% endblock %}

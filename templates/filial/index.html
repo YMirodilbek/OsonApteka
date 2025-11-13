@@ -1,10 +1,7 @@
-{% extends 'base_filial.html' %}
-
-{% block title %}Filial bosh sahifa{% endblock %}
-
-{% block content %}
+{% extends 'base_filial.html' %} {% block title %}Filial bosh sahifa{% endblock
+%} {% block content %}
 <div class="container py-5">
-  <h2 class="mb-4">📊 Statistika Sahifasi</h2>
+  <h2 class="mb-4" data-i18n="statistics_page">Statistika sahifasi</h2>
 
   <div class="row g-4">
     <!-- Kartochka 1 -->
@@ -14,19 +11,25 @@
           <div class="mb-3">
             <i class="fas fa-users fa-2x text-primary"></i>
           </div>
-          <h5 class="card-title"> <a href="/filial/users/"> Foydalanuvchilar</a></h5>
-          <h3>{{user_count}}</h3>
+          <h5 class="card-title">
+            <a href="/filial/users/" data-i18n="users">Foydalanuvchilar</a>
+          </h5>
+          <h3>{{ user_count }}</h3>
         </div>
       </div>
     </div>
-     <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3">
       <div class="card shadow-sm border-0 text-center">
         <div class="card-body">
           <div class="mb-3">
             <i class="fas fa-users fa-2x text-primary"></i>
           </div>
-          <h5 class="card-title"> <a href="/filial/users/">Faol Foydalanuvchilar</a></h5>
-          <h3>{{user_count_active}} </h3>
+          <h5 class="card-title">
+            <a href="/filial/users/" data-i18n="active_users"
+              >Faol foydalanuvchilar</a
+            >
+          </h5>
+          <h3>{{ user_count_active }}</h3>
         </div>
       </div>
     </div>
@@ -38,19 +41,21 @@
           <div class="mb-3">
             <i class="fas fa-shopping-cart fa-2x text-success"></i>
           </div>
-          <h5 class="card-title">Buyurtmalar</h5>
-          <h3>{{count}}</h3>
+          <h5 class="card-title" data-i18n="orders">Buyurtmalar</h5>
+          <h3>{{ count }}</h3>
         </div>
       </div>
-    </div> 
+    </div>
     <div class="col-md-6 col-xl-3">
       <div class="card shadow-sm border-0 text-center">
         <div class="card-body">
           <div class="mb-3">
             <i class="fas fa-shopping-cart fa-2x text-success"></i>
           </div>
-          <h5 class="card-title"> Bubungi Buyurtmalar</h5>
-          <h3>{{count_now}}</h3>
+          <h5 class="card-title" data-i18n="today_orders">
+            Bugungi buyurtmalar
+          </h5>
+          <h3>{{ count_now }}</h3>
         </div>
       </div>
     </div>
@@ -61,45 +66,108 @@
   <div class="card shadow-lg border-0">
     <div class="card-header bg--color p-3 text-white">
       <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">📊 Oxirgi 30 Kunlik Savdo Statistikasi</h3>
+        <h3 class="mb-0" data-i18n="last_30_days_sales">
+          Oxirgi 30 kunlik savdo statistikasi
+        </h3>
         <div class="dropdown">
-          <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-            <i class="fas fa-cog"></i> Sozlamalar
+          <button
+            class="btn btn-light btn-sm dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            data-i18n="settings"
+          >
+            Sozlamalar
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item bg--color p-3" href="#" id="export-png"><i class="fas fa-image"></i> PNG sifatida yuklab olish</a></li>
-            <li><a class="dropdown-item bg--color p-3" href="#" id="export-csv"><i class="fas fa-file-csv"></i> Ma'lumotlarni CSV qilish</a></li>
+            <li>
+              <a
+                class="dropdown-item bg--color p-3"
+                href="#"
+                id="export-png"
+                data-i18n="export_png"
+              >
+                PNG sifatida yuklab olish
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item bg--color p-3"
+                href="#"
+                id="export-csv"
+                data-i18n="export_csv"
+              >
+                Ma'lumotlarni CSV qilish
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    
+
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-md-6">
           <div class="btn-group">
-            <button class="btn bg--color p-2 active chart-type-btn" data-type="bar"><i class="fas fa-chart-bar"></i> Bar</button>
-            <button class="btn bg--color p-2 chart-type-btn" data-type="line"><i class="fas fa-chart-line"></i> Line</button>
-            <button class="btn bg--color p-2 chart-type-btn" data-type="area"><i class="fas fa-chart-area"></i> Area</button>
+            <button
+              class="btn bg--color p-2 active chart-type-btn"
+              data-type="bar"
+              data-i18n="bar_chart"
+            >
+              Bar
+            </button>
+            <button
+              class="btn bg--color p-2 chart-type-btn"
+              data-type="line"
+              data-i18n="line_chart"
+            >
+              Line
+            </button>
+            <button
+              class="btn bg--color p-2 chart-type-btn"
+              data-type="area"
+              data-i18n="area_chart"
+            >
+              Area
+            </button>
           </div>
         </div>
         <div class="col-md-6 text-end">
           <div class="btn-group">
-            <button class="btn bg--color p-2 period-btn" data-days="7">1 hafta</button>
-            <button class="btn bg--color p-2 period-btn" data-days="10">10 Kunli</button>
-            <button class="btn bg--color p-2 period-btn active" data-days="30">1 oy</button>
-            <!-- <button class="btn btn-outline-secondary period-btn" data-days="0">Hammasi</button> -->
+            <button
+              class="btn bg--color p-2 period-btn"
+              data-days="7"
+              data-i18n="1_week"
+            >
+              1 hafta
+            </button>
+            <button
+              class="btn bg--color p-2 period-btn"
+              data-days="10"
+              data-i18n="10_days"
+            >
+              10 kun
+            </button>
+            <button
+              class="btn bg--color p-2 period-btn active"
+              data-days="30"
+              data-i18n="1_month"
+            >
+              1 oy
+            </button>
           </div>
         </div>
       </div>
-      
-      <div id="advanced-chart" style="min-height: 450px;"></div>
-      
+
+      <div id="advanced-chart" style="min-height: 450px"></div>
+
       <div class="row mt-4">
         <div class="col-md-6">
           <div class="card bg-light">
             <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-info-circle"></i> Statistik ma'lumotlar</h5>
+              <h5 class="card-title" data-i18n="stats_info">
+                Statistika ma'lumotlari
+              </h5>
               <div id="stats-info" class="row">
                 <!-- Statistik ma'lumotlar shu yerda yangilanadi -->
               </div>
@@ -109,14 +177,26 @@
         <div class="col-md-6">
           <div class="card bg-light">
             <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-filter"></i> Filtrlash</h5>
+              <h5 class="card-title" data-i18n="filter">Filtrlash</h5>
               <div class="input-group mb-3">
-                <span class="input-group-text">Oraliq</span>
-                <input type="date" id="start-date" class="form-control">
-                <input type="date" id="end-date" class="form-control">
-                <button class="btn bg--color p-2" id="apply-date-filter"><i class="fas fa-check"></i> Qo'llash</button>
+                <span class="input-group-text" data-i18n="range">Oraliq</span>
+                <input type="date" id="start-date" class="form-control" />
+                <input type="date" id="end-date" class="form-control" />
+                <button
+                  class="btn bg--color p-2"
+                  id="apply-date-filter"
+                  data-i18n="apply"
+                >
+                  Qo'llash
+                </button>
               </div>
-              <button class="btn btn-outline-danger btn-sm" id="reset-filters"><i class="fas fa-sync-alt"></i> Filtrlarni tozalash</button>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                id="reset-filters"
+                data-i18n="reset_filters"
+              >
+                Filtrlarni tozalash
+              </button>
             </div>
           </div>
         </div>
@@ -126,43 +206,48 @@
 </div>
 
 <!-- Kutubxonalar -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Asosiy ma'lumotlar
-  var result = JSON.parse('{{ result|escapejs }}');
-  
-  
-  // Formatlash funksiyasi
-  function formatCurrency(value) {
-    return new Intl.NumberFormat('uz-UZ').format(value) + " so'm";
-  }
+  document.addEventListener("DOMContentLoaded", function () {
+    // Asosiy ma'lumotlar
+    var result = JSON.parse("{{ result|escapejs }}");
 
-  // Grafikni yaratish
-  var chart = new ApexCharts(document.querySelector("#advanced-chart"), getChartOptions('bar', result.slice(-30))); // Faqat oxirgi 30 kunlik ma'lumot
-  chart.render();
+    // Formatlash funksiyasi
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("uz-UZ").format(value) + " so'm";
+    }
 
-  // Statistik ma'lumotlarni yangilash
-  function updateStats(data) {
-    if (data.length === 0) {
-      document.getElementById('stats-info').innerHTML = `
+    // Grafikni yaratish
+    var chart = new ApexCharts(
+      document.querySelector("#advanced-chart"),
+      getChartOptions("bar", result.slice(-30))
+    ); // Faqat oxirgi 30 kunlik ma'lumot
+    chart.render();
+
+    // Statistik ma'lumotlarni yangilash
+    function updateStats(data) {
+      if (data.length === 0) {
+        document.getElementById("stats-info").innerHTML = `
         <div class="col-12">
           <div class="p-2 text-center text-muted">
             <h6>Tanlangan oraliqda ma'lumot topilmadi</h6>
           </div>
         </div>
       `;
-      return;
-    }
-    
-    const total = data.reduce((sum, item) => sum + item.amount, 0);
-    const avg = Math.round(total / data.length);
-    const max = Math.max(...data.map(item => item.amount));
-    const min = Math.min(...data.map(item => item.amount));
-    
-    document.getElementById('stats-info').innerHTML = `
+        return;
+      }
+
+      const total = data.reduce((sum, item) => sum + item.amount, 0);
+      const avg = Math.round(total / data.length);
+      const max = Math.max(...data.map((item) => item.amount));
+      const min = Math.min(...data.map((item) => item.amount));
+
+      document.getElementById("stats-info").innerHTML = `
       <div class="col-6 mb-2">
         <div class="p-2 bg-white rounded shadow-sm">
           <h6 class="text-muted mb-1">Jami savdo</h6>
@@ -188,219 +273,237 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
     `;
-  }
+    }
 
-  // Grafik parametrlari
-  function getChartOptions(type, data) {
-    return {
-      chart: {
-        type: type,
-        height: 450,
-        toolbar: {
-          show: true,
-          tools: {
-            download: false,
-            selection: true,
-            zoom: true,
-            zoomin: true,
-            zoomout: true,
-            pan: true,
-            reset: true
-          }
+    // Grafik parametrlari
+    function getChartOptions(type, data) {
+      return {
+        chart: {
+          type: type,
+          height: 450,
+          toolbar: {
+            show: true,
+            tools: {
+              download: false,
+              selection: true,
+              zoom: true,
+              zoomin: true,
+              zoomout: true,
+              pan: true,
+              reset: true,
+            },
+          },
+          animations: {
+            enabled: true,
+            easing: "easeinout",
+            speed: 800,
+          },
         },
-        animations: {
+        series: [
+          {
+            name: "Savdo summasi",
+            data: data.map((item) => item.amount),
+          },
+        ],
+        xaxis: {
+          categories: data.map((item) => item.date),
+          labels: {
+            style: {
+              fontSize: "13px",
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            formatter: function (val) {
+              return formatCurrency(val);
+            },
+            style: {
+              fontSize: "13px",
+            },
+          },
+        },
+        colors: ["#003366"],
+        plotOptions: {
+          bar: {
+            borderRadius: 6,
+            columnWidth: "50%",
+            dataLabels: {
+              position: "top",
+              orientation: "vertical",
+            },
+          },
+        },
+        dataLabels: {
           enabled: true,
-          easing: 'easeinout',
-          speed: 800
-        }
-      },
-      series: [{
-        name: 'Savdo summasi',
-        data: data.map(item => item.amount)
-      }],
-      xaxis: {
-        categories: data.map(item => item.date),
-        labels: {
-          style: {
-            fontSize: '13px'
-          }
-        }
-      },
-      yaxis: {
-        labels: {
-          formatter: function(val) {
+          formatter: function (val) {
             return formatCurrency(val);
           },
-          style: {
-            fontSize: '13px'
-          }
-        }
-      },
-      colors: ['#003366'],
-      plotOptions: {
-        bar: {
-          borderRadius: 6,
-          columnWidth: '50%',
-          dataLabels: {
-            position: 'top',
-            orientation: 'vertical'
-          }
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return formatCurrency(val);
+          // offsetY: -200,
+          // style: {
+          //   fontSize: '20px',
+          //   colors: ["#ffff"],
+          //   fontWeight: 'bold'
+          // },
         },
-        // offsetY: -200,
-        // style: {
-        //   fontSize: '20px',
-        //   colors: ["#ffff"],
-        //   fontWeight: 'bold'
-        // },
-        
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return formatCurrency(val);
-          }
-        }
-      },
-      stroke: {
-        width: type === 'bar' ? 0 : 3
-      }
-    };
-  }
-
-  // Grafik turini o'zgartirish
-  document.querySelectorAll('.chart-type-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.chart-type-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      
-      const type = this.dataset.type;
-      chart.updateOptions(getChartOptions(type, currentData));
-    });
-  });
-
-  // Vaqt oralig'ini tanlash
-  let currentData = result.slice(-30); // Default holatda oxirgi 30 kun
-  
-  document.querySelectorAll('.period-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      
-      const days = parseInt(this.dataset.days);
-      currentData = days === 0 ? [...result] : result.slice(-days);
-      
-      chart.updateOptions({
-        series: [{
-          data: currentData.map(item => item.amount)
-        }],
-        xaxis: {
-          categories: currentData.map(item => item.date)
-        }
-      });
-      
-      updateStats(currentData);
-    });
-  });
-
-  // Sana bo'yicha filtrlash
-  document.getElementById('apply-date-filter').addEventListener('click', function() {
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
-    
-    if (startDate && endDate) {
-      currentData = result.filter(item => {
-        const itemDate = new Date(item.date);
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        return itemDate >= start && itemDate <= end;
-      });
-      
-      chart.updateOptions({
-        series: [{
-          data: currentData.map(item => item.amount)
-        }],
-        xaxis: {
-          categories: currentData.map(item => item.date)
-        }
-      });
-      
-      updateStats(currentData);
-    } else {
-      alert("Iltimos, boshlang'ich va tugash sanalarini tanlang!");
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return formatCurrency(val);
+            },
+          },
+        },
+        stroke: {
+          width: type === "bar" ? 0 : 3,
+        },
+      };
     }
-  });
 
-  // Filtrlarni tozalash
-  document.getElementById('reset-filters').addEventListener('click', function() {
-    document.getElementById('start-date').value = '';
-    document.getElementById('end-date').value = '';
-    document.querySelector('.period-btn[data-days="30"]').click(); // Default holatga qaytarish (30 kun)
-  });
+    // Grafik turini o'zgartirish
+    document.querySelectorAll(".chart-type-btn").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        document
+          .querySelectorAll(".chart-type-btn")
+          .forEach((b) => b.classList.remove("active"));
+        this.classList.add("active");
 
-  // PNG sifatida yuklab olish
-  document.getElementById('export-png').addEventListener('click', function(e) {
-    e.preventDefault();
-    chart.dataURI().then(({imgURI}) => {
-      const link = document.createElement('a');
-      link.href = imgURI;
-      link.download = 'savdo-statistikasi.png';
-      link.click();
+        const type = this.dataset.type;
+        chart.updateOptions(getChartOptions(type, currentData));
+      });
     });
-  });
 
-  // CSV fayl sifatida yuklab olish
-  document.getElementById('export-csv').addEventListener('click', function(e) {
-    e.preventDefault();
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Sana,Savdo summasi\n";
-    
-    currentData.forEach(item => {
-      csvContent += `${item.date},${item.amount}\n`;
+    // Vaqt oralig'ini tanlash
+    let currentData = result.slice(-30); // Default holatda oxirgi 30 kun
+
+    document.querySelectorAll(".period-btn").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        document
+          .querySelectorAll(".period-btn")
+          .forEach((b) => b.classList.remove("active"));
+        this.classList.add("active");
+
+        const days = parseInt(this.dataset.days);
+        currentData = days === 0 ? [...result] : result.slice(-days);
+
+        chart.updateOptions({
+          series: [
+            {
+              data: currentData.map((item) => item.amount),
+            },
+          ],
+          xaxis: {
+            categories: currentData.map((item) => item.date),
+          },
+        });
+
+        updateStats(currentData);
+      });
     });
-    
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.href = encodedUri;
-    link.download = 'savdo-statistikasi.csv';
-    link.click();
-  });
 
-  // Boshlang'ich statistikani ko'rsatish (oxirgi 30 kun uchun)
-  updateStats(result.slice(-30));
-  
-  // Sana inputlariga bugungi sana va 1 oy oldingi sanani o'rnatish
-  const today = new Date();
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(today.getMonth() - 1);
-  
-  document.getElementById('end-date').valueAsDate = today;
-  document.getElementById('start-date').valueAsDate = oneMonthAgo;
-});
+    // Sana bo'yicha filtrlash
+    document
+      .getElementById("apply-date-filter")
+      .addEventListener("click", function () {
+        const startDate = document.getElementById("start-date").value;
+        const endDate = document.getElementById("end-date").value;
+
+        if (startDate && endDate) {
+          currentData = result.filter((item) => {
+            const itemDate = new Date(item.date);
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            return itemDate >= start && itemDate <= end;
+          });
+
+          chart.updateOptions({
+            series: [
+              {
+                data: currentData.map((item) => item.amount),
+              },
+            ],
+            xaxis: {
+              categories: currentData.map((item) => item.date),
+            },
+          });
+
+          updateStats(currentData);
+        } else {
+          alert("Iltimos, boshlang'ich va tugash sanalarini tanlang!");
+        }
+      });
+
+    // Filtrlarni tozalash
+    document
+      .getElementById("reset-filters")
+      .addEventListener("click", function () {
+        document.getElementById("start-date").value = "";
+        document.getElementById("end-date").value = "";
+        document.querySelector('.period-btn[data-days="30"]').click(); // Default holatga qaytarish (30 kun)
+      });
+
+    // PNG sifatida yuklab olish
+    document
+      .getElementById("export-png")
+      .addEventListener("click", function (e) {
+        e.preventDefault();
+        chart.dataURI().then(({ imgURI }) => {
+          const link = document.createElement("a");
+          link.href = imgURI;
+          link.download = "savdo-statistikasi.png";
+          link.click();
+        });
+      });
+
+    // CSV fayl sifatida yuklab olish
+    document
+      .getElementById("export-csv")
+      .addEventListener("click", function (e) {
+        e.preventDefault();
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Sana,Savdo summasi\n";
+
+        currentData.forEach((item) => {
+          csvContent += `${item.date},${item.amount}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.href = encodedUri;
+        link.download = "savdo-statistikasi.csv";
+        link.click();
+      });
+
+    // Boshlang'ich statistikani ko'rsatish (oxirgi 30 kun uchun)
+    updateStats(result.slice(-30));
+
+    // Sana inputlariga bugungi sana va 1 oy oldingi sanani o'rnatish
+    const today = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+
+    document.getElementById("end-date").valueAsDate = today;
+    document.getElementById("start-date").valueAsDate = oneMonthAgo;
+  });
 </script>
 
 <style>
-.card {
-  border-radius: 12px;
-  overflow: hidden;
-  border: none;
-}
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+  }
 
-#advanced-chart {
-  border-radius: 8px;
-  background-color: #fff;
-}
-.input-group-text {
-  font-size: 14px;
-}
-.btn-group .btn {
-  font-size: 14px;
-}
+  #advanced-chart {
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  .input-group-text {
+    font-size: 14px;
+  }
+  .btn-group .btn {
+    font-size: 14px;
+  }
 </style>
 
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock %}

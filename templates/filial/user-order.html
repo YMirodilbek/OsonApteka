@@ -1,146 +1,173 @@
-{% extends 'base_filial.html' %}
-
-{% block title %}Filial bosh sahifa{% endblock %}
-
-{% block content %}
+{% extends 'base_filial.html' %} {% block title %}Filial bosh sahifa{% endblock
+%} {% block content %}
 
 <div class="col-md-12 col-xl-10 mx-auto">
   <h5 class="mb-3">Recent Orders</h5>
 
-          <h5 class="mt-4">{{ filial.name }}</h5>
-          <table class="table table-bordered border-primary">
-            <thead>
-              <tr>
-                <th>ORDER ID</th>
-                <th>USER</th>
-                <th>TOTAL ORDER</th>
-                <th>STATUS</th>
-                <th>PRODUCT</th>
-                <th class="text-end">PAYMENT</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for i in orders %}
-              <tr>
-                <td>{{ i.id }}</td>
-                <td>{{ i.user }}</td>
-                <td>{{ i.total_price }}</td>
-                <td>
-                  <span class="d-flex align-items-center gap-2" id="status-display-{{ i.id }}">
-                    <i class="fas fa-circle f-10 m-r-5 {{ i.status_color }}"></i>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}">{{ i.get_status_display }}</a>
-                  </span>
-
-
-                </td>
-                <td >
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ i.id }}item">Product</a>
-                  <div class="modal fade" id="exampleModal{{ i.id }}item" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">  <!-- bu yerga classlar qo‘shildi -->
-                      <div class="modal-content">
-                        <form class="update-status-form" data-order-id="{{ i.id }}item">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Mahsulot tafsilotlari</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                          </div>
-                          <div class="modal-body">
-                            <table class="table table-hover table-borderless mb-0">
-                              <thead>
-                                <tr>
-                                  <th>Uid</th>
-                                  <th>Name</th>
-                                  <th>Quantity</th>
-                                  <th>Price</th>
-                                  <th>Total Price</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {% for i in i.items.all %}
-                                <tr>
-                                  <td>{{ i.product.uid }}</td>
-                                  <td>{{ i.name |slice:":30" }}</td>
-                                  <td>{{ i.quantity }}</td>
-                                  <td>{{ i.price }}</td>
-                                  <td>{{ i.total_price }}</td>
-                                </tr>
-                                {% endfor %}
-                              </tbody>
-                            </table>
-                          </div>
-                          {% comment %} <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
-                            <button type="submit" class="btn btn-primary">Saqlash</button>
-                          </div> {% endcomment %}
-                        </form>
-                      </div>
-                    </div>
+  <h5 class="mt-4">{{ filial.name }}</h5>
+  <table class="table table-bordered border-primary">
+    <thead>
+      <tr>
+        <th>ORDER ID</th>
+        <th>USER</th>
+        <th>TOTAL ORDER</th>
+        <th>STATUS</th>
+        <th>PRODUCT</th>
+        <th class="text-end">PAYMENT</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in orders %}
+      <tr>
+        <td>{{ i.id }}</td>
+        <td>{{ i.user }}</td>
+        <td>{{ i.total_price }}</td>
+        <td>
+          <span
+            class="d-flex align-items-center gap-2"
+            id="status-display-{{ i.id }}"
+          >
+            <i class="fas fa-circle f-10 m-r-5 {{ i.status_color }}"></i>
+            <a
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal{{ i.id }}"
+              >{{ i.get_status_display }}</a
+            >
+          </span>
+        </td>
+        <td>
+          <a
+            href="#"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal{{ i.id }}item"
+            >Product</a
+          >
+          <div
+            class="modal fade"
+            id="exampleModal{{ i.id }}item"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <!-- bu yerga classlar qo‘shildi -->
+              <div class="modal-content">
+                <form class="update-status-form" data-order-id="{{ i.id }}item">
+                  <div class="modal-header">
+                    <h5 class="modal-title" data-i18n="product_details">Mahsulot tafsilotlari</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                    ></button>
                   </div>
+                  <div class="modal-body">
+                    <table class="table table-hover table-borderless mb-0">
+                      <thead>
+                        <tr>
+                          <th>Uid</th>
+                          <th>Name</th>
+                          <th>Quantity</th>
+                          <th>Price</th>
+                          <th>Total Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in i.items.all %}
+                        <tr>
+                          <td>{{ i.product.uid }}</td>
+                          <td>{{ i.name |slice:":30" }}</td>
+                          <td>{{ i.quantity }}</td>
+                          <td>{{ i.price }}</td>
+                          <td>{{ i.total_price }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  {% comment %}
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      data-i18n="close"
+                    >
+                      Yopish
+                    </button>
+                    <button type="submit" class="btn btn-primary" data-i18n="save">
+                      Saqlash
+                    </button>
+                  </div>
+                  {% endcomment %}
+                </form>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="text-end">{{ i.get_payment_method_display }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-                </td>
-                <td class="text-end">{{ i.get_payment_method_display }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-
-
-        <br>
-        <br>
-
-
-
+  <br />
+  <br />
 </div>
 
 <script>
-  document.querySelectorAll('.update-status-form').forEach(function(form) {
-    form.addEventListener('submit', function(e) {
+  document.querySelectorAll(".update-status-form").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
-      const orderId = form.getAttribute('data-order-id');
+      const orderId = form.getAttribute("data-order-id");
       const select = form.querySelector('select[name="order_status"]');
       const status = select.value;
 
       fetch(`/filial-order-status/${orderId}/`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token }}',
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}",
         },
-        body: JSON.stringify({ status: status })
+        body: JSON.stringify({ status: status }),
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          const display = document.getElementById(`status-display-${orderId}`);
-          let icon = '';
-          let color = '';
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            const display = document.getElementById(
+              `status-display-${orderId}`
+            );
+            let icon = "";
+            let color = "";
 
-          if (status == "Rad etilgan") {
-            icon = '🔴'; color = 'text-danger';
-          } else if (status == "Kutilmoqda") {
-            icon = '🟡'; color = 'text-warning';
-          } else if (status == "Tasdiqlangan") {
-            icon = '🔵'; color = 'text-primar';
-          } else if (status == "Topshirildi") {
-            icon = '🟢'; color = 'text-success';
+            if (status == "Rad etilgan") {
+              icon = "🔴";
+              color = "text-danger";
+            } else if (status == "Kutilmoqda") {
+              icon = "🟡";
+              color = "text-warning";
+            } else if (status == "Tasdiqlangan") {
+              icon = "🔵";
+              color = "text-primar";
+            } else if (status == "Topshirildi") {
+              icon = "🟢";
+              color = "text-success";
+            }
+
+            const statusText = select.options[select.selectedIndex].text;
+
+            display.innerHTML = ` <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal${orderId}">${statusText}</a>`;
+
+            // modalni yopish
+            const modalEl = document.getElementById(`exampleModal${orderId}`);
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.hide();
+          } else {
+            alert("Xatolik: " + (data.error || "Nomaʼlum"));
           }
-
-          const statusText = select.options[select.selectedIndex].text;
-
-          display.innerHTML = ` <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal${orderId}">${statusText}</a>`;
-
-          // modalni yopish
-          const modalEl = document.getElementById(`exampleModal${orderId}`);
-          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-          modal.hide();
-
-        } else {
-          alert('Xatolik: ' + (data.error || 'Nomaʼlum'));
-        }
-      });
+        });
     });
   });
 </script>
-
-
 
 {% endblock %}

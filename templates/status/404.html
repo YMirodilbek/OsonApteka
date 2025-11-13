@@ -1,83 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="uz">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>404 page not found</title>
+    <title data-i18n="404_title">404 Sahifa topilmadi</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 480px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-        }
-        h1 {
-            font-size: 6rem;
-            margin: 0;
-            font-weight: 600;
-            letter-spacing: 5px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-        }
-        p {
-            font-size: 1.3rem;
-            margin: 20px 0 30px;
-            font-weight: 300;
-        }
-        a {
-            display: inline-block;
-            background: #ffffffaa;
-            color: #764ba2;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 15px 35px;
-            border-radius: 50px;
-            box-shadow: 0 8px 15px rgba(255,255,255,0.3);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-        a:hover {
-            background: #764ba2;
-            color: #fff;
-            box-shadow: 0 8px 20px rgba(118,75,162,0.7);
-        }
-        .icon {
-            margin-bottom: 25px;
-        }
-        svg {
-            width: 80px;
-            height: 80px;
-            fill: #fff;
-            opacity: 0.8;
-        }
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap");
+      body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins", sans-serif;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+      .container {
+        max-width: 480px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+      }
+      h1 {
+        font-size: 6rem;
+        margin: 0;
+        font-weight: 600;
+        letter-spacing: 5px;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      p {
+        font-size: 1.3rem;
+        margin: 20px 0 30px;
+        font-weight: 300;
+      }
+      a {
+        display: inline-block;
+        background: #ffffffaa;
+        color: #764ba2;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 15px 35px;
+        border-radius: 50px;
+        box-shadow: 0 8px 15px rgba(255, 255, 255, 0.3);
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+      a:hover {
+        background: #764ba2;
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(118, 75, 162, 0.7);
+      }
+      .icon {
+        margin-bottom: 25px;
+      }
+      svg {
+        width: 80px;
+        height: 80px;
+        fill: #fff;
+        opacity: 0.8;
+      }
     </style>
-</head>
-<body>
+    <script src="{% static 'lang/lang.js' %}" defer></script>
+  </head>
+  <body>
     <div class="container" role="main" aria-labelledby="error-title">
-        <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                <circle cx="32" cy="32" r="30" stroke="#fff" stroke-width="4" fill="none"/>
-                <line x1="20" y1="20" x2="44" y2="44" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-                <line x1="44" y1="20" x2="20" y2="44" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-            </svg>
-        </div>
-        <h1 id="error-title">404</h1>
-        <p>Oops! Something went wrong on our end.<br>Please try again later or come back home.</p>
-        <a href="/">Go to Homepage</a>
+      <div class="icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <circle
+            cx="32"
+            cy="32"
+            r="30"
+            stroke="#fff"
+            stroke-width="4"
+            fill="none"
+          />
+          <line
+            x1="20"
+            y1="20"
+            x2="44"
+            y2="44"
+            stroke="#fff"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <line
+            x1="44"
+            y1="20"
+            x2="20"
+            y2="44"
+            stroke="#fff"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+      <h1 id="error-title">404</h1>
+      <p data-i18n="404_message">
+        Kechirasiz! Siz izlagan sahifa topilmadi.<br />
+        Boshqa URL manzilini kiriting yoki asosiy sahifaga qayting.
+      </p>
+      <a href="{% url 'home' %}" data-i18n="go_home">Bosh sahifaga o‘tish</a>
     </div>
-</body>
+  </body>
 </html>
-

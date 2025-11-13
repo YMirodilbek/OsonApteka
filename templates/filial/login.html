@@ -5,6 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'lang/lang.js' %}" defer></script>
 
 <head>
   <title>Login </title>
@@ -26,29 +27,50 @@
   <!-- [ Pre-loader ] start -->
   <!-- [ Pre-loader ] End -->
 
-  <div class="col-md-6 col-xl-4 mx-auto " >
-    <div class="auth-wrapper v3">
-      <div class="auth-form">
-        <div class="card my-5">
-          <div class="card-body">
-            <form action="" method="post">
-                {% csrf_token %}
+<div class="col-md-6 col-xl-4 mx-auto">
+  <div class="auth-wrapper v3">
+    <div class="auth-form">
+      <div class="card my-5">
+        <div class="card-body">
+          <form action="" method="post">
+            {% csrf_token %}
 
-                <div class="form-group mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" required placeholder="username">
-                </div>
             <div class="form-group mb-3">
-              <label class="form-label">Password</label>
-              <input type="password" name="password"  class="form-control" required placeholder="Password">
+              <label class="form-label" data-i18n="username">Foydalanuvchi nomi</label>
+              <input 
+                type="text" 
+                name="username" 
+                class="form-control" 
+                required 
+                placeholder="Foydalanuvchi nomi"
+              />
             </div>
-              <button type="submit" class="btn  p-2 text-white" style="background-color: #003366; ">Login</button>
+
+            <div class="form-group mb-3">
+              <label class="form-label" data-i18n="password">Parol</label>
+              <input 
+                type="password" 
+                name="password" 
+                class="form-control" 
+                required 
+                placeholder="Parol"
+              />
             </div>
-        </form>
-          </div>
+
+            <button 
+              type="submit" 
+              class="btn p-2 text-white" 
+              style="background-color: #003366;"
+              data-i18n="login"
+            >
+              Kirish
+            </button>
+          </form>
         </div>
       </div>
     </div>
+  </div>
+</div>
   </div>
 
 

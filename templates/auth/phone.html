@@ -1,347 +1,373 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>AkmalPharm - Login</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #4285F4;
-      --secondary: #34A853;
-      --accent: #5F6368;
-      --bg-light: #f8f9fa;
-      --shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 420px;
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-    }
-    
-    .login-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    
-    .login-header h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--primary);
-    }
-    
-    .login-header p {
-      color: var(--accent);
-      font-size: 0.9rem;
-    }
-    
-    .login-header .logo-img {
-      width: 150px;
-      height: auto;
-      margin-bottom: 15px;
-    }
-    
-    .form-group {
-      margin-bottom: 22px;
-      position: relative;
-    }
-    
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      color: var(--accent);
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    
-    .input-with-icon {
-      position: relative;
-    }
-    
-    .input-with-icon i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--accent);
-      opacity: 0.6;
-    }
-    
-    .input-with-prefix {
-      position: relative;
-    }
-    
-    .input-with-prefix .prefix {
-      position: absolute;
-      left: 45px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #333;
-      font-weight: 500;
-      z-index: 10;
-    }
-    
-    .input-with-prefix input {
-      padding-left: 85px !important;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 14px 14px 14px 45px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-      transition: all 0.3s;
-      background: var(--bg-light);
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
-    }
-    
-    .terms-agreement {
-
-      margin-bottom: 20px;
-    }
-    
-    .terms-agreement input {
-      margin-top: 5px;
-      margin-right: 10px;
-      min-width: 20px;
-      min-height: 20px;
-      accent-color: var(--primary);
-    }
-    .terms-agreement {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 10px;
-    font-size: 14px;
-  }
-
-  .terms-agreement input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-
-  .terms-agreement a {
-    text-decoration: underline;
-    color: #007bff;
-  }
-
-  .terms-agreement a:hover {
-    text-decoration: none;
-    color: #0056b3;
-  }
-
-    
-    .terms-agreement a:hover {
-      text-decoration: underline;
-    }
-    
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .submit-btn:hover {
-      background: #3367d6;
-      transform: translateY(-2px);
-    }
-    
-    .submit-btn:disabled {
-      background-color: #a5c7ff;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    .error-message {
-      color: #d93025;
-      font-size: 14px;
-      margin-top: 10px;
-      list-style-type: none;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
-      .container {
-        padding: 20px;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>AkmalPharm - Login</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="{% static 'lang/lang.js' %}" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4285f4;
+        --secondary: #34a853;
+        --accent: #5f6368;
+        --bg-light: #f8f9fa;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="login-header">
-      <img src="{% static 'media/AFM MEDICAL.png' %}" alt="AFM MEDICAL Logo" class="logo-img">
-      <h1>AkmalFarm</h1>
-      <p>авторизоваться</p>
-    </div>
-    
-    <form method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="id_phone_number">{{ form.phone_number.label }}</label>
-        <div class="input-with-icon input-with-prefix">
-          <i class="fas fa-phone-alt"></i>
-          <span class="prefix">+998</span>
-          <input type="hidden" name="phone_number" id="real_phone_number">
-          <input type="text" id="visible_phone_number" class="form-control" maxlength="9" placeholder="XX XXX XX XX" autocomplete="off">
-        </div>
-      </div>
-      
-      <div class="terms-agreement ">
-        <input type="checkbox" name="is_agreed" id="terms" required>
-        <label for="terms"><a href="/dogovor" >Офферта</a></label>
-      </div>
-      
-      <button type="submit" class="submit-btn" id="submitButton">Отправить код</button>
-      
-      {% if form.errors %}
-      <div class="error-message">
-        {{ form.errors }}
-      </div>
-      {% endif %}
-    </form>
-  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const visiblePhoneInput = document.getElementById('visible_phone_number');
-      const realPhoneInput = document.getElementById('real_phone_number');
-      const form = document.querySelector('form');
-      
-      // Format input as user types
-      visiblePhoneInput.addEventListener('input', function(e) {
-        // Allow only numbers
-        this.value = this.value.replace(/[^0-9]/g, '');
-        
-        // Update the hidden field with the complete phone number
-        realPhoneInput.value = '+998' + this.value;
-      });
-      
-      // Handle form submission
-      form.addEventListener('submit', function(e) {
-        // Ensure the hidden field has the full phone number with +998 prefix
-        realPhoneInput.value = '+998' + visiblePhoneInput.value;
-        
-        // Validate the phone number length
-        if (visiblePhoneInput.value.length !== 9) {
-          e.preventDefault();
-          alert('Please enter a valid 9-digit phone number');
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 420px;
+        padding: 30px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .login-header h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--primary);
+      }
+
+      .login-header p {
+        color: var(--accent);
+        font-size: 0.9rem;
+      }
+
+      .login-header .logo-img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 22px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .input-with-icon {
+        position: relative;
+      }
+
+      .input-with-icon i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent);
+        opacity: 0.6;
+      }
+
+      .input-with-prefix {
+        position: relative;
+      }
+
+      .input-with-prefix .prefix {
+        position: absolute;
+        left: 45px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #333;
+        font-weight: 500;
+        z-index: 10;
+      }
+
+      .input-with-prefix input {
+        padding-left: 85px !important;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s;
+        background: var(--bg-light);
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      .terms-agreement {
+        margin-bottom: 20px;
+      }
+
+      .terms-agreement input {
+        margin-top: 5px;
+        margin-right: 10px;
+        min-width: 20px;
+        min-height: 20px;
+        accent-color: var(--primary);
+      }
+      .terms-agreement {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .terms-agreement input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      .terms-agreement a {
+        text-decoration: underline;
+        color: #007bff;
+      }
+
+      .terms-agreement a:hover {
+        text-decoration: none;
+        color: #0056b3;
+      }
+
+      .terms-agreement a:hover {
+        text-decoration: underline;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: #3367d6;
+        transform: translateY(-2px);
+      }
+
+      .submit-btn:disabled {
+        background-color: #a5c7ff;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .error-message {
+        color: #d93025;
+        font-size: 14px;
+        margin-top: 10px;
+        list-style-type: none;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-header">
+        <img
+          src="{% static 'media/AFM MEDICAL.png' %}"
+          alt="AFM MEDICAL logotipi"
+          class="logo-img"
+          loading="lazy"
+        />
+        <h1 data-i18n="akmalfarm">AkmalFarm</h1>
+        <p data-i18n="login">Kirish</p>
+      </div>
+
+      <form method="post" id="login-form">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_phone_number" data-i18n="phone_number">
+            {{ form.phone_number.label }}
+          </label>
+          <div class="input-with-icon input-with-prefix">
+            <i class="fas fa-phone-alt"></i>
+            <span class="prefix">+998</span>
+            <input type="hidden" name="phone_number" id="real_phone_number" />
+            <input
+              type="text"
+              id="visible_phone_number"
+              class="form-control"
+              maxlength="9"
+              placeholder="XX XXX XX XX"
+              autocomplete="off"
+              data-i18n-placeholder="phone_placeholder"
+            />
+          </div>
+        </div>
+
+        <div class="terms-agreement">
+          <input type="checkbox" name="is_agreed" id="terms" required />
+          <label for="terms">
+            <a href="/dogovor" data-i18n="offer">Oferta</a>
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          id="submitButton"
+          data-i18n="send_code"
+        >
+          Kodni yuborish
+        </button>
+
+        {% if form.errors %}
+        <div class="error-message">
+          {% for field, errors in form.errors.items %} {% for error in errors %}
+          <p>{{ error }}</p>
+          {% endfor %} {% endfor %}
+        </div>
+        {% endif %}
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const visiblePhoneInput = document.getElementById(
+          "visible_phone_number"
+        );
+        const realPhoneInput = document.getElementById("real_phone_number");
+        const form = document.querySelector("form");
+
+        // Format input as user types
+        visiblePhoneInput.addEventListener("input", function (e) {
+          // Allow only numbers
+          this.value = this.value.replace(/[^0-9]/g, "");
+
+          // Update the hidden field with the complete phone number
+          realPhoneInput.value = "+998" + this.value;
+        });
+
+        // Handle form submission
+        form.addEventListener("submit", function (e) {
+          // Ensure the hidden field has the full phone number with +998 prefix
+          realPhoneInput.value = "+998" + visiblePhoneInput.value;
+
+          // Validate the phone number length
+          if (visiblePhoneInput.value.length !== 9) {
+            e.preventDefault();
+            alert("Please enter a valid 9-digit phone number");
+          }
+        });
+
+        // If there's an error and form reloads, fill the visible input from the hidden one
+        if (realPhoneInput.value) {
+          // Remove the +998 prefix if it exists
+          visiblePhoneInput.value = realPhoneInput.value.replace("+998", "");
         }
       });
-      
-      // If there's an error and form reloads, fill the visible input from the hidden one
-      if (realPhoneInput.value) {
-        // Remove the +998 prefix if it exists
-        visiblePhoneInput.value = realPhoneInput.value.replace('+998', '');
-      }
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
-
-
-
-
 
 <style>
   .vacancy-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
   }
 
   .vacancy-card {
-      width: calc(100% / 6 - 20px);
-      background: #f9f9f9;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px #bcd4ff;
-      padding: 15px;
-      box-sizing: border-box;
-      transition: transform 0.3s ease;
+    width: calc(100% / 6 - 20px);
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px #bcd4ff;
+    padding: 15px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
   }
 
   .vacancy-card:hover {
-      transform: translateY(-5px);
+    transform: translateY(-5px);
   }
 
   .vacancy-card h2 {
-      font-size: 18px;
-      color: #2c3e50;
-      margin-bottom: 10px;
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
   }
 
   .vacancy-card p {
-      font-size: 14px;
-      margin: 6px 0;
-      color: #333;
+    font-size: 14px;
+    margin: 6px 0;
+    color: #333;
   }
 
   .vacancy-card i {
-      color: red;
-      margin-right: 6px;
+    color: red;
+    margin-right: 6px;
   }
 
   /* ✅ Responsive breakpoints */
   @media (max-width: 1200px) {
-      .vacancy-card {
-          width: calc(100% / 4 - 20px);
-      }
+    .vacancy-card {
+      width: calc(100% / 4 - 20px);
+    }
   }
 
   @media (max-width: 992px) {
-      .vacancy-card {
-          width: calc(100% / 3 - 20px);
-      }
+    .vacancy-card {
+      width: calc(100% / 3 - 20px);
+    }
   }
 
   @media (max-width: 768px) {
-      .vacancy-card {
-          width: calc(100% / 2 - 20px);
-      }
+    .vacancy-card {
+      width: calc(100% / 2 - 20px);
+    }
   }
 
   @media (max-width: 500px) {
-      .vacancy-card {
-          width: 100%;
-      }
+    .vacancy-card {
+      width: 100%;
+    }
   }
 </style>

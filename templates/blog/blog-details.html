@@ -1,19 +1,16 @@
-{% extends 'base.html'%}
-{% load static %}
-{% block content %}
-    <link rel="stylesheet" href="{% static 'assets/css/blog.css' %}">
-    
-    <div class="blog-details-container">
-        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="main-image">
-        <div class="blog-content">
-            <h1>{{ blog.title }}</h1>
-            <p class="blog-date">{{ blog.date_created|date:"d M Y" }}</p>
-            
-            <div class="blog-text">
-                {{ blog.text|linebreaks }}
-            </div>
-            
-            <a href="{% url 'blog' %}" class="back-button">Назад</a>
-        </div>
-    </div>
+{% extends 'base.html'%} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/blog.css' %}" />
+<script src="{% static 'lang/lang.js' %}" defer></script>
+
+<div class="blog-details-container">
+  <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="main-image" />
+  <div class="blog-content">
+    <h1>{{ blog.title }}</h1>
+    <p class="blog-date">{{ blog.date_created|date:"d M Y" }}</p>
+
+    <div class="blog-text">{{ blog.text|linebreaks }}</div>
+
+    <a href="{% url 'blog' %}" class="back-button" data-i18n="back">Orqaga</a>
+  </div>
+</div>
 {% endblock %}

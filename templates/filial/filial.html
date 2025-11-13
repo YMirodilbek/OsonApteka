@@ -1,41 +1,40 @@
-{% extends 'base_filial.html' %}
-
-{% block title %}Filial bosh sahifa{% endblock %}
-
-{% block content %}
+{% extends 'base_filial.html' %} {% block title %}Filial bosh sahifa{% endblock
+%} {% block content %}
 
 <div class="col-md-12 col-xl-10 mx-auto">
-    <h5 class="mb-3">Filiallar</h5>
-    <div class="card tbl-card">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered  mb-0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Filial </th>
-                <th>Phone</th>
-                <th>Address</th>
-
-              </tr>
-            </thead>
-            <tbody>
-              {% for i in filials %}
-              <tr>
-                <td>{{i.id}}</td>
-                <td> <a href="/filial/order/?filial-id={{i.id}}">{{i.name}} </a></td>
-                <td> {% for user in i.users.all %}
-                  {{ user.phone_number }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}</td>
-                <td>{{i.address}}</td>
-              </tr>
-               {% endfor %}
-            </tbody>
-          </table>
-        </div>
+  <h5 class="mb-3" data-i18n="branches">Filiallar</h5>
+  <div class="card tbl-card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Filial</th>
+              <th>Phone</th>
+              <th>Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in filials %}
+            <tr>
+              <td>{{i.id}}</td>
+              <td>
+                <a href="/filial/order/?filial-id={{i.id}}">{{i.name}} </a>
+              </td>
+              <td>
+                {% for user in i.users.all %} {{ user.phone_number }}{% if not
+                forloop.last %}, {% endif %} {% endfor %}
+              </td>
+              <td>{{i.address}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
 
-
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock content %}

@@ -1,553 +1,615 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <style>
-    /* Checkout Page Specific Styles */
-    .checkout-page {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-    }
+  /* Checkout Page Specific Styles */
+  .checkout-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
 
-    .checkout-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
+  .checkout-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
 
-    .checkout-header h1 {
-        font-size: 2rem;
-        color: #1e3a8a;
-        margin-bottom: 0.5rem;
-    }
+  .checkout-header h1 {
+    font-size: 2rem;
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+  }
 
-    .checkout-header p {
-        color: #4a5568;
-        font-size: 1.1rem;
-    }
+  .checkout-header p {
+    color: #4a5568;
+    font-size: 1.1rem;
+  }
 
+  .checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+  }
+
+  .checkout-form-section {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .checkout-summary-section {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    color: #1e3a8a;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+    font-weight: 500;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+  }
+
+  .form-text {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 0.25rem;
+  }
+
+  .required {
+    color: #e53e3e;
+    margin-left: 0.25rem;
+  }
+
+  .address-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .address-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .address-option input[type="radio"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #1e3a8a;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  #map {
+    width: 100%;
+    height: 250px;
+    border-radius: 0.375rem;
+    margin-top: 1rem;
+    border: 1px solid #e2e8f0;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+
+  .cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.375rem;
+  }
+
+  .cart-item-details {
+    flex: 1;
+  }
+
+  .cart-item-title {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+  }
+
+  .cart-item-meta {
+    color: #718096;
+    font-size: 0.875rem;
+  }
+
+  .cart-item-price {
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-top: 0.25rem;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    color: #4a5568;
+  }
+
+  .summary-row.total {
+    font-weight: 600;
+    color: #1e3a8a;
+    font-size: 1.125rem;
+    border-top: 2px solid #e2e8f0;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .payment-info {
+    background: #f7fafc;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-top: 1.5rem;
+    border-left: 4px solid #1e3a8a;
+  }
+
+  .payment-info p {
+    margin: 0;
+    color: #4a5568;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .payment-info p:first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .payment-info strong {
+    color: #2d3748;
+  }
+
+  .btn-checkout {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1.5rem;
+  }
+
+  .btn-checkout:hover {
+    background: #152b63;
+  }
+
+  .error-message {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+  }
+
+  .form-control.is-invalid {
+    border-color: #e53e3e;
+  }
+
+  .form-control.is-invalid + .error-message {
+    display: block;
+  }
+
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
     .checkout-grid {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        gap: 2rem;
-    }
-
-    .checkout-form-section {
-        background: white;
-        border-radius: 0.5rem;
-        padding: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      grid-template-columns: 1fr;
     }
 
     .checkout-summary-section {
-        background: white;
-        border-radius: 0.5rem;
-        padding: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        height: fit-content;
+      order: -1;
     }
 
-    .section-title {
-        font-size: 1.25rem;
-        color: #1e3a8a;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e2e8f0;
+    .checkout-header h1 {
+      font-size: 1.5rem;
     }
 
-    .form-group {
-        margin-bottom: 1.25rem;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #2d3748;
-        font-weight: 500;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.375rem;
-        font-size: 1rem;
-        transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-        outline: none;
-        border-color: #1e3a8a;
-        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-    }
-
-    .form-text {
-        font-size: 0.875rem;
-        color: #718096;
-        margin-top: 0.25rem;
-    }
-
-    .required {
-        color: #e53e3e;
-        margin-left: 0.25rem;
+    .checkout-header p {
+      font-size: 1rem;
     }
 
     .address-options {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .address-option {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .address-option input[type="radio"] {
-        width: 1.25rem;
-        height: 1.25rem;
-        border: 2px solid #1e3a8a;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    #map {
-        width: 100%;
-        height: 250px;
-        border-radius: 0.375rem;
-        margin-top: 1rem;
-        border: 1px solid #e2e8f0;
-    }
-
-    .cart-item {
-        display: flex;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    .cart-item:last-child {
-        border-bottom: none;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
     .cart-item img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 0.375rem;
+      width: 60px;
+      height: 60px;
     }
-
-    .cart-item-details {
-        flex: 1;
-    }
-
-    .cart-item-title {
-        font-weight: 600;
-        color: #2d3748;
-        margin-bottom: 0.25rem;
-    }
-
-    .cart-item-meta {
-        color: #718096;
-        font-size: 0.875rem;
-    }
-
-    .cart-item-price {
-        font-weight: 600;
-        color: #1e3a8a;
-        margin-top: 0.25rem;
-    }
-
-    .summary-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.75rem 0;
-        color: #4a5568;
-    }
-
-    .summary-row.total {
-        font-weight: 600;
-        color: #1e3a8a;
-        font-size: 1.125rem;
-        border-top: 2px solid #e2e8f0;
-        margin-top: 1rem;
-        padding-top: 1rem;
-    }
-
-    .payment-info {
-        background: #f7fafc;
-        padding: 1rem;
-        border-radius: 0.375rem;
-        margin-top: 1.5rem;
-        border-left: 4px solid #1e3a8a;
-    }
-
-    .payment-info p {
-        margin: 0;
-        color: #4a5568;
-        font-size: 0.875rem;
-        line-height: 1.5;
-    }
-
-    .payment-info p:first-child {
-        margin-bottom: 0.5rem;
-    }
-
-    .payment-info strong {
-        color: #2d3748;
-    }
-
-    .btn-checkout {
-        display: block;
-        width: 100%;
-        padding: 1rem;
-        background: #1e3a8a;
-        color: white;
-        border: none;
-        border-radius: 0.375rem;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        margin-top: 1.5rem;
-    }
-
-    .btn-checkout:hover {
-        background: #152b63;
-    }
-
-    .error-message {
-        color: #e53e3e;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-        display: none;
-    }
-
-    .form-control.is-invalid {
-        border-color: #e53e3e;
-    }
-
-    .form-control.is-invalid + .error-message {
-        display: block;
-    }
-
-    /* Mobile Responsive Styles */
-    @media (max-width: 768px) {
-        .checkout-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .checkout-summary-section {
-            order: -1;
-        }
-
-        .checkout-header h1 {
-            font-size: 1.5rem;
-        }
-
-        .checkout-header p {
-            font-size: 1rem;
-        }
-
-        .address-options {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .cart-item img {
-            width: 60px;
-            height: 60px;
-        }
-    }
+  }
 </style>
 
 <div class="checkout-page">
-    <div class="checkout-header">
-        <h1>Оформление заказа</h1>
- 
-    </div>
+  <div class="checkout-header">
+    <h1 data-i18n="checkout_title">Buyurtma rasmiylashtirish</h1>
+  </div>
 
-    <div class="checkout-grid">
-        <div class="checkout-form-section">
-            <h2 class="section-title">Укажите данные</h2>
-            <form method="post" class="checkout-form" action="{% url 'checkout' %}">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="id_phone_number1">Контактная информация <span class="required">*</span></label>
-                    <input type="tel" id="id_phone_number1" name="phone_number1" class="form-control" 
-                           placeholder="+998 XX XXX XX XX" required pattern="^\+?[0-9\s\-\(\)]+$">
-                    <small class="form-text">Например: +998 XX XXX XX XX</small>
-                </div>
+  <div class="checkout-grid">
+    <div class="checkout-form-section">
+      <h2 class="section-title" data-i18n="enter_data">
+        Ma’lumotlarni kiriting
+      </h2>
+      <form method="post" class="checkout-form" action="{% url 'checkout' %}">
+        {% csrf_token %}
 
-                <div class="form-group">
-                    <label for="id_phone_number2">Доп.номер</label>
-                    <input type="tel" id="id_phone_number2" name="phone_number2" class="form-control" 
-                           placeholder="+998 XX XXX XX XX" pattern="^\+?[0-9\s\-\(\)]+$">
-                </div>
-
-                <div class="form-group">
-                    <label for="id_filial">Филиал <span class="required">*</span></label>
-                    <select id="id_filial" name="filial" class="form-control" required>
-                        <option value="">Выберите филиал</option>
-                        {% if filials %}
-                            {% for filial in filials %}
-                                <option value="{{ filial.id }}">{{ filial.name }}</option>
-                            {% endfor %}
-                        {% else %}
-                            {% for filial in form.filial.field.queryset %}
-                                <option value="{{ filial.id }}">{{ filial.name }}</option>
-                            {% endfor %}
-                        {% endif %}
-                    </select>
-                   
-                </div>
-
-                <h3 class="section-title">Адрес доставки <span class="required">*</span></h3>
-                <div class="address-options">
-                    <label class="address-option">
-                        <input type="radio" name="address_type" value="manual" checked>
-                        Yandex Delivery
-                    </label>
-                    <label class="address-option">
-                       
-                       Быстрая доставка (временно недоступна) 
-                    </label>
-                </div>
-
-                <div id="manual-address" class="form-group">
-                    <label for="address_text">Адрес<span class="required">*</span></label>
-                    <input type="text" name="address_text" id="address_text" class="form-control" 
-                           placeholder="Название улицы, дом, кв" required>
-                    <small class="form-text">Например: Андижан, 1 микрорайон, 19 дом</small>
-                </div>
-
-                <input type="hidden" name="payment_method" value="click">
-
-                <div class="payment-info">
-                    <p><strong>Способ оплаты:</strong> Click</p>
-                    <p>После оформления заказа Вы будете перенаправлены на сайт платёжной системы Click для проведения оплаты. После успешной оплаты с вами свяжутся специалисты колл-центра.</p>
-                </div>
-
-                <button type="submit" class="btn-checkout">Перейти к оплате </button>
-            </form>
+        <div class="form-group">
+          <label for="id_phone_number1" data-i18n="contact_info"
+            >Kontakt ma’lumotlari <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            id="id_phone_number1"
+            name="phone_number1"
+            class="form-control"
+            placeholder="+998 XX XXX XX XX"
+            required
+            pattern="^\+?[0-9\s\-\(\)]+$"
+          />
+          <small class="form-text" data-i18n="phone_example"
+            >Misol: +998 XX XXX XX XX</small
+          >
         </div>
 
-        <div class="checkout-summary-section">
-            <h2 class="section-title">Итого</h2>
-            {% for item in cart_items %}
-            <div class="cart-item">
-                <img src="{{ item.product.image1.url }}" alt="{{ item.product.name }}">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">{{ item.product.name }}</div>
-                    <div class="cart-item-meta">
-                        {{ item.quantity }} шт
-                    </div>
-                    <div class="cart-item-price">{{ item.total_price }} сум</div>
-                </div>
-            </div>
-            {% endfor %}
-
-            <div class="summary-row">
-                <span>Сумма заказа:</span>
-                <span>{{ order.total_price }} сум</span>
-            </div>
-
-            <div class="summary-row">
-                <span>Фирменный пакет:</span>
-                <span>{{dostaff}} сум</span>
-            </div>
-
-            <div class="summary-row total">
-                <span>Итого к оплате:</span>
-                <span>{{total_sum}} сум</span>
-            </div>
+        <div class="form-group">
+          <label for="id_phone_number2" data-i18n="additional_phone"
+            >Qo‘shimcha raqam</label
+          >
+          <input
+            type="tel"
+            id="id_phone_number2"
+            name="phone_number2"
+            class="form-control"
+            placeholder="+998 XX XXX XX XX"
+            pattern="^\+?[0-9\s\-\(\)]+$"
+          />
         </div>
+
+        <div class="form-group">
+          <label for="id_filial" data-i18n="branch"
+            >Filial <span class="required">*</span></label
+          >
+          <select id="id_filial" name="filial" class="form-control" required>
+            <option value="" data-i18n="select_branch">Filialni tanlang</option>
+            {% if filials %} {% for filial in filials %}
+            <option value="{{ filial.id }}">{{ filial.name }}</option>
+            {% endfor %} {% else %} {% for filial in form.filial.field.queryset
+            %}
+            <option value="{{ filial.id }}">{{ filial.name }}</option>
+            {% endfor %} {% endif %}
+          </select>
+        </div>
+
+        <h3 class="section-title" data-i18n="delivery_address">
+          Yetkazib berish manzili <span class="required">*</span>
+        </h3>
+        <div class="address-options">
+          <label class="address-option">
+            <input type="radio" name="address_type" value="manual" checked />
+            <span data-i18n="yandex_delivery">Yandex Delivery</span>
+          </label>
+          <label class="address-option">
+            <span data-i18n="fast_delivery_unavailable"
+              >Tezkor yetkazib berish (vaqtincha ishlamayapti)</span
+            >
+          </label>
+        </div>
+
+        <div id="manual-address" class="form-group">
+          <label for="address_text" data-i18n="address"
+            >Manzil<span class="required">*</span></label
+          >
+          <input
+            type="text"
+            name="address_text"
+            id="address_text"
+            class="form-control"
+            placeholder="Ko‘cha nomi, uy, xonadon"
+            required
+          />
+          <small class="form-text" data-i18n="address_example"
+            >Misol: Andijon, 1-mikrorayon, 19-uy</small
+          >
+        </div>
+
+        <input type="hidden" name="payment_method" value="click" />
+
+        <div class="payment-info">
+          <p>
+            <strong data-i18n="payment_method">To‘lov usuli:</strong>
+            <span data-i18n="click">Click</span>
+          </p>
+          <p data-i18n="payment_description">
+            Buyurtmani rasmiylashtirgandan so‘ng, Click to‘lov tizimining
+            saytiga yo‘naltirilasiz. Muvaffaqiyatli to‘lovdan so‘ng siz bilan
+            call-center mutaxassislari bog‘lanadi.
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="btn-checkout"
+          data-i18n="proceed_to_payment"
+        >
+          To‘lovga o‘tish
+        </button>
+      </form>
     </div>
+
+    <div class="checkout-summary-section">
+      <h2 class="section-title" data-i18n="total">Jami</h2>
+      {% for item in cart_items %}
+      <div class="cart-item">
+        <img
+          src="{{ item.product.image1.url }}"
+          alt="{{ item.product.name }}"
+        />
+        <div class="cart-item-details">
+          <div class="cart-item-title">{{ item.product.name }}</div>
+          <div class="cart-item-meta">
+            {{ item.quantity }} <span data-i18n="pcs">dona</span>
+          </div>
+          <div class="cart-item-price">
+            {{ item.total_price }} <span data-i18n="currency">so‘m</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="summary-row">
+        <span data-i18n="order_amount">Buyurtma summasi:</span>
+        <span
+          >{{ order.total_price }} <span data-i18n="currency">so‘m</span></span
+        >
+      </div>
+
+      <div class="summary-row">
+        <span data-i18n="branded_package">Brend paket:</span>
+        <span>{{ dostaff }} <span data-i18n="currency">so‘m</span></span>
+      </div>
+
+      <div class="summary-row total">
+        <span data-i18n="total_to_pay">To‘lash uchun jami:</span>
+        <span>{{ total_sum }} <span data-i18n="currency">so‘m</span></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.checkout-form');
-    const phoneInput = document.getElementById('id_phone_number1');
-    const addressTextInput = document.getElementById('address_text');
-    const filialSelect = document.getElementById('id_filial');
-    
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".checkout-form");
+    const phoneInput = document.getElementById("id_phone_number1");
+    const addressTextInput = document.getElementById("address_text");
+    const filialSelect = document.getElementById("id_filial");
+
     // Phone number formatting
-    phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 0 && value.charAt(0) !== '+') {
-            value = '+' + value;
-        }
-        
-        // Format with spaces
-        if (value.length > 4) {
-            value = value.substring(0, 4) + ' ' + value.substring(4);
-        }
-        if (value.length > 7) {
-            value = value.substring(0, 7) + ' ' + value.substring(7);
-        }
-        if (value.length > 11) {
-            value = value.substring(0, 11) + ' ' + value.substring(11);
-        }
-        if (value.length > 14) {
-            value = value.substring(0, 14) + ' ' + value.substring(14);
-        }
-        
-        e.target.value = value;
+    phoneInput.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 0 && value.charAt(0) !== "+") {
+        value = "+" + value;
+      }
+
+      // Format with spaces
+      if (value.length > 4) {
+        value = value.substring(0, 4) + " " + value.substring(4);
+      }
+      if (value.length > 7) {
+        value = value.substring(0, 7) + " " + value.substring(7);
+      }
+      if (value.length > 11) {
+        value = value.substring(0, 11) + " " + value.substring(11);
+      }
+      if (value.length > 14) {
+        value = value.substring(0, 14) + " " + value.substring(14);
+      }
+
+      e.target.value = value;
     });
 
     // Address type toggle
     const manualAddressDiv = document.getElementById("manual-address");
     const mapsAddressDiv = document.getElementById("maps-address");
-    
-    document.querySelectorAll('input[name="address_type"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            if (this.value === "manual") {
-                manualAddressDiv.style.display = "block";
-                mapsAddressDiv.style.display = "none";
-                document.getElementById("address_text").setAttribute("required", "required");
-                document.getElementById("address-input").removeAttribute("required");
-            } else {
-                manualAddressDiv.style.display = "none";
-                mapsAddressDiv.style.display = "block";
-                document.getElementById("address_text").removeAttribute("required");
-                document.getElementById("address-input").setAttribute("required", "required");
-                
-                if (map) {
-                    google.maps.event.trigger(map, 'resize');
-                    map.setCenter(marker.getPosition());
-                }
+
+    document
+      .querySelectorAll('input[name="address_type"]')
+      .forEach(function (radio) {
+        radio.addEventListener("change", function () {
+          if (this.value === "manual") {
+            manualAddressDiv.style.display = "block";
+            mapsAddressDiv.style.display = "none";
+            document
+              .getElementById("address_text")
+              .setAttribute("required", "required");
+            document
+              .getElementById("address-input")
+              .removeAttribute("required");
+          } else {
+            manualAddressDiv.style.display = "none";
+            mapsAddressDiv.style.display = "block";
+            document.getElementById("address_text").removeAttribute("required");
+            document
+              .getElementById("address-input")
+              .setAttribute("required", "required");
+
+            if (map) {
+              google.maps.event.trigger(map, "resize");
+              map.setCenter(marker.getPosition());
             }
+          }
         });
-    });
+      });
 
     // Form validation
-    form.addEventListener('submit', function(e) {
-        let isValid = true;
-        
-        // Validate filial
-        if (!filialSelect.value) {
-            filialSelect.classList.add('is-invalid');
-            filialSelect.nextElementSibling.style.display = 'block';
-            isValid = false;
+    form.addEventListener("submit", function (e) {
+      let isValid = true;
+
+      // Validate filial
+      if (!filialSelect.value) {
+        filialSelect.classList.add("is-invalid");
+        filialSelect.nextElementSibling.style.display = "block";
+        isValid = false;
+      } else {
+        filialSelect.classList.remove("is-invalid");
+        filialSelect.nextElementSibling.style.display = "none";
+      }
+
+      // Validate phone
+      const phoneValue = phoneInput.value.trim();
+      if (phoneValue.length < 12) {
+        phoneInput.classList.add("is-invalid");
+        isValid = false;
+      } else {
+        phoneInput.classList.remove("is-invalid");
+      }
+
+      // Validate address
+      const addressType = document.querySelector(
+        'input[name="address_type"]:checked'
+      ).value;
+      if (addressType === "manual") {
+        if (addressTextInput.value.trim() === "") {
+          addressTextInput.classList.add("is-invalid");
+          isValid = false;
         } else {
-            filialSelect.classList.remove('is-invalid');
-            filialSelect.nextElementSibling.style.display = 'none';
+          addressTextInput.classList.remove("is-invalid");
         }
-        
-        // Validate phone
-        const phoneValue = phoneInput.value.trim();
-        if (phoneValue.length < 12) {
-            phoneInput.classList.add('is-invalid');
-            isValid = false;
+      } else {
+        const lat = document.getElementById("address_lat").value;
+        const lng = document.getElementById("address_lng").value;
+        if (!lat || !lng) {
+          document.getElementById("address-input").classList.add("is-invalid");
+          isValid = false;
         } else {
-            phoneInput.classList.remove('is-invalid');
+          document
+            .getElementById("address-input")
+            .classList.remove("is-invalid");
         }
-        
-        // Validate address
-        const addressType = document.querySelector('input[name="address_type"]:checked').value;
-        if (addressType === "manual") {
-            if (addressTextInput.value.trim() === '') {
-                addressTextInput.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                addressTextInput.classList.remove('is-invalid');
-            }
-        } else {
-            const lat = document.getElementById('address_lat').value;
-            const lng = document.getElementById('address_lng').value;
-            if (!lat || !lng) {
-                document.getElementById('address-input').classList.add('is-invalid');
-                isValid = false;
-            } else {
-                document.getElementById('address-input').classList.remove('is-invalid');
-            }
+      }
+
+      if (!isValid) {
+        e.preventDefault();
+        const firstError = document.querySelector(".is-invalid");
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: "smooth", block: "center" });
         }
-        
-        if (!isValid) {
-            e.preventDefault();
-            const firstError = document.querySelector('.is-invalid');
-            if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
+      }
     });
-});
+  });
 
-// Google Maps initialization
-var map, marker;
+  // Google Maps initialization
+  var map, marker;
 
-function initMap() {
+  function initMap() {
     const defaultLocation = { lat: 41.3111, lng: 69.2797 };
-    
+
     try {
-        const mapElement = document.getElementById('map');
-        if (!mapElement) return;
-        
-        map = new google.maps.Map(mapElement, {
-            center: defaultLocation,
-            zoom: 13,
-            mapTypeControl: false,
-            zoomControl: true,
-            streetViewControl: false,
-            fullscreenControl: true
-        });
-        
-        marker = new google.maps.Marker({
-            position: defaultLocation,
-            map: map,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-            title: 'Yetkazib berish manzili'
-        });
-        
-        google.maps.event.addListener(marker, 'dragend', function(event) {
-            updateMarkerPosition(event.latLng);
-        });
-        
-        google.maps.event.addListener(map, 'click', function(event) {
-            marker.setPosition(event.latLng);
-            updateMarkerPosition(event.latLng);
-        });
-        
-        document.getElementById('address_lat').value = defaultLocation.lat;
-        document.getElementById('address_lng').value = defaultLocation.lng;
-        document.getElementById('address-input').value = defaultLocation.lat.toFixed(6) + ', ' + defaultLocation.lng.toFixed(6);
-        
-        google.maps.event.addListenerOnce(map, 'idle', function() {
-            google.maps.event.trigger(map, 'resize');
-        });
+      const mapElement = document.getElementById("map");
+      if (!mapElement) return;
+
+      map = new google.maps.Map(mapElement, {
+        center: defaultLocation,
+        zoom: 13,
+        mapTypeControl: false,
+        zoomControl: true,
+        streetViewControl: false,
+        fullscreenControl: true,
+      });
+
+      marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        title: "Yetkazib berish manzili",
+      });
+
+      google.maps.event.addListener(marker, "dragend", function (event) {
+        updateMarkerPosition(event.latLng);
+      });
+
+      google.maps.event.addListener(map, "click", function (event) {
+        marker.setPosition(event.latLng);
+        updateMarkerPosition(event.latLng);
+      });
+
+      document.getElementById("address_lat").value = defaultLocation.lat;
+      document.getElementById("address_lng").value = defaultLocation.lng;
+      document.getElementById("address-input").value =
+        defaultLocation.lat.toFixed(6) + ", " + defaultLocation.lng.toFixed(6);
+
+      google.maps.event.addListenerOnce(map, "idle", function () {
+        google.maps.event.trigger(map, "resize");
+      });
     } catch (e) {
-        console.error("Error initializing map:", e);
-        const mapDiv = document.getElementById('map');
-        if (mapDiv) {
-            mapDiv.innerHTML = `
+      console.error("Error initializing map:", e);
+      const mapDiv = document.getElementById("map");
+      if (mapDiv) {
+        mapDiv.innerHTML = `
                 <div style="text-align: center; padding: 20px;">
                     <div style="font-size: 48px; color: #999;">⚠️</div>
                     <p style="color: #555;">Xaritani yuklashda xatolik yuz berdi.</p>
                     <p style="color: #777; font-size: 12px;">Iltimos, internet aloqasini tekshiring yoki qo'lda manzil kiriting.</p>
                 </div>
             `;
-        }
+      }
     }
-}
+  }
 
-function updateMarkerPosition(latLng) {
+  function updateMarkerPosition(latLng) {
     const lat = latLng.lat();
     const lng = latLng.lng();
-    document.getElementById('address_lat').value = lat;
-    document.getElementById('address_lng').value = lng;
-    document.getElementById('address-input').value = lat.toFixed(6) + ', ' + lng.toFixed(6);
-    document.getElementById('address-input').classList.remove('is-invalid');
-}
+    document.getElementById("address_lat").value = lat;
+    document.getElementById("address_lng").value = lng;
+    document.getElementById("address-input").value =
+      lat.toFixed(6) + ", " + lng.toFixed(6);
+    document.getElementById("address-input").classList.remove("is-invalid");
+  }
 
-function handleMapError() {
-    console.error('Google Maps failed to load');
-    const mapDiv = document.getElementById('map');
+  function handleMapError() {
+    console.error("Google Maps failed to load");
+    const mapDiv = document.getElementById("map");
     if (mapDiv) {
-        mapDiv.innerHTML = `
+      mapDiv.innerHTML = `
             <div style="text-align: center; padding: 20px;">
                 <div style="font-size: 48px; color: #999;">⚠️</div>
                 <p style="color: #555;">Google Xaritani yuklashda muammo yuz berdi.</p>
@@ -555,15 +617,23 @@ function handleMapError() {
             </div>
         `;
     }
-    
-    const manualRadio = document.querySelector('input[name="address_type"][value="manual"]');
+
+    const manualRadio = document.querySelector(
+      'input[name="address_type"][value="manual"]'
+    );
     if (manualRadio) {
-        manualRadio.checked = true;
-        const event = new Event('change');
-        manualRadio.dispatchEvent(event);
+      manualRadio.checked = true;
+      const event = new Event("change");
+      manualRadio.dispatchEvent(event);
     }
-}
+  }
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwlNqAEil52XRPHmSVb4Luk18qQG9GqcM&callback=initMap&libraries=places" onerror="handleMapError()"></script>
+<script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwlNqAEil52XRPHmSVb4Luk18qQG9GqcM&callback=initMap&libraries=places"
+  onerror="handleMapError()"
+></script>
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock %}
