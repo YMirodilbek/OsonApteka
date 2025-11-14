@@ -1,82 +1,105 @@
-{%  extends 'base.html'%}
-{% load static %}
-{% block content %}
+{% extends 'base.html'%} {% load static %} {% block content %}
+<script src="{% static 'lang/lang.js' %}" defer></script>
+
 <!-- header tugadi -->
-            <br>
-        
-            
-            <!--breadcrumbs area start-->
-            <div class="breadcrumbs_area commun_bread">
-                <div class="container">   
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="breadcrumb_content">
-                                <h3>Sizning Yoqtirgan Mahsulotlaringiz!</h3>
-                                <ul>
-                                    <li><a href="index.html">asosiy</a></li>
-                                    <li><i class="fa fa-angle-right"></i></li>
-                                    <li>kabinentim</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>         
+<br />
+
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area commun_bread">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="breadcrumb_content">
+          <h3 data-i18n="wishlist_title">
+            Sizning Yoqtirgan Mahsulotlaringiz!
+          </h3>
+          <ul>
+            <li><a href="{% url 'home' %}" data-i18n="home">Asosiy</a></li>
+            <li><i class="fa fa-angle-right"></i></li>
+            <li data-i18n="my_account">Kabinetim</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--breadcrumbs area end-->
+
+<!--wishlist area start -->
+<div class="wishlist_area">
+  <div class="container">
+    <form action="#">
+      <div class="row">
+        <div class="col-12">
+          <div class="table_desc wishlist">
+            <div class="cart_page table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="product_remove" data-i18n="remove">O‘chirish</th>
+                    <th class="product_thumb" data-i18n="image">Rasim</th>
+                    <th class="product_name" data-i18n="product">Mahsulot</th>
+                    <th class="product-price" data-i18n="price">Narxi</th>
+                    <th class="product_total" data-i18n="add_to_cart">
+                      Savatga Qo‘shish
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if wishlist_items %} {% for i in wishlist_items %}
+                  <tr>
+                    <td class="product_remove">
+                      <a
+                        href="#"
+                        class="remove-wishlist-item"
+                        data-id="{{ i.product.id }}"
+                        >X</a
+                      >
+                    </td>
+                    <td class="product_thumb">
+                      <a href="{% url 'product_detail' i.product.id %}">
+                        <img
+                          src="{{ i.product.image1.url }}"
+                          alt="{{ i.product.name }}"
+                        />
+                      </a>
+                    </td>
+                    <td class="product_name">
+                      <a href="{% url 'product_detail' i.product.id %}"
+                        >{{ i.product.name }}</a
+                      >
+                    </td>
+                    <td class="product-price">
+                      {{ i.product.price }}
+                      <span data-i18n="currency">so‘m</span>
+                    </td>
+                    <td class="product_total">
+                      <a
+                        href="{% url 'add_to_cart' i.product.id %}"
+                        data-i18n="add_to_cart"
+                        >Savatga</a
+                      >
+                    </td>
+                  </tr>
+                  {% endfor %} {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center text-muted">
+                      <p data-i18n="wishlist_empty_message">
+                        Siz hali Wishlistga hech qanday mahsulot qo‘shmadingiz!
+                      </p>
+                    </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
             </div>
-            <!--breadcrumbs area end-->
-            
-           <!--wishlist area start -->
-            <div class="wishlist_area">
-                <div class="container">   
-                    <form action="#"> 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="table_desc wishlist">
-                                    <div class="cart_page table-responsive">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th class="product_remove">O'chrish</th>
-                                                    <th class="product_thumb">Rasim</th>
-                                                    <th class="product_name">Maxsulot</th>
-                                                    <th class="product-price">Narxi</th>
-                                                    <th class="product_total">Savatga Qo'shish</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% if wishlist_items %}
-                                                {% for i in wishlist_items %}
-                                                    <tr>
-                                                   <td class="product_remove"><a href="#">X</a></td>
-                                                    <td class="product_thumb"><a href="#"><img src="{{i.product.image1.url}}" alt=""></a></td>
-                                                    <td class="product_name"><a href="#">{{ i.product.name}}</a></td>
-                                                    {% if i.product.price > 0 %}
-                                                    <td class="product-price">{{ i.product.price }}</td>
-                                                    {% else %}
-                                                    <td class="product-price">{{ i.product.price }}</td>
-                                                    {% endif %}
-                                                    <td class="product_total"><a href="/add_to_cart/{{ i.product.id }}/">Savatga</a></td>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--wishlist area end -->
 
-
-                                                </tr>
-                                                {% endfor %}
-                                            {% else %}
-                                            <p class="text-center text-muted">Siz hali Wishlistga hech qanday mahsulot qoshmadizngiz !</p>
-                                            {% endif %}
-
-                                            </tbody>
-                                        </table>   
-                                    </div>  
-
-                                </div>
-                             </div>
-                         </div>
-
-                    </form> 
-          
-                    
-                </div>
-            </div>
-             <!--wishlist area end -->
-             
-<br><br><br><br>            
-     {% endblock content %}
+<br /><br /><br /><br />
+{% endblock content %

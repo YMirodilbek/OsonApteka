@@ -1,289 +1,295 @@
-{% extends 'base.html'%}
-{% block content %}
-{% load static %}
+{% extends 'base.html'%} {% block content %} {% load static %}
 
-    <style>
-        .afm-vacancy-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            padding: 20px;
-        }
+<style>
+  .afm-vacancy-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 20px;
+  }
 
-        .afm-vacancy-card {
-            flex: 1;
-            min-width: 280px;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 24px;
-            transition: all 0.3s ease;
-            border: 1px solid #eef2f6;
-        }
+  .afm-vacancy-card {
+    flex: 1;
+    min-width: 280px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    transition: all 0.3s ease;
+    border: 1px solid #eef2f6;
+  }
 
-        .afm-vacancy-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
+  .afm-vacancy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
 
-        .afm-vacancy-title {
-            font-size: 20px;
-            color: #2C3E50;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            line-height: 1.4;
-        }
+  .afm-vacancy-title {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.4;
+  }
 
-        .afm-vacancy-title i {
-            color: #E31E24;
-            font-size: 24px;
-        }
+  .afm-vacancy-title i {
+    color: #e31e24;
+    font-size: 24px;
+  }
 
-        .afm-vacancy-info {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+  .afm-vacancy-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-        .afm-vacancy-detail {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #4A5568;
-            font-size: 15px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f2f5;
-        }
+  .afm-vacancy-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #4a5568;
+    font-size: 15px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f2f5;
+  }
 
-        .afm-vacancy-detail i {
-            width: 20px;
-            color: #E31E24;
-            font-size: 16px;
-        }
+  .afm-vacancy-detail i {
+    width: 20px;
+    color: #e31e24;
+    font-size: 16px;
+  }
 
-        .afm-vacancy-detail:last-child {
-            border-bottom: none;
-        }
+  .afm-vacancy-detail:last-child {
+    border-bottom: none;
+  }
 
-        .afm-vacancy-salary {
-            color: #2971f5;
-            font-weight: 500;
-        }
+  .afm-vacancy-salary {
+    color: #2971f5;
+    font-weight: 500;
+  }
 
-        .afm-vacancy-phone {
-            color: #E31E24;
-            font-weight: 500;
-            text-decoration: none;
-        }
+  .afm-vacancy-phone {
+    color: #e31e24;
+    font-weight: 500;
+    text-decoration: none;
+  }
 
-        .afm-vacancy-phone:hover {
-            text-decoration: underline;
-        }
+  .afm-vacancy-phone:hover {
+    text-decoration: underline;
+  }
 
-        /* Application Form Styles */
-        .afm-application-container {
-            max-width: 800px;
-            margin: 40px auto;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 30px;
-            border: 1px solid #eef2f6;
-        }
-        
-        .afm-application-title {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #2C3E50;
-            font-size: 24px;
-            position: relative;
-        }
-        
-        .afm-application-title:after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #E31E24;
-            margin: 10px auto 0;
-        }
-        
-        .afm-form-group {
-            margin-bottom: 20px;
-        }
-        
-        .afm-form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #2C3E50;
-        }
-        
-        .afm-form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .afm-form-control:focus {
-            border-color: #E31E24;
-            outline: none;
-        }
-        
-        .afm-form-file {
-            padding: 10px 0;
-        }
-        
-        .afm-form-submit {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: #E31E24;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .afm-form-submit:hover {
-            background: #c91a1e;
-        }
+  /* Application Form Styles */
+  .afm-application-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    border: 1px solid #eef2f6;
+  }
 
-        /* Custom File Input Styling */
-        .custom-file-upload {
-            position: relative;
-            display: block;
-            overflow: hidden;
-            margin-top: 10px;
-        }
+  .afm-application-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-size: 24px;
+    position: relative;
+  }
 
-        .file-upload-btn {
-            display: inline-block;
-            padding: 10px 15px;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            color: #2C3E50;
-            font-weight: 500;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-right: 10px;
-        }
+  .afm-application-title:after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #e31e24;
+    margin: 10px auto 0;
+  }
 
-        .file-upload-btn:hover {
-            background: #e9e9e9;
-            border-color: #ccc;
-        }
+  .afm-form-group {
+    margin-bottom: 20px;
+  }
 
-        .file-upload-btn i {
-            margin-right: 5px;
-            color: #E31E24;
-        }
+  .afm-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
 
-        .file-name-display {
-            display: inline-block;
-            font-size: 14px;
-            color: #666;
-            padding: 5px 0;
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            vertical-align: middle;
-        }
+  .afm-form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
 
-        .custom-file-upload input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 0.1px;
-            height: 0.1px;
-            z-index: -1;
-        }
+  .afm-form-control:focus {
+    border-color: #e31e24;
+    outline: none;
+  }
 
-        @media (max-width: 1200px) {
-            .afm-vacancy-card {
-                flex: 0 0 calc(33.333% - 24px);
-            }
-        }
+  .afm-form-file {
+    padding: 10px 0;
+  }
 
-        @media (max-width: 992px) {
-            .afm-vacancy-card {
-                flex: 0 0 calc(50% - 24px);
-            }
-        }
+  .afm-form-submit {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #e31e24;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-        @media (max-width: 768px) {
-            .afm-vacancy-container {
-                gap: 16px;
-                padding: 15px;
-            }
+  .afm-form-submit:hover {
+    background: #c91a1e;
+  }
 
-            .afm-vacancy-card {
-                flex: 0 0 100%;
-                padding: 20px;
-            }
+  /* Custom File Input Styling */
+  .custom-file-upload {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin-top: 10px;
+  }
 
-            .afm-vacancy-title {
-                font-size: 18px;
-            }
+  .file-upload-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: #2c3e50;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-right: 10px;
+  }
 
-            .afm-vacancy-detail {
-                font-size: 14px;
-            }
-            
-            .afm-application-container {
-                padding: 20px;
-            }
-        }
-    </style>
+  .file-upload-btn:hover {
+    background: #e9e9e9;
+    border-color: #ccc;
+  }
 
-    <div class="afm-vacancy-container">
-        {% for i in vacancy %}
-        <div class="afm-vacancy-card">
-            <h2 class="afm-vacancy-title">
-                <i class="fas fa-notes-medical"></i>
-                {{i.title}}
-            </h2>
-            <div class="afm-vacancy-info">
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-user"></i>
-                    <span>{{i.age}}</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>{{i.address}}</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-clock"></i>
-                    <span>{{i.shift}}</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span class="afm-vacancy-salary">{{i.salary}}</span>
-                </div>
-                <div class="afm-vacancy-detail">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+998999091282" class="afm-vacancy-phone">{{i.phone_number}}</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+  .file-upload-btn i {
+    margin-right: 5px;
+    color: #e31e24;
+  }
+
+  .file-name-display {
+    display: inline-block;
+    font-size: 14px;
+    color: #666;
+    padding: 5px 0;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .custom-file-upload input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    z-index: -1;
+  }
+
+  @media (max-width: 1200px) {
+    .afm-vacancy-card {
+      flex: 0 0 calc(33.333% - 24px);
+    }
+  }
+
+  @media (max-width: 992px) {
+    .afm-vacancy-card {
+      flex: 0 0 calc(50% - 24px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .afm-vacancy-container {
+      gap: 16px;
+      padding: 15px;
+    }
+
+    .afm-vacancy-card {
+      flex: 0 0 100%;
+      padding: 20px;
+    }
+
+    .afm-vacancy-title {
+      font-size: 18px;
+    }
+
+    .afm-vacancy-detail {
+      font-size: 14px;
+    }
+
+    .afm-application-container {
+      padding: 20px;
+    }
+  }
+</style>
+
+<div class="afm-vacancy-container">
+  {% for i in vacancy %}
+  <div class="afm-vacancy-card">
+    <h2 class="afm-vacancy-title">
+      <i class="fas fa-notes-medical"></i>
+      {{ i.title }}
+    </h2>
+    <div class="afm-vacancy-info">
+      <div class="afm-vacancy-detail">
+        <i class="fas fa-user"></i>
+        <span data-i18n="age">Yosh:</span> <span>{{ i.age }}</span>
+      </div>
+      <div class="afm-vacancy-detail">
+        <i class="fas fa-map-marker-alt"></i>
+        <span data-i18n="address">Manzil:</span> <span>{{ i.address }}</span>
+      </div>
+      <div class="afm-vacancy-detail">
+        <i class="fas fa-clock"></i>
+        <span data-i18n="working_hours">Ish vaqti:</span>
+        <span>{{ i.shift }}</span>
+      </div>
+      <div class="afm-vacancy-detail">
+        <i class="fas fa-money-bill-wave"></i>
+        <span data-i18n="salary">Maosh:</span>
+        <span class="afm-vacancy-salary">{{ i.salary }}</span>
+      </div>
+      <div class="afm-vacancy-detail">
+        <i class="fas fa-phone"></i>
+        <a
+          href="tel:{{ i.phone_number|cut:' ' }}"
+          class="afm-vacancy-phone"
+          data-i18n="phone"
+        >
+          {{ i.phone_number }}
+        </a>
+      </div>
     </div>
+  </div>
+  {% endfor %}
+</div>
 
-    <!-- <div class="afm-application-container">
+<!-- <div class="afm-application-container">
         <h2 class="afm-application-title">Подать заявление</h2>
         
         <form action="{% url 'vacancy_application_url' %}" method="POST" enctype="multipart/form-data">
@@ -315,65 +321,133 @@
         </form>
     </div> -->
 
-    <div class="afm-application-container">
-        <h2 class="afm-application-title">Заполните анкету</h2>
-        
-        <form action="{% url 'VacancyApplication_apteka_url' %}" method="POST" enctype="multipart/form-data">
+<div class="afm-application-container">
+  <h2 class="afm-application-title" data-i18n="fill_form">
+    Anketani to‘ldiring
+  </h2>
+
+  <form
+    action="{% url 'VacancyApplication_apteka_url' %}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
     {% csrf_token %}
-    
+
     <div class="afm-form-group">
-        <label for="fio" class="afm-form-label">Ф.И.О.</label>
-        <input type="text" name="fio" id="fio" class="afm-form-control" required>
+      <label for="fio" class="afm-form-label" data-i18n="full_name"
+        >F.I.O.</label
+      >
+      <input
+        type="text"
+        name="fio"
+        id="fio"
+        class="afm-form-control"
+        placeholder="Ism Sharif O‘g‘li"
+        required
+      />
     </div>
-    
+
     <div class="afm-form-group">
-        <label for="date_of_birth" class="afm-form-label">Дата рождения</label>
-        <input type="text" name="date_of_birth" id="date_of_birth" placeholder="07-11-1988" class="afm-form-control" required>
-    </div> 
-    
-    <div class="afm-form-group">
-        <label for="address" class="afm-form-label">Адрес проживания</label>
-        <input type="text" name="address" id="address" class="afm-form-control" required>
+      <label for="date_of_birth" class="afm-form-label" data-i18n="birth_date"
+        >Tug‘ilgan sana</label
+      >
+      <input
+        type="text"
+        name="date_of_birth"
+        id="date_of_birth"
+        placeholder="07-11-1988"
+        class="afm-form-control"
+        required
+      />
     </div>
-    
+
     <div class="afm-form-group">
-        <label for="education" class="afm-form-label">Образование</label>
-        <input type="text" name="education" id="education" class="afm-form-control" required>
+      <label for="address" class="afm-form-label" data-i18n="residence_address"
+        >Yashash manzili</label
+      >
+      <input
+        type="text"
+        name="address"
+        id="address"
+        class="afm-form-control"
+        placeholder="Shahar, ko‘cha, uy"
+        required
+      />
     </div>
-    
+
     <div class="afm-form-group">
-        <label for="last_job" class="afm-form-label">Последнее место работы</label>
-        <input type="text" name="last_job" id="last_job" class="afm-form-control">
+      <label for="education" class="afm-form-label" data-i18n="education"
+        >Ma’lumoti</label
+      >
+      <input
+        type="text"
+        name="education"
+        id="education"
+        class="afm-form-control"
+        placeholder="Oliy, o‘rta-maxsus"
+        required
+      />
     </div>
-    
+
     <div class="afm-form-group">
-        <label for="desired_salary" class="afm-form-label">Желаемая зарплата</label>
-        <input type="number" step="0.01" name="desired_salary" id="desired_salary" class="afm-form-control" required>
+      <label for="last_job" class="afm-form-label" data-i18n="last_job"
+        >Oxirgi ish joyi</label
+      >
+      <input
+        type="text"
+        name="last_job"
+        id="last_job"
+        class="afm-form-control"
+        placeholder="Dorixona, klinika..."
+      />
     </div>
-    
+
     <div class="afm-form-group">
-        <label for="phone_number" class="afm-form-label">Номер телефона для связи</label>
-        <input type="text" name="phone_number" id="phone_number" class="afm-form-control" required>
+      <label
+        for="desired_salary"
+        class="afm-form-label"
+        data-i18n="desired_salary"
+        >Istagan maoshi</label
+      >
+      <input
+        type="number"
+        step="1000"
+        name="desired_salary"
+        id="desired_salary"
+        class="afm-form-control"
+        placeholder="so‘m"
+        required
+      />
+    </div>
+
+    <div class="afm-form-group">
+      <label for="phone_number" class="afm-form-label" data-i18n="contact_phone"
+        >Aloqa telefoni</label
+      >
+      <input
+        type="tel"
+        name="phone_number"
+        id="phone_number"
+        class="afm-form-control"
+        placeholder="+998 __ ___ __ __"
+        required
+      />
     </div>
 
     <button type="submit" class="afm-form-submit">
-        <i class="fas fa-paper-plane"></i> Отправить анкету
+      <i class="fas fa-paper-plane"></i>
+      <span data-i18n="submit_form">Anketani yuborish</span>
     </button>
-</form>
+  </form>
+</div>
 
-    </div>
-
-   <script>
-    document.getElementById('doc1').addEventListener('change', function() {
-        const fileName = this.files[0] ? this.files[0].name : 'Файл не выбран';
-        document.getElementById('fileName1').textContent = fileName;
-    });
-
-
+<script>
+  document.getElementById("doc1").addEventListener("change", function () {
+    const fileName = this.files[0] ? this.files[0].name : "Файл не выбран";
+    document.getElementById("fileName1").textContent = fileName;
+  });
 </script>
 
-
-    <!-- footer start berdik -->
-   
-   
+<!-- footer start berdik -->
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock content%}

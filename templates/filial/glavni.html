@@ -1,47 +1,88 @@
-{% extends 'base_filial.html' %}
-{% load static %}
+{% extends 'base_filial.html' %} {% load static %} {% block content %}
 
-{% block content %}
-
-<br>
-
+<br />
 
 <div class="container mt-5">
-    <h3>Rasmlar</h3>
+  <h3 data-i18n="images">Rasmlar</h3>
 
-    <!-- Modalni chaqirish tugmasi -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ Rasm qo‘shish</button>
+  <!-- Modalni chaqirish tugmasi -->
+  <button
+    class="btn btn-primary mb-3"
+    data-bs-toggle="modal"
+    data-bs-target="#addModal"
+    data-i18n="add_image"
+  >
+    + Rasm qo‘shish
+  </button>
 
-    <div class="row">
-        {% for image in glavni %}
-        <div class="col-md-3 text-center mb-3">
-            <img src="{{ image.img.url }}" class="img-thumbnail" style="height:150px; object-fit:cover;">
-            <a href="/glavni/delete/{{image.id}}/" class="btn btn-danger btn-sm mt-2 delete-btn" >O‘chirish</a>
-        </div>
-        {% endfor %}
+  <div class="row">
+    {% for image in glavni %}
+    <div class="col-md-3 text-center mb-3">
+      <img
+        src="{{ image.img.url }}"
+        class="img-thumbnail"
+        style="height: 150px; object-fit: cover"
+        alt="Slayder rasm"
+        loading="lazy"
+      />
+      <a
+        href="{% url 'glavni_delete' image.id %}"
+        class="btn btn-danger btn-sm mt-2 delete-btn"
+        data-i18n="delete"
+        onclick="return confirm('Bu rasmni o‘chirishni xohlaysizmi?')"
+      >
+        O‘chirish
+      </a>
     </div>
+    {% endfor %}
+  </div>
 </div>
 
 <!-- Add Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Yangi rasm qo‘shish</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="POST" enctype="multipart/form-data" action="{% url 'glavni_add' %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    {{ form.as_p }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
-                    <button type="submit" class="btn btn-primary">Saqlash</button>
-                </div>
-            </form>
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel" data-i18n="add_new_image">
+          Yangi rasm qo‘shish
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Yopish"
+        ></button>
+      </div>
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action="{% url 'glavni_add' %}"
+      >
+        {% csrf_token %}
+        <div class="modal-body">{{ form.as_p }}</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            data-i18n="close"
+          >
+            Yopish
+          </button>
+          <button type="submit" class="btn btn-primary" data-i18n="save">
+            Saqlash
+          </button>
         </div>
+      </form>
     </div>
+  </div>
 </div>
 
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock content %}

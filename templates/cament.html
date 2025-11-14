@@ -1,133 +1,145 @@
-{%  extends 'base.html'%}
-{% load static %}
-{% block content %}
-    <!-- header tugadi -->
-    <div class="review-card">
-        <p class="review-date"><strong>Anonim sharh</strong> - 11 fevral</p>
-        <p><strong>Rangi:</strong> Qora</p>
-        <p><strong>Afzalliklari:</strong> Sifati yaxshi</p>
-        <p><strong>Kamchiliklari:</strong> Yo‘q</p>
-        <p><strong>Izoh:</strong> 4 xil rangidan oldim, juda yoqdi. Kiyish juda qulay va yoqimli. Mayla sifatidagi
-            ko‘ylak, ustidagi tunika esa juda chiroyli va ajoyib. Hammaga tavsiya qilaman. Hozirda 1 haftalik
-            chegirmada ekan, hamma ulgurib olishini maslahat beraman,chunki asl narxi 249.0 so‘m, hozirda juda arzon.
-            Ranglari ham so‘nmaydi, yorqin. Tikilishida kamchilik yo‘q, juda sifatli. Didov trikoga va Uzum Marketga
-            katta rahmat. Yetkazib berish juda tez bo‘ldi.</p>
+{% extends 'base.html'%} {% load static %} {% block content %}
 
-        <div class="review-images">
-            <img src="../static/assets/img2/02.jpg" alt="Mahsulot surati">
-            <img src="../static/assets/img2/03.jpg" alt="Mahsulot surati">
-        </div>
+<script src="{% static 'lang/lang.js' %}" defer></script>
 
-        <div class="seller-response">
-            <p><strong>Sotuvchi javobi:</strong></p>
-            <p>Assalomu alaykum. Sizning iliq so‘zlaringiz bizni juda ilhomlantiradi! 😊 Mahsulotimizni yuqori <br>
-                baholaganingiz uchun katta rahmat. Har qanday savol bo‘lsa, bizga yozing! 📩</p>
-        </div>
-    </div>
-    <style>
-        .review-card {
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            max-width: 700px;
-            margin-left: 250px;
-        }
+<!-- header tugadi -->
+<div class="review-card">
+  <p class="review-date">
+    <strong data-i18n="review_anonymous">Anonim sharh</strong> - 11 fevral
+  </p>
+  <p><strong data-i18n="color">Rangi:</strong> Qora</p>
+  <p><strong data-i18n="pros">Afzalliklari:</strong> Sifati yaxshi</p>
+  <p><strong data-i18n="cons">Kamchiliklari:</strong> Yo‘q</p>
+  <p>
+    <strong data-i18n="comment">Izoh:</strong> 4 xil rangidan oldim, juda yoqdi.
+    Kiyish juda qulay va yoqimli. Mayla sifatidagi ko‘ylak, ustidagi tunika esa
+    juda chiroyli va ajoyib. Hammaga tavsiya qilaman. Hozirda 1 haftalik
+    chegirmada ekan, hamma ulgurib olishini maslahat beraman, chunki asl narxi
+    249.0 so‘m, hozirda juda arzon. Ranglari ham so‘nmaydi, yorqin. Tikilishida
+    kamchilik yo‘q, juda sifatli. Didov trikoga va Uzum Marketga katta rahmat.
+    Yetkazib berish juda tez bo‘ldi.
+  </p>
 
-        .review-date {
-            font-size: 14px;
-            color: black;
-            margin-bottom: 10px;
-        }
+  <div class="review-images">
+    <img src="../static/assets/img2/02.jpg" alt="Mahsulot surati" />
+    <img src="../static/assets/img2/03.jpg" alt="Mahsulot surati" />
+  </div>
 
-        .review-date strong {
-            color: #007BFF;
-        }
+  <div class="seller-response">
+    <p><strong data-i18n="seller_response">Sotuvchi javobi:</strong></p>
+    <p data-i18n="seller_thanks">
+      Assalomu alaykum. Sizning iliq so‘zlaringiz bizni juda ilhomlantiradi!
+      Mahsulotimizni yuqori <br />
+      baholaganingiz uchun katta rahmat. Har qanday savol bo‘lsa, bizga yozing!
+    </p>
+  </div>
+</div>
 
-        .review-images {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            justify-content: left;
-        }
+<style>
+  .review-card {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    margin-left: 250px;
+  }
 
-        .review-images img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+  .review-date {
+    font-size: 14px;
+    color: black;
+    margin-bottom: 10px;
+  }
 
-        .seller-response {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f8ff;
-            border-radius: 8px;
-            border: 1px solid #cce7ff;
-        }
+  .review-date strong {
+    color: #007bff;
+  }
 
-        .seller-response p {
-            font-size: 15px;
-            color: #333;
-        }
+  .review-images {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: left;
+  }
 
-        .seller-response strong {
-            color: #0056b3;
-        }
+  .review-images img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-        @media (max-width: 768px) {
-            .review-card {
-                padding: 15px;
-                margin-left: 10px;
-                margin-right: 10px;
-            }
+  .seller-response {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    border: 1px solid #cce7ff;
+  }
 
-            .review-date {
-                font-size: 12px;
-            }
+  .seller-response p {
+    font-size: 15px;
+    color: #333;
+  }
 
-            .review-images {
-                justify-content: center;
-            }
+  .seller-response strong {
+    color: #0056b3;
+  }
 
-            .review-images img {
-                width: 100px;
-                height: 100px;
-            }
+  @media (max-width: 768px) {
+    .review-card {
+      padding: 15px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
 
-            .seller-response p {
-                font-size: 14px;
-            }
+    .review-date {
+      font-size: 12px;
+    }
 
-            .seller-response {
-                padding: 12px;
-            }
-        }
+    .review-images {
+      justify-content: center;
+    }
 
-        @media (max-width: 480px) {
-            .review-card {
-                padding: 10px;
-                margin-left: 5px;
-                margin-right: 5px;
-            }
+    .review-images img {
+      width: 100px;
+      height: 100px;
+    }
 
-            .review-date {
-                font-size: 12px;
-            }
+    .seller-response p {
+      font-size: 14px;
+    }
 
-            .review-images img {
-                width: 80px;
-                height: 80px;
-            }
+    .seller-response {
+      padding: 12px;
+    }
+  }
 
-            .seller-response p {
-                font-size: 13px;
-            }
+  @media (max-width: 480px) {
+    .review-card {
+      padding: 10px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
 
-            .seller-response {
-                padding: 10px;
-            }
-        }
-    </style>
-   {% endblock content %}
+    .review-date {
+      font-size: 12px;
+    }
+
+    .review-images img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .seller-response p {
+      font-size: 13px;
+    }
+
+    .seller-response {
+      padding: 10px;
+    }
+  }
+</style>
+
+{% endblock content %}

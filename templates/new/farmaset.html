@@ -1,233 +1,226 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 
-    <style>
-        h2 {
-            text-align: center;
-            color: #1e3a8a;
-            font-size: 2.2rem;
-            margin: 30px 0;
-            position: relative;
-        }
-        
-        h2:after {
-            content: "";
-            display: block;
-            width: 80px;
-            height: 3px;
-            background-color: #1e3a8a;
-            margin: 15px auto 0;
-        }
-        
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto 50px;
-            display: flex;
-            gap: 30px;
-            padding: 0 20px;
-        }
-        
-        .left-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-height: 650px;
-            overflow-y: auto;
-            padding-right: 15px;
-        }
-        
-        .left-panel::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .left-panel::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        .left-panel::-webkit-scrollbar-thumb {
-            background: #c5c5c5;
-            border-radius: 10px;
-        }
-        
-        .left-panel::-webkit-scrollbar-thumb:hover {
-            background: #a0a0a0;
-        }
-        
-        .right-panel {
-            flex: 1.2;
-        }
-        
-        .store {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-        }
-        
-        .store:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        
-        .store h3 {
-            color: #1e3a8a;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 8px;
-        }
-        
-        .store p {
-            margin: 8px 0;
-            color: #4b5563;
-            font-size: 1rem;
-        }
-        
-        .store strong {
-            color: #1e3a8a;
-            font-weight: 600;
-            display: inline-block;
-            width: 140px;
-        }
-        
-        .button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 8px 16px;
-            background-color: #1e3a8a;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        
-        .button:hover {
-            background-color: #1c3377;
-        }
+<style>
+  h2 {
+    text-align: center;
+    color: #1e3a8a;
+    font-size: 2.2rem;
+    margin: 30px 0;
+    position: relative;
+  }
 
-        
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto 50px;
-            display: flex;
-            gap: 30px;
-            padding: 0 20px;
-            flex-direction: column; /* mobilda column */
-        }
+  h2:after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #1e3a8a;
+    margin: 15px auto 0;
+  }
 
-        @media (min-width: 901px) {
-            .main-container {
-                flex-direction: row; /* kompyuterda row: chap-o‘ng */
-            }
-        }
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    display: flex;
+    gap: 30px;
+    padding: 0 20px;
+  }
 
-        #map {
-        width: 100%;
-        height: 600px;
-        min-height: 300px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  .left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 650px;
+    overflow-y: auto;
+    padding-right: 15px;
+  }
+
+  .left-panel::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .left-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .left-panel::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 10px;
+  }
+
+  .left-panel::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+  }
+
+  .right-panel {
+    flex: 1.2;
+  }
+
+  .store {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+
+  .store:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .store h3 {
+    color: #1e3a8a;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+  }
+
+  .store p {
+    margin: 8px 0;
+    color: #4b5563;
+    font-size: 1rem;
+  }
+
+  .store strong {
+    color: #1e3a8a;
+    font-weight: 600;
+    display: inline-block;
+    width: 140px;
+  }
+
+  .button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+
+  .button:hover {
+    background-color: #1c3377;
+  }
+
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    display: flex;
+    gap: 30px;
+    padding: 0 20px;
+    flex-direction: column; /* mobilda column */
+  }
+
+  @media (min-width: 901px) {
+    .main-container {
+      flex-direction: row; /* kompyuterda row: chap-o‘ng */
     }
+  }
 
-    @media (max-width: 900px) {
-        #map {
-            height: 400px !important;
-        }
+  #map {
+    width: 100%;
+    height: 600px;
+    min-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  @media (max-width: 900px) {
+    #map {
+      height: 400px !important;
     }
+  }
+</style>
 
-    </style>
+<h2 data-i18n="our_pharmacies">Bizning dorixonalarimiz</h2>
 
-    <h2>Наши аптеки</h2>
-
-    <div class="main-container">
-      
-        
-        
-        <div class="left-panel">
-            {% for i in pharm %}
-            <div class="store">
-                <h3>{{i.title}}</h3>
-                <p><strong>Адрес:</strong> {{i.address}}</p>
-                <p><strong>График работы:</strong> {{i.shift}}</p>
-                <p><strong>Телефон:</strong> {{i.phone_number}}</p>
-              <a class="button"
-                    onclick="showMap('{{i.lat}}','{{i.lon}}','{{i.title|escapejs}}','{{i.address|escapejs}}','{{i.shift|escapejs}}','{{i.phone_number|escapejs}}')">
-                Посмотреть на карте
-                </a>
-
-
-            </div>
-            {% endfor %}
-        </div>
-
-      
-
-        
-   <div class="right-panel">
-        <div id="map" style="width: 100%; height: 600px;"></div>
+<div class="main-container">
+  <div class="left-panel">
+    {% for i in pharm %}
+    <div class="store">
+      <h3>{{ i.title }}</h3>
+      <p><strong data-i18n="address">Manzil:</strong> {{ i.address }}</p>
+      <p><strong data-i18n="working_hours">Ish vaqti:</strong> {{ i.shift }}</p>
+      <p><strong data-i18n="phone">Telefon:</strong> {{ i.phone_number }}</p>
+      <a
+        class="button"
+        onclick="showMap('{{ i.lat }}','{{ i.lon }}','{{ i.title|escapejs }}','{{ i.address|escapejs }}','{{ i.shift|escapejs }}','{{ i.phone_number|escapejs }}')"
+        data-i18n="view_on_map"
+      >
+        Xaritada ko‘rish
+      </a>
     </div>
+    {% endfor %}
+  </div>
 
-        <br><br>
-    </div>
+  <div class="right-panel">
+    <div id="map" style="width: 100%; height: 600px"></div>
+  </div>
+
+  <br /><br />
+</div>
+
+
+<script src="{% static 'lang/lang.js' %}" defer></script>
 <script src="https://api-maps.yandex.com/2.1/?lang=uz_UZ&apikey=8063d6c2-07c0-4f2c-b350-2066c16afb78"></script>
 <script>
   let myMap;
   let placemarks = [];
 
-    ymaps.ready(function () {
-        setTimeout(function() {
-            myMap = new ymaps.Map('map', {
-                center: [40.7828, 72.3442], // Andijon
-                zoom: 12,
-            });
-        }, 100); // 100ms kechikish
-    });
+  ymaps.ready(function () {
+    setTimeout(function () {
+      myMap = new ymaps.Map("map", {
+        center: [40.7828, 72.3442], // Andijon
+        zoom: 12,
+      });
+    }, 100); // 100ms kechikish
+  });
 
- function showMap(lat, lon, title, address, shift, phone) {
-    lat = lat.replaceAll(',', '.');
-    lon = lon.replaceAll(',', '.');
+  function showMap(lat, lon, title, address, shift, phone) {
+    lat = lat.replaceAll(",", ".");
+    lon = lon.replaceAll(",", ".");
 
     const coords = [parseFloat(lat), parseFloat(lon)];
 
     if (myMap) {
-        myMap.setCenter(coords, 16);
+      myMap.setCenter(coords, 16);
 
-        placemarks.forEach(p => myMap.geoObjects.remove(p));
-        placemarks = [];
+      placemarks.forEach((p) => myMap.geoObjects.remove(p));
+      placemarks = [];
 
-        const placemark = new ymaps.Placemark(coords, {
-            balloonContent: `
+      const placemark = new ymaps.Placemark(coords, {
+        balloonContent: `
                 <h3>${title}</h3>
                 <p><strong>Адрес:</strong> ${address}</p>
                 <p><strong>График работы:</strong> ${shift}</p>
                 <p><strong>Телефон:</strong> ${phone}</p>
-            `
-        });
+            `,
+      });
 
-        myMap.geoObjects.add(placemark);
-        placemarks.push(placemark);
+      myMap.geoObjects.add(placemark);
+      placemarks.push(placemark);
 
-        // 🔽 Scroll to map + offset due to fixed navbar
-        const mapElement = document.getElementById('map');
-        const navbarHeight = 80; // yoki sizning haqiqiy navbarringiz balandligi
-        const y = mapElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+      // 🔽 Scroll to map + offset due to fixed navbar
+      const mapElement = document.getElementById("map");
+      const navbarHeight = 80; // yoki sizning haqiqiy navbarringiz balandligi
+      const y =
+        mapElement.getBoundingClientRect().top +
+        window.pageYOffset -
+        navbarHeight;
 
-        window.scrollTo({ top: y, behavior: 'smooth' });
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
-}
-
-
-
+  }
 </script>
-
 
 {% endblock %}

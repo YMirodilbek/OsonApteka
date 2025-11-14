@@ -13,4 +13,3 @@ pip install rapidfuzz
 
 windowsda
 2 terminal  celery -A Admin worker --pool=solo --loglevel=info
-

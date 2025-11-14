@@ -1,331 +1,366 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>AkmalPharm - Tasdiqlash</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #4285F4;
-      --secondary: #34A853;
-      --accent: #5F6368;
-      --bg-light: #f8f9fa;
-      --shadow: 0 4px 12px rgba(0,0,0,0.1);
-      --danger: #ea4335;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 420px;
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-    }
-    
-    .login-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    
-    .login-header h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--primary);
-    }
-    
-    .login-header p {
-      color: var(--accent);
-      font-size: 0.9rem;
-    }
-    
-    .login-header .logo-img {
-      width: 150px;
-      height: auto;
-      margin-bottom: 15px;
-    }
-    
-    .form-group {
-      margin-bottom: 22px;
-      position: relative;
-    }
-    
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      color: var(--accent);
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    
-    .input-with-icon {
-      position: relative;
-    }
-    
-    .input-with-icon i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--accent);
-      opacity: 0.6;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 14px 14px 14px 45px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-      transition: all 0.3s;
-      background: var(--bg-light);
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
-    }
-    
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .submit-btn:hover {
-      background: #3367d6;
-      transform: translateY(-2px);
-    }
-    
-    .submit-btn:disabled {
-      background-color: #a5c7ff;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    .phone-number {
-      text-align: center;
-      margin: 15px 0;
-      font-size: 16px;
-      color: var(--accent);
-      background: var(--bg-light);
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: 500;
-    }
-    
-    .phone-number strong {
-      color: var(--primary);
-    }
-    
-    .countdown-container {
-      background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
-      border-radius: 12px;
-      padding: 15px;
-      margin: 20px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
-    }
-    
-    .countdown {
-      display: flex;
-      align-items: center;
-      color: var(--accent);
-      font-weight: 500;
-    }
-    
-    .countdown-timer {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--danger);
-      margin-left: 10px;
-      min-width: 40px;
-      animation: pulse 1s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    .messages {
-      list-style: none;
-      margin-bottom: 15px;
-    }
-    
-    .messages li {
-      padding: 10px;
-      margin-bottom: 8px;
-      background-color: #ffdddd;
-      border-left: 4px solid var(--danger);
-      border-radius: 4px;
-      color: #d32f2f;
-    }
-    
-    .code-input {
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      letter-spacing: 4px;
-      text-align: center;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: var(--bg-light);
-      transition: all 0.3s;
-    }
-    
-    .code-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>AkmalPharm - Tasdiqlash</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="{% static 'lang/lang.js' %}" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4285f4;
+        --secondary: #34a853;
+        --accent: #5f6368;
+        --bg-light: #f8f9fa;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --danger: #ea4335;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .container {
-        padding: 20px;
+        width: 100%;
+        max-width: 420px;
+        padding: 30px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="login-header">
-      <img src="{% static 'media/AFM MEDICAL.png' %}" alt="AFM MEDICAL Logo" class="logo-img">
-      <h1>AkmalPharm</h1>
-      <p>Tasdiqlash kodini kiriting</p>
-    </div>
-    
-    <div class="countdown-container">
-      <div class="countdown">
-        <span>Qolgan vaqt:</span>
-        <div class="countdown-timer" id="countdown">60</div>
-      </div>
-    </div>
-    
-    {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <div class="phone-number">
-      Telefon raqamga kod yuborildi: <strong>{{ phone_number }}</strong>
-    </div>
-    
-    <form id="myInput" method="post">
-      {% csrf_token %}
-      
-      <div class="form-group">
-        <label for="id_otp">Tasdiqlash kodi</label>
-        <div class="input-with-icon">
-          <i class="fas fa-lock"></i>
-          <input type="text" name="otp" id="id_otp" class="form-control" placeholder="Kodni kiriting" maxlength="6" autocomplete="off" autofocus>
-        </div>
-        {% if form.otp.errors %}
-          <div class="error-message">
-            {{ form.otp.errors }}
-          </div>
-        {% endif %}
-      </div>
-      
-      <button type="submit" class="submit-btn">Tasdiqlash</button>
-    </form>
-  </div>
 
-  <script>
-    // Timer functionality
-    const COUNTDOWN_DURATION = 60; // 60 soniya
-    const RESET_TIME = 1 * 60 * 1000; // 1 daqiqa (ms)
-
-    let timeLeft;
-    const countdownElement = document.getElementById('countdown');
-    const inputElement = document.getElementById('myInput');
-    
-    const checkTimerState = () => {
-      const lastResetTime = sessionStorage.getItem('lastResetTime');
-      const currentTime = new Date().getTime();
-
-      if (!lastResetTime || (currentTime - lastResetTime > RESET_TIME)) {
-        sessionStorage.setItem('lastResetTime', currentTime);
-        timeLeft = COUNTDOWN_DURATION;
-      } else {
-        const savedTime = sessionStorage.getItem('timerTime');
-        timeLeft = savedTime ? parseInt(savedTime) : COUNTDOWN_DURATION;
+      .login-header {
+        text-align: center;
+        margin-bottom: 25px;
       }
-    };
 
-    const startTimer = () => {
-      checkTimerState();
-      countdownElement.textContent = timeLeft;
+      .login-header h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--primary);
+      }
 
-      const timer = setInterval(() => {
-        timeLeft--;
-        countdownElement.textContent = timeLeft;
-        sessionStorage.setItem('timerTime', timeLeft);
+      .login-header p {
+        color: var(--accent);
+        font-size: 0.9rem;
+      }
 
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          countdownElement.textContent = "0";
-          countdownElement.style.color = "#d32f2f";
-          inputElement.style.display = 'none';
-          
-          // Add message when time expires
-          const container = document.querySelector('.container');
-          const expiredMsg = document.createElement('div');
-          expiredMsg.className = 'messages';
-          expiredMsg.innerHTML = '<li>Vaqt tugadi! Qaytadan urinib ko\'ring.</li>';
-          
-          // Insert the message after the countdown
-          const countdownContainer = document.querySelector('.countdown-container');
-          container.insertBefore(expiredMsg, countdownContainer.nextSibling);
+      .login-header .logo-img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 22px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .input-with-icon {
+        position: relative;
+      }
+
+      .input-with-icon i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent);
+        opacity: 0.6;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s;
+        background: var(--bg-light);
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: #3367d6;
+        transform: translateY(-2px);
+      }
+
+      .submit-btn:disabled {
+        background-color: #a5c7ff;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .phone-number {
+        text-align: center;
+        margin: 15px 0;
+        font-size: 16px;
+        color: var(--accent);
+        background: var(--bg-light);
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: 500;
+      }
+
+      .phone-number strong {
+        color: var(--primary);
+      }
+
+      .countdown-container {
+        background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+        border-radius: 12px;
+        padding: 15px;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+      }
+
+      .countdown {
+        display: flex;
+        align-items: center;
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .countdown-timer {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--danger);
+        margin-left: 10px;
+        min-width: 40px;
+        animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
         }
-      }, 1000);
-    };
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
 
-    window.onload = startTimer;
-    
-    // Format verification code input
-    const codeInput = document.getElementById('id_otp');
-    if (codeInput) {
-      codeInput.addEventListener('input', function() {
-        // Only allow digits
-        this.value = this.value.replace(/[^0-9]/g, '');
-      });
-    }
-  </script>
-</body>
+      .messages {
+        list-style: none;
+        margin-bottom: 15px;
+      }
+
+      .messages li {
+        padding: 10px;
+        margin-bottom: 8px;
+        background-color: #ffdddd;
+        border-left: 4px solid var(--danger);
+        border-radius: 4px;
+        color: #d32f2f;
+      }
+
+      .code-input {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        letter-spacing: 4px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: var(--bg-light);
+        transition: all 0.3s;
+      }
+
+      .code-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-header">
+        <img
+          src="{% static 'media/AFM MEDICAL.png' %}"
+          alt="AFM MEDICAL logotipi"
+          class="logo-img"
+          loading="lazy"
+        />
+        <h1 data-i18n="akmalpharm">AkmalPharm</h1>
+        <p data-i18n="enter_verification_code">Tasdiqlash kodini kiriting</p>
+      </div>
+
+      <div class="countdown-container">
+        <div class="countdown">
+          <span data-i18n="remaining_time">Qolgan vaqt:</span>
+          <div class="countdown-timer" id="countdown">60</div>
+        </div>
+      </div>
+
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="phone-number">
+        <span data-i18n="code_sent_to">Telefon raqamga kod yuborildi:</span>
+        <strong>{{ phone_number }}</strong>
+      </div>
+
+      <form id="myInput" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="id_otp" data-i18n="verification_code"
+            >Tasdiqlash kodi</label
+          >
+          <div class="input-with-icon">
+            <i class="fas fa-lock"></i>
+            <input
+              type="text"
+              name="otp"
+              id="id_otp"
+              class="form-control"
+              placeholder="Kodni kiriting"
+              maxlength="6"
+              autocomplete="off"
+              autofocus
+              data-i18n-placeholder="enter_code"
+            />
+          </div>
+          {% if form.otp.errors %}
+          <div class="error-message">
+            {% for error in form.otp.errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="submit-btn" data-i18n="verify">
+          Tasdiqlash
+        </button>
+      </form>
+    </div>
+
+    <script>
+      // Timer functionality
+      const COUNTDOWN_DURATION = 60; // 60 soniya
+      const RESET_TIME = 1 * 60 * 1000; // 1 daqiqa (ms)
+
+      let timeLeft;
+      const countdownElement = document.getElementById("countdown");
+      const inputElement = document.getElementById("myInput");
+
+      const checkTimerState = () => {
+        const lastResetTime = sessionStorage.getItem("lastResetTime");
+        const currentTime = new Date().getTime();
+
+        if (!lastResetTime || currentTime - lastResetTime > RESET_TIME) {
+          sessionStorage.setItem("lastResetTime", currentTime);
+          timeLeft = COUNTDOWN_DURATION;
+        } else {
+          const savedTime = sessionStorage.getItem("timerTime");
+          timeLeft = savedTime ? parseInt(savedTime) : COUNTDOWN_DURATION;
+        }
+      };
+
+      const startTimer = () => {
+        checkTimerState();
+        countdownElement.textContent = timeLeft;
+
+        const timer = setInterval(() => {
+          timeLeft--;
+          countdownElement.textContent = timeLeft;
+          sessionStorage.setItem("timerTime", timeLeft);
+
+          if (timeLeft <= 0) {
+            clearInterval(timer);
+            countdownElement.textContent = "0";
+            countdownElement.style.color = "#d32f2f";
+            inputElement.style.display = "none";
+
+            // Add message when time expires
+            const container = document.querySelector(".container");
+            const expiredMsg = document.createElement("div");
+            expiredMsg.className = "messages";
+            expiredMsg.innerHTML =
+              "<li>Vaqt tugadi! Qaytadan urinib ko'ring.</li>";
+
+            // Insert the message after the countdown
+            const countdownContainer = document.querySelector(
+              ".countdown-container"
+            );
+            container.insertBefore(expiredMsg, countdownContainer.nextSibling);
+          }
+        }, 1000);
+      };
+
+      window.onload = startTimer;
+
+      // Format verification code input
+      const codeInput = document.getElementById("id_otp");
+      if (codeInput) {
+        codeInput.addEventListener("input", function () {
+          // Only allow digits
+          this.value = this.value.replace(/[^0-9]/g, "");
+        });
+      }
+    </script>
+  </body>
 </html>

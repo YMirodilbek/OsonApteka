@@ -1,369 +1,393 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <style>
-    /* Product Details Styling */
+  /* Product Details Styling */
+  .product-details {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Product Gallery */
+  .gallery-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+  }
+
+  .product-gallery {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .product-gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Product Information */
+  .product-info {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px 0;
+  }
+
+  .product-info h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+  }
+
+  .product-info p {
+    margin: 8px 0;
+    color: #666;
+    font-size: 16px;
+  }
+
+  .product-info .category,
+  .product-info .country,
+  .product-info .composition,
+  .product-info .expiry,
+  .product-info .manufacturer,
+  .product-info .class {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  .prescription-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    margin: 10px 0;
+  }
+
+  .prescription-yes {
+    background-color: #e50e3d;
+  }
+
+  .prescription-no {
+    background-color: #00c853;
+  }
+
+  /* Price Select Styling */
+  .price-select {
+    margin: 20px 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .price-select select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    padding-right: 30px;
+  }
+
+  /* Add to Cart Button */
+  .add-to-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s;
+  }
+
+  .add-to-cart:hover {
+    opacity: 0.9;
+  }
+
+  /* Product Details */
+  .dosage-info {
+    width: 100%;
+    font-size: 14px;
+    color: #666;
+    margin-top: 30px;
+    line-height: 1.5;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+  }
+
+  /* Reviews Section */
+  .m2 {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 30px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Shop Card */
+  .shop-card {
+    background: #f5f5f5;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .shop-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .bg--color {
+    background-color: #003366;
+    color: white;
+  }
+
+  .dropdown-item {
+    color: white !important;
+  }
+
+  .shop-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    object-fit: contain;
+  }
+
+  .shop-name {
+    font-size: 18px;
+    margin: 0;
+    color: #e63946;
+  }
+
+  .rating {
+    color: #333;
+    font-size: 14px;
+    margin: 5px 0 0;
+  }
+
+  .reviews {
+    color: #2971f5;
+    font-size: 12px;
+  }
+
+  .shop-button {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    color: #333;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .shop-button:hover {
+    background: #eee;
+    border-color: #ccc;
+  }
+
+  /* Messages */
+  .messages {
+    margin: 20px auto;
+    max-width: 600px;
+  }
+
+  .message {
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    position: relative;
+    color: white;
+    font-weight: bold;
+  }
+
+  .message.success {
+    background-color: #28a745;
+  }
+
+  .message.error {
+    background-color: #dc3545;
+  }
+
+  .message.warning {
+    background-color: #ffc107;
+    color: #000;
+  }
+
+  .message.info {
+    background-color: #17a2b8;
+  }
+
+  .message .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
     .product-details {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 30px;
-        max-width: 1200px;
-        margin: 0 auto;
-        gap: 30px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      flex-direction: column;
     }
 
-    /* Product Gallery */
     .gallery-container {
-        flex: 1;
-        min-width: 300px;
-        max-width: 500px;
+      max-width: 100%;
     }
 
     .product-gallery {
-        width: 100%;
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        box-sizing: border-box;
+      width: 100%;
+      height: auto;
     }
-
-    .product-gallery img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        display: block;
-    }
-
-    /* Product Information */
-    .product-info {
-        flex: 1;
-        min-width: 300px;
-        padding: 20px 0;
-    }
-
-    .product-info h1 {
-        font-size: 28px;
-        margin-bottom: 20px;
-        color: #333;
-        font-weight: 600;
-    }
-
-    .product-info p {
-        margin: 8px 0;
-        color: #666;
-        font-size: 16px;
-    }
-
-    .product-info .category,
-    .product-info .country,
-    .product-info .composition,
-    .product-info .expiry,
-    .product-info .manufacturer,
-    .product-info .class {
-        color: #666;
-        font-size: 15px;
-        margin-bottom: 5px;
-    }
-    
-    .prescription-badge {
-        display: inline-block;
-        padding: 6px 12px;
-        border-radius: 4px;
-        color: white;
-        font-weight: 500;
-        margin: 10px 0;
-    }
-    
-    .prescription-yes {
-        background-color: #e50e3d;
-    }
-    
-    .prescription-no {
-        background-color: #00c853;
-    }
-
-    /* Price Select Styling */
-    .price-select {
-        margin: 20px 0;
-        position: relative;
-        width: 100%;
-    }
-
-    .price-select select {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
-        color: #333;
-        background-color: #fff;
-        appearance: none;
-        cursor: pointer;
-        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        background-size: 10px;
-        padding-right: 30px;
-    }
-
-    /* Add to Cart Button */
-    .add-to-cart {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 14px 20px;
-        background-color: #003366;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        width: 100%;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: background-color 0.2s;
-    }
-
-    .add-to-cart:hover {
-        opacity: 0.9;
-    }
-
-    /* Product Details */
-    .dosage-info {
-        width: 100%;
-        font-size: 14px;
-        color: #666;
-        margin-top: 30px;
-        line-height: 1.5;
-        padding: 20px 0;
-        border-top: 1px solid #eee;
-    }
-
-    /* Reviews Section */
-    .m2 {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        align-items: flex-start;
-        padding: 20px 30px;
-        flex-wrap: wrap;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* Shop Card */
-    .shop-card {
-        background: #f5f5f5;
-        width: 300px;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    .shop-header {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 15px;
-    }
-
-    .bg--color { 
-        background-color: #003366; 
-        color: white;
-    }
-    
-    .dropdown-item {
-        color: white !important;
-    }
-    
-    .shop-logo {
-        width: 50px;
-        height: 50px;
-        border-radius: 5px;
-        object-fit: contain;
-    }
-
-    .shop-name {
-        font-size: 18px;
-        margin: 0;
-        color: #e63946;
-    }
-
-    .rating {
-        color: #333;
-        font-size: 14px;
-        margin: 5px 0 0;
-    }
-
-    .reviews {
-        color: #2971f5;
-        font-size: 12px;
-    }
-
-    .shop-button {
-        background: white;
-        border: 1px solid #ddd;
-        padding: 10px 15px;
-        color: #333;
-        width: 100%;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.2s;
-    }
-
-    .shop-button:hover {
-        background: #eee;
-        border-color: #ccc;
-    }
-
-    /* Messages */
-    .messages {
-        margin: 20px auto;
-        max-width: 600px;
-    }
-
-    .message {
-        padding: 15px 20px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        position: relative;
-        color: white;
-        font-weight: bold;
-    }
-
-    .message.success {
-        background-color: #28a745;
-    }
-
-    .message.error {
-        background-color: #dc3545;
-    }
-
-    .message.warning {
-        background-color: #ffc107;
-        color: #000;
-    }
-
-    .message.info {
-        background-color: #17a2b8;
-    }
-
-    .message .close {
-        position: absolute;
-        right: 15px;
-        top: 10px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .product-details {
-            flex-direction: column;
-        }
-        
-        .gallery-container {
-            max-width: 100%;
-        }
-        
-        .product-gallery {
-            width: 100%;
-            height: auto;
-        }
-    }
+  }
 </style>
 
 {% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-      <div class="message {{ message.tags }}">
-        {{ message }}
-        <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
-      </div>
-    {% endfor %}
+<div class="messages">
+  {% for message in messages %}
+  <div class="message {{ message.tags }}">
+    {{ message }}
+    <span class="close" onclick="this.parentElement.style.display='none';"
+      >&times;</span
+    >
   </div>
+  {% endfor %}
+</div>
 {% endif %}
 
 <!-- Product Details Section -->
 <div class="product-details">
-    <div class="gallery-container">
-        <div class="product-gallery">
-            <img id="main-image" src="{{product.image1.url}}" alt="{{ product.name }}">
-           
-        </div>
-        <p style="text-align: center; font-size: 12px; color: #777; margin-top: 5px;">Внешний вид товара может отличаться от фотографии</p>
+  <div class="gallery-container">
+    <div class="product-gallery">
+      <img
+        id="main-image"
+        src="{{ product.image1.url }}"
+        alt="{{ product.name }}"
+      />
     </div>
-    
-    <div class="product-info">
-        <h1>{{ product.name }}</h1>
-        <p class="category">{{ product.category.name }}</p>
-        
-        
-        {% if product.product_type == "Рецепт билан" %}
-        <div class="prescription-badge prescription-yes">
-           Рецептурный
-        </div>
-        {% else %}
-        <div class="prescription-badge prescription-no">
-           Без рецепта
-        </div>
-        {% endif %}
-         
-        <form method="GET" action="/product/add/{{ product.id }}/">
-            <div class="price-select">
-                <select name="price">
-                    {% for i in prices %}
-                        <option value="{{i.price}}">{{i.price}} sum</option>
-                    {% empty %}
-                        <option value="0">Не доступно</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <button type="submit" class="add-to-cart">ДОБАВИТЬ В КОРЗИНУ</button>
-        </form>
-    </div>
+    <p
+      style="text-align: center; font-size: 12px; color: #777; margin-top: 5px"
+      data-i18n="image_disclaimer"
+    >
+      Mahsulotning tashqi ko‘rinishi fotosuratdan farq qilishi mumkin
+    </p>
+  </div>
 
-    <div class="dosage-info">
-        {{ product.name }} <br> {{product.info|safe }}
+  <div class="product-info">
+    <h1>{{ product.name }}</h1>
+    <p class="category">{{ product.category.name }}</p>
+
+    {% if product.product_type == "Рецепт билан" %}
+    <div
+      class="prescription-badge prescription-yes"
+      data-i18n="prescription_required"
+    >
+      Retsept talab qilinadi
     </div>
+    {% else %}
+    <div class="prescription-badge prescription-no" data-i18n="no_prescription">
+      Retseptsiz
+    </div>
+    {% endif %}
+
+    <form method="GET" action="{% url 'add_to_cart' product.id %}">
+      <div class="price-select">
+        <select name="price">
+          {% for i in prices %}
+          <option value="{{ i.price }}">
+            {{ i.price }} <span data-i18n="currency">so‘m</span>
+          </option>
+          {% empty %}
+          <option value="0" data-i18n="not_available">Mavjud emas</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="add-to-cart" data-i18n="add_to_cart">
+        SAVATGA QO‘SHISH
+      </button>
+    </form>
+  </div>
+
+  <div class="dosage-info">
+    {{ product.name }} <br />
+    {{ product.info|safe }}
+  </div>
 </div>
 
 <div class="m2">
-    <div class="shop-card">
-        <div class="shop-header">
-            <img src="{% static 'assets/img2/AFM MEDICAL — копия.png'%}" alt="Akmal Farm Medical Logo" class="shop-logo">
-            <div>
-                <h2 class="shop-name">Akmal Farm Medical</h2>
-                <p class="rating">
-                    ⭐️ <strong>4.8</strong> <span class="reviews">(14598 оценок)</span>
-                </p>
-            </div>
-        </div>
-        <a href="/"><button class="shop-button">Перейти в магазин</button></a>
+  <div class="shop-card">
+    <div class="shop-header">
+      <img
+        src="{% static 'assets/img2/AFM MEDICAL — копия.png' %}"
+        alt="Akmal Farm Medical Logo"
+        class="shop-logo"
+      />
+      <div>
+        <h2 class="shop-name" data-i18n="shop_name">Akmal Farm Medical</h2>
+        <p class="rating">
+          <strong>4.8</strong>
+          <span class="reviews" data-i18n="reviews_count">(14598 baho)</span>
+        </p>
+      </div>
     </div>
+    <a href="{% url 'home' %}"
+      ><button class="shop-button" data-i18n="go_to_shop">
+        Do‘konga o‘tish
+      </button></a
+    >
+  </div>
 </div>
 
 <script>
-function changeImage(src) {
-    const mainImage = document.getElementById('main-image');
-    mainImage.style.opacity = '0';
+  function changeImage(src) {
+    const mainImage = document.getElementById("main-image");
+    mainImage.style.opacity = "0";
     setTimeout(() => {
-        mainImage.src = src;
-        mainImage.style.opacity = '1';
+      mainImage.src = src;
+      mainImage.style.opacity = "1";
     }, 300);
-}
+  }
 </script>
+<script src="{% static 'lang/lang.js' %}" defer></script>
 
 {% endblock %}
-

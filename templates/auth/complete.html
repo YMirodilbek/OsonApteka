@@ -1,199 +1,217 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>AkmalPharm - Profilni to'ldirish</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #4285F4;
-      --secondary: #34A853;
-      --accent: #5F6368;
-      --bg-light: #f8f9fa;
-      --shadow: 0 4px 12px rgba(0,0,0,0.1);
-      --danger: #ea4335;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 420px;
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-    }
-    
-    .login-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    
-    .login-header h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--primary);
-    }
-    
-    .login-header p {
-      color: var(--accent);
-      font-size: 0.9rem;
-    }
-    
-    .login-header .logo-img {
-      width: 150px;
-      height: auto;
-      margin-bottom: 15px;
-    }
-    
-    .form-group {
-      margin-bottom: 22px;
-      position: relative;
-    }
-    
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      color: var(--accent);
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    
-    .input-with-icon {
-      position: relative;
-    }
-    
-    .input-with-icon i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--accent);
-      opacity: 0.6;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 14px 14px 14px 45px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-      transition: all 0.3s;
-      background: var(--bg-light);
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
-    }
-    
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .submit-btn:hover {
-      background: #3367d6;
-      transform: translateY(-2px);
-    }
-    
-    .submit-btn:disabled {
-      background-color: #a5c7ff;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    /* Success message */
-    .success-message {
-      text-align: center;
-      margin: 20px 0;
-      padding: 15px;
-      background-color: rgba(52, 168, 83, 0.1);
-      border-left: 4px solid var(--secondary);
-      border-radius: 4px;
-      color: var(--secondary);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
-      .container {
-        padding: 20px;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>AkmalPharm - Profilni to'ldirish</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="{% static 'lang/lang.js' %}" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4285f4;
+        --secondary: #34a853;
+        --accent: #5f6368;
+        --bg-light: #f8f9fa;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --danger: #ea4335;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="login-header">
-      <img src="{% static 'media/AFM MEDICAL.png' %}" alt="AFM MEDICAL Logo" class="logo-img">
-      <h1>AkmalPharm</h1>
-      <p>Profilni to'ldirish</p>
-    </div>
-    
-    <form method="post">
-      {% csrf_token %}
-      
-      <div class="form-group">
-        <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
-        <div class="input-with-icon">
-          <i class="fas fa-user"></i>
-          {{ form.first_name }}
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
-        <div class="input-with-icon">
-          <i class="fas fa-user-tag"></i>
-          {{ form.last_name }}
-        </div>
-      </div>
-      
-      <button type="submit" class="submit-btn">Saqlash</button>
-    </form>
-  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add form-control class to all input fields
-      const inputs = document.querySelectorAll('input[type="text"]');
-      inputs.forEach(input => {
-        input.classList.add('form-control');
-      });
-      
-      // Set focus on first input
-      if (inputs.length > 0) {
-        inputs[0].focus();
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
-    });
-  </script>
-</body>
+
+      body {
+        background: linear-gradient(135deg, #f0f7ff, #e6f1ff);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 420px;
+        padding: 30px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .login-header h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--primary);
+      }
+
+      .login-header p {
+        color: var(--accent);
+        font-size: 0.9rem;
+      }
+
+      .login-header .logo-img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 22px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .input-with-icon {
+        position: relative;
+      }
+
+      .input-with-icon i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent);
+        opacity: 0.6;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s;
+        background: var(--bg-light);
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: #3367d6;
+        transform: translateY(-2px);
+      }
+
+      .submit-btn:disabled {
+        background-color: #a5c7ff;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Success message */
+      .success-message {
+        text-align: center;
+        margin: 20px 0;
+        padding: 15px;
+        background-color: rgba(52, 168, 83, 0.1);
+        border-left: 4px solid var(--secondary);
+        border-radius: 4px;
+        color: var(--secondary);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-header">
+        <img
+          src="{% static 'media/AFM MEDICAL.png' %}"
+          alt="AFM MEDICAL logotipi"
+          class="logo-img"
+          loading="lazy"
+        />
+        <h1 data-i18n="akmalpharm">AkmalPharm</h1>
+        <p data-i18n="fill_profile">Profilni to‘ldirish</p>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label
+            for="{{ form.first_name.id_for_label }}"
+            data-i18n="first_name"
+          >
+            {{ form.first_name.label }}
+          </label>
+          <div class="input-with-icon">
+            <i class="fas fa-user"></i>
+            {{ form.first_name }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.last_name.id_for_label }}" data-i18n="last_name">
+            {{ form.last_name.label }}
+          </label>
+          <div class="input-with-icon">
+            <i class="fas fa-user-tag"></i>
+            {{ form.last_name }}
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" data-i18n="save">
+          Saqlash
+        </button>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add form-control class to all input fields
+        const inputs = document.querySelectorAll('input[type="text"]');
+        inputs.forEach((input) => {
+          input.classList.add("form-control");
+        });
+
+        // Set focus on first input
+        if (inputs.length > 0) {
+          inputs[0].focus();
+        }
+      });
+    </script>
+  </body>
 </html>

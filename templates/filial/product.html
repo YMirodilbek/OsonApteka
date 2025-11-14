@@ -50,9 +50,9 @@
                         </a>
                                          
                     </td>
-                        <td><a href="/filial/product-edit/{{ i.id }}" class="btn btn-success">Edit</a></td>
+                        <td><a href="/filial/product-edit/{{ i.id }}" class="btn btn-success" data-i18n="editProducts">Mahsulotni tahrirlash</a></td>
                         <td>
-                        <button class="btn btn-danger delete-btn" data-id="{{i.id }}">Delete</button>
+                        <button class="btn btn-danger delete-btn" data-id="{{i.id }}" data-i18n="remove">Mahsulotni O'chirish</button>
                         </td>
 
                     </tr>
@@ -76,7 +76,7 @@
 
                                     </select>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success"  onclick="submitMemberForm({{ i.id }})">Saqlash</button>
+                                        <button type="submit" class="btn btn-success"  onclick="submitMemberForm({{ i.id }})" data-i18n="save">Saqlash</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
                                     </div>
                                 </form>
@@ -105,8 +105,8 @@
                                         {% endfor %}
                                     </select>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success"  onclick="submitPersonForm({{ i.id }})">Saqlash</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                                        <button type="submit" class="btn btn-success"  onclick="submitPersonForm({{ i.id }})" data-i18n="save">Saqlash</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="close">Yopish</button>
                                     </div>
                                 </form>
 
@@ -178,6 +178,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
 
 function submitPersonForm(productId) {
@@ -369,5 +371,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
+<script src="{% static 'lang/lang.js' %}" defer></script>
 {% endblock content %}

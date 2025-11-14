@@ -808,19 +808,19 @@
 
 <div class="profile-container">
     <div class="profile-header card-shadow">
-        <h1>Мой профиль</h1>
+        <h1 data-i18n="my_profile">Mening profilim</h1>
         <div class="profile-info">
             <div class="profile-details">
-                <a href="{% url 'logout_url' %}"><h3 style="color: red;">logout</h3></a>
+                <a href="{% url 'logout_url' %}"><h3 style="color: red;" data-i18n="logout">chiqish</h3></a>
                 <p>{{ request.user.email }}</p>
             </div>
         </div>
     </div>
     
     <div class="profile-tabs card-shadow">
-        <button class="profile-tab active" data-tab="orders">Мои заказы</button>
-        <button class="profile-tab" data-tab="wishlist">Избранное</button>
-        <button class="profile-tab" data-tab="settings">Настройки</button>
+        <button class="profile-tab active" data-tab="orders" data-i18n="my_orders">Mening buyurtmalarim</button>
+        <button class="profile-tab" data-tab="wishlist" data-i18n="wishlist">Tanlanganlar</button>
+        <button class="profile-tab" data-tab="settings" data-i18n="settings">Sozlamalar</button>
     </div>
     
     <div id="orders" class="tab-content active">
@@ -829,51 +829,51 @@
             {% for order in orders %}
             <div class="order-item">
                 <div class="order-header">
-                    <div class="order-id">Заказ #{{ order.id }}</div>
+                    <div class="order-id" data-i18n="order_id_label">Buyurtma #{{ order.id }}</div>
                     <div class="order-date">{{ order.created_at|date:"d.m.Y H:i" }}</div>
                     <div class="order-status {{ order.status_color }}">{{ order.status }}</div>
                 </div>
                 <div class="order-info">
                     <div class="order-info-column">
-                        <span class="order-label">Способ оплаты</span>
+                        <span class="order-label" data-i18n="payment_method">To‘lov usuli</span>
                         <span class="order-value">
                             {% if order.payment_method == 'cash' %}
-                                <i class="fas fa-money-bill-wave"></i> Наличные
+                                <i class="fas fa-money-bill-wave"></i> <span data-i18n="cash">Naqd</span>
                             {% elif order.payment_method == 'card' %}
-                                <i class="fas fa-credit-card"></i> Карта
+                                <i class="fas fa-credit-card"></i> <span data-i18n="card">Karta</span>
                             {% else %}
-                                <i class="fas fa-mobile-alt"></i> Click
+                                <i class="fas fa-mobile-alt"></i> <span data-i18n="click">Click</span>
                             {% endif %}
                         </span>
                     </div>
                     <div class="order-info-column">
-                        <span class="order-label">Статус оплаты</span>
+                        <span class="order-label" data-i18n="payment_status">To‘lov holati</span>
                         <span class="order-value">
                             {% if order.is_paid %}
-                                <i class="fas fa-check-circle" style="color: #4CAF50;"></i> Оплачен
+                                <i class="fas fa-check-circle" style="color: #4CAF50;"></i> <span data-i18n="paid">To‘langan</span>
                             {% else %}
-                                <i class="fas fa-clock" style="color: #FFC107;"></i> Ожидает оплаты
+                                <i class="fas fa-clock" style="color: #FFC107;"></i> <span data-i18n="pending_payment">To‘lov kutilmoqda</span>
                             {% endif %}
                         </span>
                     </div>
                     <div class="order-info-column">
-                        <span class="order-label">Сумма</span>
-                        <span class="order-value">{{ order.total_price }} сум</span>
+                        <span class="order-label" data-i18n="amount">Summa</span>
+                        <span class="order-value">{{ order.total_price }} <span data-i18n="currency">so‘m</span></span>
                     </div>
                     <div class="order-info-column">
-                        <span class="order-label">Филиал</span>
+                        <span class="order-label" data-i18n="branch">Filial</span>
                         <span class="order-value">
                             <i class="fas fa-store"></i> 
-                            {{ order.filial.name|default:"Доставка" }}
+                            {{ order.filial.name|default:"Yetkazib berish" }}
                         </span>
                     </div>
                 </div>
                 <div class="order-actions">
                     <button class="order-button primary view-details" data-order-id="{{ order.id }}">
-                        <i class="fas fa-eye"></i> Детали заказа
+                        <i class="fas fa-eye"></i> <span data-i18n="order_details">Buyurtma tafsilotlari</span>
                     </button>
                     <button class="order-button">
-                        <i class="fas fa-headset"></i> Поддержка
+                        <i class="fas fa-headset"></i> <span data-i18n="support">Qo‘llab-quvvatlash</span>
                     </button>
                 </div>
             </div>
@@ -884,9 +884,9 @@
             <div class="empty-state-icon">
                 <i class="fas fa-shopping-bag"></i>
             </div>
-            <h3 class="empty-state-title">У вас пока нет заказов</h3>
-            <p class="empty-state-message">Начните покупки прямо сейчас!</p>
-            <a href="/" class="empty-state-button">Перейти к каталогу</a>
+            <h3 class="empty-state-title" data-i18n="no_orders">Sizda hozircha buyurtma yo‘q</h3>
+            <p class="empty-state-message" data-i18n="start_shopping">Xarid qilishni boshlang!</p>
+            <a href="{% url 'catalog' %}" class="empty-state-button" data-i18n="go_to_catalog">Katalogga o‘tish</a>
         </div>
         {% endif %}
     </div>
@@ -910,14 +910,14 @@
                     </div>
                     <div class="product-item-card__actions">
                         <button class="add-to-cart" data-id="{{ wishlist_item.product.id }}">
-                            <span>Добавить в корзину</span>
+                            <span data-i18n="add_to_cart">Savatga qo‘shish</span>
                             <i class="fas fa-shopping-cart"></i>
                         </button>
                         <div class="product-item-card__buttons">
-                            <a href="{% url 'product_detail' wishlist_item.product.id %}" class="product-item-card__button about" title="Просмотреть детали">
+                            <a href="{% url 'product_detail' wishlist_item.product.id %}" class="product-item-card__button about" title="Tafsilotlarni ko‘rish">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <button class="product-item-card__button wishlist active" data-id="{{ wishlist_item.product.id }}" title="Удалить из избранного">
+                            <button class="product-item-card__button wishlist active" data-id="{{ wishlist_item.product.id }}" title="Tanlanganlardan olib tashlash">
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
@@ -931,9 +931,9 @@
             <div class="empty-state-icon">
                 <i class="fas fa-heart"></i>
             </div>
-            <h3 class="empty-state-title">Ваш список избранного пуст</h3>
-            <p class="empty-state-message">Добавьте товары, которые вам нравятся!</p>
-            <a href="/" class="empty-state-button">Перейти к каталогу</a>
+            <h3 class="empty-state-title" data-i18n="wishlist_empty">Tanlanganlar ro‘yxati bo‘sh</h3>
+            <p class="empty-state-message" data-i18n="add_to_wishlist">Yoqqan mahsulotlarni qo‘shing!</p>
+            <a href="{% url 'catalog' %}" class="empty-state-button" data-i18n="go_to_catalog">Katalogga o‘tish</a>
         </div>
         {% endif %}
     </div>
@@ -943,8 +943,8 @@
             <div class="empty-state-icon">
                 <i class="fas fa-cog"></i>
             </div>
-            <h3 class="empty-state-title">Настройки профиля</h3>
-            <p class="empty-state-message">Функционал настроек будет доступен в ближайшем обновлении.</p>
+            <h3 class="empty-state-title" data-i18n="profile_settings">Profil sozlamalari</h3>
+            <p class="empty-state-message" data-i18n="settings_coming_soon">Sozlamalar funksiyasi yaqin orada ishga tushadi.</p>
         </div>
     </div>
 </div>
@@ -953,39 +953,39 @@
 <div id="orderDetailsModal" class="modal-backdrop" aria-hidden="true" role="dialog">
     <div class="modal-container" role="document">
         <div class="modal-header">
-            <h3>Детали заказа #<span id="modalOrderId"></span></h3>
-            <button class="modal-close" aria-label="Закрыть">&times;</button>
+            <h3 data-i18n="order_details_modal_title">Buyurtma tafsilotlari #<span id="modalOrderId"></span></h3>
+            <button class="modal-close" aria-label="Yopish">&times;</button>
         </div>
         <div class="modal-body">
             <div class="order-info">
                 <div class="order-info-column">
-                    <span class="order-label">Дата заказа</span>
+                    <span class="order-label" data-i18n="order_date">Buyurtma sanasi</span>
                     <span class="order-value" id="modalDate"></span>
                 </div>
                 <div class="order-info-column">
-                    <span class="order-label">Статус</span>
+                    <span class="order-label" data-i18n="status">Holati</span>
                     <span class="order-value" id="modalStatus"></span>
                 </div>
                 <div class="order-info-column">
-                    <span class="order-label">Способ оплаты</span>
+                    <span class="order-label" data-i18n="payment_method">To‘lov usuli</span>
                     <span class="order-value" id="modalPaymentMethod"></span>
                 </div>
                 <div class="order-info-column">
-                    <span class="order-label">Статус оплаты</span>
+                    <span class="order-label" data-i18n="payment_status">To‘lov holati</span>
                     <span class="order-value" id="modalPaymentStatus"></span>
                 </div>
             </div>
             
-            <h4 style="margin-top: 30px;">Товары в заказе</h4>
+            <h4 style="margin-top: 30px;" data-i18n="items_in_order">Buyurtmadagi mahsulotlar</h4>
             <div class="order-items-list" id="orderItemsList">
                 <!-- Order items will be loaded here -->
             </div>
             
             <div class="order-total" style="text-align: right; margin-top: 20px; font-size: 18px; font-weight: 600;">
-                Итого: <span id="modalOrderTotal">0</span> сум
+                <span data-i18n="total">Jami:</span> <span id="modalOrderTotal">0</span> <span data-i18n="currency">so‘m</span>
             </div>
             
-            <h4 style="margin-top: 30px;">Статус заказа</h4>
+            <h4 style="margin-top: 30px;" data-i18n="order_status">Buyurtma holati</h4>
             <div class="order-timeline">
                 <div class="timeline-line"></div>
                 <div class="timeline-step">
@@ -993,7 +993,7 @@
                         <i class="fas fa-check"></i>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-title">Заказ создан</div>
+                        <div class="timeline-title" data-i18n="order_created">Buyurtma yaratildi</div>
                         <div class="timeline-date" id="createdDate"></div>
                     </div>
                 </div>
@@ -1002,8 +1002,8 @@
                         <i class="fas fa-check"></i>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-title">Заказ подтвержден</div>
-                        <div class="timeline-date">В обработке</div>
+                        <div class="timeline-title" data-i18n="order_confirmed">Buyurtma tasdiqlandi</div>
+                        <div class="timeline-date" data-i18n="in_processing">Ish jarayonida</div>
                     </div>
                 </div>
                 <div class="timeline-step">
@@ -1011,14 +1011,14 @@
                         <i class="fas fa-check"></i>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-title">Заказ доставлен</div>
-                        <div class="timeline-date">Ожидается</div>
+                        <div class="timeline-title" data-i18n="order_delivered">Buyurtma yetkazib berildi</div>
+                        <div class="timeline-date" data-i18n="awaiting">Kutilmoqda</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button class="order-button" id="modalClose">Закрыть</button>
+            <button class="order-button" id="modalClose" data-i18n="close">Yopish</button>
         </div>
     </div>
 </div>
@@ -1027,13 +1027,13 @@
 <div id="productDetailModal" class="modal-backdrop" aria-hidden="true" role="dialog">
     <div class="modal-container" role="document">
         <div class="modal-header">
-            <h3>Информация о товаре</h3>
-            <button class="modal-close" aria-label="Закрыть">&times;</button>
+            <h3 data-i18n="product_info">Mahsulot haqida ma’lumot</h3>
+            <button class="modal-close" aria-label="Yopish">&times;</button>
         </div>
         <div class="modal-body">
             <div class="product-detail-content">
                 <div class="product-detail-image">
-                    <img id="modalProductImage" src="" alt="Товар" loading="lazy">
+                    <img id="modalProductImage" src="" alt="Mahsulot" loading="lazy">
                 </div>
                 <div class="product-detail-info">
                     <h3 id="modalProductName"></h3>
@@ -1044,19 +1044,20 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="order-button" id="modalProductClose">Закрыть</button>
+            <button class="order-button" id="modalProductClose" data-i18n="close">Yopish</button>
             <button class="order-button primary" id="modalAddToCart">
-                <i class="fas fa-shopping-cart"></i> Добавить в корзину
+                <i class="fas fa-shopping-cart"></i> <span data-i18n="add_to_cart">Savatga qo‘shish</span>
             </button>
         </div>
     </div>
 </div>
-
 <!-- Add a hidden form for traditional submissions -->
 <form id="wishlistForm" method="POST" action="" style="display:none;">
     <input type="hidden" name="csrfmiddlewaretoken" value="">
 </form>
 
+
+<script src="{% static 'lang/lang.js' %}" defer></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Cache DOM elements
@@ -1711,6 +1712,5 @@
         }
     });
 </script>
-
 
 {% endblock %}
