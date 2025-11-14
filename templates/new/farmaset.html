@@ -151,7 +151,7 @@
       <h3>{{ i.title }}</h3>
       <p><strong data-i18n="address">Manzil:</strong> {{ i.address }}</p>
       <p><strong data-i18n="working_hours">Ish vaqti:</strong> {{ i.shift }}</p>
-      <p><strong data-i18n="phone">Telefon:</strong> {{ i.phone_number }}</p>
+      <p><strong >Telefon:</strong> {{ i.phone_number }}</p>
       <a
         class="button"
         onclick="showMap('{{ i.lat }}','{{ i.lon }}','{{ i.title|escapejs }}','{{ i.address|escapejs }}','{{ i.shift|escapejs }}','{{ i.phone_number|escapejs }}')"
