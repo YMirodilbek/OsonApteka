@@ -1,6 +1,5 @@
-{% extends 'base_filial.html' %} {% block title %}Filial bosh sahifa{% endblock
-%} {% block content %}
-
+{% extends 'base_filial.html' %} {% block title %}Filial bosh sahifa{% endblock %} {% block content %}
+{% load static %}
 <div class="col-md-12 col-xl-10 mx-auto">
   <h5 class="mb-3" data-i18n="branches">Filiallar</h5>
   <div class="card tbl-card">
@@ -23,8 +22,7 @@
                 <a href="/filial/order/?filial-id={{i.id}}">{{i.name}} </a>
               </td>
               <td>
-                {% for user in i.users.all %} {{ user.phone_number }}{% if not
-                forloop.last %}, {% endif %} {% endfor %}
+                {% for user in i.users.all %} {{ user.phone_number }}{% if not forloop.last %}, {% endif %} {% endfor %}
               </td>
               <td>{{i.address}}</td>
             </tr>

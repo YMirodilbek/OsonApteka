@@ -1201,52 +1201,59 @@
     </div>
     {% endfor %}
   </div>
-  {% endfor %} {% if paginator.paginator.num_pages > 1 %}
+  {% endfor %} 
+  {% if paginator.paginator.num_pages > 1 %}
   <div class="product-pagination">
     <div class="product-pagination__controls">
+
       {% if paginator.has_previous %}
-      <a
-        href="?page={{ paginator.previous_page_number }}"
-        class="product-pagination__control prev"
-      >
+      <a href="?page={{ paginator.previous_page_number }}" class="product-pagination__control prev">
         <i class="fas fa-chevron-left"></i>
       </a>
       {% endif %}
 
       <div class="product-pagination__pages">
         {% with current=paginator.number total=paginator.paginator.num_pages %}
+
         {% if current > 3 %}
-        <a href="?page=1" class="product-pagination__page">1</a>
-        {% if current > 4 %}
-        <span class="product-pagination__ellipsis">...</span>
-        {% endif %} {% endif %} {% for p in paginator.paginator.page_range %} {%
-        if p >= current|add:-2 and p <= current|add:2 %} {% if p == current %}
-        <a href="?page={{ p }}" class="product-pagination__page active"
-          >{{ p }}</a
-        >
-        {% else %}
-        <a href="?page={{ p }}" class="product-pagination__page">{{ p }}</a>
-        {% endif %} {% endif %} {% endfor %} {% if current < total|add:-2 %} {%
-        if current < total|add:-3 %}
-        <span class="product-pagination__ellipsis">...</span>
+          <a href="?page=1" class="product-pagination__page">1</a>
+          {% if current > 4 %}
+            <span class="product-pagination__ellipsis">...</span>
+          {% endif %}
         {% endif %}
-        <a href="?page={{ total }}" class="product-pagination__page"
-          >{{ total }}</a
-        >
-        {% endif %} {% endwith %}
+
+        {% for p in paginator.paginator.page_range %}
+          {% if p >= current|add:"-2" and p <= current|add:"2" %}
+
+            {% if p == current %}
+            <a href="?page={{ p }}" class="product-pagination__page active">{{ p }}</a>
+            {% else %}
+            <a href="?page={{ p }}" class="product-pagination__page">{{ p }}</a>
+            {% endif %}
+
+          {% endif %}
+        {% endfor %}
+
+        {% if current < total|add:"-2" %}
+          {% if current < total|add:"-3" %}
+            <span class="product-pagination__ellipsis">...</span>
+          {% endif %}
+          <a href="?page={{ total }}" class="product-pagination__page">{{ total }}</a>
+        {% endif %}
+
+        {% endwith %}
       </div>
 
       {% if paginator.has_next %}
-      <a
-        href="?page={{ paginator.next_page_number }}"
-        class="product-pagination__control next"
-      >
+      <a href="?page={{ paginator.next_page_number }}" class="product-pagination__control next">
         <i class="fas fa-chevron-right"></i>
       </a>
       {% endif %}
+
     </div>
   </div>
-  {% endif %}
+{% endif %}
+
 
   <hr />
   <h3 class="product-list__title" data-i18n="our_partners">

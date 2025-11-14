@@ -76,7 +76,7 @@
     </style>
   </head>
   <body>
-    <form action="{% url 'dastafca' %}" method="post">
+    <form action="/dastafca/" method="post">
       {% csrf_token %}
       <div
         class="modal fade"
@@ -149,7 +149,7 @@
           <ul class="navbar-nav">
             <li class="nav-item">
               <div class="card">
-                <a href="{% url 'home' %}" class="logo">
+                <a href="/" class="logo">
                   <img
                     width="80px"
                     src="{% static 'media/AFM MEDICAL.png' %}"
@@ -164,7 +164,7 @@
               <a
                 class="nav-link active text-white"
                 aria-current="page"
-                href="{% url 'filial_stats' %}"
+                href="/filial/"
                 data-i18n="statistics"
                 >Statistika</a
               >
@@ -172,7 +172,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_orders' %}"
+                href="/filial/order/"
                 data-i18n="orders"
                 >Buyurtmalar</a
               >
@@ -180,7 +180,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_products' %}"
+                href="/filial/products/"
                 data-i18n="products"
                 >Mahsulotlar</a
               >
@@ -188,7 +188,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_product_create' %}"
+                href="/filial/product-create/"
                 data-i18n="add_product"
                 >Mahsulot qo‘shish</a
               >
@@ -196,7 +196,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_member_create' %}"
+                href="/filial-member/"
                 data-i18n="add_member"
                 >Xodim qo‘shish</a
               >
@@ -204,7 +204,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_category' %}"
+                href="/filial-category/"
                 data-i18n="category"
                 >Kategoriya</a
               >
@@ -212,7 +212,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'glavni' %}"
+                href="/glavni/"
                 data-i18n="main_slider"
                 >Asosiy slayder</a
               >
@@ -234,7 +234,7 @@
                 <li>
                   <a
                     class="dropdown-item text-white"
-                    href="{% url 'filial_list' %}"
+                    href="/filial/filial/"
                     data-i18n="branches"
                     >Filiallar</a
                   >
@@ -242,7 +242,7 @@
                 <li>
                   <a
                     class="dropdown-item text-white"
-                    href="{% url 'filial_register' %}"
+                    href="/filial/registar/"
                     data-i18n="add_branch"
                     >Filial qo‘shish</a
                   >
@@ -270,7 +270,7 @@
                     <li>
                       <a
                         class="dropdown-item text-white"
-                        href="{% url 'filial_stats' %}?filial-id={{ i.id }}"
+                        href="/filial/order/?filial-id={{ i.id }}"
                         >{{ i.name }}</a
                       >
                     </li>
@@ -294,7 +294,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_logout' %}"
+                href="/filial/logout/"
                 data-i18n="logout"
                 >Chiqish</a
               >
@@ -303,7 +303,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-white"
-                href="{% url 'filial_login' %}"
+                href="/filial/login/"
                 data-i18n="login"
                 >Kirish</a
               >

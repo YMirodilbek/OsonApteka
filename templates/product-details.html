@@ -329,7 +329,7 @@
     </div>
     {% endif %}
 
-    <form method="GET" action="{% url 'add_to_cart' product.id %}">
+    <form method="GET" action="/product/add/{{product.id}}/">
       <div class="price-select">
         <select name="price">
           {% for i in prices %}
@@ -370,7 +370,7 @@
         </p>
       </div>
     </div>
-    <a href="{% url 'home' %}"
+    <a href="/"
       ><button class="shop-button" data-i18n="go_to_shop">
         Do‘konga o‘tish
       </button></a
