@@ -41,7 +41,7 @@
     <meta property="og:url" content="https://akmalfarm.uz" />
     <!-- Sayt URL manzili -->
     <link rel="canonical" href="https://akmalfarm.uz/" />
-    <script src="{% static 'lang/lang.js' %}" defer></script>
+    <script src="{% static 'lang/lang.js' %}" defer></script> 
     <script type="application/ld+json">
       {
           "@context": "https://schema.org",
@@ -234,15 +234,18 @@
         <div class="header-actions">
           <a href="{% url 'myaccount' %}" class="action-item">
             <div class="action-item__text-wrapper">
-              <span
-                class="action-item__text"
-                data-i18n-authenticated="profile"
-                data-i18n-unauthenticated="login"
-                data-i18n="login"
-              >
-                {% if request.user.is_authenticated %} Профиль {% else %} Войти
-                {% endif %}
-              </span>
+       <span
+  class="action-item__text"
+  data-i18n-authenticated="profile"
+  data-i18n-unauthenticated="login"
+>
+    {% if request.user.is_authenticated %}
+        <span data-i18n="profile">Профиль</span>
+    {% else %}
+        <span data-i18n="login">Войти</span>
+    {% endif %}
+</span>
+
             </div>
             <i class="fas fa-user action-item__icon"></i>
           </a>
