@@ -143,8 +143,39 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tashkent'
 CELERY_ENABLE_UTC = False
+ 
+# LOGGING = {   #  bu errorni ushlovchi logging sozlamasi
+#     'version': 1,
+#     'disable_existing_loggers': False,
 
-# LOGGING = {
+#     'formatters': {
+#         'verbose': {
+#             'format': '[{levelname}] {asctime} {name}: {message}',
+#             'style': '{',
+#         },
+#     },
+
+#     'handlers': {
+#         'file': {
+#             'level': 'ERROR',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'errors.log'),
+#             'formatter': 'verbose',
+#         },
+#     },
+
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'ERROR',
+#             'propagate': True,
+#         },
+#     },
+# }
+
+
+
+# LOGGING = { # bu batafsil logging sozlamasi
 #     'version': 1,
 #     'disable_existing_loggers': False,
 #     'formatters': {
@@ -250,7 +281,7 @@ CELERY_ENABLE_UTC = False
 #     },
 # }
 
-# LOGGING = {
+# LOGGING = { bu performance logging sozlamasi
 #     'version': 1,
 #     'disable_existing_loggers': False,
 #     'formatters': {
