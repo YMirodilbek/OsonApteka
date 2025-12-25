@@ -10,7 +10,7 @@ from django.utils import timezone
 from datetime import timedelta
 from decimal import Decimal
 from rapidfuzz import fuzz
-from .views import *
+# from .views import *
 import redis
 import json
 

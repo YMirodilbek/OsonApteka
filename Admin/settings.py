@@ -16,7 +16,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'ckeditor',
     'django.contrib.admin',
-     'django.contrib.postgres', 
+    'django.contrib.postgres', 
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
