@@ -2,8 +2,10 @@ from .lotin_krill import latin_to_cyrillic, compress, compress_2
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from .context_processors import cart_context
+from Admin.fcm import send_push_notification
 from Product.models import Dostafca ,Product
 from .decorator import login_required_ajax
+from main.models import Chat , CustomUser
 from django.http import JsonResponse
 from django.db.models import Q, Max
 from django.utils import timezone
@@ -177,7 +179,6 @@ def member_delete(request, pk):
     return redirect('member')
 
 
-
 @require_http_methods(["DELETE"])
 def delete_product(request, pk):
     from .models import Product
@@ -233,7 +234,7 @@ def get_messages(request, user_id):
         user__isnull=False
     )
 
-    users = User.objects.filter(
+    users = CustomUser.objects.filter(
         chats__in=recent_chats
     ).annotate(
         last_message_time=Max('chats__timestamp')
@@ -266,11 +267,14 @@ def get_messages(request, user_id):
 
     return JsonResponse({'messages': messages, 'user':user.phone_number, 'users':user_data})
 
+
+
 @csrf_exempt
 def send_image(request):
     if request.method == 'POST' and request.FILES.get('image'):
         image = request.FILES['image']
         room_id = request.POST.get('room_id')
+        receiver = CustomUser.objects.get(id=room_id)
         chat = Chat.objects.create(
             user_admin=request.user,
             # user_id=room_id,
@@ -278,25 +282,52 @@ def send_image(request):
             image=image,
             is_read_admin=True,
         )
+        if receiver.onesignal_player_id:
+            send_push_notification(
+                token=receiver.onesignal_player_id,
+                title="Yangi xabar 💬",
+                body="Rasm yuborildi 📷",
+                data={
+                    "room_id": str(room_id),
+                    "type": "chat"
+                }
+            )
         return JsonResponse({'success': True, 'image_url': chat.image.url})
     return JsonResponse({'success': False}, status=400)
 
 
 @csrf_exempt
 def send_text(request):
-    data = json.loads(request.body)
-    content = data.get('content')
-    room_id = data.get('room_id')
-    if content:
-        Chat.objects.create(
-            user_admin=request.user,
-            # user_id=room_id,
-            room_id=room_id,
-            content=content,
-            is_read_admin=True,
-        )
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
+    try:
+        
+        data = json.loads(request.body)
+        content = data.get('content')
+        room_id = data.get('room_id')
+        receiver = CustomUser.objects.get(id=room_id)
+        if content:
+            Chat.objects.create(
+                user_admin=request.user,
+                # user_id=room_id,
+                room_id=room_id,
+                content=content,
+                is_read_admin=True,
+            )
+            
+        if receiver.onesignal_player_id:
+            send_push_notification(
+                token=receiver.onesignal_player_id,
+                title="Yangi xabar 💬",
+                body=content or "Rasm yuborildi 📷",
+                data={
+                    "room_id": str(room_id),
+                    "type": "chat"
+                }
+            )
+
+            return JsonResponse({'success': True,'user_fcm': receiver.onesignal_player_id})
+        return JsonResponse({'success': False}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, f'error_{room_id}': str(e)}, status=400)
 
 
 

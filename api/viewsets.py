@@ -525,10 +525,8 @@ class ChatViewset(viewsets.ModelViewSet):
             user=user,
             content=content,
             image=image,
-            is_read = True
+            is_read=True
         )
-
-        serializer = self.get_serializer(chat)
 
         return Response({
             'success': True,

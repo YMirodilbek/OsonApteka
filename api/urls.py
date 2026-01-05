@@ -8,6 +8,7 @@ from django.urls import path
 from drf_yasg import openapi
 from .viewsets import *
 from .views import *
+from product.ajax import save_fcm_token
 
 router = DefaultRouter()
 router.register(r'apteka', OurPharmacieViewSet, basename='apteka')

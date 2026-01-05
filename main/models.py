@@ -27,6 +27,7 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    fcm_token = models.TextField(blank=True, null=True)
     phone_number = models.CharField(max_length=13, unique=True)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)

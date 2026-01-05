@@ -310,12 +310,15 @@
           >
           <select id="id_filial" name="filial" class="form-control" required>
             <option value="" data-i18n="select_branch">Filialni tanlang</option>
-            {% if filials %} {% for filial in filials %}
-            <option value="{{ filial.id }}">{{ filial.name }}</option>
-            {% endfor %} {% else %} {% for filial in form.filial.field.queryset
-            %}
-            <option value="{{ filial.id }}">{{ filial.name }}</option>
-            {% endfor %} {% endif %}
+            {% if filials %} 
+              {% for filial in filials %}
+                <option value="{{ filial.id }}">{{ filial.name }}</option>
+              {% endfor %}
+            {% else %} 
+              {% for filial in form.filial.field.queryset %}
+                <option value="{{ filial.id }}">{{ filial.name }}</option>
+              {% endfor %} 
+            {% endif %}
           </select>
         </div>
 
