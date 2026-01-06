@@ -317,7 +317,7 @@ def send_text(request):
             send_push_notification(
                 token=receiver.onesignal_player_id,
                 title="Yangi xabar 💬",
-                body=content or "Rasm yuborildi 📷",
+                body= content,
                 data={
                     "room_id": str(room_id),
                     "type": "chat"

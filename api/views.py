@@ -107,6 +107,7 @@ def phone_number_api(request):
 class LoginAPIView(APIView):
     def post(self, request):
         otp = request.data.get('otp')
+        
         if not otp:
             return Response({'success': False, 'message': 'OTP kiritilmagan'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -120,6 +121,10 @@ class LoginAPIView(APIView):
             phone_number=phone,
             defaults={'is_agree': True}
         )
+        player_id = request.data.get('player_id')
+        if player_id:
+            user.onesignal_player_id = player_id
+            user.save()
 
         if not created:
             user.is_agree = True
@@ -227,15 +232,7 @@ def person(request,*args,**kwargs):
         })        
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def save_onesignal_id(request):
-    player_id = request.data.get('player_id')
-    if player_id:
-        request.user.onesignal_player_id = player_id
-        request.user.save()
-        return Response({'success': True})
-    return Response({'success': False, 'message': 'player_id required'})
+
    
 logger = logging.getLogger('Product')
 

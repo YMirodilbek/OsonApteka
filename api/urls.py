@@ -8,7 +8,7 @@ from django.urls import path
 from drf_yasg import openapi
 from .viewsets import *
 from .views import *
-from product.ajax import save_fcm_token
+
 
 router = DefaultRouter()
 router.register(r'apteka', OurPharmacieViewSet, basename='apteka')
@@ -49,7 +49,7 @@ urlpatterns = [
    path("person/", person),
    path('phone-number/', phone_number_api),
    path('login/', LoginAPIView.as_view(), name='jwt_login'),
-   path('save-onesignal-id/',save_onesignal_id, name='save_onesignal_id'),
+   # path('save-onesignal-id/',save_onesignal_id, name='save_onesignal_id'),
    path('category/', get_category),
    path('category/<int:pk>', category),
    path('dastafca/', get_dastafca),
