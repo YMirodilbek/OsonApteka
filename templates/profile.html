@@ -903,7 +903,7 @@
                         {% else %}
                             <img src="{% static 'assets/img/no-image.jpg' %}" alt="{{ wishlist_item.product.name }}" loading="lazy">
                         {% endif %}
-                    </div>
+                    <!-- </div> -->
                     <div class="product-item-card__content">
                         <h4 title="{{ wishlist_item.product.name }}">{{ wishlist_item.product.info }}</h4>
                         <p title="{{ wishlist_item.product.producer }}">{{ wishlist_item.product.producer }}</p>
@@ -933,7 +933,7 @@
             </div>
             <h3 class="empty-state-title" data-i18n="wishlist_empty">Tanlanganlar ro‘yxati bo‘sh</h3>
             <p class="empty-state-message" data-i18n="add_to_wishlist">Yoqqan mahsulotlarni qo‘shing!</p>
-            <a href="{% url 'catalog' %}" class="empty-state-button" data-i18n="go_to_catalog">Katalogga o‘tish</a>
+            <a href="/" class="empty-state-button" data-i18n="go_to_catalog">Katalogga o‘tish</a>
         </div>
         {% endif %}
     </div>

@@ -2124,41 +2124,41 @@
             price: productPrice,
           }),
         })
-          .then((response) => {
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-              return response.json();
+          .then((response) => response.json())
+        .then((data) => {
+          if (!data) return;
+
+          if (data.status === 200) {
+            const cartBadge = document.querySelector(".cart-badge");
+            if (cartBadge) {
+              cartBadge.setAttribute("data-count", data.cart_count);
             }
-          })
-          .then((data) => {
-            if (data.status === 200) {
-              const cartBadge = document.querySelector(".cart-badge");
-              if (cartBadge) {
-                cartBadge.setAttribute("data-count", data.cart_count);
-              }
 
-              const originalText = buttonElement.textContent;
-              buttonElement.textContent = "Добавлено ✓";
-              buttonElement.style.backgroundColor = "#4CAF50";
+            const originalText = buttonElement.textContent;
+            buttonElement.textContent = "Добавлено ✓";
+            buttonElement.style.backgroundColor = "#4CAF50";
 
-              showNotification(`${productName} добавлен в корзину`);
+            showNotification(`${productName} добавлен в корзину`);
 
-              setTimeout(() => {
-                buttonElement.textContent = originalText;
-                buttonElement.style.backgroundColor = "";
-              }, 1500);
-            } else if (data.status === 300) {
-              showNotification(`${productName} Рецептурный`);
-            } else if (data.status === 401) {
-              window.location.href = "/auth/send-otp/";
-            }
-          })
+            setTimeout(() => {
+              buttonElement.textContent = originalText;
+              buttonElement.style.backgroundColor = "";
+            }, 1500);
+
+          } else if (data.status === 300) {
+            showNotification(`${productName} Рецептурный`);
+
+          } else if (data.status === 401) {
+            window.location.href = "/auth/send-otp/";
+          }
+        })
           .catch((error) => {
-            console.error("Xatolik:", error);
+            console.error("Add to cart error:", error);
             showNotification("Ошибка при добавлении в корзину");
           });
       }
-    }
+    }   
+
 
     // ======= Notification System =======
     function setupNotifications() {

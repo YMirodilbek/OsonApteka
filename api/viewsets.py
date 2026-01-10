@@ -23,7 +23,7 @@ from difflib import SequenceMatcher
 
 class OurPharmacieViewSet(viewsets.ModelViewSet):
     serializer_class = OurPharmacieSerializer
-    queryset = OurPharmacie.objects.all()
+    queryset = OurPharmacie.objects.all().order_by('id')
     http_method_names = ['get'] 
 
     def similar(self, a, b):
@@ -309,8 +309,12 @@ class OrderViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = OrderSerializer
     
+   
+        
+    
+    
     def list(self, request):
-        order = Order.objects.filter(user= request.user, is_paid=True).order_by('-id')
+        order = Order.objects.filter(user= request.user,).order_by('-id')
         return Response(
             OrderASerializer(
                 order, many=True
@@ -345,11 +349,11 @@ class OrderViewset(viewsets.ModelViewSet):
 
 
     def retrieve(self, request, *args, **kwargs):
-        order = Order.objects.get(id=kwargs['pk'])
+        order = Order.objects.prefetch_related('items').get(id=kwargs['pk'])
         
         return Response(
             OrderSerializer(
-                order, many=False
+                order, many=False, context={'request': request}
             ).data
         )
 

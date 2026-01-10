@@ -3,7 +3,9 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from .context_processors import cart_context
 from Admin.fcm import send_push_notification
-from Product.models import Dostafca ,Product
+from django.db.models import Prefetch
+from django.shortcuts import render
+from .models import *
 from .decorator import login_required_ajax
 from main.models import Chat , CustomUser
 from django.http import JsonResponse
@@ -19,8 +21,7 @@ import json
 r = redis.Redis(host='localhost', port=6379, db=0)
 @login_required_ajax
 def add_to_cart(request, product_id):
-    
-    product = get_object_or_404(Product, id=product_id)
+    product = Product.objects.get(id=product_id)
     if product.product_type == "Рецепт билан":
         return JsonResponse({"status":300})
     data = json.loads(request.body)
@@ -57,6 +58,8 @@ def add_to_cart(request, product_id):
 
 
 def search_products(request):
+
+
     query = latin_to_cyrillic(request.GET.get('q', ''))
 
     matched_items = []

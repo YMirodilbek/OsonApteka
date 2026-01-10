@@ -133,11 +133,17 @@ def Index(request):
     # 3️⃣ kategoriya filtr
     # categories_qs = Category.objects.filter(products__in=products_qs).annotate(product_count=Count('products')).distinct()
     categories_qs = (
-        Category.objects
-        .filter(products__in=products_qs)
-        .annotate(product_count=Count('products'))
-        .distinct()
-    )
+    Category.objects
+    .filter(products__id__in=product_ids)
+    .annotate(
+        product_count=Count(
+            'products',
+            filter=Q(products__id__in=product_ids)
+                )
+            )
+            .filter(product_count__gt=0)
+            .distinct()
+        )
     if category_name:
         categories_qs = categories_qs.filter(name=category_name)
 

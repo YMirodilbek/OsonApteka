@@ -193,11 +193,35 @@ class OrderItemSerializer(serializers.ModelSerializer):
         return ProductSerializer(obj.product, context=context).data
 
 
+class OrderItemASerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+    product = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'product', 'price', 'quantity', 'total_price']
+        # depth = True
+    
+    def get_total_price(self, obj):
+        return obj.price * obj.quantity
+
+    def get_product(self,obj):
+        context = self.context
+        return ProductSerializer(obj.product, context=context).data
+
+
+
+
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
+    items = serializers.SerializerMethodField()
     class Meta:
         model =  Order
-        fields ='__all__'
+        fields = ['id',  'status', 'created_at', 'items']
+        # depth = True
+    
+    def get_items(self, obj):
+        context = self.context
+        return OrderItemASerializer(obj.items, many=True, context=context).data
  
         
 class OrderASerializer(serializers.ModelSerializer):

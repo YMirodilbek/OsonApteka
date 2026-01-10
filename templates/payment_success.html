@@ -127,7 +127,7 @@
         <div class="breadcrumb_content">
           <h3 data-i18n="payment_success">To'lov muvaffaqiyatli</h3>
           <ul>
-            <li><a href="{% url 'home' %}" data-i18n="home">Bosh sahifa</a></li>
+            <li><a href="/" data-i18n="home">Bosh sahifa</a></li>
             <li><i class="fa fa-angle-right"></i></li>
             <li data-i18n="payment_completed">To'lov yakunlandi</li>
           </ul>
@@ -176,15 +176,15 @@
   </div>
 
   <div class="btn-group">
-    <a href="{% url 'home' %}" class="btn btn-outline" data-i18n="back_to_home"
+    <a href="/" class="btn btn-outline" data-i18n="back_to_home"
       >Bosh sahifaga qaytish</a
     >
-    <a
-      href="{% url 'my_orders' %}"
+    <!-- <a
+      href="/"
       class="btn btn-primary"
       data-i18n="view_orders"
       >Buyurtmalarni ko'rish</a
-    >
+    > -->
   </div>
 </div>
 {% endblock content %}
