@@ -297,7 +297,8 @@ def send_image(request):
             )
         return JsonResponse({'success': True, 'image_url': chat.image.url})
     return JsonResponse({'success': False}, status=400)
-
+import logging
+logger = logging.getLogger('push')
 
 @csrf_exempt
 def send_text(request):
@@ -316,8 +317,10 @@ def send_text(request):
                 is_read_admin=True,
             )
             
-        if receiver.onesignal_player_id:
-            send_push_notification(
+        logger.info(f"TRY PUSH → user_id={receiver.id}")
+
+        try:
+            response = send_push_notification(
                 token=receiver.onesignal_player_id,
                 title="Yangi xabar 💬",
                 body= content,
@@ -326,7 +329,9 @@ def send_text(request):
                     "type": "chat"
                 }
             )
-
+            logger.info(f"PUSH SENT → response={response}")
+        except Exception as e:
+            logger.error(f"PUSH ERROR → {str(e)}")
             return JsonResponse({'success': True,'user_fcm': receiver.onesignal_player_id})
         return JsonResponse({'success': False}, status=400)
     except Exception as e:

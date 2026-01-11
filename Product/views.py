@@ -27,8 +27,6 @@ import redis
 import json
 import os
 
-
-
 def download_products_excel(request):
     # 🧾 Excel workbook yaratish
     wb = openpyxl.Workbook()
@@ -782,7 +780,6 @@ def filial_login(request):
 
 
 @is_staff
-
 def filial_users(request):
     users = CustomUser.objects.filter(is_staff = False).order_by('-id').prefetch_related(
                     Prefetch(

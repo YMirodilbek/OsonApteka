@@ -19,7 +19,6 @@ from Product.models import *
 from . serilalizer import * 
 import logging
 import os
-from difflib import SequenceMatcher
 
 class OurPharmacieViewSet(viewsets.ModelViewSet):
     serializer_class = OurPharmacieSerializer
@@ -309,10 +308,7 @@ class OrderViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = OrderSerializer
     
-   
-        
-    
-    
+
     def list(self, request):
         order = Order.objects.filter(user= request.user,).order_by('-id')
         return Response(
@@ -579,7 +575,7 @@ class VacancyVievSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 def catalog(request):
     id = request.data.get("id")
-
+    
     products = Product.objects.filter(member__id=id)\
         .distinct()\
         .select_related('category', 'member')\

@@ -107,7 +107,7 @@ def phone_number_api(request):
 class LoginAPIView(APIView):
     def post(self, request):
         otp = request.data.get('otp')
-        
+        player_id = request.data.get('player_id')
         if not otp:
             return Response({'success': False, 'message': 'OTP kiritilmagan'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -117,18 +117,26 @@ class LoginAPIView(APIView):
 
         phone = phone.decode()
 
-        user, created = CustomUser.objects.get_or_create(
-            phone_number=phone,
-            defaults={'is_agree': True}
-        )
-        player_id = request.data.get('player_id')
-        if player_id:
-            user.onesignal_player_id = player_id
-            user.save()
-
+        try:
+            user = CustomUser.objects.get(phone_number=phone)
+            created = False
+        except CustomUser.DoesNotExist:
+            user = CustomUser.objects.create_user(
+                phone_number=phone,
+                is_agree=True
+            )
+            created = True
+        
+        # Barcha o'zgarishlarni bir martada qilish
+        user.first_name = "TEST_SAVED"
+        user.onesignal_player_id = player_id
+        
+        # Agar mavjud foydalanuvchi bo'lsa, is_agree ni True qilish
         if not created:
             user.is_agree = True
-            user.save()
+        
+        # Barcha maydonlarni bir martada saqlash
+        user.save()
 
         refresh = RefreshToken.for_user(user)
 
@@ -141,11 +149,12 @@ class LoginAPIView(APIView):
             'user': {
                 'id': user.id,
                 'phone_number': user.phone_number,
+                'first_name': user.first_name,  # Tekshirish uchun qo'shdim
                 'is_agree': user.is_agree,
+                # 'player_id': player_id,
+                # 'player_id_user': user.onesignal_player_id
             }
         })
-
-
 @api_view(["GET"])
 def get_category(request):
     category = Category.objects.filter(svg__isnull=False)

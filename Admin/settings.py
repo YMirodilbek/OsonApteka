@@ -144,6 +144,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tashkent'
 CELERY_ENABLE_UTC = False
  
+ 
+
 # LOGGING = {   #  bu errorni ushlovchi logging sozlamasi
 #     'version': 1,
 #     'disable_existing_loggers': False,
@@ -358,3 +360,4 @@ CLICK_ACCOUNT_MODEL = "Product.models.Order"
 CLICK_AMOUNT_FIELD = "amount"
 
 CLICK_COMMISSION_PERCENT = 0
+import Admin.firebase

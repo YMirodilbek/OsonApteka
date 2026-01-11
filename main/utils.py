@@ -7,5 +7,5 @@ def generate_otp(phone_number):
     OTPCode.objects.filter(phone_number=phone_number).delete() 
     code = random.randint(1000, 9999) 
     OTPCode.objects.create(phone_number=phone_number, code=code, created_at=datetime.datetime.now())
-    print(f"📩 Yangi tasdiqlash kodi: {code}")  
+    # print(f"📩 Yangi tasdiqlash kodi: {code}")  
     return code

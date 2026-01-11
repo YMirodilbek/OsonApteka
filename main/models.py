@@ -5,25 +5,23 @@ from random import randint
 import uuid
 class UserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
-        """Oddiy foydalanuvchi yaratish"""
         if not phone_number:
             raise ValueError("Telefon raqam kiritilishi shart")
 
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
+        user = self.model(
+            phone_number=phone_number,
+        )
 
-        user = self.model(phone_number=phone_number, **extra_fields)
+        for key, value in extra_fields.items():
+            setattr(user, key, value)
+
         if password:
             user.set_password(password)
+        else:
+            user.set_unusable_password()
+
         user.save(using=self._db)
         return user
-
-    def create_superuser(self, phone_number, password=None, **extra_fields):
-        """Superuser yaratish"""
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-
-        return self.create_user(phone_number, password, **extra_fields)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -36,7 +34,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)  
     is_agree = models.BooleanField(default=False) 
     date_joined = models.DateTimeField(auto_now_add=True)
-    onesignal_player_id = models.CharField(max_length=200, null=True, blank=True)
+    onesignal_player_id = models.CharField(max_length=500, null=True, blank=True)
     telegram_id = models.BigIntegerField(null=True, blank=True)
     telegram_token = models.CharField(max_length=100, unique=True, null=True, blank=True, default=uuid.uuid4)
     objects = UserManager()

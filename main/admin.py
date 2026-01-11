@@ -16,7 +16,7 @@ class CustomUserAdmin(UserAdmin):
     ordering = ("phone_number",)
 
     # Barcha readonly (faqat ko‘rsatish, o‘zgartirib bo‘lmaydi) maydonlar
-    readonly_fields = ("date_joined", "last_login")
+    readonly_fields = ("date_joined", "last_login","onesignal_player_id")
 
     # Barcha maydonlarni ko‘rsatish
     fieldsets = (
@@ -37,6 +37,7 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+# admin.site.register(CustomUser)
 admin.site.register(PDFDocument)
 
 admin.site.register(VirtualCard)
