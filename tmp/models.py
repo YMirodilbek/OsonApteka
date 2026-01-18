@@ -120,3 +120,20 @@ class Blog(models.Model):
 
 class GlavniImage(models.Model):
     img = models.ImageField(upload_to='glavni/')
+    
+
+class Sertificate(models.Model):
+    name =  models.CharField(max_length=55)
+    last_name =  models.CharField(max_length=55)
+    n = models.DecimalField(decimal_places=0, max_digits=5)
+    date = models.DateField()
+    psixologiya = models.PositiveIntegerField()
+    Farmokologiya = models.PositiveIntegerField()
+    Amaliyot = models.PositiveIntegerField()
+    good_grade = models.BooleanField(default=False)
+    qr_code = models.ImageField(upload_to="qr_codes/", blank=True, null=True)
+    
+    @property
+    def n_(self):
+        return f"{int(self.n):04d}"
+

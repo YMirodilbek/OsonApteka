@@ -1,11 +1,158 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
+from playwright.sync_api import sync_playwright
+from django.core.files.base import ContentFile
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from Product.decorator import is_staff
+from django.http import HttpResponse
 from django.contrib import messages
-from . import models
+from django.db.models import Q
 from .forms import AboutUsForm
+from io import BytesIO
+from . import models
 import logging
+import qrcode
+
+@is_staff
+def delete_sertificate(request, pk):
+    sertificate = models.Sertificate.objects.get(id=pk)
+    qr = sertificate.qr_code.delete(save=False)
+    sertificate.delete()
+    return redirect('/front/sertificate-list-list/')
+
+@is_staff
+def edit_sertificate(request, pk):
+    try:
+        sertificate = models.Sertificate.objects.get(id=pk)
+        sertificate.name = request.POST.get('name')
+        sertificate.last_name = request.POST.get('last_name')
+        sertificate.n = request.POST.get('n')
+        sertificate.date = request.POST.get('date')
+        sertificate.psixologiya = request.POST.get('psixologiya')
+        sertificate.Farmokologiya = request.POST.get('Farmokologiya')
+        sertificate.Amaliyot = request.POST.get('Amaliyot')
+        sertificate.good_grade = request.POST.get('good_grade') == 'on'
+        sertificate.save()
+    except:pass
+    return redirect('/front/sertificate-list-list/')
+
+@is_staff
+def sertificate_list(request):
+    query = request.GET.get('q', '')
+    qs = models.Sertificate.objects.all()
+    if query:
+        qs = qs.filter(
+            Q(name__icontains=query) | Q(last_name__icontains=query)
+        )
+    paginator = Paginator(qs.order_by('-id'), 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'new/sertificate_list.html', {
+        'page_obj': page_obj,
+        'request': request,  
+    })
+
+
+def pdf_sertificate(request, pk):
+    sertificate = models.Sertificate.objects.get(id=pk)
+    return render (request, 'new/sertificate_pdf.html',{'sertificate':sertificate})
+
+
+def sertificate_pdf_dounland(request, id):
+    sertificate = get_object_or_404(models.Sertificate, id=id)
+    url = request.build_absolute_uri(f'/front/pdf-sertificate/{id}/')
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-dev-shm-usage"]
+        )
+        page = browser.new_page()
+        page.goto(url, wait_until="networkidle")
+
+        pdf_bytes = page.pdf(
+            format="A4",
+            landscape=True,
+            print_background=True
+        )
+
+        browser.close()
+
+    response = HttpResponse(pdf_bytes, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="sertificate_{sertificate.name}.pdf"'
+    return response
+
+
+def generate_qr(data: str):
+    qr = qrcode.make(data)
+
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    buffer.seek(0)
+
+    return ContentFile(buffer.read())
+
+
+def sertificate(request, pk):
+    sertificate = models.Sertificate.objects.get(id=pk)
+    return render (request, 'new/sertificate.html',{'sertificate':sertificate})
+
+
+def pdf_sertificate(request, pk):
+    sertificate = models.Sertificate.objects.get(id=pk)
+    return render (request, 'new/sertificate_pdf.html',{'sertificate':sertificate})
+
+
+@is_staff
+def create_sertificate(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        last_name = request.POST.get('last_name')
+        n = request.POST.get('n')
+        date = request.POST.get('date')
+        psixologiya = request.POST.get('psixologiya')
+        farmokologiya = request.POST.get('Farmokologiya')
+        amaliyot = request.POST.get('Amaliyot')
+        good_grade = request.POST.get('good_grade') == 'on'
+
+        sertificate = models.Sertificate.objects.create(
+            name=name,
+            last_name=last_name,
+            n=n,
+            date=date,
+            Farmokologiya=farmokologiya,
+            psixologiya=psixologiya,
+            Amaliyot=amaliyot,
+            good_grade=good_grade
+        )
+
+        # 2️⃣ URL yasaymiz
+        url = f'https://akmalfarm.uz/front/sertificate/{sertificate.id}/'
+
+        # 3️⃣ QR generatsiya qilamiz
+        qr_file = generate_qr(url)
+
+        # 4️⃣ QR ni modelga saqlaymiz
+        sertificate.qr_code.save(
+            f"qr_{sertificate.id}.png",
+            qr_file,
+            save=True
+        )
+
+        # 5️⃣ 
+        return redirect(f'/front/sertificate/{sertificate.id}/')
+    last = models.Sertificate.objects.order_by('-id').first()
+
+    if last and last.n:
+        sertificate = int(last.n) + 1
+    else:
+        sertificate = 1
+
+    return render(request, 'new/create-sertificate.html', {'sertificate':sertificate})
+
+
 
 # Get logger for tmp app
 logger = logging.getLogger('tmp')

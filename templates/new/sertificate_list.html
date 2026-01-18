@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Sertifikatlar ro‘yxati</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- Bootstrap 5 JS (required for navbar toggling) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="container mt-5 mb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- <h3 class="fw-bold text-primary">📜 Sertifikatlar ro‘yxati</h3> -->
+    <form method="GET" class="d-flex mb-4" role="search" action="">
+        <input 
+            class="form-control me-2" 
+            type="search" 
+            name="q" 
+            placeholder="Ism, Familiya bo‘yicha qidirish..." 
+            value="{{ request.GET.q|default:'' }}" 
+            aria-label="Search"
+        >
+        <button class="btn btn-outline-primary" type="submit">Qidirish</button>
+    </form>
+    <a href="/front/create-sertificate/" class="btn btn-outline-primary" type="submit">Qoshish</a>
+  
+</div>
+
+
+    <!-- Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+
+            <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-info text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>F.I.SH</th>
+                        <th>Sertifikat №</th>
+                        <th>Sana</th>
+                        <!-- <th>Natija</th> -->
+                        <th>QR</th>
+                        <th>Tahrirlash</th>
+                        <th>PDF</th>
+                    </tr>
+                </thead>
+
+                <tbody class="text-center">
+                {% for s in page_obj %}
+                    <tr>
+                        <td>
+                            {{ forloop.counter|add:page_obj.start_index|add:"-1" }}
+                        </td>
+
+                        <td class="text-start">
+                            <a style="color: black; text-decoration: none;" href="/front/sertificate/{{ s.id }}/">{{ s.name }} {{ s.last_name }}</a>
+                        </td>
+
+                        <td>
+                            {{ s.n_ }}
+                        </td>
+
+                        <td>
+                            {{ s.date|date:"d/m/Y" }}
+                        </td>
+
+                        <td>
+                            {% if s.qr_code %}
+                                <img src="{{ s.qr_code.url }}" width="50">
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{s.id}}" data-bs-whatever="@getbootstrap">
+                                Tahrirlash
+                            </a>
+
+                                <div class="modal fade" id="exampleModal{{s.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tahrirlash</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form method="POST" action="/front/edit-sertificate/{{s.id}}/">
+                                            {% csrf_token %}
+
+                                            <!-- Ism -->
+                                            <div class="mb-3">
+                                                <label class="form-label">Ism</label>
+                                                <input type="text" name="name" value="{{s.name}}" class="form-control" required>
+                                            </div>
+
+                                            <!-- Familiya -->
+                                            <div class="mb-3">
+                                                <label class="form-label">Familiya</label>
+                                                <input type="text" name="last_name" value="{{s.last_name}}" class="form-control" required>
+                                            </div>
+
+                                            <!-- Sertifikat raqami -->
+                                            <div class="mb-3">
+                                                <label class="form-label">Sertifikat raqami</label>
+                                                <input type="number" name="n"  class="form-control" value="{{s.n_}}" required>
+                                            </div>
+
+                                            <!-- Sana -->
+                                            <div class="mb-3">
+                                            <label class="form-label">
+                                                Sana
+                                            </label>
+
+                                                        <input
+                                                            type="date"
+                                                            name="date"
+                                                            class="form-control"
+                                                            required
+                                                            value="{{ s.date|date:'Y-m-d' }}"
+                                                        >
+                                                        </div>
+
+                                            <!-- Baholar -->
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">Psixologiya</label>
+                                                    <input type="number" value="{{s.psixologiya}}" name="psixologiya"  class="form-control" min="0" max="100" required>
+                                                </div>
+
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">Farmokologiya</label>
+                                                    <input type="number" name="Farmokologiya" value="{{s.Farmokologiya}}" class="form-control" min="0" max="100" required>
+                                                </div>
+
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">Amaliyot</label>
+                                                    <input type="number" name="Amaliyot" value="{{s.Amaliyot}}" class="form-control" min="0" max="100" required>
+                                                </div>
+                                            </div>
+
+                                            <!-- A’lo baho -->
+                                            <div class="form-check mb-3">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    name="good_grade"
+                                                     id="good_grade_{{ s.id }}"
+                                                    {% if s.good_grade == True %}checked{% endif %}
+                                                >
+                                                <label class="form-check-label" for="good_grade">
+                                                    A’lo baho 
+                                                </label>
+                                                </div>
+
+                                            <div class="modal-footer">
+                                                                                    
+                                                                                            
+                   
+                                                <!-- Delete tugmasi chapda -->
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-outline-danger "
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal{{s.id}}">
+                                                    Delete
+                                                </button>
+                                                
+                                                <!-- Save tugmasi o'ngda -->
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                         
+
+                                    </div>
+                                        </form>
+                                    </div>
+                                   
+
+                                    
+                                    </div>
+                                </div>
+                                </div>
+
+                                 <div class="modal fade" id="deleteModal{{s.id}}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title">O‘chirishni tasdiqlang</h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body text-center">
+                                                <p class="mb-0">
+                                                Haqiqatan ham ushbu {{s.name}} <strong>o‘chirmoqchimisiz?</strong>
+                                                </p>
+                                            </div>
+
+                                            <div class="modal-footer justify-content-center">
+                                                <!-- Close -->
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                                </button>
+
+                                                <!-- OK / Delete -->
+                                                <form method="post" action="/front/delete-sertificate/{{s.id}}/">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">
+                                                    OK, Delete
+                                                </button>
+                                                </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+                        </td>
+
+                        <td>
+                            <a href="{% url 'sertificate_pdf' s.id %}"
+                               class="btn btn-sm btn-outline-danger">
+                                ⬇ 
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">
+                            Sertifikatlar topilmadi
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+
+                <!-- Previous -->
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.previous_page_number }}">
+                            ⬅ Oldingi
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">⬅ Oldingi</span>
+                    </li>
+                {% endif %}
+
+                <!-- Page numbers -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Next -->
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.next_page_number }}">
+                            Keyingi ➡
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Keyingi ➡</span>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -52,4 +52,12 @@ urlpatterns=[
     path('blog/create/', blog_create, name='blog_create'),
     path('blog/update/<int:id>/', blog_update, name='blog_update'),
     path('blog/delete/<int:id>/', blog_delete, name='blog_delete'),
+    
+    path('pdf-sertificate/<int:pk>/', pdf_sertificate, name='pdf_sertificate'),
+    path('sertificate/<int:pk>/', sertificate, name='sertificate'),
+    path('dounland-pdf-sertificate/<int:id>/', sertificate_pdf_dounland, name='sertificate_pdf'),
+    path('sertificate-list-list/', sertificate_list, name='sertificate-list'),
+    path('edit-sertificate/<int:pk>/', edit_sertificate, name='edit_sertificate'),
+    path('create-sertificate/', create_sertificate, name='create_sertificate'),
+    path('delete-sertificate/<int:pk>/', delete_sertificate, name='edit_sertificate'),
 ]
