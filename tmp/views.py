@@ -40,7 +40,7 @@ def edit_sertificate(request, pk):
 @is_staff
 def sertificate_list(request):
     query = request.GET.get('q', '')
-    qs = models.Sertificate.objects.all()
+    qs = models.Sertificate.objects.all().order_by('-id')
     if query:
         qs = qs.filter(
             Q(name__icontains=query) | Q(last_name__icontains=query)
@@ -100,9 +100,6 @@ def sertificate(request, pk):
     return render (request, 'new/sertificate.html',{'sertificate':sertificate})
 
 
-def pdf_sertificate(request, pk):
-    sertificate = models.Sertificate.objects.get(id=pk)
-    return render (request, 'new/sertificate_pdf.html',{'sertificate':sertificate})
 
 
 @is_staff
