@@ -249,13 +249,24 @@ def vacancyDelete(request,id):
 
 
 def Pharm(request):
+    default_lat = 40.7828
+    default_lon = 72.3442
     region = request.GET.get('region')
     pharm = models.OurPharmacie.objects.all().order_by('id')
     if region:
         pharm = pharm.filter(region=region)
+        if region == 'Фаргона':
+            default_lat = 40.3777
+            default_lon = 71.7693
+        elif region == 'Ташкент':
+            default_lat = 41.2995
+            default_lon = 69.2401
     context = {
-        'pharm':pharm
+        'pharm':pharm,
+        'default_lat': default_lat,
+        'default_lon': default_lon,
     }
+
     return render(request,'new/farmaset.html',context)
 
 @login_required(login_url='/auth/send-otp/')

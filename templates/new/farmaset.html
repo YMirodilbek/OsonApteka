@@ -222,7 +222,9 @@
   ymaps.ready(function () {
     setTimeout(function () {
       myMap = new ymaps.Map("map", {
-        center: [40.7828, 72.3442], // Andijon
+        // center: [40.7828, 72.3442],
+        //  // Andijon
+        center: [`{{ default_lat }}`, `{{ default_lon }}`],
         zoom: 12,
       });
     }, 100); // 100ms kechikish
