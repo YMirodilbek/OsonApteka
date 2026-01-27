@@ -249,8 +249,10 @@ def vacancyDelete(request,id):
 
 
 def Pharm(request):
+    region = request.GET.get('region')
     pharm = models.OurPharmacie.objects.all().order_by('id')
-    
+    if region:
+        pharm = pharm.filter(region=region)
     context = {
         'pharm':pharm
     }
@@ -261,12 +263,13 @@ def Pharm(request):
 def pharmCreate(request):
     if request.method == 'POST':
         title = request.POST.get('title')
+        region = request.POST.get('region')
         address = request.POST.get('address')
         shift = request.POST.get('shift')
         phone_number = request.POST.get('phone_number')
         lat = request.POST.get('lat')
         lon = request.POST.get('lon')
-        models.OurPharmacie.objects.create(title=title,address=address,shift=shift,phone_number=phone_number,lat=lat,lon=lon)
+        models.OurPharmacie.objects.create(region = region, title=title,address=address,shift=shift,phone_number=phone_number,lat=lat,lon=lon)
         messages.success(request,'Pharmacy created successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 

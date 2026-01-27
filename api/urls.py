@@ -41,7 +41,7 @@ urlpatterns = [
 
    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-   path('checkout/',CheckoutAPIView.as_view(), name='checkout_api'),
+   # path('checkout/',CheckoutAPIView.as_view(), name='checkout_api'),
   
    path('user-update/', user_update),
    path('get-user/', get_user),

@@ -3,6 +3,7 @@ from ckeditor.fields import RichTextField
 
 
 class OurPharmacie(models.Model):
+    region = models.CharField(max_length=55,default='Андижан')
     title = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     shift = models.CharField(max_length=255)

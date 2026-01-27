@@ -140,12 +140,45 @@
       height: 400px !important;
     }
   }
+
+  .region-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.region-filters a {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  transition: 0.2s;
+}
+
+.region-filters a:hover {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.region-filters a.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+
 </style>
 
 <h2 data-i18n="our_pharmacies">Bizning dorixonalarimiz</h2>
 
 <div class="main-container">
   <div class="left-panel">
+    <div class="region-filters">
+      <a href="?region=Андижан" data-region="Андижан">Андижан</a>
+      <a href="?region=Фаргона" data-region="Фаргона">Фаргона</a>
+      <a href="?region=Ташкент" data-region="Ташкент">Ташкент</a>
+    </div>
     {% for i in pharm %}
     <div class="store">
       <h3>{{ i.title }}</h3>
@@ -171,9 +204,18 @@
 </div>
 
 
-<script src="{% static 'lang/lang.js' %}" defer></script>
+
 <script src="https://api-maps.yandex.com/2.1/?lang=uz_UZ&apikey=8063d6c2-07c0-4f2c-b350-2066c16afb78"></script>
 <script>
+
+    const params = new URLSearchParams(window.location.search);
+    const activeRegion = params.get('region');
+    if (activeRegion) {
+      document
+        .querySelector(`.region-filters a[data-region="${activeRegion}"]`)
+        ?.classList.add('active');
+    }
+
   let myMap;
   let placemarks = [];
 

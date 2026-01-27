@@ -30,9 +30,7 @@
         <td>{{user.phone_number}}</td>
         <td>{{user.last_login}}</td>
         <td>
-          {% if user.prefetched_orders %} {% with user.prefetched_orders.0 as
-          last_order %} {{ last_order.created_at|date:"d-m-Y H:i" }} {% endwith
-          %} {% else %} Yo‘q {% endif %}
+          {% if user.orders %} {{ user.orders.last }} {% else %} Yo‘q {% endif %}
         </td>
         <td>{{user.date_joined}}</td>
       </tr>

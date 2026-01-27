@@ -143,7 +143,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tashkent'
 CELERY_ENABLE_UTC = False
- 
+
  
 
 # LOGGING = {   #  bu errorni ushlovchi logging sozlamasi
