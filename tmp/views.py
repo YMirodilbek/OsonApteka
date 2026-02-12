@@ -280,7 +280,15 @@ def pharmCreate(request):
         phone_number = request.POST.get('phone_number')
         lat = request.POST.get('lat')
         lon = request.POST.get('lon')
-        models.OurPharmacie.objects.create(region = region, title=title,address=address,shift=shift,phone_number=phone_number,lat=lat,lon=lon)
+        models.OurPharmacie.objects.create(
+            region = region,
+            title=title,
+            address=address,
+            shift=shift,
+            phone_number=phone_number,
+            lat=lat,
+            lon=lon
+            )
         messages.success(request,'Pharmacy created successfully')
     return redirect(request.META.get('HTTP_REFERER'))
 
