@@ -27,6 +27,7 @@ def edit_sertificate(request, pk):
         sertificate = models.Sertificate.objects.get(id=pk)
         sertificate.name = request.POST.get('name')
         sertificate.last_name = request.POST.get('last_name')
+        sertificate.director = request.POST.get('director')
         sertificate.n = request.POST.get('n')
         sertificate.date = request.POST.get('date')
         sertificate.psixologiya = request.POST.get('psixologiya')
@@ -109,6 +110,7 @@ def create_sertificate(request):
         last_name = request.POST.get('last_name')
         n = request.POST.get('n')
         date = request.POST.get('date')
+        director = request.POST.get('director')
         psixologiya = request.POST.get('psixologiya')
         farmokologiya = request.POST.get('Farmokologiya')
         amaliyot = request.POST.get('Amaliyot')
@@ -119,6 +121,7 @@ def create_sertificate(request):
             last_name=last_name,
             n=n,
             date=date,
+            director=director,
             Farmokologiya=farmokologiya,
             psixologiya=psixologiya,
             Amaliyot=amaliyot,

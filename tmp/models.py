@@ -128,6 +128,7 @@ class Sertificate(models.Model):
     last_name =  models.CharField(max_length=55)
     n = models.DecimalField(decimal_places=0, max_digits=5)
     date = models.DateField()
+    director = models.CharField(max_length=255)
     psixologiya = models.PositiveIntegerField()
     Farmokologiya = models.PositiveIntegerField()
     Amaliyot = models.PositiveIntegerField()
