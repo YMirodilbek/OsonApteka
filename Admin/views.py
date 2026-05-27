@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import time
 def handler_404(request, exception):
     return render(request, 'status/404.html', status=404)
 
