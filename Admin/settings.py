@@ -361,3 +361,4 @@ CLICK_AMOUNT_FIELD = "amount"
 
 CLICK_COMMISSION_PERCENT = 0
 import Admin.firebase
+# data-i18n="contact_phone"
